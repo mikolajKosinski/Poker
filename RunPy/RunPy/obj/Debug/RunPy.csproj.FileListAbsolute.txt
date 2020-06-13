@@ -1,0 +1,7 @@
+C:\Users\mkosi\source\repos\RunPy\RunPy\bin\Debug\RunPy.exe.config
+C:\Users\mkosi\source\repos\RunPy\RunPy\bin\Debug\RunPy.exe
+C:\Users\mkosi\source\repos\RunPy\RunPy\bin\Debug\RunPy.pdb
+C:\Users\mkosi\source\repos\RunPy\RunPy\obj\Debug\RunPy.csprojAssemblyReference.cache
+C:\Users\mkosi\source\repos\RunPy\RunPy\obj\Debug\RunPy.csproj.CoreCompileInputs.cache
+C:\Users\mkosi\source\repos\RunPy\RunPy\obj\Debug\RunPy.exe
+C:\Users\mkosi\source\repos\RunPy\RunPy\obj\Debug\RunPy.pdb
