@@ -4,22 +4,20 @@ using System.IO;
 
 namespace CoreDomain
 {
-    public class ImageRecognition
+    public class CardRecognition : ICardRecognition
     {
         public string RecogniseByPath(string path)
         {
-            ProcessStartInfo start = new ProcessStartInfo();
-            start.FileName = "C:\\Python\\python.exe";
-            start.Arguments = string.Format("C:\\Users\\mkosi\\PycharmProjects\\tensorEnv\\PP.py {0} ", "C:\\Users\\mkosi\\PycharmProjects\\tensorEnv\\dataset\\7H\\test.jpg");
-            start.UseShellExecute = false;
-            start.RedirectStandardOutput = true;
-            using (Process process = Process.Start(start))
+            ProcessStartInfo start = new ProcessStartInfo
             {
-                using (StreamReader reader = process.StandardOutput)
-                {
-                    return reader.ReadToEnd().Replace("\r\n", "");                    
-                }
-            }
+                FileName = "C:\\Python\\python.exe",
+                Arguments = $"C:\\Users\\mkosi\\PycharmProjects\\tensorEnv\\PP.py {path}",
+                UseShellExecute = false,
+                RedirectStandardOutput = true
+            };
+            using Process process = Process.Start(start);
+            using StreamReader reader = process.StandardOutput;
+            return reader.ReadToEnd().Replace("\r\n", "");
         }
     }
 }

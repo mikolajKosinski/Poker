@@ -7,6 +7,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RunPy", "RunPy\RunPy.csproj
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CoreDomain", "CoreDomain\CoreDomain.csproj", "{BF445F23-E379-42E2-8586-B4B2819F02F4}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CoreBusinessLogic", "CoreBusinessLogic\CoreBusinessLogic.csproj", "{F82317FE-DD3C-4658-ACA3-1F3FF632947C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleEndpoint", "ConsoleEndpoint\ConsoleEndpoint.csproj", "{A357868E-16EB-4D8E-A036-E2BBC56CBE7E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -31,6 +35,22 @@ Global
 		{BF445F23-E379-42E2-8586-B4B2819F02F4}.Release|Any CPU.Build.0 = Release|Any CPU
 		{BF445F23-E379-42E2-8586-B4B2819F02F4}.Release|x64.ActiveCfg = Release|Any CPU
 		{BF445F23-E379-42E2-8586-B4B2819F02F4}.Release|x64.Build.0 = Release|Any CPU
+		{F82317FE-DD3C-4658-ACA3-1F3FF632947C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F82317FE-DD3C-4658-ACA3-1F3FF632947C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F82317FE-DD3C-4658-ACA3-1F3FF632947C}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{F82317FE-DD3C-4658-ACA3-1F3FF632947C}.Debug|x64.Build.0 = Debug|Any CPU
+		{F82317FE-DD3C-4658-ACA3-1F3FF632947C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F82317FE-DD3C-4658-ACA3-1F3FF632947C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F82317FE-DD3C-4658-ACA3-1F3FF632947C}.Release|x64.ActiveCfg = Release|Any CPU
+		{F82317FE-DD3C-4658-ACA3-1F3FF632947C}.Release|x64.Build.0 = Release|Any CPU
+		{A357868E-16EB-4D8E-A036-E2BBC56CBE7E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A357868E-16EB-4D8E-A036-E2BBC56CBE7E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A357868E-16EB-4D8E-A036-E2BBC56CBE7E}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{A357868E-16EB-4D8E-A036-E2BBC56CBE7E}.Debug|x64.Build.0 = Debug|Any CPU
+		{A357868E-16EB-4D8E-A036-E2BBC56CBE7E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A357868E-16EB-4D8E-A036-E2BBC56CBE7E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A357868E-16EB-4D8E-A036-E2BBC56CBE7E}.Release|x64.ActiveCfg = Release|Any CPU
+		{A357868E-16EB-4D8E-A036-E2BBC56CBE7E}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

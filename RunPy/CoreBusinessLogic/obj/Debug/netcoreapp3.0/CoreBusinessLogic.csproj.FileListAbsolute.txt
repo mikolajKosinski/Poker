@@ -1,0 +1,11 @@
+C:\Users\mkosi\Documents\GitHub\Poker\RunPy\CoreBusinessLogic\bin\Debug\netcoreapp3.0\CoreBusinessLogic.deps.json
+C:\Users\mkosi\Documents\GitHub\Poker\RunPy\CoreBusinessLogic\bin\Debug\netcoreapp3.0\CoreBusinessLogic.dll
+C:\Users\mkosi\Documents\GitHub\Poker\RunPy\CoreBusinessLogic\bin\Debug\netcoreapp3.0\CoreBusinessLogic.pdb
+C:\Users\mkosi\Documents\GitHub\Poker\RunPy\CoreBusinessLogic\bin\Debug\netcoreapp3.0\CoreDomain.dll
+C:\Users\mkosi\Documents\GitHub\Poker\RunPy\CoreBusinessLogic\bin\Debug\netcoreapp3.0\CoreDomain.pdb
+C:\Users\mkosi\Documents\GitHub\Poker\RunPy\CoreBusinessLogic\obj\Debug\netcoreapp3.0\CoreBusinessLogic.csprojAssemblyReference.cache
+C:\Users\mkosi\Documents\GitHub\Poker\RunPy\CoreBusinessLogic\obj\Debug\netcoreapp3.0\CoreBusinessLogic.AssemblyInfoInputs.cache
+C:\Users\mkosi\Documents\GitHub\Poker\RunPy\CoreBusinessLogic\obj\Debug\netcoreapp3.0\CoreBusinessLogic.AssemblyInfo.cs
+C:\Users\mkosi\Documents\GitHub\Poker\RunPy\CoreBusinessLogic\obj\Debug\netcoreapp3.0\CoreBusinessLogic.csproj.CopyComplete
+C:\Users\mkosi\Documents\GitHub\Poker\RunPy\CoreBusinessLogic\obj\Debug\netcoreapp3.0\CoreBusinessLogic.dll
+C:\Users\mkosi\Documents\GitHub\Poker\RunPy\CoreBusinessLogic\obj\Debug\netcoreapp3.0\CoreBusinessLogic.pdb
