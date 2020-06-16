@@ -12,6 +12,8 @@
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -32,9 +34,94 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x64\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <OutputPath>bin\x64\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
   <ItemGroup>
+    <Reference Include="IronPython, Version=2.7.10.0, Culture=neutral, PublicKeyToken=7f709c5b713576e1, processorArchitecture=MSIL">
+      <HintPath>..\packages\IronPython.2.7.10\lib\net45\IronPython.dll</HintPath>
+    </Reference>
+    <Reference Include="IronPython.Modules, Version=2.7.10.0, Culture=neutral, PublicKeyToken=7f709c5b713576e1, processorArchitecture=MSIL">
+      <HintPath>..\packages\IronPython.2.7.10\lib\net45\IronPython.Modules.dll</HintPath>
+    </Reference>
+    <Reference Include="IronPython.SQLite, Version=2.7.10.0, Culture=neutral, PublicKeyToken=7f709c5b713576e1, processorArchitecture=MSIL">
+      <HintPath>..\packages\IronPython.2.7.10\lib\net45\IronPython.SQLite.dll</HintPath>
+    </Reference>
+    <Reference Include="IronPython.Wpf, Version=2.7.10.0, Culture=neutral, PublicKeyToken=7f709c5b713576e1, processorArchitecture=MSIL">
+      <HintPath>..\packages\IronPython.2.7.10\lib\net45\IronPython.Wpf.dll</HintPath>
+    </Reference>
+    <Reference Include="Keras, Version=3.7.4.2, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Keras.NET.3.7.4.2\lib\netstandard2.0\Keras.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Dynamic, Version=1.2.3.0, Culture=neutral, PublicKeyToken=7f709c5b713576e1, processorArchitecture=MSIL">
+      <HintPath>..\packages\DynamicLanguageRuntime.1.2.3\lib\net45\Microsoft.Dynamic.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Scripting, Version=1.2.3.0, Culture=neutral, PublicKeyToken=7f709c5b713576e1, processorArchitecture=MSIL">
+      <HintPath>..\packages\DynamicLanguageRuntime.1.2.3\lib\net45\Microsoft.Scripting.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Scripting.Metadata, Version=1.2.3.0, Culture=neutral, PublicKeyToken=7f709c5b713576e1, processorArchitecture=MSIL">
+      <HintPath>..\packages\DynamicLanguageRuntime.1.2.3\lib\net45\Microsoft.Scripting.Metadata.dll</HintPath>
+    </Reference>
+    <Reference Include="Numpy, Version=3.7.1.15, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Numpy.3.7.1.15\lib\netstandard2.0\Numpy.dll</HintPath>
+    </Reference>
+    <Reference Include="Numpy.Bare, Version=3.7.1.4, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Numpy.Bare.3.7.1.11\lib\netstandard2.0\Numpy.Bare.dll</HintPath>
+    </Reference>
+    <Reference Include="NumpyDotNet, Version=0.9.40.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\NumpyDotNet.0.9.42\lib\netstandard2.0\NumpyDotNet.dll</HintPath>
+    </Reference>
+    <Reference Include="NumpyLib, Version=0.9.40.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\NumpyDotNet.0.9.42\lib\netstandard2.0\NumpyLib.dll</HintPath>
+    </Reference>
+    <Reference Include="NumSharp.Bitmap, Version=0.20.4.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\NumSharp.Bitmap.0.20.4\lib\netstandard2.0\NumSharp.Bitmap.dll</HintPath>
+    </Reference>
+    <Reference Include="NumSharp.Core, Version=0.20.5.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\NumSharp.0.20.5\lib\netstandard2.0\NumSharp.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Python.Included, Version=3.7.3.4, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Python.Included.3.7.3.4\lib\netstandard2.0\Python.Included.dll</HintPath>
+    </Reference>
+    <Reference Include="Python.Runtime, Version=3.7.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Python.Runtime.NETStandard.3.7.1\lib\netstandard2.0\Python.Runtime.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Buffers, Version=4.0.2.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Buffers.4.4.0\lib\netstandard2.0\System.Buffers.dll</HintPath>
+    </Reference>
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Drawing.Common, Version=4.0.0.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Drawing.Common.4.5.1\lib\net461\System.Drawing.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Memory, Version=4.0.1.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Memory.4.5.3\lib\netstandard2.0\System.Memory.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Numerics" />
+    <Reference Include="System.Numerics.Vectors, Version=4.1.3.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Numerics.Vectors.4.4.0\lib\net46\System.Numerics.Vectors.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=4.0.4.1, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.4.5.2\lib\netstandard2.0\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -48,6 +135,16 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="..\packages\Python36.3.6.0\build\python36.targets" Condition="Exists('..\packages\Python36.3.6.0\build\python36.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\Python36.3.6.0\build\python36.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Python36.3.6.0\build\python36.targets'))" />
+    <Error Condition="!Exists('..\packages\NETStandard.Library.2.0.3\build\netstandard2.0\NETStandard.Library.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\NETStandard.Library.2.0.3\build\netstandard2.0\NETStandard.Library.targets'))" />
+  </Target>
+  <Import Project="..\packages\NETStandard.Library.2.0.3\build\netstandard2.0\NETStandard.Library.targets" Condition="Exists('..\packages\NETStandard.Library.2.0.3\build\netstandard2.0\NETStandard.Library.targets')" />
 </Project>
