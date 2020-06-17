@@ -5,11 +5,13 @@ VisualStudioVersion = 16.0.29503.13
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RunPy", "RunPy\RunPy.csproj", "{DEC598F5-56BD-48DC-B099-53F642B41A94}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CoreDomain", "CoreDomain\CoreDomain.csproj", "{BF445F23-E379-42E2-8586-B4B2819F02F4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CoreDomain", "CoreDomain\CoreDomain.csproj", "{BF445F23-E379-42E2-8586-B4B2819F02F4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CoreBusinessLogic", "CoreBusinessLogic\CoreBusinessLogic.csproj", "{F82317FE-DD3C-4658-ACA3-1F3FF632947C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CoreBusinessLogic", "CoreBusinessLogic\CoreBusinessLogic.csproj", "{F82317FE-DD3C-4658-ACA3-1F3FF632947C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleEndpoint", "ConsoleEndpoint\ConsoleEndpoint.csproj", "{A357868E-16EB-4D8E-A036-E2BBC56CBE7E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleEndpoint", "ConsoleEndpoint\ConsoleEndpoint.csproj", "{A357868E-16EB-4D8E-A036-E2BBC56CBE7E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XUnitTests", "XUnitTests\XUnitTests.csproj", "{C8C3899E-C756-46B0-9077-E39B14992C8F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -51,6 +53,14 @@ Global
 		{A357868E-16EB-4D8E-A036-E2BBC56CBE7E}.Release|Any CPU.Build.0 = Release|Any CPU
 		{A357868E-16EB-4D8E-A036-E2BBC56CBE7E}.Release|x64.ActiveCfg = Release|Any CPU
 		{A357868E-16EB-4D8E-A036-E2BBC56CBE7E}.Release|x64.Build.0 = Release|Any CPU
+		{C8C3899E-C756-46B0-9077-E39B14992C8F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C8C3899E-C756-46B0-9077-E39B14992C8F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C8C3899E-C756-46B0-9077-E39B14992C8F}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{C8C3899E-C756-46B0-9077-E39B14992C8F}.Debug|x64.Build.0 = Debug|Any CPU
+		{C8C3899E-C756-46B0-9077-E39B14992C8F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C8C3899E-C756-46B0-9077-E39B14992C8F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C8C3899E-C756-46B0-9077-E39B14992C8F}.Release|x64.ActiveCfg = Release|Any CPU
+		{C8C3899E-C756-46B0-9077-E39B14992C8F}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

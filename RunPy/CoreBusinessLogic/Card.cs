@@ -6,11 +6,13 @@ namespace CoreBusinessLogic
 {
     public class Card
     {
-        private readonly string name;
-
         public Card(string name)
         {
-            this.name = name;
+            Name = name;
+            ID = Guid.NewGuid();
         }
+
+        public string Name { get; set; }
+        public Guid ID { get; }
     }
 }
