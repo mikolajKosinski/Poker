@@ -11,7 +11,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CoreBusinessLogic", "CoreBu
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleEndpoint", "ConsoleEndpoint\ConsoleEndpoint.csproj", "{A357868E-16EB-4D8E-A036-E2BBC56CBE7E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XUnitTests", "XUnitTests\XUnitTests.csproj", "{C8C3899E-C756-46B0-9077-E39B14992C8F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "XUnitTests", "XUnitTests\XUnitTests.csproj", "{C8C3899E-C756-46B0-9077-E39B14992C8F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WpfClient", "WpfClient\WpfClient.csproj", "{3D8F8954-BA68-4260-90CE-DE1D9DF0DE94}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -61,6 +63,14 @@ Global
 		{C8C3899E-C756-46B0-9077-E39B14992C8F}.Release|Any CPU.Build.0 = Release|Any CPU
 		{C8C3899E-C756-46B0-9077-E39B14992C8F}.Release|x64.ActiveCfg = Release|Any CPU
 		{C8C3899E-C756-46B0-9077-E39B14992C8F}.Release|x64.Build.0 = Release|Any CPU
+		{3D8F8954-BA68-4260-90CE-DE1D9DF0DE94}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3D8F8954-BA68-4260-90CE-DE1D9DF0DE94}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3D8F8954-BA68-4260-90CE-DE1D9DF0DE94}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{3D8F8954-BA68-4260-90CE-DE1D9DF0DE94}.Debug|x64.Build.0 = Debug|Any CPU
+		{3D8F8954-BA68-4260-90CE-DE1D9DF0DE94}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3D8F8954-BA68-4260-90CE-DE1D9DF0DE94}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3D8F8954-BA68-4260-90CE-DE1D9DF0DE94}.Release|x64.ActiveCfg = Release|Any CPU
+		{3D8F8954-BA68-4260-90CE-DE1D9DF0DE94}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

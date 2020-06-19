@@ -7,7 +7,7 @@ namespace CoreBusinessLogic
     public interface IFigureMatcher
     {
         Dictionary<PokerFigure, int> CheckHand();
-        void AddCardToTable(string name);
+        void AddCardToFlop(string name);
         void AddCardToHand(string name);
     }
 }

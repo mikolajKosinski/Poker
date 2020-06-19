@@ -12,8 +12,11 @@ namespace ConsoleEndpoint
             ICardManager manager = new CardManager(cardReco);
             IFigureMatcher matcher = new FigureMatcher();
 
-            matcher.AddCardToTable("3C");
+            matcher.AddCardToFlop("3C");
+
             matcher.AddCardToHand("QS");
+            matcher.AddCardToHand("KS");
+
             var card = manager.GetCardByImage("C:\\Users\\mkosi\\PycharmProjects\\tensorEnv\\dataset\\2C\\test.jpg");
 
             var res = matcher.CheckHand();
