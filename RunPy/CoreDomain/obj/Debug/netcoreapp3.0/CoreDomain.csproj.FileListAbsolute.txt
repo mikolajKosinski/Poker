@@ -1,8 +1,8 @@
 C:\Users\mkosi\Documents\GitHub\Poker\RunPy\CoreDomain\bin\Debug\netcoreapp3.0\CoreDomain.deps.json
 C:\Users\mkosi\Documents\GitHub\Poker\RunPy\CoreDomain\bin\Debug\netcoreapp3.0\CoreDomain.dll
 C:\Users\mkosi\Documents\GitHub\Poker\RunPy\CoreDomain\bin\Debug\netcoreapp3.0\CoreDomain.pdb
-C:\Users\mkosi\Documents\GitHub\Poker\RunPy\CoreDomain\obj\Debug\netcoreapp3.0\CoreDomain.csprojAssemblyReference.cache
 C:\Users\mkosi\Documents\GitHub\Poker\RunPy\CoreDomain\obj\Debug\netcoreapp3.0\CoreDomain.AssemblyInfoInputs.cache
 C:\Users\mkosi\Documents\GitHub\Poker\RunPy\CoreDomain\obj\Debug\netcoreapp3.0\CoreDomain.AssemblyInfo.cs
 C:\Users\mkosi\Documents\GitHub\Poker\RunPy\CoreDomain\obj\Debug\netcoreapp3.0\CoreDomain.dll
 C:\Users\mkosi\Documents\GitHub\Poker\RunPy\CoreDomain\obj\Debug\netcoreapp3.0\CoreDomain.pdb
+C:\Users\mkosi\Documents\GitHub\Poker\RunPy\CoreDomain\obj\Debug\netcoreapp3.0\CoreDomain.csprojAssemblyReference.cache

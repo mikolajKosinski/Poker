@@ -131,8 +131,8 @@ C:\Users\mkosi\Documents\GitHub\Poker\RunPy\RunPy\bin\x64\Debug\System.Buffers.x
 C:\Users\mkosi\Documents\GitHub\Poker\RunPy\RunPy\bin\x64\Debug\System.Memory.xml
 C:\Users\mkosi\Documents\GitHub\Poker\RunPy\RunPy\bin\x64\Debug\System.Numerics.Vectors.xml
 C:\Users\mkosi\Documents\GitHub\Poker\RunPy\RunPy\bin\x64\Debug\System.Runtime.CompilerServices.Unsafe.xml
+C:\Users\mkosi\Documents\GitHub\Poker\RunPy\RunPy\obj\x64\Debug\RunPy.csprojAssemblyReference.cache
 C:\Users\mkosi\Documents\GitHub\Poker\RunPy\RunPy\obj\x64\Debug\RunPy.exe.config
 C:\Users\mkosi\Documents\GitHub\Poker\RunPy\RunPy\obj\x64\Debug\RunPy.csproj.CopyComplete
 C:\Users\mkosi\Documents\GitHub\Poker\RunPy\RunPy\obj\x64\Debug\RunPy.exe
 C:\Users\mkosi\Documents\GitHub\Poker\RunPy\RunPy\obj\x64\Debug\RunPy.pdb
-C:\Users\mkosi\Documents\GitHub\Poker\RunPy\RunPy\obj\x64\Debug\RunPy.csprojAssemblyReference.cache

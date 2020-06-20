@@ -1,5 +1,6 @@
 ﻿<Window x:Class="WpfClient.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -7,11 +8,14 @@
         mc:Ignorable="d"
         AllowsTransparency="True" 
         WindowStyle="None" 
-        Background="Transparent"
+        Background="Blue"
+        Opacity="0.2"
         BorderThickness="15" 
         BorderBrush="Red"
+        Focusable="True"
         WindowState ="Maximized"
-        Title="MainWindow" Height="450" Width="800">
+        MouseDown="MainWindow_MouseDown"
+        Title="MainWindow" Height="450" Width="800">    
     <Grid>
         <Label x:Name="lbl1"  />
         <Label x:Name="lbl2"  />

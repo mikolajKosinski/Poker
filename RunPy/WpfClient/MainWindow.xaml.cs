@@ -14,7 +14,11 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Runtime.InteropServices;
 using System.Drawing;
-
+using System.Drawing.Imaging;
+using Microsoft.Extensions.DependencyInjection;
+using CoreBusinessLogic;
+using WpfClient.ViewModels;
+using WpfClient.Interfaces;
 
 namespace WpfClient
 {
@@ -23,35 +27,23 @@ namespace WpfClient
     /// </summary>
     public partial class MainWindow : Window
     {
+        private IMainWindoViewModel mainWindowViewModel;
+        private readonly ServiceProvider serviceProvider;
+
         public MainWindow()
         {
+            serviceProvider = (Application.Current as App).ServiceProvider;
+            mainWindowViewModel = new MainWindowViewModel(serviceProvider.GetService<IScreenAnalyser>());
+            this.DataContext = mainWindowViewModel;
             InitializeComponent();
-            CompositionTarget.Rendering += OnRendering;
-
+            MouseDown += MainWindow_MouseDown;
         }
-
-        protected override void OnMouseDown(MouseButtonEventArgs e)
+        
+        private void MainWindow_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            base.OnMouseDown(e);
-            System.Windows.Point p = e.GetPosition(this);
+            System.Windows.Point pointToWindow = Mouse.GetPosition(this);
+            System.Windows.Point pointToScreen = PointToScreen(pointToWindow);
+            mainWindowViewModel.TakeScreenShoot(pointToWindow, pointToScreen);
         }
-
-        private void OnRendering(object sender, EventArgs e)
-        {
-            lbl1.Content = Mouse.GetPosition(lbl1).ToString();
-            lbl2.Content = Mouse.GetPosition(lbl2).ToString();
-        }
-
-        //private void Timer1_Tick(object sender, EventArgs e)
-        //{
-        //    Graphics g;
-        //    Bitmap bmp;
-        //    bmp = new Bitmap(250, 200);
-        //    g = this.CreateGraphics();
-        //    g = Graphics.FromImage(bmp);
-        //    g.CopyFromScreen(MousePosition.X - 100, MousePosition.Y - 10,
-        //        0, 0, new Size(300, 300));
-        //    PictureBox1.Image = bmp;
-        //}
     }
 }
