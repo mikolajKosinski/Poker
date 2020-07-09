@@ -136,3 +136,4 @@ C:\Users\mkosi\Documents\GitHub\Poker\RunPy\RunPy\obj\x64\Debug\RunPy.exe.config
 C:\Users\mkosi\Documents\GitHub\Poker\RunPy\RunPy\obj\x64\Debug\RunPy.csproj.CopyComplete
 C:\Users\mkosi\Documents\GitHub\Poker\RunPy\RunPy\obj\x64\Debug\RunPy.exe
 C:\Users\mkosi\Documents\GitHub\Poker\RunPy\RunPy\obj\x64\Debug\RunPy.pdb
+C:\Users\mkosi\Documents\GitHub\Poker\RunPy\RunPy\obj\x64\Debug\RunPy.csproj.CoreCompileInputs.cache

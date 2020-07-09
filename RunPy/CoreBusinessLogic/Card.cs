@@ -4,7 +4,7 @@ using System.Text;
 
 namespace CoreBusinessLogic
 {
-    public class Card
+    public class Card : ICard
     {
         public Card(string name)
         {

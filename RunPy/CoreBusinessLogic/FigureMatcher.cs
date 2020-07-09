@@ -17,17 +17,19 @@ namespace CoreBusinessLogic
             possibleFigures = new Dictionary<PokerFigure, int>();
         }
 
-        public Dictionary<PokerFigure, int> CheckHand()
+        public Dictionary<string, PokerFigure> CheckHand()
         {
-            var possibilities = new Dictionary<PokerFigure, int>();
+            var possibilities = new Dictionary<string, PokerFigure>();
             cardsOnHand.ForEach(card =>
             {
-                possibilities.Add(new PokerFigure("Pair"), CheckSinglePair(card));
+                var pair = CheckPair(card);
+                var name = possibilities.Keys.Contains("Pair") ? "SecondPair" : "Pair";
+                possibilities.Add(name, pair);
             });
 
             return possibilities;
         }
-
+        
         public void AddCardToFlop(string name)
         {
             cardsOnFlop.Add(new Card(name));
@@ -38,14 +40,18 @@ namespace CoreBusinessLogic
             cardsOnHand.Add(new Card(name));
         }
 
-        private int CheckSinglePair(Card card)
+        private PokerFigure CheckPair(Card card)
         {
-            if (cardsOnFlop.Any(c => c.Name[0] == card.Name[0])) return 100;
-            if (cardsOnFlop.Count == 0) return 2;
-            if (cardsOnHand.Count == 1) return 50;
-            if (cardsOnHand.Any(c => c.ID != card.ID && c.Name[0] == card.Name[0])) return 100;
+            if (cardsOnFlop.Any(c => c.Name[0] == card.Name[0]))
+            {
+                var cardList = new List<ICard>();
+                cardList.Add(cardsOnFlop.First(c => c.Name[0] == card.Name[0]));
+                cardList.Add(cardsOnHand.First(c => c.Name[0] == card.Name[0]));
 
-            return 0;
+                return new PokerFigure("Pair", cardList, 100);
+            }
+
+            return null;
         }
     }
 }
