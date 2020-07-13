@@ -54,6 +54,8 @@ namespace ConsoleApp1
 
             var dirName = new DirectoryInfo(path).Name;
 
+            if (dirName != "QS") return;
+
             //if (dirName == "2C"
             //    || dirName == "2D"
             //        || dirName == "2H"
@@ -125,7 +127,7 @@ namespace ConsoleApp1
                         GC.Collect();
                     }
 
-                    for (int q = 61; q < 160; q++)//100
+                    for (int q = 60; q < 160; q++)//100
                     {
                         int x = 0, y = 0, width = 500, height = 400;
 
@@ -443,7 +445,7 @@ namespace ConsoleApp1
                             //}
 
                             var cropPath = getFinalPath(path, $"{dirName}_validate{q}.jpg");
-                            var img = CropImage(newBitmap, rand.Next(100, 200), rand.Next(250, 400));
+                            var img = CropImage(newBitmap, rand.Next(200, 250), rand.Next(350, 400));
                             img.Save(cropPath);
                             GC.Collect();
                         }

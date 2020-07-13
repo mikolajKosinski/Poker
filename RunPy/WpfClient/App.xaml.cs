@@ -6,6 +6,8 @@ using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
+using WpfClient.Interfaces;
+using WpfClient.ViewModels;
 
 namespace WpfClient
 {
@@ -25,7 +27,18 @@ namespace WpfClient
 
         private void ConfigureServices(IServiceCollection services)
         {
+            services.AddScoped<IMainWindoViewModel, MainWindowViewModel>();
             services.AddScoped<IScreenAnalyser, ScreenAnalyser>();
-        }               
+        }
+
+        protected override void OnStartup(StartupEventArgs e)
+        {
+            base.OnStartup(e);
+            var mainWindowVM = ServiceProvider.GetService<IMainWindoViewModel>();
+            var mainWindow = new MainWindow(mainWindowVM);
+
+            Current.MainWindow = mainWindow;
+            Current.MainWindow.Show();
+        }
     }
 }

@@ -13,17 +13,14 @@ namespace WpfClient.ViewModels
 {
     public class MainWindowViewModel : IMainWindoViewModel
     {
-        private readonly IScreenAnalyser screenAnalyser;
-
-        public MainWindowViewModel(IScreenAnalyser screenAnalyser)
+        public MainWindowViewModel()
         {
-            this.screenAnalyser = screenAnalyser;            
         }
 
         public void TakeScreenShoot(System.Windows.Point pointToWindow, System.Windows.Point pointToScreen)
         {
             var (xStart, yStart, xWidth, yWidth) = GetCaptureArea(pointToScreen, pointToWindow);
-            Rectangle rect = new System.Drawing.Rectangle(xStart, yStart, xWidth, yWidth);
+            Rectangle rect = new Rectangle(xStart, yStart, xWidth, yWidth);
             Bitmap bmp = new Bitmap(150, 110);
             Graphics g = Graphics.FromImage(bmp);
             g.CopyFromScreen(rect.Left, rect.Top, 0, 0, bmp.Size, CopyPixelOperation.SourceCopy);
@@ -35,6 +32,7 @@ namespace WpfClient.ViewModels
 
             matcher.AddCardToFlop("3C");
             matcher.AddCardToFlop("5D");
+            matcher.AddCardToFlop("5H");
 
             matcher.AddCardToHand("3D");
             matcher.AddCardToHand("5S");
