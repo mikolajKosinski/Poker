@@ -54,7 +54,7 @@ namespace ConsoleApp1
 
             var dirName = new DirectoryInfo(path).Name;
 
-            if (dirName != "QS") return;
+
 
             //if (dirName == "2C"
             //    || dirName == "2D"
@@ -87,7 +87,7 @@ namespace ConsoleApp1
             //        || dirName == "9C"
             //        || dirName == "9D"
             //        || dirName == "9H"
-            //        || dirName == "9S"                    
+            //        || dirName == "9S"
             //        || dirName == "10C"
             //        || dirName == "10D"
             //        || dirName == "10H"
@@ -111,356 +111,413 @@ namespace ConsoleApp1
             //{
             //    return;
             //}
-            using (Bitmap newBitmap = ((Bitmap)System.Drawing.Image.FromFile($"{path}\\{dirName}_1.jpg")))
+            //using (Bitmap newBitmap = ((Bitmap)System.Drawing.Image.FromFile($"{path}\\{dirName}_1.jpg")))
+            //{
+
+            //    try
+            //    {
+            //        var rand = new Random();
+
+            //        for (int q = 1; q < 60; q++)//60
+            //        {
+            //            int x = 0, y = 0, width = 500, height = 400;
+
+            //            var rotatePath = getFinalPath(path, $"{dirName}_v{q}.jpg");
+            //            RotateImage(newBitmap, (float)q, newBitmap.Width - 150, newBitmap.Height - 20).Save(rotatePath, ImageFormat.Jpeg);
+            //            GC.Collect();
+            //        }
+
+            //        for (int q = 60; q < 160; q++)//100
+            //        {
+            //            int x = 0, y = 0, width = 500, height = 400;
+
+            //            var rotatePath = getFinalPath(path, $"{dirName}_v{q}.jpg");
+            //            RotateImage(newBitmap, (float)q, newBitmap.Width - 240, newBitmap.Height - 150).Save(rotatePath, ImageFormat.Jpeg);
+            //            GC.Collect();
+            //        }
+            //        for (int q = 160; q < 220; q++)//60
+            //        {
+            //            int x = 0, y = 0, width = 500, height = 400;
+
+            //            var rotatePath = getFinalPath(path, $"{dirName}_v{q}.jpg");
+            //            RotateImage(newBitmap, (float)q, newBitmap.Width - 240, newBitmap.Height - 220).Save(rotatePath, ImageFormat.Jpeg);
+            //            GC.Collect();
+            //        }
+            //        for (int q = 220; q < 360; q++)//140
+            //        {
+            //            int x = 0, y = 0, width = 500, height = 400;
+            //            //using (Bitmap CroppedImage = newBitmap.Clone(new Rectangle(20, 20, 280, 480), newBitmap.PixelFormat))
+            //            //{
+
+            //            var rotatePath = getFinalPath(path, $"{dirName}_v{q}.jpg");
+            //            RotateImage(newBitmap, (float)q, newBitmap.Width - 50, newBitmap.Height - 280).Save(rotatePath, ImageFormat.Jpeg);
+            //            GC.Collect();
+            //        }
+            //        for (int q = 360; q < 900; q++)
+            //        {
+            //            for (int r = 0; r < 150; r++)
+            //            {
+            //                var xx = 1;
+            //                var yx = 0;
+            //                while (xx > yx)
+            //                {
+            //                    xx = rand.Next(1, 300);
+            //                    yx = rand.Next(1, 300);
+            //                }
+
+            //                if (xx >= newBitmap.Width) xx = newBitmap.Width / 2;
+            //                if (yx >= newBitmap.Height) yx = newBitmap.Height / 2;
+
+            //                var xx1 = rand.Next(1, 256);
+            //                newBitmap.SetPixel(xx, yx, Color.FromArgb(xx1, xx1, xx1));
+            //            }
+            //            //for (int r = 0; r < 1000; r++)
+            //            //{
+            //            //    var xx = 1;
+            //            //    var yx = 0;
+            //            //    while (xx > yx)
+            //            //    {
+            //            //        xx = rand.Next(1, 300);
+            //            //        yx = rand.Next(1, 300);
+            //            //    }
+
+            //            //    if (xx >= newBitmap.Width) xx = newBitmap.Width / 2;
+            //            //    if (yx >= newBitmap.Height) yx = newBitmap.Height / 2;
+
+            //            //    var xx1 = rand.Next(1, 256);
+            //            //    newBitmap.SetPixel(xx, yx, Color.White);
+            //            //}
+            //            var cropPath = getFinalPath(path, $"{dirName}_v{q}.jpg");
+            //            var img = CropImage(newBitmap, rand.Next(100, 200), rand.Next(250, 400));
+            //            img.Save(cropPath);
+            //            GC.Collect();
+            //        }
+            //    }
+            //    catch (OutOfMemoryException x)
+            //    {
+            //        //System.Runtime.GCSettings.LargeObjectHeapCompactionMode = System.Runtime.GCLargeObjectHeapCompactionMode.CompactOnce;
+            //        //GC.Collect();
+            //    }
+            //}
+
+            //using (Bitmap newBitmap = ((Bitmap)System.Drawing.Image.FromFile($"{path}\\{dirName}_2.jpg")))
+            //{
+
+            //    try
+            //    {
+            //        var rand = new Random();
+
+            //        for (int q = 900; q < 960; q++)
+            //        {
+            //            int x = 0, y = 0, width = 500, height = 400;
+            //            //using (Bitmap CroppedImage = newBitmap.Clone(new Rectangle(20, 20, 280, 480), newBitmap.PixelFormat))
+            //            //{
+            //            var rotatePath = getFinalPath(path, $"{dirName}_v{q}.jpg");
+
+            //            RotateImage(newBitmap, (float)q, newBitmap.Width - 150, newBitmap.Height - 20).Save(rotatePath, ImageFormat.Jpeg);
+            //            GC.Collect();
+            //            //}
+            //        }
+
+            //        for (int q = 960; q < 1060; q++)
+            //        {
+            //            int x = 0, y = 0, width = 500, height = 400;
+            //            //using (Bitmap CroppedImage = newBitmap.Clone(new Rectangle(20, 20, 280, 480), newBitmap.PixelFormat))
+            //            //{
+            //            var rotatePath = getFinalPath(path, $"{dirName}_v{q}.jpg");
+            //            RotateImage(newBitmap, (float)q, newBitmap.Width - 240, newBitmap.Height - 150).Save(rotatePath, ImageFormat.Jpeg);
+            //            GC.Collect();
+            //            //}
+            //        }
+            //        for (int q = 1060; q < 1120; q++)
+            //        {
+            //            int x = 0, y = 0, width = 500, height = 400;
+            //            //using (Bitmap CroppedImage = newBitmap.Clone(new Rectangle(20, 20, 280, 480), newBitmap.PixelFormat))
+            //            //{
+            //            var rotatePath = getFinalPath(path, $"{dirName}_v{q}.jpg");
+            //            RotateImage(newBitmap, (float)q, newBitmap.Width - 240, newBitmap.Height - 220).Save(rotatePath, ImageFormat.Jpeg);
+            //            GC.Collect();
+            //            //}
+            //        }
+            //        for (int q = 1120; q < 1260; q++)
+            //        {
+            //            int x = 0, y = 0, width = 500, height = 400;
+            //            //using (Bitmap CroppedImage = newBitmap.Clone(new Rectangle(20, 20, 280, 480), newBitmap.PixelFormat))
+            //            //{
+            //            var rotatePath = getFinalPath(path, $"{dirName}_v{q}.jpg");
+            //            RotateImage(newBitmap, (float)q, newBitmap.Width - 50, newBitmap.Height - 280).Save(rotatePath, ImageFormat.Jpeg);
+            //            GC.Collect();
+            //            //}
+            //        }
+            //        for (int q = 1260; q < 1800; q++)
+            //        {
+            //            for (int r = 0; r < 150; r++)
+            //            {
+            //                var xx = 1;
+            //                var yx = 0;
+            //                while (xx > yx)
+            //                {
+            //                    xx = rand.Next(1, 300);
+            //                    yx = rand.Next(1, 300);
+            //                }
+
+            //                if (xx >= newBitmap.Width) xx = newBitmap.Width / 2;
+            //                if (yx >= newBitmap.Height) yx = newBitmap.Height / 2;
+
+            //                var x1 = rand.Next(1, 256);
+            //                newBitmap.SetPixel(xx, yx, Color.FromArgb(x1, x1, x1));
+            //            }
+            //            //for (int r = 0; r < 1000; r++)
+            //            //{
+            //            //    var xx = 1;
+            //            //    var yx = 0;
+            //            //    while (xx > yx)
+            //            //    {
+            //            //        xx = rand.Next(1, 300);
+            //            //        yx = rand.Next(1, 300);
+            //            //    }
+
+            //            //    if (xx >= newBitmap.Width) xx = newBitmap.Width / 2;
+            //            //    if (yx >= newBitmap.Height) yx = newBitmap.Height / 2;
+
+            //            //    var x1 = rand.Next(1, 256);
+            //            //    newBitmap.SetPixel(xx, yx, Color.White);
+            //            //}
+            //            var cropPath = getFinalPath(path, $"{dirName}_v{q}.jpg");
+            //            var img = CropImage(newBitmap, rand.Next(100, 200), rand.Next(250, 400));
+            //            img.Save(cropPath);
+            //            GC.Collect();
+            //        }
+            //    }
+            //    catch (OutOfMemoryException x)
+            //    {
+            //        //System.Runtime.GCSettings.LargeObjectHeapCompactionMode = System.Runtime.GCLargeObjectHeapCompactionMode.CompactOnce;
+            //        //GC.Collect();
+            //    }
+            //    GC.Collect();
+            //}
+
+            //try
+            //{
+            //    using (Bitmap newBitmap = ((Bitmap)System.Drawing.Image.FromFile($"{path}\\{dirName}_3.jpg")))
+            //    {
+
+
+            //        for (int q = 1800; q < 1860; q++)//60
+            //        {
+            //            int x = 0, y = 0, width = 500, height = 400;
+            //            //using (Bitmap CroppedImage = newBitmap.Clone(new Rectangle(20, 20, 280, 480), newBitmap.PixelFormat))
+            //            //{
+            //            var rotatePath = getFinalPath(path, $"{dirName}_v{q}.jpg");
+            //            RotateImage(newBitmap, (float)q, newBitmap.Width - 150, newBitmap.Height - 20).Save(rotatePath, ImageFormat.Jpeg);
+            //            GC.Collect();
+            //            //}
+            //        }
+
+            //        for (int q = 1860; q < 1960; q++)//100
+            //        {
+            //            int x = 0, y = 0, width = 500, height = 400;
+            //            //using (Bitmap CroppedImage = newBitmap.Clone(new Rectangle(20, 20, 280, 480), newBitmap.PixelFormat))
+            //            //{
+            //            var rotatePath = getFinalPath(path, $"{dirName}_v{q}.jpg");
+            //            RotateImage(newBitmap, (float)q, newBitmap.Width - 240, newBitmap.Height - 150).Save(rotatePath, ImageFormat.Jpeg);
+            //            GC.Collect();
+            //            //}
+            //        }
+            //        for (int q = 1960; q < 2020; q++)
+            //        {
+            //            int x = 0, y = 0, width = 500, height = 400;
+            //            //using (Bitmap CroppedImage = newBitmap.Clone(new Rectangle(20, 20, 280, 480), newBitmap.PixelFormat))
+            //            //{
+            //            var rotatePath = getFinalPath(path, $"{dirName}_v{q}.jpg");
+            //            RotateImage(newBitmap, (float)q, newBitmap.Width - 240, newBitmap.Height - 220).Save(rotatePath, ImageFormat.Jpeg);
+            //            GC.Collect();
+            //            //}
+            //        }
+            //        for (int q = 2020; q < 2160; q++)
+            //        {
+            //            int x = 0, y = 0, width = 500, height = 400;
+            //            //using (Bitmap CroppedImage = newBitmap.Clone(new Rectangle(20, 20, 280, 480), newBitmap.PixelFormat))
+            //            //{
+            //            var rotatePath = getFinalPath(path, $"{dirName}_v{q}.jpg");
+            //            RotateImage(newBitmap, (float)q, newBitmap.Width - 50, newBitmap.Height - 280).Save(rotatePath, ImageFormat.Jpeg);
+            //            GC.Collect();
+            //            //}
+            //        }
+            //        for (int q = 2160; q < 2700; q++)
+            //        {
+            //            var rand = new Random();
+
+            //            for (int r = 0; r < 150; r++)
+            //            {
+            //                var x = 1;
+            //                var y = 0;
+            //                while (x > y)
+            //                {
+            //                    x = rand.Next(1, 300);
+            //                    y = rand.Next(1, 300);
+            //                }
+
+            //                if (x >= newBitmap.Width) x = newBitmap.Width / 2;
+            //                if (y >= newBitmap.Height) y = newBitmap.Height / 2;
+
+            //                var x1 = rand.Next(1, 256);
+            //                newBitmap.SetPixel(x, y, Color.FromArgb(x1, x1, x1));
+            //            }
+            //            //for (int r = 0; r < 1000; r++)
+            //            //{
+            //            //    var x = 1;
+            //            //    var y = 0;
+            //            //    while (x > y)
+            //            //    {
+            //            //        x = rand.Next(1, 300);
+            //            //        y = rand.Next(1, 300);
+            //            //    }
+
+
+            //            //    if (x >= newBitmap.Width) x = newBitmap.Width / 2;
+            //            //    if (y >= newBitmap.Height) y = newBitmap.Height / 2;
+
+            //            //    var x1 = rand.Next(1, 256);
+            //            //    newBitmap.SetPixel(x, y, Color.White);
+            //            //}
+            //            var cropPath = getFinalPath(path, $"{dirName}_v{q}.jpg");
+            //            var img = CropImage(newBitmap, rand.Next(100, 200), rand.Next(250, 400));
+            //            img.Save(cropPath);
+            //            GC.Collect();
+            //        }
+
+
+            //    }
+            //}
+            //catch (OutOfMemoryException x)
+            //{
+
+            //}
+
+            //GC.Collect();
+
+            var rrand = new Random();
+            int pxr;
+            int pyr;
+            int number = 1;
+
+
+            //for (int q = 1; q < 10; q++)
+            //{
+            //    using (Bitmap newBitmap = ((Bitmap)System.Drawing.Image.FromFile($"{path}\\{dirName}_{q}.jpg")))
+            //    {
+            //        for (int r = 1; r < 15; r++)
+            //        {
+            //            for (int px = 1; px < newBitmap.Width; px++)
+            //            {
+            //                for (int py = 1; py < newBitmap.Height; py++)
+            //                {
+            //                    var shouldShake = rrand.Next(50) % 5 == 0;
+            //                    if (shouldShake)
+            //                    {
+            //                        //pxr = rrand.Next(px);
+            //                        //pyr = rrand.Next(py);
+            //                        newBitmap.SetPixel(px, py, Color.Gray);
+            //                    }
+            //                }
+            //            }                        
+            //            var cropPath = getFinalPath(path, $"{dirName}_v{number}.jpg");
+            //            number++;
+            //            newBitmap.Save(cropPath);
+            //            Console.WriteLine($"{dirName} round {number}");
+            //        }
+            //    }
+            //}
+            number = 1;
+            using (Bitmap newBitmap = ((Bitmap)System.Drawing.Image.FromFile($"{path}\\{dirName}_10.jpg")))
             {
-
-                try
+                for (int r = 1; r < 10; r++)
                 {
-                    var rand = new Random();
-
-                    for (int q = 1; q < 60; q++)//60
+                    for (int px = 1; px < newBitmap.Width; px++)
                     {
-                        int x = 0, y = 0, width = 500, height = 400;
-
-                        var rotatePath = getFinalPath(path, $"{dirName}_v{q}.jpg");
-                        RotateImage(newBitmap, (float)q, newBitmap.Width - 150, newBitmap.Height - 20).Save(rotatePath, ImageFormat.Jpeg);
-                        GC.Collect();
-                    }
-
-                    for (int q = 60; q < 160; q++)//100
-                    {
-                        int x = 0, y = 0, width = 500, height = 400;
-
-                        var rotatePath = getFinalPath(path, $"{dirName}_v{q}.jpg");
-                        RotateImage(newBitmap, (float)q, newBitmap.Width - 240, newBitmap.Height - 150).Save(rotatePath, ImageFormat.Jpeg);
-                        GC.Collect();
-                    }
-                    for (int q = 160; q < 220; q++)//60
-                    {
-                        int x = 0, y = 0, width = 500, height = 400;
-
-                        var rotatePath = getFinalPath(path, $"{dirName}_v{q}.jpg");
-                        RotateImage(newBitmap, (float)q, newBitmap.Width - 240, newBitmap.Height - 220).Save(rotatePath, ImageFormat.Jpeg);
-                        GC.Collect();
-                    }
-                    for (int q = 220; q < 360; q++)//140
-                    {
-                        int x = 0, y = 0, width = 500, height = 400;
-                        //using (Bitmap CroppedImage = newBitmap.Clone(new Rectangle(20, 20, 280, 480), newBitmap.PixelFormat))
-                        //{
-
-                        var rotatePath = getFinalPath(path, $"{dirName}_v{q}.jpg");
-                        RotateImage(newBitmap, (float)q, newBitmap.Width - 50, newBitmap.Height - 280).Save(rotatePath, ImageFormat.Jpeg);
-                        GC.Collect();
-                    }
-                    for (int q = 360; q < 900; q++)
-                    {
-                        for (int r = 0; r < 150; r++)
+                        for (int py = 1; py < newBitmap.Height; py++)
                         {
-                            var xx = 1;
-                            var yx = 0;
-                            while (xx > yx)
+                            var shouldShake = rrand.Next(50) % 5 == 0;
+                            if (shouldShake)
                             {
-                                xx = rand.Next(1, 300);
-                                yx = rand.Next(1, 300);
+                                //pxr = rrand.Next(px);
+                                //pyr = rrand.Next(py);
+                                newBitmap.SetPixel(px, py, Color.Gray);
                             }
-
-                            if (xx >= newBitmap.Width) xx = newBitmap.Width / 2;
-                            if (yx >= newBitmap.Height) yx = newBitmap.Height / 2;
-
-                            var xx1 = rand.Next(1, 256);
-                            newBitmap.SetPixel(xx, yx, Color.FromArgb(xx1, xx1, xx1));
-                        }
-                        //for (int r = 0; r < 1000; r++)
-                        //{
-                        //    var xx = 1;
-                        //    var yx = 0;
-                        //    while (xx > yx)
-                        //    {
-                        //        xx = rand.Next(1, 300);
-                        //        yx = rand.Next(1, 300);
-                        //    }
-
-                        //    if (xx >= newBitmap.Width) xx = newBitmap.Width / 2;
-                        //    if (yx >= newBitmap.Height) yx = newBitmap.Height / 2;
-
-                        //    var xx1 = rand.Next(1, 256);
-                        //    newBitmap.SetPixel(xx, yx, Color.White);
-                        //}
-                        var cropPath = getFinalPath(path, $"{dirName}_v{q}.jpg");
-                        var img = CropImage(newBitmap, rand.Next(100, 200), rand.Next(250, 400));
-                        img.Save(cropPath);
-                        GC.Collect();
-                    }
-                }
-                catch (OutOfMemoryException x)
-                {
-                    //System.Runtime.GCSettings.LargeObjectHeapCompactionMode = System.Runtime.GCLargeObjectHeapCompactionMode.CompactOnce;
-                    //GC.Collect();
-                }
-            }
-
-            using (Bitmap newBitmap = ((Bitmap)System.Drawing.Image.FromFile($"{path}\\{dirName}_2.jpg")))
-            {
-
-                try
-                {
-                    var rand = new Random();
-
-                    for (int q = 900; q < 960; q++)
-                    {
-                        int x = 0, y = 0, width = 500, height = 400;
-                        //using (Bitmap CroppedImage = newBitmap.Clone(new Rectangle(20, 20, 280, 480), newBitmap.PixelFormat))
-                        //{
-                        var rotatePath = getFinalPath(path, $"{dirName}_v{q}.jpg");
-
-                        RotateImage(newBitmap, (float)q, newBitmap.Width - 150, newBitmap.Height - 20).Save(rotatePath, ImageFormat.Jpeg);
-                        GC.Collect();
-                        //}
-                    }
-
-                    for (int q = 960; q < 1060; q++)
-                    {
-                        int x = 0, y = 0, width = 500, height = 400;
-                        //using (Bitmap CroppedImage = newBitmap.Clone(new Rectangle(20, 20, 280, 480), newBitmap.PixelFormat))
-                        //{
-                        var rotatePath = getFinalPath(path, $"{dirName}_v{q}.jpg");
-                        RotateImage(newBitmap, (float)q, newBitmap.Width - 240, newBitmap.Height - 150).Save(rotatePath, ImageFormat.Jpeg);
-                        GC.Collect();
-                        //}
-                    }
-                    for (int q = 1060; q < 1120; q++)
-                    {
-                        int x = 0, y = 0, width = 500, height = 400;
-                        //using (Bitmap CroppedImage = newBitmap.Clone(new Rectangle(20, 20, 280, 480), newBitmap.PixelFormat))
-                        //{
-                        var rotatePath = getFinalPath(path, $"{dirName}_v{q}.jpg");
-                        RotateImage(newBitmap, (float)q, newBitmap.Width - 240, newBitmap.Height - 220).Save(rotatePath, ImageFormat.Jpeg);
-                        GC.Collect();
-                        //}
-                    }
-                    for (int q = 1120; q < 1260; q++)
-                    {
-                        int x = 0, y = 0, width = 500, height = 400;
-                        //using (Bitmap CroppedImage = newBitmap.Clone(new Rectangle(20, 20, 280, 480), newBitmap.PixelFormat))
-                        //{
-                        var rotatePath = getFinalPath(path, $"{dirName}_v{q}.jpg");
-                        RotateImage(newBitmap, (float)q, newBitmap.Width - 50, newBitmap.Height - 280).Save(rotatePath, ImageFormat.Jpeg);
-                        GC.Collect();
-                        //}
-                    }
-                    for (int q = 1260; q < 1800; q++)
-                    {
-                        for (int r = 0; r < 150; r++)
-                        {
-                            var xx = 1;
-                            var yx = 0;
-                            while (xx > yx)
-                            {
-                                xx = rand.Next(1, 300);
-                                yx = rand.Next(1, 300);
-                            }
-
-                            if (xx >= newBitmap.Width) xx = newBitmap.Width / 2;
-                            if (yx >= newBitmap.Height) yx = newBitmap.Height / 2;
-
-                            var x1 = rand.Next(1, 256);
-                            newBitmap.SetPixel(xx, yx, Color.FromArgb(x1, x1, x1));
-                        }
-                        //for (int r = 0; r < 1000; r++)
-                        //{
-                        //    var xx = 1;
-                        //    var yx = 0;
-                        //    while (xx > yx)
-                        //    {
-                        //        xx = rand.Next(1, 300);
-                        //        yx = rand.Next(1, 300);
-                        //    }
-
-                        //    if (xx >= newBitmap.Width) xx = newBitmap.Width / 2;
-                        //    if (yx >= newBitmap.Height) yx = newBitmap.Height / 2;
-
-                        //    var x1 = rand.Next(1, 256);
-                        //    newBitmap.SetPixel(xx, yx, Color.White);
-                        //}
-                        var cropPath = getFinalPath(path, $"{dirName}_v{q}.jpg");
-                        var img = CropImage(newBitmap, rand.Next(100, 200), rand.Next(250, 400));
-                        img.Save(cropPath);
-                        GC.Collect();
-                    }
-                }
-                catch (OutOfMemoryException x)
-                {
-                    //System.Runtime.GCSettings.LargeObjectHeapCompactionMode = System.Runtime.GCLargeObjectHeapCompactionMode.CompactOnce;
-                    //GC.Collect();
-                }
-                GC.Collect();
-            }
-
-            try
-            {
-                using (Bitmap newBitmap = ((Bitmap)System.Drawing.Image.FromFile($"{path}\\{dirName}_3.jpg")))
-                {
-
-
-                    for (int q = 1800; q < 1860; q++)//60
-                    {
-                        int x = 0, y = 0, width = 500, height = 400;
-                        //using (Bitmap CroppedImage = newBitmap.Clone(new Rectangle(20, 20, 280, 480), newBitmap.PixelFormat))
-                        //{
-                        var rotatePath = getFinalPath(path, $"{dirName}_v{q}.jpg");
-                        RotateImage(newBitmap, (float)q, newBitmap.Width - 150, newBitmap.Height - 20).Save(rotatePath, ImageFormat.Jpeg);
-                        GC.Collect();
-                        //}
-                    }
-
-                    for (int q = 1860; q < 1960; q++)//100
-                    {
-                        int x = 0, y = 0, width = 500, height = 400;
-                        //using (Bitmap CroppedImage = newBitmap.Clone(new Rectangle(20, 20, 280, 480), newBitmap.PixelFormat))
-                        //{
-                        var rotatePath = getFinalPath(path, $"{dirName}_v{q}.jpg");
-                        RotateImage(newBitmap, (float)q, newBitmap.Width - 240, newBitmap.Height - 150).Save(rotatePath, ImageFormat.Jpeg);
-                        GC.Collect();
-                        //}
-                    }
-                    for (int q = 1960; q < 2020; q++)
-                    {
-                        int x = 0, y = 0, width = 500, height = 400;
-                        //using (Bitmap CroppedImage = newBitmap.Clone(new Rectangle(20, 20, 280, 480), newBitmap.PixelFormat))
-                        //{
-                        var rotatePath = getFinalPath(path, $"{dirName}_v{q}.jpg");
-                        RotateImage(newBitmap, (float)q, newBitmap.Width - 240, newBitmap.Height - 220).Save(rotatePath, ImageFormat.Jpeg);
-                        GC.Collect();
-                        //}
-                    }
-                    for (int q = 2020; q < 2160; q++)
-                    {
-                        int x = 0, y = 0, width = 500, height = 400;
-                        //using (Bitmap CroppedImage = newBitmap.Clone(new Rectangle(20, 20, 280, 480), newBitmap.PixelFormat))
-                        //{
-                        var rotatePath = getFinalPath(path, $"{dirName}_v{q}.jpg");
-                        RotateImage(newBitmap, (float)q, newBitmap.Width - 50, newBitmap.Height - 280).Save(rotatePath, ImageFormat.Jpeg);
-                        GC.Collect();
-                        //}
-                    }
-                    for (int q = 2160; q < 2700; q++)
-                    {
-                        var rand = new Random();
-
-                        for (int r = 0; r < 150; r++)
-                        {
-                            var x = 1;
-                            var y = 0;
-                            while (x > y)
-                            {
-                                x = rand.Next(1, 300);
-                                y = rand.Next(1, 300);
-                            }
-
-                            if (x >= newBitmap.Width) x = newBitmap.Width / 2;
-                            if (y >= newBitmap.Height) y = newBitmap.Height / 2;
-
-                            var x1 = rand.Next(1, 256);
-                            newBitmap.SetPixel(x, y, Color.FromArgb(x1, x1, x1));
-                        }
-                        //for (int r = 0; r < 1000; r++)
-                        //{
-                        //    var x = 1;
-                        //    var y = 0;
-                        //    while (x > y)
-                        //    {
-                        //        x = rand.Next(1, 300);
-                        //        y = rand.Next(1, 300);
-                        //    }
-                            
-
-                        //    if (x >= newBitmap.Width) x = newBitmap.Width / 2;
-                        //    if (y >= newBitmap.Height) y = newBitmap.Height / 2;
-
-                        //    var x1 = rand.Next(1, 256);
-                        //    newBitmap.SetPixel(x, y, Color.White);
-                        //}
-                        var cropPath = getFinalPath(path, $"{dirName}_v{q}.jpg");
-                        var img = CropImage(newBitmap, rand.Next(100, 200), rand.Next(250, 400));
-                        img.Save(cropPath);
-                        GC.Collect();
-                    }
-
-
-                }
-            }
-            catch (OutOfMemoryException x)
-            {
-               
-            }
-
-            GC.Collect();
-
-            try
-            {
-                using (Bitmap newBitmap = ((Bitmap)System.Drawing.Image.FromFile($"{path}\\{dirName}_4.jpg")))
-                {
-
-                    try
-                    {
-
-                        for (int q = 3060; q < 3600; q++)
-                        {
-                            var rand = new Random();
-
-
-                            for (int r = 0; r < 150; r++)
-                            {
-                                var xx = 1;
-                                var yx = 0;
-                                while (xx > yx)
-                                {
-                                    xx = rand.Next(1, 300);
-                                    yx = rand.Next(1, 300);
-                                }
-
-                                if (xx >= newBitmap.Width) xx = newBitmap.Width / 2;
-                                if (yx >= newBitmap.Height) yx = newBitmap.Height / 2;
-
-                                var x1 = rand.Next(1, 256);
-
-                                newBitmap.SetPixel(xx, yx, Color.FromArgb(x1, x1, x1));
-                            }
-                            //for (int r = 0; r < 1000; r++)
-                            //{
-                            //    var x = 1;
-                            //    var y = 0;
-                            //    while (x > y)
-                            //    {
-                            //        x = rand.Next(1, 300);
-                            //        y = rand.Next(1, 300);
-                            //    }
-
-                            //    if (x >= newBitmap.Width) x = newBitmap.Width / 2;
-                            //    if (y >= newBitmap.Height) y = newBitmap.Height / 2;
-
-                            //    var x1 = rand.Next(1, 256);
-                            //    newBitmap.SetPixel(x, y, Color.White);
-                            //}
-
-                            var cropPath = getFinalPath(path, $"{dirName}_validate{q}.jpg");
-                            var img = CropImage(newBitmap, rand.Next(200, 250), rand.Next(350, 400));
-                            img.Save(cropPath);
-                            GC.Collect();
                         }
                     }
-                    catch (OutOfMemoryException x)
-                    {
-                        //System.Runtime.GCSettings.LargeObjectHeapCompactionMode = System.Runtime.GCLargeObjectHeapCompactionMode.CompactOnce;
-                        //GC.Collect();
-                    }
+                    var cropPath = getFinalPath(path, $"{dirName}_validate{number}.jpg");
+                    number++;
+                    newBitmap.Save(cropPath);
+                    Console.WriteLine($"{dirName} validate {number}");
                 }
             }
-            catch (OutOfMemoryException x)
-            {
 
-            }
+            //    try
+            //{
+            //    using (Bitmap newBitmap = ((Bitmap)System.Drawing.Image.FromFile($"{path}\\{dirName}_4.jpg")))
+            //    {
+
+            //        try
+            //        {
+
+            //            for (int q = 3060; q < 3600; q++)
+            //            {
+            //                var rand = new Random();
+
+
+            //                for (int r = 0; r < 150; r++)
+            //                {
+            //                    var xx = 1;
+            //                    var yx = 0;
+            //                    while (xx > yx)
+            //                    {
+            //                        xx = rand.Next(1, 300);
+            //                        yx = rand.Next(1, 300);
+            //                    }
+
+            //                    if (xx >= newBitmap.Width) xx = newBitmap.Width / 2;
+            //                    if (yx >= newBitmap.Height) yx = newBitmap.Height / 2;
+
+            //                    var x1 = rand.Next(1, 256);
+
+            //                    newBitmap.SetPixel(xx, yx, Color.FromArgb(x1, x1, x1));
+            //                }
+            //                //for (int r = 0; r < 1000; r++)
+            //                //{
+            //                //    var x = 1;
+            //                //    var y = 0;
+            //                //    while (x > y)
+            //                //    {
+            //                //        x = rand.Next(1, 300);
+            //                //        y = rand.Next(1, 300);
+            //                //    }
+
+            //                //    if (x >= newBitmap.Width) x = newBitmap.Width / 2;
+            //                //    if (y >= newBitmap.Height) y = newBitmap.Height / 2;
+
+            //                //    var x1 = rand.Next(1, 256);
+            //                //    newBitmap.SetPixel(x, y, Color.White);
+            //                //}
+
+            //                var cropPath = getFinalPath(path, $"{dirName}_validate{q}.jpg");
+            //                var img = CropImage(newBitmap, rand.Next(200, 250), rand.Next(350, 400));
+            //                img.Save(cropPath);
+            //                GC.Collect();
+            //            }
+            //        }
+            //        catch (OutOfMemoryException x)
+            //        {
+            //            //System.Runtime.GCSettings.LargeObjectHeapCompactionMode = System.Runtime.GCLargeObjectHeapCompactionMode.CompactOnce;
+            //            //GC.Collect();
+            //        }
+            //    }
+            //}
+            //catch (OutOfMemoryException x)
+            //{
+
+            //}
 
             //using (Bitmap bitmap = (Bitmap)Image.FromFile($"{path}\\{dirName}_5.jpg"))
             //{

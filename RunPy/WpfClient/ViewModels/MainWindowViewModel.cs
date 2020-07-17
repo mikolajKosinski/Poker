@@ -34,7 +34,7 @@ namespace WpfClient.ViewModels
             matcher.AddCardToFlop("5D");
             matcher.AddCardToFlop("5H");
 
-            matcher.AddCardToHand("3D");
+            matcher.AddCardToHand("5C");
             matcher.AddCardToHand("5S");
             //var path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "image.jpg");
             //var card = manager.GetCardByImage(path);// C:\\Users\\mkosi\\PycharmProjects\\tensorEnv\\dataset\\2C\\test.jpg");

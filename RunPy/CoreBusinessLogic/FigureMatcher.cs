@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -21,6 +22,7 @@ namespace CoreBusinessLogic
         {
             CheckPair();
             CheckThreeOfKind();
+            CheckFourOfKind();
 
             return matchedFigures;
         }
@@ -37,34 +39,65 @@ namespace CoreBusinessLogic
 
         private void CheckPair()
         {
-            hand.ForEach(card =>
+            var tempHand = hand.Concat(flop).ToList();
+
+            if (!CheckGroupCount(tempHand, 2)) return;
+
+            var twoOf = GetGroup(tempHand, 2);
+            var cards = twoOf;
+            var cardList = new List<ICard>();
+            foreach (var card in twoOf)
             {
-                if (flop.Any(c => c.Name[0] == card.Name[0]))
-                {
-                    var cardList = new List<ICard>
-                    {
-                        flop.First(c => c.Name[0] == card.Name[0]),
-                        hand.First(c => c.Name[0] == card.Name[0])
-                    };
-                    var name = matchedFigures.Keys.Contains("Pair") ? "SecondPair" : "Pair";
-                    matchedFigures.Add(name, new PokerFigure("Pair", cardList, 100));
-                }
-            });
+                cardList.Add(tempHand.First(c => c.ID == card.ID));
+            }
+            matchedFigures.Add("Pair", new PokerFigure("Pair", cardList, 100));
         }
 
         private void CheckThreeOfKind()
         {
             var tempHand = hand.Concat(flop).ToList();
-            var threeOf = tempHand.GroupBy(x => x.Name[0])
-                        .Where(group => group.Count() > 2)
-                        .Select(group => group)
-                        .ToList()[0];
+
+            if (!CheckGroupCount(tempHand, 3)) return;
+
+            var threeOf = GetGroup(tempHand, 3);
+            var cards = threeOf;
             var cardList = new List<ICard>();
             foreach (var card in threeOf)
             {
                 cardList.Add(tempHand.First(c => c.ID == card.ID));
             }
             matchedFigures.Add("ThreeOfKind", new PokerFigure("ThreeOfKind", cardList, 100));
+        }
+
+        private void CheckFourOfKind()
+        {
+            var tempHand = hand.Concat(flop).ToList();
+
+            if (!CheckGroupCount(tempHand, 4)) return;
+
+            var fourOf = GetGroup(tempHand, 4);  
+            var cardList = new List<ICard>();
+            foreach (var card in fourOf)
+            {
+                cardList.Add(tempHand.First(c => c.ID == card.ID));
+            }
+            matchedFigures.Add("FourOfKind", new PokerFigure("FourOfKind", cardList, 100));
+        }
+
+        private bool CheckGroupCount(List<Card> cards, int elements)
+        {
+            return cards.GroupBy(x => x.Name[0])
+                        .Where(group => group.Count() >= elements)
+                        .Select(group => group)
+                        .Any();
+        }
+
+        private IGrouping<char, Card> GetGroup(List<Card> cards, int elements)
+        {
+            return cards.GroupBy(x => x.Name[0])
+                        .Where(group => group.Count() >= elements)
+                        .Select(group => group)
+                        .ToList()[0];
         }
     }
 }
