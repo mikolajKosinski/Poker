@@ -31,11 +31,13 @@ namespace WpfClient.ViewModels
             IFigureMatcher matcher = new FigureMatcher();
 
             matcher.AddCardToFlop("3C");
-            matcher.AddCardToFlop("5D");
+            matcher.AddCardToFlop("4D");
             matcher.AddCardToFlop("5H");
+            matcher.AddCardToFlop("6H");
+            matcher.AddCardToFlop("7H");
 
-            matcher.AddCardToHand("5C");
-            matcher.AddCardToHand("5S");
+            matcher.AddCardToHand("8C");
+            matcher.AddCardToHand("10S");
             //var path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "image.jpg");
             //var card = manager.GetCardByImage(path);// C:\\Users\\mkosi\\PycharmProjects\\tensorEnv\\dataset\\2C\\test.jpg");
 
