@@ -16,7 +16,7 @@ namespace ConsoleApp1
         static double total;
         static void Main(string[] args)
         {
-            var foldersPath = "C:\\Users\\mkosi\\PycharmProjects\\tensorEnv\\kartyX";
+            var foldersPath = "C:\\Users\\mkosi\\PycharmProjects\\tensorEnv\\dataset";
             var dirs = System.IO.Directory.GetDirectories(foldersPath);
 
             foreach (var dir in dirs)
@@ -94,19 +94,19 @@ namespace ConsoleApp1
                     || dirName == "10S"
                     || dirName == "AC"
                     || dirName == "AD"
-                    //|| dirName == "AH"
-                    //|| dirName == "AS"
-                    //|| dirName == "JC"
-                    //|| dirName == "JD"
-                    //|| dirName == "JH"
-                    //|| dirName == "JS"
+                    || dirName == "AH"
+                    || dirName == "AS"
+                    || dirName == "JC"
+                    || dirName == "JD"
+                    || dirName == "JH"
+                    || dirName == "JS"
                     //|| dirName == "KC"
-                    //|| dirName == "KD"
-                    //|| dirName == "KH"
-                    //|| dirName == "KS"
-                    //|| dirName == "QC"
-                    //|| dirName == "QD"
-                    //|| dirName == "QH"
+                    || dirName == "KD"
+                    || dirName == "KH"
+                    || dirName == "KS"
+                    || dirName == "QC"
+                    || dirName == "QD"
+                    || dirName == "QH"
                     )
             {
                 return;
@@ -114,65 +114,65 @@ namespace ConsoleApp1
 
 
             var rrand = new Random();
-            int pxr;
-            int pyr;
+            //int pxr;
+            //int pyr;
             int number = 1;
 
-            
 
-            int imgN = 126;
-            int validate = 10;
-            int fileNumber = 1;
-            
-            foreach (var file in Directory.GetFiles(path))
-            {
-               
-                if (fileNumber > 21) continue;
-                
-                for (int x = 0; x < 10; x++)
-                {
-                    imgN++;
-                    using (Bitmap newBitmap = (Bitmap)System.Drawing.Image.FromFile($"{file}"))
-                    {
-                        var start = DateTime.Now;
-                        for (int y = 0; y < x; y++)
-                        {
-                            for (int px = 1; px < newBitmap.Width; px++)
-                            {
-                                for (int py = 1; py < newBitmap.Height; py++)
-                                {
-                                    var shouldShake = rrand.Next(5) % 5 == 0;
-                                    if (shouldShake)
-                                    {
-                                        //pxr = rrand.Next(px);
-                                        //pyr = rrand.Next(py);
-                                        newBitmap.SetPixel(px, py, Color.Gray);
-                                    }
-                                }
-                            }
-                        }
 
-                        var finalPath = path.Replace("kartyX", "dataset");
-                        var cropPath = "";
+            //int imgN = 126;
+            //int validate = 10;
+            //int fileNumber = 1;
 
-                        if (fileNumber == 21)
-                        {
-                            cropPath = getFinalPath(finalPath, $"{dirName}_validate{validate}.jpg");
-                            validate++;
-                        }
-                        else
-                        {
-                            cropPath = getFinalPath(finalPath, $"{dirName}_v{imgN}.jpg");
-                        }
-                        //number++;
-                        newBitmap.Save(cropPath);
-                        var end = DateTime.Now;
-                        total += (end - start).TotalSeconds;                        
-                        Console.WriteLine($"{dirName} round {imgN}  - {total} seconds");
-                    }
-                }
-                fileNumber++;
-            }
+            //foreach (var file in Directory.GetFiles(path))
+            //{
+
+            //    if (fileNumber > 21) continue;
+
+            //    for (int x = 0; x < 10; x++)
+            //    {
+            //        imgN++;
+            //        using (Bitmap newBitmap = (Bitmap)System.Drawing.Image.FromFile($"{file}"))
+            //        {
+            //            var start = DateTime.Now;
+            //            for (int y = 0; y < x; y++)
+            //            {
+            //                for (int px = 1; px < newBitmap.Width; px++)
+            //                {
+            //                    for (int py = 1; py < newBitmap.Height; py++)
+            //                    {
+            //                        var shouldShake = rrand.Next(5) % 5 == 0;
+            //                        if (shouldShake)
+            //                        {
+            //                            //pxr = rrand.Next(px);
+            //                            //pyr = rrand.Next(py);
+            //                            newBitmap.SetPixel(px, py, Color.Gray);
+            //                        }
+            //                    }
+            //                }
+            //            }
+
+            //            var finalPath = path.Replace("kartyX", "dataset");
+            //            var cropPath = "";
+
+            //            if (fileNumber == 21)
+            //            {
+            //                cropPath = getFinalPath(finalPath, $"{dirName}_validate{validate}.jpg");
+            //                validate++;
+            //            }
+            //            else
+            //            {
+            //                cropPath = getFinalPath(finalPath, $"{dirName}_v{imgN}.jpg");
+            //            }
+            //            //number++;
+            //            newBitmap.Save(cropPath);
+            //            var end = DateTime.Now;
+            //            total += (end - start).TotalSeconds;                        
+            //            Console.WriteLine($"{dirName} round {imgN}  - {total} seconds");
+            //        }
+            //    }
+            //    fileNumber++;
+            //}
 
 
             //for (int q = 1; q < 10; q++)
@@ -195,47 +195,70 @@ namespace ConsoleApp1
             //                    }
             //                }
             //            }
-            //            var cropPath = getFinalPathX(path, $"{dirName}_v{number}.jpg");
+            //            var cropPath = getFinalPath(path, $"{dirName}_v{number}.jpg");
             //            number++;
             //            newBitmap.Save(cropPath);
             //            Console.WriteLine($"{dirName} round {number}");
             //        }
             //    }
             //}
-            //number = 1;
-            //var vpath = Path.Combine(path, $"{dirName} ");
-            //using (Bitmap newBitmap = ((Bitmap)System.Drawing.Image.FromFile($"{path}\\{dirName}_10.jpg")))
-            //{
-            //    for (int r = 1; r < 10; r++)
-            //    {
-            //        for (int px = 1; px < newBitmap.Width; px++)
-            //        {
-            //            for (int py = 1; py < newBitmap.Height; py++)
-            //            {
-            //                var shouldShake = rrand.Next(50) % 5 == 0;
-            //                if (shouldShake)
-            //                {
-            //                    //pxr = rrand.Next(px);
-            //                    //pyr = rrand.Next(py);
-            //                    newBitmap.SetPixel(px, py, Color.Gray);
-            //                }
-            //            }
-            //        }
-            //        var cropPath = getFinalPathX(path, $"{dirName}_validate{number}.jpg");
-            //        number++;
-            //        newBitmap.Save(cropPath);
-            //        Console.WriteLine($"{dirName} validate {number}");
-            //    }
-            //}
+            number = 1;
 
-          
+            //dirName = "6C_v1";
+
+
+            //var ppp = "C:\\Users\\mkosi\\PycharmProjects\\tensorEnv\\kartyX";
+            //var vpath = Path.Combine(path, ppp);
+            //vpath = Path.Combine(vpath, dirName);
+            //var lastOne = Directory.GetFiles(vpath);
+            //var last = lastOne.Last();
+
+            using (Bitmap newBitmap = ((Bitmap)System.Drawing.Image.FromFile($"{path}\\{dirName}_6.jpg")))
+            //using (Bitmap newBitmap = ((Bitmap)System.Drawing.Image.FromFile(last)))
+            {
+                for (int r = 10; r < 20; r++)
+                {
+                    number = r;
+
+                    var cropPath = getFinalPath(path, $"{dirName}_validate{number}.jpg");
+                    if (File.Exists(cropPath))
+                    {
+                        Console.WriteLine($"{dirName} validate {number}");
+                        continue;
+                    }
+                        for (int px = 1; px < newBitmap.Width; px++)
+                    {
+                        for (int py = 1; py < newBitmap.Height; py++)
+                        {
+                            var shouldShake = rrand.Next(50) % 5 == 0;
+                            if (shouldShake)
+                            {
+                                //pxr = rrand.Next(px);
+                                //pyr = rrand.Next(py);
+                                newBitmap.SetPixel(px, py, Color.Gray);
+                            }
+                        }
+                    }
+                    //var cropPath = getFinalPath(path, $"{dirName}_validate{number}.jpg");
+                    
+                    
+                    if (!File.Exists(cropPath))
+                    {
+                        //number++;
+                        newBitmap.Save(cropPath);
+                        Console.WriteLine($"{dirName} validate {number}");
+                    }
+                }
+            }
+
+
         }
 
-        static string getFinalPathX(string path, string fileName)
-        {
-            var card = Path.GetDirectoryName(path);
-            return Path.Combine("C:\\Users\\mkosi\\PycharmProjects\\tensorEnv\\dataset\\2C", fileName);
-        }
+        //static string getFinalPathX(string path, string fileName)
+        //{
+        //    var card = Path.GetDirectoryName(path);
+        //    return Path.Combine("C:\\Users\\mkosi\\PycharmProjects\\tensorEnv\\dataset\\2C", fileName);
+        //}
 
         static string getFinalPath(string path, string fileName)
         {
