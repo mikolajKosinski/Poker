@@ -7,15 +7,15 @@ namespace CoreBusinessLogic
 {
     public class FigureMatcher : IFigureMatcher
     {
-        private List<Card> flop;
-        private List<Card> hand;
+        private List<ICard> flop;
+        private List<ICard> hand;
         private Dictionary<string, PokerFigure> matchedFigures;
         private List<string> order;
 
         public FigureMatcher()
         {
-            hand = new List<Card>();
-            flop = new List<Card>();
+            hand = new List<ICard>();
+            flop = new List<ICard>();
             matchedFigures = new Dictionary<string, PokerFigure>();
             order = new List<string> {"2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A" };
         }
@@ -26,7 +26,8 @@ namespace CoreBusinessLogic
             CheckThreeOfKind();
             CheckFourOfKind();
             CheckStraight();
-
+            CheckFlush();
+            CheckFull();            
 
             return matchedFigures;
         }
@@ -47,10 +48,9 @@ namespace CoreBusinessLogic
 
             if (!CheckGroupCount(tempHand, 2)) return;
 
-            var twoOf = GetGroup(tempHand, 2);
-            var cards = twoOf;
+            var pair = GetGroup(tempHand, 2);
             var cardList = new List<ICard>();
-            foreach (var card in twoOf)
+            foreach (var card in pair)
             {
                 cardList.Add(tempHand.First(c => c.ID == card.ID));
             }
@@ -64,7 +64,6 @@ namespace CoreBusinessLogic
             if (!CheckGroupCount(tempHand, 3)) return;
 
             var threeOf = GetGroup(tempHand, 3);
-            var cards = threeOf;
             var cardList = new List<ICard>();
             foreach (var card in threeOf)
             {
@@ -88,7 +87,7 @@ namespace CoreBusinessLogic
             matchedFigures.Add("FourOfKind", new PokerFigure("FourOfKind", cardList, 100));
         }
 
-        private string GetCardFigure(Card card)
+        private string GetCardFigure(ICard card)
         {
             if (card.Name.Length == 2) return card.Name[0].ToString();
             return card.Name.Substring(0, 2);
@@ -124,97 +123,90 @@ namespace CoreBusinessLogic
             }
 
             if(cardList.Count > 4) matchedFigures.Add("Straight", new PokerFigure("Straight", cardList, 100));
-
-            //var tempHand = hand.Concat(flop).ToList();
-            //var cardsInStraight = new List<string>();
-
-            //if (tempHand.Count < 5) return;
-
-            //var cardOrder = new List<string>(order);
-            //var cardList = new List<ICard>();
-
-            //foreach (var card in tempHand)
-            //{
-            //    var cardFigure = GetCardFigure(card);
-            //    var index = cardOrder.ToList().IndexOf(cardFigure);
-            //    if (index == -1)
-            //    {
-            //        continue;
-            //    }
-            //    cardList.Add(card);
-            //    cardsInStraight.Add(cardOrder[index]);
-            //    cardOrder[index] = string.Empty;                
-            //}
-
-            //var emptyNumbers = new List<int>();
-
-            //for (int q = 0; q < 13; q++)
-            //{
-            //    if (cardOrder[q] == string.Empty)
-            //    { 
-            //        emptyNumbers.Add(q); 
-            //    }
-            //}
-
-            //bool gotStragiht = false;
-
-            //for(int q=0; q<2; q++)
-            //{
-            //    if (emptyNumbers[q] == emptyNumbers[q + 1] - 1
-            //        && emptyNumbers[q+1] == emptyNumbers[q + 2] - 1
-            //        && emptyNumbers[q+2] == emptyNumbers[q + 3] - 1
-            //        && emptyNumbers[q+3] == emptyNumbers[q + 4] - 1)
-            //        gotStragiht = true;
-            //}
-
-            //var elementsToRemove = new List<int>();
-
-            //if(gotStragiht)
-            //{
-            //    for(int q=0; q<emptyNumbers.Count-1; q++)
-            //    {
-            //        if(emptyNumbers[q] != emptyNumbers[q+1] -1)
-            //        {
-            //            elementsToRemove.Add(emptyNumbers[q+1]);
-            //        }
-            //    }
-            //}
-            
-            //foreach(var item in elementsToRemove)
-            //{
-            //    cardOrder.RemoveAt(item);
-            //}
-
-            //foreach(var card in cardOrder.Where(p => p != string.Empty))
-            //{
-            //    var cardToRemove = tempHand.First(c => c.Name.StartsWith(card));
-            //    tempHand.Remove(cardToRemove);
-            //}
-
-            //matchedFigures.Add("ThreeOfKind", new PokerFigure("ThreeOfKind", cardList, 100));
         }
-        
-        private bool CheckStraight(List<int> cards)
+
+        private void CheckFlush()
         {
-            for (int q = 0; q < 5; q++)
+            var tempHand = hand.Concat(flop).ToList();
+            var cardList = new List<ICard>();
+            foreach (var card in tempHand)
             {
-                if (cards[q] != (cards[q + 1] - 1)) return false;
+                card.Name = card.Name.Replace("J", "11");
+                card.Name = card.Name.Replace("Q", "12");
+                card.Name = card.Name.Replace("K", "13");
+                card.Name = card.Name.Replace("A", "14");
             }
-            return true;
+
+            if (!tempHand.GroupBy(x => x.Name.Last())
+                        .Where(group => group.Count() >= 5)
+                        .ToList()
+                        .Any()) return;
+            var key = tempHand.GroupBy(x => x.Name.Last())
+                        .Where(group => group.Count() >= 5)
+                        .Select(group => group.Key)
+                        .First();
+            cardList = tempHand.Where(x => x.Name.Last() == key).ToList();
+            matchedFigures.Add("Straight Flush", new PokerFigure("Flush", cardList, 100));
+
+            if (NotInOrder(cardList)) return;
+
+            if(cardList.Any(x => x.Name.Contains("12")))
+            {
+                matchedFigures.Add("Royal Flush", new PokerFigure("Straight Flush", cardList, 100));
+            }
+            else
+            {
+                matchedFigures.Add("Straight Flush", new PokerFigure("Flush", cardList, 100));
+            }
         }
 
-        private bool CheckGroupCount(List<Card> cards, int elements)
+        private bool NotInOrder(List<ICard> tempHand)
+        {
+            tempHand = tempHand.OrderBy(x => Convert.ToInt32(GetCardFigure(x))).ToList();
+            for (int q = 0; q < tempHand.Count - 1; q++)
+            {
+                var firstCard = Convert.ToInt32(GetCardFigure(tempHand[q]));
+                var nextCard = Convert.ToInt32(GetCardFigure(tempHand[q + 1]));
+
+                if (firstCard != nextCard - 1) return true;
+            }
+
+            return false;
+        }
+
+        private void CheckFull()
+        {
+            var tempHand = hand.Concat(flop).ToList();
+
+            if (!CheckGroupCount(tempHand, 2)) return;
+            if (!CheckGroupCount(tempHand, 3)) return;
+
+            var pair = GetGroup(tempHand, 2);
+            var threeOfKind = GetGroup(tempHand, 3);
+
+            if (!pair.Any() || !threeOfKind.Any()) return;
+
+            var cardList = new List<ICard>();
+            var full = pair.Concat(threeOfKind).ToList();
+            foreach (var card in full)
+            {
+                cardList.Add(tempHand.First(c => c.ID == card.ID));
+            }
+            matchedFigures.Add("Full", new PokerFigure("Full", cardList, 100));
+        }
+
+        private bool CheckGroupCount(List<ICard> cards, int elements)
         {
             return cards.GroupBy(x => x.Name[0])
-                        .Where(group => group.Count() >= elements)
+                        .Where(group => group.Count() == elements)
                         .Select(group => group)
                         .Any();
         }
 
-        private IGrouping<char, Card> GetGroup(List<Card> cards, int elements)
-        {
+        private IGrouping<char, ICard> GetGroup(List<ICard> cards, int elements)
+        {         
             return cards.GroupBy(x => x.Name[0])
-                        .Where(group => group.Count() >= elements)
+                        .Where(group => group.Count() == elements)
                         .Select(group => group)
                         .ToList()[0];
         }
