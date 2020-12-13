@@ -6,7 +6,8 @@ namespace CoreBusinessLogic
 {
     public interface ICard
     {
-        string Name { get; set; }
+        CardColor Color { get; }
+        CardFigure Figure { get; }
         Guid ID { get; }
     }
 }

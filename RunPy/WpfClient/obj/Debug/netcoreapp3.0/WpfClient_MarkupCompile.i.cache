@@ -1,19 +1,19 @@
 ﻿WpfClient
-
+1.0.0.0
 
 winexe
 C#
 .cs
-C:\Users\mkosi\Documents\GitHub\Poker\RunPy\WpfClient\obj\Debug\netcoreapp3.0\
+C:\Users\Mikolaj\Documents\GitHub\Poker\RunPy\WpfClient\obj\Debug\netcoreapp3.0\
 WpfClient
 none
 false
-TRACE;DEBUG;NETCOREAPP;NETCOREAPP3_0
-C:\Users\mkosi\Documents\GitHub\Poker\RunPy\WpfClient\App.xaml
+TRACE;DEBUG;NETCOREAPP;NETCOREAPP3_0;
+C:\Users\Mikolaj\Documents\GitHub\Poker\RunPy\WpfClient\App.xaml
 11151548125
 
-7232339518
-1971872981006
+8448140215
+197361987156
 MainWindow.xaml;
 
 True

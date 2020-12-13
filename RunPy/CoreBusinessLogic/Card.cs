@@ -6,13 +6,15 @@ namespace CoreBusinessLogic
 {
     public class Card : ICard
     {
-        public Card(string name)
+        public Card(CardFigure figure, CardColor color)
         {
-            Name = name;
+            Figure = figure;
+            Color = color;
             ID = Guid.NewGuid();
         }
 
-        public string Name { get; set; }
+        public CardFigure Figure { get; }
+        public CardColor Color { get; }
         public Guid ID { get; }
     }
 }

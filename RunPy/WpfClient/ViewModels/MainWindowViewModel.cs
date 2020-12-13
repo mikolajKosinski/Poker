@@ -30,14 +30,14 @@ namespace WpfClient.ViewModels
             ICardManager manager = new CardManager(cardReco);
             IFigureMatcher matcher = new FigureMatcher();
 
-            matcher.AddCardToFlop("4D");
-            matcher.AddCardToFlop("4D");
-            matcher.AddCardToFlop("10C");
-            matcher.AddCardToFlop("JC");
-            matcher.AddCardToFlop("QC");
+            matcher.AddCardToFlop(CardFigure._4, CardColor.diamond);
+            matcher.AddCardToFlop(CardFigure._4, CardColor.diamond);
+            matcher.AddCardToFlop(CardFigure._10, CardColor.club);
+            matcher.AddCardToFlop(CardFigure._7, CardColor.club);
+            matcher.AddCardToFlop(CardFigure._Queen, CardColor.club);
 
-            matcher.AddCardToHand("KC");
-            matcher.AddCardToHand("AC");
+            matcher.AddCardToHand(CardFigure._King, CardColor.club);
+            matcher.AddCardToHand(CardFigure._As, CardColor.club);
             //var path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "image.jpg");
             //var card = manager.GetCardByImage(path);// C:\\Users\\mkosi\\PycharmProjects\\tensorEnv\\dataset\\2C\\test.jpg");
 
