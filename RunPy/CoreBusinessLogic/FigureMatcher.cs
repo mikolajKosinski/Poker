@@ -10,14 +10,12 @@ namespace CoreBusinessLogic
         private List<ICard> flop;
         private List<ICard> hand;
         private Dictionary<string, PokerFigure> matchedFigures;
-        private List<string> order;
 
         public FigureMatcher()
         {
             hand = new List<ICard>();
             flop = new List<ICard>();
             matchedFigures = new Dictionary<string, PokerFigure>();
-            order = new List<string> { "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A" };
         }
 
         public Dictionary<string, PokerFigure> CheckHand()
@@ -45,16 +43,28 @@ namespace CoreBusinessLogic
         private void CheckPair()
         {
             var tempHand = hand.Concat(flop).ToList();
-
             if (!CheckGroupCount(tempHand, 2)) return;
-
             var pair = GetGroup(tempHand, 2);
-            var cardList = new List<ICard>();
-            foreach (var card in pair)
+            var name = "Pair";
+            var number = 1;
+            while (pair.Any())
             {
-                cardList.Add(tempHand.First(c => c.ID == card.ID));
+                matchedFigures.Add($"{name}{number}", new PokerFigure("Pair", pair, 100));
+                tempHand = tempHand.Except(pair).ToList();
+                number++;
+                pair = GetGroup(tempHand, 2);
             }
-            matchedFigures.Add("Pair", new PokerFigure("Pair", cardList, 100));
+            
+            //if(pair.Any())
+            //{
+            //    matchedFigures.Add("Pair", new PokerFigure("Pair", pair, 100));
+            //    tempHand = tempHand.Except(pair).ToList();
+            //}
+            //pair = GetGroup(tempHand, 2);
+            //if(pair.Any())
+            //{
+            //    matchedFigures.Add("SecondPair", new PokerFigure("Pair", pair, 100));
+            //}
         }
 
         private void CheckThreeOfKind()

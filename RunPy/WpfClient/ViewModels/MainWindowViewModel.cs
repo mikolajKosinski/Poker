@@ -31,13 +31,13 @@ namespace WpfClient.ViewModels
             IFigureMatcher matcher = new FigureMatcher();
 
             matcher.AddCardToFlop(CardFigure._4, CardColor.diamond);
-            matcher.AddCardToFlop(CardFigure._4, CardColor.diamond);
+            matcher.AddCardToFlop(CardFigure._4, CardColor.club);
             matcher.AddCardToFlop(CardFigure._10, CardColor.club);
-            matcher.AddCardToFlop(CardFigure._7, CardColor.club);
+            matcher.AddCardToFlop(CardFigure._10, CardColor.diamond);
             matcher.AddCardToFlop(CardFigure._Queen, CardColor.club);
 
             matcher.AddCardToHand(CardFigure._King, CardColor.club);
-            matcher.AddCardToHand(CardFigure._As, CardColor.club);
+            matcher.AddCardToHand(CardFigure._King, CardColor.diamond);
             //var path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "image.jpg");
             //var card = manager.GetCardByImage(path);// C:\\Users\\mkosi\\PycharmProjects\\tensorEnv\\dataset\\2C\\test.jpg");
 
