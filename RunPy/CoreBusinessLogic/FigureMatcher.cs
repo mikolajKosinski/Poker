@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using static CoreBusinessLogic.Enums;
 
 namespace CoreBusinessLogic
 {
@@ -11,11 +12,81 @@ namespace CoreBusinessLogic
         private List<ICard> hand;
         private Dictionary<string, PokerFigure> matchedFigures;
 
+        private List<ICard> deck;
+
         public FigureMatcher()
         {
             hand = new List<ICard>();
             flop = new List<ICard>();
             matchedFigures = new Dictionary<string, PokerFigure>();
+            deck = GetDeck();
+        }
+
+        private List<ICard> GetDeck()
+        {
+            return new List<ICard>
+            {
+                new Card(CardFigure._2, CardColor.club),
+            new Card(CardFigure._3, CardColor.club),
+            new Card(CardFigure._4, CardColor.club),
+            new Card(CardFigure._5, CardColor.club),
+            new Card(CardFigure._6, CardColor.club),
+            new Card(CardFigure._7, CardColor.club),
+            new Card(CardFigure._8, CardColor.club),
+            new Card(CardFigure._9, CardColor.club),
+            new Card(CardFigure._10, CardColor.club),
+            new Card(CardFigure._Jack, CardColor.club),
+            new Card(CardFigure._Queen, CardColor.club),
+            new Card(CardFigure._King, CardColor.club),
+            new Card(CardFigure._As, CardColor.club),
+
+            new Card(CardFigure._2, CardColor.diamond),
+            new Card(CardFigure._3, CardColor.diamond),
+            new Card(CardFigure._4, CardColor.diamond),
+            new Card(CardFigure._5, CardColor.diamond),
+            new Card(CardFigure._6, CardColor.diamond),
+            new Card(CardFigure._7, CardColor.diamond),
+            new Card(CardFigure._8, CardColor.diamond),
+            new Card(CardFigure._9, CardColor.diamond),
+            new Card(CardFigure._10, CardColor.diamond),
+            new Card(CardFigure._Jack, CardColor.diamond),
+            new Card(CardFigure._Queen, CardColor.diamond),
+            new Card(CardFigure._King, CardColor.diamond),
+            new Card(CardFigure._As, CardColor.diamond),
+
+            new Card(CardFigure._2, CardColor.heart),
+            new Card(CardFigure._3, CardColor.heart),
+            new Card(CardFigure._4, CardColor.heart),
+            new Card(CardFigure._5, CardColor.heart),
+            new Card(CardFigure._6, CardColor.heart),
+            new Card(CardFigure._7, CardColor.heart),
+            new Card(CardFigure._8, CardColor.heart),
+            new Card(CardFigure._9, CardColor.heart),
+            new Card(CardFigure._10, CardColor.heart),
+            new Card(CardFigure._Jack, CardColor.heart),
+            new Card(CardFigure._Queen, CardColor.heart),
+            new Card(CardFigure._King, CardColor.heart),
+            new Card(CardFigure._As, CardColor.heart),
+
+            new Card(CardFigure._2, CardColor.spade),
+            new Card(CardFigure._3, CardColor.spade),
+            new Card(CardFigure._4, CardColor.spade),
+            new Card(CardFigure._5, CardColor.spade),
+            new Card(CardFigure._6, CardColor.spade),
+            new Card(CardFigure._7, CardColor.spade),
+            new Card(CardFigure._8, CardColor.spade),
+            new Card(CardFigure._9, CardColor.spade),
+            new Card(CardFigure._10, CardColor.spade),
+            new Card(CardFigure._Jack, CardColor.spade),
+            new Card(CardFigure._Queen, CardColor.spade),
+            new Card(CardFigure._King, CardColor.spade),
+            new Card(CardFigure._As, CardColor.spade)
+            };
+        }
+
+        private List<int> GetFiguresList()
+        {
+            return Enum.GetValues(typeof(CardFigure)).Cast<int>().ToList();
         }
 
         public Dictionary<string, PokerFigure> CheckHand()
@@ -54,32 +125,50 @@ namespace CoreBusinessLogic
                 number++;
                 pair = GetGroup(tempHand, 2);
             }
-            
-            //if(pair.Any())
-            //{
-            //    matchedFigures.Add("Pair", new PokerFigure("Pair", pair, 100));
-            //    tempHand = tempHand.Except(pair).ToList();
-            //}
-            //pair = GetGroup(tempHand, 2);
-            //if(pair.Any())
-            //{
-            //    matchedFigures.Add("SecondPair", new PokerFigure("Pair", pair, 100));
-            //}
         }
 
         private void CheckThreeOfKind()
         {
             var tempHand = hand.Concat(flop).ToList();
-
-            if (!CheckGroupCount(tempHand, 3)) return;
-
-            var threeOf = GetGroup(tempHand, 3);
             var cardList = new List<ICard>();
-            foreach (var card in threeOf)
+            var percent = 0;
+
+            if (CheckGroupCount(tempHand, 3)) 
             {
-                cardList.Add(tempHand.First(c => c.ID == card.ID));
+                var threeOf = GetGroup(tempHand, 3);
+                foreach (var card in threeOf)
+                {
+                    cardList.Add(tempHand.First(c => c.ID == card.ID));
+                }
+                percent = 100;
             }
-            matchedFigures.Add("ThreeOfKind", new PokerFigure("ThreeOfKind", cardList, 100));
+            else
+            {
+                CheckThreeOfKindProbability(tempHand);
+            }
+            matchedFigures.Add("ThreeOfKind", new PokerFigure("ThreeOfKind", cardList, percent));
+        }
+
+        private int CheckThreeOfKindProbability(List<ICard> tempHand)
+        {
+            var percent = 0;
+            var figures = tempHand.Select(p => p.Figure);
+            var rand = new Random();
+            var outs = getOuts(hand, PokerHands.ThreeOfKind);
+
+            return percent;
+        }
+
+        private List<ICard> getOuts(List<ICard> hand, PokerHands pokerHand)
+        {
+            switch(pokerHand)
+            {
+                case PokerHands.ThreeOfKind:
+                    var temp = deck.Where(p => !hand.Contains(p)).ToList();
+                    return new List<ICard>();
+                default:
+                    return new List<ICard>();
+            }
         }
 
         private void CheckFourOfKind()
@@ -95,11 +184,6 @@ namespace CoreBusinessLogic
                 cardList.Add(tempHand.First(c => c.ID == card.ID));
             }
             matchedFigures.Add("FourOfKind", new PokerFigure("FourOfKind", cardList, 100));
-        }
-
-        private CardFigure GetCardFigure(ICard card)
-        {
-            return card.Figure;
         }
 
         private void CheckStraight()

@@ -14,5 +14,17 @@ namespace CoreBusinessLogic
             FlopSecondCard,
             FlopThirdCard
         }
+
+        public enum PokerHands
+        {
+            Pair,
+            ThreeOfKind,
+            Straight,
+            Flush,
+            Full,
+            FourOfKind,
+            StraightFlush,
+            RoyalFlush
+        }
     }
 }

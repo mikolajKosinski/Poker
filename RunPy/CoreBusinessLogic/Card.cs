@@ -4,13 +4,23 @@ using System.Text;
 
 namespace CoreBusinessLogic
 {
-    public class Card : ICard
+    public class Card : ICard, IEquatable<ICard>
     {
         public Card(CardFigure figure, CardColor color)
         {
             Figure = figure;
             Color = color;
             ID = Guid.NewGuid();
+        }
+
+        public override bool Equals(object obj)
+        {
+            return Equals(obj as ICard);
+        }
+
+        public bool Equals(ICard card)
+        {
+            return card.Color == Color && card.Figure == Figure;
         }
 
         public CardFigure Figure { get; }
