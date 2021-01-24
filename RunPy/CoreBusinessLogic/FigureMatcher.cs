@@ -1,4 +1,6 @@
-﻿using System;
+﻿using CoreBusinessLogic.Hands;
+using CoreBusinessLogic.Interfaces;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,18 +10,29 @@ namespace CoreBusinessLogic
 {
     public class FigureMatcher : IFigureMatcher
     {
-        private List<ICard> flop;
+        private List<ICard> desk;
         private List<ICard> hand;
         private Dictionary<string, PokerFigure> matchedFigures;
+        public IDictionary<PokerHands, IFigureManager> PokerHandsDict { get; set; }
 
         private List<ICard> deck;
 
         public FigureMatcher()
         {
             hand = new List<ICard>();
-            flop = new List<ICard>();
+            desk = new List<ICard>();
             matchedFigures = new Dictionary<string, PokerFigure>();
             deck = GetDeck();
+            PokerHandsDict = getHands();
+        }
+
+        private IDictionary<PokerHands, IFigureManager> getHands()
+        {
+            return new Dictionary<PokerHands, IFigureManager>
+            {
+                { PokerHands.Pair, new Pair(hand, desk) },
+                { PokerHands.ThreeOfKind, new ThreeOfKind(hand, desk) }
+            };
         }
 
         private List<ICard> GetDeck()
@@ -89,21 +102,25 @@ namespace CoreBusinessLogic
             return Enum.GetValues(typeof(CardFigure)).Cast<int>().ToList();
         }
 
-        public Dictionary<string, PokerFigure> CheckHand()
+        public void CheckHand()
         {
-            CheckPair();
-            CheckThreeOfKind();
-            CheckFourOfKind();
-            CheckStraight();
-            CheckFlush();
-            CheckFull();
+            foreach (var item in PokerHandsDict.Keys)
+            {
+                PokerHandsDict[item].Check();
+            }
+            //pokerHandsDict.for
+            //pokerHandsDict[PokerHands.Pair].Check();
+            //CheckThreeOfKind();
+            //CheckFourOfKind();
+            //CheckStraight();
+            //CheckFlush();
+            //CheckFull();
 
-            return matchedFigures;
         }
 
         public void AddCardToFlop(CardFigure figure, CardColor color)
         {
-            flop.Add(new Card(figure, color));
+            desk.Add(new Card(figure, color));
         }
 
         public void AddCardToHand(CardFigure figure, CardColor color)
@@ -111,25 +128,25 @@ namespace CoreBusinessLogic
             hand.Add(new Card(figure, color));
         }
 
-        private void CheckPair()
-        {
-            var tempHand = hand.Concat(flop).ToList();
-            if (!CheckGroupCount(tempHand, 2)) return;
-            var pair = GetGroup(tempHand, 2);
-            var name = "Pair";
-            var number = 1;
-            while (pair.Any())
-            {
-                matchedFigures.Add($"{name}{number}", new PokerFigure("Pair", pair, 100));
-                tempHand = tempHand.Except(pair).ToList();
-                number++;
-                pair = GetGroup(tempHand, 2);
-            }
-        }
+        //private void CheckPair()
+        //{
+        //    var tempHand = hand.Concat(flop).ToList();
+        //    if (!CheckGroupCount(tempHand, 2)) return;
+        //    var pair = GetGroup(tempHand, 2);
+        //    var name = "Pair";
+        //    var number = 1;
+        //    while (pair.Any())
+        //    {
+        //        matchedFigures.Add($"{name}{number}", new PokerFigure("Pair", pair, 100));
+        //        tempHand = tempHand.Except(pair).ToList();
+        //        number++;
+        //        pair = GetGroup(tempHand, 2);
+        //    }
+        //}
 
         private void CheckThreeOfKind()
         {
-            var tempHand = hand.Concat(flop).ToList();
+            var tempHand = hand.Concat(desk).ToList();
             var cardList = new List<ICard>();
             var percent = 0;
 
@@ -173,7 +190,7 @@ namespace CoreBusinessLogic
 
         private void CheckFourOfKind()
         {
-            var tempHand = hand.Concat(flop).ToList();
+            var tempHand = hand.Concat(desk).ToList();
 
             if (!CheckGroupCount(tempHand, 4)) return;
 
@@ -188,7 +205,7 @@ namespace CoreBusinessLogic
 
         private void CheckStraight()
         {
-            var tempHand = hand.Concat(flop).ToList();
+            var tempHand = hand.Concat(desk).ToList();
             var cardList = new List<ICard>();
             tempHand = tempHand.OrderBy(c => c.Figure).ToList();
 
@@ -200,7 +217,7 @@ namespace CoreBusinessLogic
 
         private void CheckFlush()
         {
-            var tempHand = hand.Concat(flop).ToList();
+            var tempHand = hand.Concat(desk).ToList();
             var cardList = new List<ICard>();
 
             if (!tempHand.GroupBy(x => x.Color)
@@ -228,7 +245,7 @@ namespace CoreBusinessLogic
 
         private void CheckFull()
         {
-            var tempHand = hand.Concat(flop).ToList();
+            var tempHand = hand.Concat(desk).ToList();
 
             if (!CheckGroupCount(tempHand, 2)) return;
             if (!CheckGroupCount(tempHand, 3)) return;

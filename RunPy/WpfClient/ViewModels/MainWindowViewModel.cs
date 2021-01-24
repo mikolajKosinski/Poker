@@ -41,7 +41,8 @@ namespace WpfClient.ViewModels
             //var path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "image.jpg");
             //var card = manager.GetCardByImage(path);// C:\\Users\\mkosi\\PycharmProjects\\tensorEnv\\dataset\\2C\\test.jpg");
 
-            var res = matcher.CheckHand();
+            matcher.CheckHand();
+
             Console.WriteLine();
         }
 
