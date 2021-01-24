@@ -31,7 +31,9 @@ namespace CoreBusinessLogic
             return new Dictionary<PokerHands, IFigureManager>
             {
                 { PokerHands.Pair, new Pair(hand, desk) },
-                { PokerHands.ThreeOfKind, new ThreeOfKind(hand, desk) }
+                { PokerHands.ThreeOfKind, new ThreeOfKind(hand, desk) },
+                { PokerHands.Straight, new Straight(hand, desk) },
+                { PokerHands.Flush, new Flush(hand, desk) }
             };
         }
 

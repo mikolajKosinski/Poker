@@ -24,7 +24,7 @@ namespace CoreBusinessLogic.Hands
             tempHand = tempHand.OrderBy(c => c.Figure).ToList();
 
             if (tempHand.Count < 5) return;
-            if (NotInOrder(tempHand)) return;
+            if (!IsInOrder(tempHand)) return;
 
             //CardList.Add("Straight", new PokerFigure("Straight", CardList, 100));
 

@@ -13,6 +13,7 @@ namespace CoreBusinessLogic
             this.hand = hand;
             this.desk = desk;
             CardList = new List<ICard>();
+            Probability = 0;
         }
 
         public int Probability { get; set; }
@@ -45,7 +46,9 @@ namespace CoreBusinessLogic
         public bool IsInOrder(IList<ICard> tempHand)
         {
             var orderedList = tempHand.OrderBy(p => p.Figure).ToList();
-            var elementsNotInOrder = orderedList.Where(p => p.Figure < CardFigure._As && !orderedList.Any(c => c.Figure == p.Figure + 1)).ToList();
+            var elementsNotInOrder = orderedList
+                .Where(p => p.Figure < CardFigure._As && !orderedList.Any(c => c.Figure == p.Figure + 1))
+                .ToList();
             return elementsNotInOrder.Count() < 3;
         }
 
