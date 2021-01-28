@@ -52,7 +52,7 @@ namespace CoreBusinessLogic
             return elementsNotInOrder.Count() < 3;
         }
 
-        protected bool NotInOrder(List<ICard> tempHand)
+        protected bool NotInOrder(IList<ICard> tempHand)
         {
             tempHand = tempHand.OrderBy(x => x.Figure).ToList();
             for (int q = 0; q < tempHand.Count - 1; q++)
