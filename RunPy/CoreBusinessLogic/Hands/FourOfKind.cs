@@ -29,7 +29,28 @@ namespace CoreBusinessLogic.Hands
 
         public IList<ICard> GetOuts()
         {
-            throw new NotImplementedException();
+            return GetMatchingCardsFromDeck();
+        }
+
+        private IList<ICard> GetMatchingCardsFromDeck()
+        {
+            var tempHand = hand.Concat(desk).ToList();
+            var groups = GetAllGroupsByFigure(tempHand);
+            var matchingCards = new List<ICard>();
+
+            foreach(var group in groups)
+            {
+                var figure = group[0].Figure;
+                var cards = GetMatchingCardsFromDeckByFigure(group, figure);
+                matchingCards.AddRange(cards);
+            }
+
+            return matchingCards;
+        }
+
+        private IList<ICard> GetMatchingCardsFromDeckByFigure(List<ICard> group, CardFigure figure)
+        {
+            return cardsDeck.Where(p => p.Figure == figure && !group.Any(c => c.Color == p.Color)).ToList();
         }
     }
 }

@@ -14,12 +14,14 @@ namespace CoreBusinessLogic
             this.desk = desk;
             CardList = new List<ICard>();
             Probability = 0;
+            cardsDeck = GetDeck();
         }
 
         public int Probability { get; set; }
         public IList<ICard> CardList { get; set; } 
         protected IList<ICard> hand;
         protected IList<ICard> desk;
+        protected IList<ICard> cardsDeck;
 
         protected void SetHand(IList<ICard> hand) => this.hand = hand;
         protected void SetDesk(IList<ICard> desk) => this.desk = desk;
@@ -33,6 +35,16 @@ namespace CoreBusinessLogic
                 .ToList();
             if (groups.Any(x => x.Count == groupCount)) return groups.First(x => x.Count == groupCount);
             return new List<ICard>();
+        }
+
+        protected List<List<ICard>> GetAllGroupsByFigure(List<ICard> cards)
+        {
+            var groups = cards
+                .GroupBy(u => u.Figure)
+                .Select(grp => grp.ToList())
+                .ToList();
+            if (groups.Any(x => x.Count > 1)) return groups.Where(p => p.Count > 1).ToList();
+            return new List<List<ICard>>();
         }
 
         protected bool CheckGroupCount(List<ICard> cards, int elements)
@@ -64,6 +76,68 @@ namespace CoreBusinessLogic
             }
 
             return false;
+        }
+
+        protected List<ICard> GetDeck()
+        {
+            return new List<ICard>
+            {
+                new Card(CardFigure._2, CardColor.club),
+                new Card(CardFigure._3, CardColor.club),
+                new Card(CardFigure._4, CardColor.club),
+                new Card(CardFigure._5, CardColor.club),
+                new Card(CardFigure._6, CardColor.club),
+                new Card(CardFigure._7, CardColor.club),
+                new Card(CardFigure._8, CardColor.club),
+                new Card(CardFigure._9, CardColor.club),
+                new Card(CardFigure._10, CardColor.club),
+                new Card(CardFigure._Jack, CardColor.club),
+                new Card(CardFigure._Queen, CardColor.club),
+                new Card(CardFigure._King, CardColor.club),
+                new Card(CardFigure._As, CardColor.club),
+
+                new Card(CardFigure._2, CardColor.diamond),
+                new Card(CardFigure._3, CardColor.diamond),
+                new Card(CardFigure._4, CardColor.diamond),
+                new Card(CardFigure._5, CardColor.diamond),
+                new Card(CardFigure._6, CardColor.diamond),
+                new Card(CardFigure._7, CardColor.diamond),
+                new Card(CardFigure._8, CardColor.diamond),
+                new Card(CardFigure._9, CardColor.diamond),
+                new Card(CardFigure._10, CardColor.diamond),
+                new Card(CardFigure._Jack, CardColor.diamond),
+                new Card(CardFigure._Queen, CardColor.diamond),
+                new Card(CardFigure._King, CardColor.diamond),
+                new Card(CardFigure._As, CardColor.diamond),
+
+                new Card(CardFigure._2, CardColor.heart),
+                new Card(CardFigure._3, CardColor.heart),
+                new Card(CardFigure._4, CardColor.heart),
+                new Card(CardFigure._5, CardColor.heart),
+                new Card(CardFigure._6, CardColor.heart),
+                new Card(CardFigure._7, CardColor.heart),
+                new Card(CardFigure._8, CardColor.heart),
+                new Card(CardFigure._9, CardColor.heart),
+                new Card(CardFigure._10, CardColor.heart),
+                new Card(CardFigure._Jack, CardColor.heart),
+                new Card(CardFigure._Queen, CardColor.heart),
+                new Card(CardFigure._King, CardColor.heart),
+                new Card(CardFigure._As, CardColor.heart),
+
+                new Card(CardFigure._2, CardColor.spade),
+                new Card(CardFigure._3, CardColor.spade),
+                new Card(CardFigure._4, CardColor.spade),
+                new Card(CardFigure._5, CardColor.spade),
+                new Card(CardFigure._6, CardColor.spade),
+                new Card(CardFigure._7, CardColor.spade),
+                new Card(CardFigure._8, CardColor.spade),
+                new Card(CardFigure._9, CardColor.spade),
+                new Card(CardFigure._10, CardColor.spade),
+                new Card(CardFigure._Jack, CardColor.spade),
+                new Card(CardFigure._Queen, CardColor.spade),
+                new Card(CardFigure._King, CardColor.spade),
+                new Card(CardFigure._As, CardColor.spade)
+            };
         }
     }
 }

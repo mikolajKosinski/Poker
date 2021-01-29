@@ -1,4 +1,5 @@
 using CoreBusinessLogic;
+using CoreBusinessLogic.Hands;
 using CoreDomain;
 using System;
 using System.Collections.Generic;
@@ -41,6 +42,49 @@ namespace XUnitTests
             var fManager = new BaseHandManager(hand, desk);
 
             var order = fManager.IsInOrder(tempHand);
+            Console.WriteLine();
+        }
+
+        [Fact]
+        public void Flush_GetOuts()
+        {
+            var hand = new List<ICard>
+            {
+                new Card(CardFigure._2, CardColor.spade) ,
+                new Card(CardFigure._10, CardColor.diamond)
+            };
+            var desk = new List<ICard>
+            {
+                new Card(CardFigure._As, CardColor.club) ,
+                new Card(CardFigure._Jack, CardColor.heart) ,
+                new Card(CardFigure._Queen, CardColor.club) ,
+                new Card(CardFigure._King, CardColor.spade) ,
+                new Card(CardFigure._7, CardColor.club)
+            };
+            var flush = new Flush(hand, desk);
+
+            var outs = flush.GetOuts();
+            
+        }
+
+        [Fact]
+        public void sdfsdf()
+        {
+            var hand = new List<ICard>
+            {
+                new Card(CardFigure._2, CardColor.spade)
+            };
+            var desk = new List<ICard>
+            {
+                new Card(CardFigure._10, CardColor.club) ,
+                new Card(CardFigure._Queen, CardColor.club) ,
+                new Card(CardFigure._King, CardColor.spade) ,
+                new Card(CardFigure._2, CardColor.club)
+            };
+            var FourOf = new FourOfKind(hand, desk);
+
+            var outs = FourOf.GetOuts();
+
             Console.WriteLine();
         }
     }

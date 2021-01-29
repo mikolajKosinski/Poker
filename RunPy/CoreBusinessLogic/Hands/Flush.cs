@@ -31,7 +31,22 @@ namespace CoreBusinessLogic.Hands
 
         public IList<ICard> GetOuts()
         {
-            throw new NotImplementedException();
+            return GetMatchingCardsFromDeck();
+        }
+
+        private IList<ICard> GetDominatingColorGroup()
+        {
+            var tempHand = hand.Concat(desk).ToList();
+            var groupedByColor = tempHand.GroupBy(p => p.Color).OrderBy(m => m.Count()).ToList();
+            return groupedByColor.Last().ToList();
+        }
+
+        private IList<ICard> GetMatchingCardsFromDeck()
+        {
+            var colorGroup = GetDominatingColorGroup();
+            var figures = colorGroup.Select(p => p.Figure).ToList();
+            var color = colorGroup[0].Color;
+            return cardsDeck.Where(p => p.Color == color && !figures.Contains(p.Figure)).ToList();
         }
     }
 }
