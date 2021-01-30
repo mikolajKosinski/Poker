@@ -23,6 +23,8 @@ namespace CoreBusinessLogic
         protected IList<ICard> desk;
         protected IList<ICard> cardsDeck;
 
+        protected List<ICard> tempHand { get { return hand.Concat(desk).ToList(); } }
+
         protected void SetHand(IList<ICard> hand) => this.hand = hand;
         protected void SetDesk(IList<ICard> desk) => this.desk = desk;
         
@@ -76,6 +78,20 @@ namespace CoreBusinessLogic
             }
 
             return false;
+        }
+
+        public List<ICard> GetDeckExceptTempHand()
+        {
+            var deck = GetDeck();
+            var tempHand = hand.Concat(desk).ToList();
+
+            foreach(var item in tempHand)
+            {
+                var card = deck.First(p => p.Color == item.Color && p.Figure == item.Figure);
+                deck.Remove(card);
+            }
+
+            return deck;
         }
 
         protected List<ICard> GetDeck()

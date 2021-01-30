@@ -72,13 +72,13 @@ namespace XUnitTests
         {
             var hand = new List<ICard>
             {
-                new Card(CardFigure._2, CardColor.spade)
+                new Card(CardFigure._King, CardColor.spade)
             };
             var desk = new List<ICard>
             {
                 new Card(CardFigure._10, CardColor.club) ,
                 new Card(CardFigure._Queen, CardColor.club) ,
-                new Card(CardFigure._King, CardColor.spade) ,
+                new Card(CardFigure._King, CardColor.diamond) ,
                 new Card(CardFigure._2, CardColor.club)
             };
             var FourOf = new FourOfKind(hand, desk);
@@ -86,6 +86,49 @@ namespace XUnitTests
             var outs = FourOf.GetOuts();
 
             Console.WriteLine();
+        }
+
+        [Fact]
+        public void sfdsf()
+        {
+            var hand = new List<ICard>
+            {
+                new Card(CardFigure._King, CardColor.spade)
+            };
+            var desk = new List<ICard>
+            {
+                new Card(CardFigure._10, CardColor.club) ,
+                new Card(CardFigure._Queen, CardColor.club) ,
+                new Card(CardFigure._King, CardColor.diamond) ,
+                new Card(CardFigure._2, CardColor.club)
+            };
+            var manager = new BaseHandManager(hand, desk);
+
+            var cards = manager.GetDeckExceptTempHand();
+
+            Console.WriteLine();
+            
+        }
+
+        [Fact]
+        public void sfdfdsf()
+        {
+            var hand = new List<ICard>
+            {
+                new Card(CardFigure._King, CardColor.spade),
+                new Card(CardFigure._8, CardColor.spade)
+            };
+            var desk = new List<ICard>
+            {
+                new Card(CardFigure._10, CardColor.club) ,
+                new Card(CardFigure._King, CardColor.club) ,
+                new Card(CardFigure._King, CardColor.diamond) ,
+                new Card(CardFigure._2, CardColor.club)
+            };
+            var full = new Full(hand, desk);
+
+            var outs = full.GetOuts();
+
         }
     }
 }
