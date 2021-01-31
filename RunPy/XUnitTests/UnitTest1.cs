@@ -130,5 +130,27 @@ namespace XUnitTests
             var outs = full.GetOuts();
 
         }
+
+        [Fact]
+        public void sdsdsdwerwer()
+        {
+            var hand = new List<ICard>
+            {
+                new Card(CardFigure._King, CardColor.spade),
+                new Card(CardFigure._Jack, CardColor.spade)
+            };
+            var desk = new List<ICard>
+            {
+                new Card(CardFigure._3, CardColor.spade) ,
+                new Card(CardFigure._King, CardColor.club) ,
+                new Card(CardFigure._King, CardColor.diamond) ,
+                new Card(CardFigure._2, CardColor.club)
+            };
+            var rf = new RoyalFlush(hand, desk);
+
+            var outs = rf.GetOuts();
+
+            Console.WriteLine();
+        }
     }
 }

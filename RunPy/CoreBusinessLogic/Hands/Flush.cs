@@ -33,13 +33,7 @@ namespace CoreBusinessLogic.Hands
         {
             return GetMatchingCardsFromDeck();
         }
-
-        private IList<ICard> GetDominatingColorGroup()
-        {
-            var tempHand = hand.Concat(desk).ToList();
-            var groupedByColor = tempHand.GroupBy(p => p.Color).OrderBy(m => m.Count()).ToList();
-            return groupedByColor.Last().ToList();
-        }
+               
 
         private IList<ICard> GetMatchingCardsFromDeck()
         {

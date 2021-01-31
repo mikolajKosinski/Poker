@@ -27,7 +27,24 @@ namespace CoreBusinessLogic.Hands
 
         public IList<ICard> GetOuts()
         {
-            throw new NotImplementedException();
+            var color = GetDominatingColorGroup()[0].Color;
+            var rf = new List<ICard>
+            {
+                new Card(CardFigure._As, color),
+                new Card(CardFigure._King, color),
+                new Card(CardFigure._Queen, color),
+                new Card(CardFigure._Jack, color),
+                new Card(CardFigure._10, color)
+            };
+
+            foreach(var item in tempHand)
+            {
+                var rfItem = rf.FirstOrDefault(p => p.Color == item.Color && p.Figure == item.Figure);
+
+                if (rfItem != null) rf.Remove(rfItem);
+            }
+
+            return rf;
         }
     }
 }
