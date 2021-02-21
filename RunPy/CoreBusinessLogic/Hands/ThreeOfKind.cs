@@ -12,7 +12,16 @@ namespace CoreBusinessLogic.Hands
 
         public IList<ICard> GetOuts()
         {
-            return new List<ICard>();
+            var rest = GetDeckExceptTempHand();
+            var groups = GetAllGroupsByFigure(tempHand);
+            var outs = new List<ICard>();
+
+            foreach(var list in groups)
+            {
+                outs.AddRange(rest.Where(p => p.Figure == list[0].Figure));
+            }
+
+            return outs;
         }
 
         public void Check()

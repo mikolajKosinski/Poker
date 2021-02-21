@@ -136,7 +136,7 @@ namespace XUnitTests
         {
             var hand = new List<ICard>
             {
-                new Card(CardFigure._9, CardColor.spade),
+                new Card(CardFigure._4, CardColor.spade),
                 new Card(CardFigure._Queen, CardColor.spade)
             };
             var desk = new List<ICard>
@@ -146,7 +146,7 @@ namespace XUnitTests
                 new Card(CardFigure._4, CardColor.diamond) ,
                 new Card(CardFigure._2, CardColor.spade)
             };
-            var rf = new StraightFlush(hand, desk);
+            var rf = new ThreeOfKind(hand, desk);
 
             var outs = rf.GetOuts();
 
