@@ -1,4 +1,5 @@
-﻿using CoreBusinessLogic;
+﻿using Autofac;
+using CoreBusinessLogic;
 using CoreDomain;
 using System;
 using System.Collections.Generic;
@@ -13,8 +14,15 @@ namespace WpfClient.ViewModels
 {
     public class MainWindowViewModel : IMainWindoViewModel
     {
-        public MainWindowViewModel()
+        ICardRecognition _cardRecognition;
+        IFigureMatcher _figureMatcher;
+        ICardManager _cardManager;
+
+        public MainWindowViewModel(ICardRecognition cardRecognition, IFigureMatcher figureMatcher, ICardManager cardManager)
         {
+            _cardManager = cardManager;
+            _cardRecognition = cardRecognition;
+            _figureMatcher = figureMatcher;
         }
 
         public void TakeScreenShoot(System.Windows.Point pointToWindow, System.Windows.Point pointToScreen)
@@ -26,22 +34,18 @@ namespace WpfClient.ViewModels
             g.CopyFromScreen(rect.Left, rect.Top, 0, 0, bmp.Size, CopyPixelOperation.SourceCopy);
             bmp.Save("image.jpg", ImageFormat.Jpeg);
 
-            ICardRecognition cardReco = new CardRecognition();
-            ICardManager manager = new CardManager(cardReco);
-            IFigureMatcher matcher = new FigureMatcher();
+            _figureMatcher.AddCardToFlop(CardFigure._4, CardColor.diamond);
+            _figureMatcher.AddCardToFlop(CardFigure._4, CardColor.club);
+            _figureMatcher.AddCardToFlop(CardFigure._10, CardColor.club);
+            _figureMatcher.AddCardToFlop(CardFigure._10, CardColor.diamond);
+            _figureMatcher.AddCardToFlop(CardFigure._Queen, CardColor.club);
 
-            matcher.AddCardToFlop(CardFigure._4, CardColor.diamond);
-            matcher.AddCardToFlop(CardFigure._4, CardColor.club);
-            matcher.AddCardToFlop(CardFigure._10, CardColor.club);
-            matcher.AddCardToFlop(CardFigure._10, CardColor.diamond);
-            matcher.AddCardToFlop(CardFigure._Queen, CardColor.club);
-
-            matcher.AddCardToHand(CardFigure._King, CardColor.club);
-            matcher.AddCardToHand(CardFigure._King, CardColor.diamond);
+            _figureMatcher.AddCardToHand(CardFigure._King, CardColor.club);
+            _figureMatcher.AddCardToHand(CardFigure._King, CardColor.diamond);
             //var path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "image.jpg");
             //var card = manager.GetCardByImage(path);// C:\\Users\\mkosi\\PycharmProjects\\tensorEnv\\dataset\\2C\\test.jpg");
 
-            matcher.CheckHand();
+            _figureMatcher.CheckHand();
 
             Console.WriteLine();
         }

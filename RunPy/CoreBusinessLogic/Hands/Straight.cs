@@ -20,15 +20,24 @@ namespace CoreBusinessLogic.Hands
 
             if ((int)highestPossibleFigure > 14) highestPossibleFigure = CardFigure._As;
 
-            var lowestCard = highestPossibleFigure - 5;
+            var lowestPossible = highestPossibleFigure - 5;
+            var lowestByHand = highestCardHand.Figure - 5;
             var restFromDeck = GetDeckExceptTempHand();
             var outs = new List<ICard>();
             
-            for(var figure = highestPossibleFigure; figure >= lowestCard; figure--)
+            for(var figure = highestPossibleFigure; figure >= lowestPossible; figure--)
             {
                 if(!tempHand.Any(x => x.Figure == figure))
                 {
                     outs.AddRange(restFromDeck.Where(p => p.Figure == figure).ToList());
+                }
+            }
+
+            for (var figure = highestCardHand.Figure; figure >= lowestByHand; figure--)
+            {
+                if (!tempHand.Any(x => x.Figure == figure))
+                {
+                    outs.AddRange(restFromDeck.Where(p => p.Figure == figure && !outs.Any(o => o.Color == p.Color && o.Figure == p.Figure)).ToList());
                 }
             }
 
@@ -37,10 +46,9 @@ namespace CoreBusinessLogic.Hands
 
         public void Check()
         {
-            var tempHand = hand.Concat(desk).ToList();
-            tempHand = tempHand.OrderBy(c => c.Figure).ToList();
+            var th = tempHand.OrderBy(c => c.Figure).ToList();
 
-            if (tempHand.Count < 5) return;
+            if (th.Count < 5) return;
             if (!IsInOrder(tempHand)) return;
 
             Probability = 100;

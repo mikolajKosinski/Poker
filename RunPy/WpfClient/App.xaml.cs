@@ -1,4 +1,8 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Autofac;
+using CoreBusinessLogic;
+using CoreBusinessLogic.IoC;
+using CoreDomain;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -17,9 +21,12 @@ namespace WpfClient
     public partial class App : Application
     {
         public ServiceProvider ServiceProvider { get; set; }
+        private IContainer _container;
 
         public App()
         {
+            var factory = new Factory();
+            _container = factory.Builder;
             var serviceCollection = new ServiceCollection();
             ConfigureServices(serviceCollection);
             ServiceProvider = serviceCollection.BuildServiceProvider();
@@ -27,7 +34,10 @@ namespace WpfClient
 
         private void ConfigureServices(IServiceCollection services)
         {
-            services.AddScoped<IMainWindoViewModel, MainWindowViewModel>();
+            services.AddSingleton<IMainWindoViewModel>(new MainWindowViewModel(
+                _container.Resolve<ICardRecognition>(),
+                _container.Resolve<IFigureMatcher>(),
+                _container.Resolve<ICardManager>()));
             services.AddScoped<IScreenAnalyser, ScreenAnalyser>();
         }
 

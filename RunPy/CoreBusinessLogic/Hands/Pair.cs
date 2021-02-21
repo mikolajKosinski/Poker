@@ -15,7 +15,16 @@ namespace CoreBusinessLogic.Hands
 
         public IList<ICard> GetOuts()
         {
-            return new List<ICard>();        
+            var deck = GetDeckExceptTempHand();
+            var matches = new List<ICard>();
+
+            foreach(var item in tempHand)
+            {
+                var cards = deck.Where(p => p.Figure == item.Figure).ToList();
+                matches.AddRange(cards);
+            }
+
+            return matches;
         }
 
         public void Check()

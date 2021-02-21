@@ -1,9 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "3MydyCCcKuRRXm3ejYLcsIZJ+/59AZRParoiE7OLOOEY6Ci8MnTW84Xpc884UFydqModZHwQFJRg3Yh80IpmKQ==",
+  "dgSpecHash": "i+OGFN6n7T31UJRAAsA1eCNfZlHEv7LNBVI9iCfQOtgrhttYLKg7OSkIf7D1lOjrH0uLS/gqg/h2h7C0YCNTEw==",
   "success": true,
   "projectFilePath": "C:\\Users\\Mikolaj\\Documents\\GitHub\\Poker\\RunPy\\XUnitTests\\XUnitTests.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\Mikolaj\\.nuget\\packages\\autofac\\6.1.0\\autofac.6.1.0.nupkg.sha512",
     "C:\\Users\\Mikolaj\\.nuget\\packages\\coverlet.collector\\1.0.1\\coverlet.collector.1.0.1.nupkg.sha512",
     "C:\\Users\\Mikolaj\\.nuget\\packages\\microsoft.codecoverage\\16.2.0\\microsoft.codecoverage.16.2.0.nupkg.sha512",
     "C:\\Users\\Mikolaj\\.nuget\\packages\\microsoft.csharp\\4.0.1\\microsoft.csharp.4.0.1.nupkg.sha512",
@@ -33,7 +34,7 @@
     "C:\\Users\\Mikolaj\\.nuget\\packages\\system.componentmodel.typeconverter\\4.1.0\\system.componentmodel.typeconverter.4.1.0.nupkg.sha512",
     "C:\\Users\\Mikolaj\\.nuget\\packages\\system.console\\4.0.0\\system.console.4.0.0.nupkg.sha512",
     "C:\\Users\\Mikolaj\\.nuget\\packages\\system.diagnostics.debug\\4.3.0\\system.diagnostics.debug.4.3.0.nupkg.sha512",
-    "C:\\Users\\Mikolaj\\.nuget\\packages\\system.diagnostics.diagnosticsource\\4.0.0\\system.diagnostics.diagnosticsource.4.0.0.nupkg.sha512",
+    "C:\\Users\\Mikolaj\\.nuget\\packages\\system.diagnostics.diagnosticsource\\4.7.1\\system.diagnostics.diagnosticsource.4.7.1.nupkg.sha512",
     "C:\\Users\\Mikolaj\\.nuget\\packages\\system.diagnostics.process\\4.1.0\\system.diagnostics.process.4.1.0.nupkg.sha512",
     "C:\\Users\\Mikolaj\\.nuget\\packages\\system.diagnostics.textwritertracelistener\\4.0.0\\system.diagnostics.textwritertracelistener.4.0.0.nupkg.sha512",
     "C:\\Users\\Mikolaj\\.nuget\\packages\\system.diagnostics.tools\\4.0.1\\system.diagnostics.tools.4.0.1.nupkg.sha512",

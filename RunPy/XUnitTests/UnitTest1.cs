@@ -137,16 +137,16 @@ namespace XUnitTests
             var hand = new List<ICard>
             {
                 new Card(CardFigure._9, CardColor.spade),
-                new Card(CardFigure._King, CardColor.spade)
+                new Card(CardFigure._Queen, CardColor.spade)
             };
             var desk = new List<ICard>
             {
-                new Card(CardFigure._3, CardColor.spade) ,
+                new Card(CardFigure._10, CardColor.spade) ,
                 new Card(CardFigure._2, CardColor.club) ,
                 new Card(CardFigure._4, CardColor.diamond) ,
                 new Card(CardFigure._2, CardColor.spade)
             };
-            var rf = new Straight(hand, desk);
+            var rf = new StraightFlush(hand, desk);
 
             var outs = rf.GetOuts();
 

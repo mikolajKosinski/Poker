@@ -128,6 +128,10 @@
         "netcoreapp3.0": {
           "targetAlias": "netcoreapp3.0",
           "dependencies": {
+            "Autofac": {
+              "target": "Package",
+              "version": "[6.1.0, )"
+            },
             "System.Collections": {
               "target": "Package",
               "version": "[4.3.0, )"

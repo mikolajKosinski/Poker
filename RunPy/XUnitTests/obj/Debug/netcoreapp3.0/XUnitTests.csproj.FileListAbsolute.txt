@@ -196,3 +196,5 @@ C:\Users\Mikolaj\Documents\GitHub\Poker\RunPy\XUnitTests\obj\Debug\netcoreapp3.0
 C:\Users\Mikolaj\Documents\GitHub\Poker\RunPy\XUnitTests\obj\Debug\netcoreapp3.0\XUnitTests.dll
 C:\Users\Mikolaj\Documents\GitHub\Poker\RunPy\XUnitTests\obj\Debug\netcoreapp3.0\XUnitTests.pdb
 C:\Users\Mikolaj\Documents\GitHub\Poker\RunPy\XUnitTests\obj\Debug\netcoreapp3.0\XUnitTests.genruntimeconfig.cache
+C:\Users\Mikolaj\Documents\GitHub\Poker\RunPy\XUnitTests\bin\Debug\netcoreapp3.0\Autofac.dll
+C:\Users\Mikolaj\Documents\GitHub\Poker\RunPy\XUnitTests\bin\Debug\netcoreapp3.0\System.Diagnostics.DiagnosticSource.dll

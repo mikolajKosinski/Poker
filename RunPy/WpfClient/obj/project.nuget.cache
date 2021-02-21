@@ -1,9 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "vU8Ud+AfkcglJcrZRjscCDO5jqnu0kpRntYE/Y5kSHiAKrHJn5ssc5w5YywyzB/26YE9jpeqngY1nSIayoRMGA==",
+  "dgSpecHash": "NPBocbS5JEdHJo2TveJZ/eQ1YZOaPptA+kICFZUOsmCyPgeR4FHqdQETijqm9RYNMAB/2XbmTfi9iZhVthKS2w==",
   "success": true,
   "projectFilePath": "C:\\Users\\Mikolaj\\Documents\\GitHub\\Poker\\RunPy\\WpfClient\\WpfClient.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\Mikolaj\\.nuget\\packages\\autofac\\6.1.0\\autofac.6.1.0.nupkg.sha512",
     "C:\\Users\\Mikolaj\\.nuget\\packages\\microsoft.extensions.dependencyinjection\\3.1.5\\microsoft.extensions.dependencyinjection.3.1.5.nupkg.sha512",
     "C:\\Users\\Mikolaj\\.nuget\\packages\\microsoft.extensions.dependencyinjection.abstractions\\3.1.5\\microsoft.extensions.dependencyinjection.abstractions.3.1.5.nupkg.sha512",
     "C:\\Users\\Mikolaj\\.nuget\\packages\\microsoft.netcore.platforms\\3.1.0\\microsoft.netcore.platforms.3.1.0.nupkg.sha512",
@@ -11,6 +12,7 @@
     "C:\\Users\\Mikolaj\\.nuget\\packages\\microsoft.win32.systemevents\\4.7.0\\microsoft.win32.systemevents.4.7.0.nupkg.sha512",
     "C:\\Users\\Mikolaj\\.nuget\\packages\\system.collections\\4.3.0\\system.collections.4.3.0.nupkg.sha512",
     "C:\\Users\\Mikolaj\\.nuget\\packages\\system.diagnostics.debug\\4.3.0\\system.diagnostics.debug.4.3.0.nupkg.sha512",
+    "C:\\Users\\Mikolaj\\.nuget\\packages\\system.diagnostics.diagnosticsource\\4.7.1\\system.diagnostics.diagnosticsource.4.7.1.nupkg.sha512",
     "C:\\Users\\Mikolaj\\.nuget\\packages\\system.drawing.common\\4.7.0\\system.drawing.common.4.7.0.nupkg.sha512",
     "C:\\Users\\Mikolaj\\.nuget\\packages\\system.globalization\\4.3.0\\system.globalization.4.3.0.nupkg.sha512",
     "C:\\Users\\Mikolaj\\.nuget\\packages\\system.io\\4.3.0\\system.io.4.3.0.nupkg.sha512",

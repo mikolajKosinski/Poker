@@ -56,3 +56,5 @@ C:\Users\Mikolaj\Documents\GitHub\Poker\RunPy\WpfClient\obj\Debug\netcoreapp3.0\
 C:\Users\Mikolaj\Documents\GitHub\Poker\RunPy\WpfClient\obj\Debug\netcoreapp3.0\WpfClient.dll
 C:\Users\Mikolaj\Documents\GitHub\Poker\RunPy\WpfClient\obj\Debug\netcoreapp3.0\WpfClient.pdb
 C:\Users\Mikolaj\Documents\GitHub\Poker\RunPy\WpfClient\obj\Debug\netcoreapp3.0\WpfClient.genruntimeconfig.cache
+C:\Users\Mikolaj\Documents\GitHub\Poker\RunPy\WpfClient\bin\Debug\netcoreapp3.0\Autofac.dll
+C:\Users\Mikolaj\Documents\GitHub\Poker\RunPy\WpfClient\bin\Debug\netcoreapp3.0\System.Diagnostics.DiagnosticSource.dll

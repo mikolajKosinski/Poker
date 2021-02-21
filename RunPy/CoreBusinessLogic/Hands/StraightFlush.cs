@@ -1,6 +1,7 @@
 ﻿using CoreBusinessLogic.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace CoreBusinessLogic.Hands
@@ -22,7 +23,11 @@ namespace CoreBusinessLogic.Hands
 
         public IList<ICard> GetOuts()
         {
-            throw new NotImplementedException();
+            var straight = new Straight(hand, desk);
+            var outs = straight.GetOuts();
+            var color = GetDominatingColorGroup()[0].Color;
+
+            return outs.Where(p => p.Color == color).ToList();
         }
     }
 }

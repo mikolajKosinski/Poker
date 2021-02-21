@@ -1,13 +1,15 @@
 {
   "version": 2,
-  "dgSpecHash": "soyd6/kKGy7hXQMlGwa462Xbif8STj+/EqxiNyI06J/asWtZIjzqbiH1Q38Opfk1PJEY2GgsAIqT9rUJS2YFvA==",
+  "dgSpecHash": "S+dA7ElJUH0UlhRJz2tL4yGXs0Fv3DFUZtw+Azsuy2SplOWc1a5yHWIuOrIMpk+Qyc/BzMDnxEqrZIHM/3S9Xg==",
   "success": true,
   "projectFilePath": "C:\\Users\\Mikolaj\\Documents\\GitHub\\Poker\\RunPy\\CoreBusinessLogic\\CoreBusinessLogic.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\Mikolaj\\.nuget\\packages\\autofac\\6.1.0\\autofac.6.1.0.nupkg.sha512",
     "C:\\Users\\Mikolaj\\.nuget\\packages\\microsoft.netcore.platforms\\1.1.0\\microsoft.netcore.platforms.1.1.0.nupkg.sha512",
     "C:\\Users\\Mikolaj\\.nuget\\packages\\microsoft.netcore.targets\\1.1.0\\microsoft.netcore.targets.1.1.0.nupkg.sha512",
     "C:\\Users\\Mikolaj\\.nuget\\packages\\system.collections\\4.3.0\\system.collections.4.3.0.nupkg.sha512",
     "C:\\Users\\Mikolaj\\.nuget\\packages\\system.diagnostics.debug\\4.3.0\\system.diagnostics.debug.4.3.0.nupkg.sha512",
+    "C:\\Users\\Mikolaj\\.nuget\\packages\\system.diagnostics.diagnosticsource\\4.7.1\\system.diagnostics.diagnosticsource.4.7.1.nupkg.sha512",
     "C:\\Users\\Mikolaj\\.nuget\\packages\\system.globalization\\4.3.0\\system.globalization.4.3.0.nupkg.sha512",
     "C:\\Users\\Mikolaj\\.nuget\\packages\\system.io\\4.3.0\\system.io.4.3.0.nupkg.sha512",
     "C:\\Users\\Mikolaj\\.nuget\\packages\\system.linq\\4.3.0\\system.linq.4.3.0.nupkg.sha512",

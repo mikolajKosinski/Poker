@@ -1,13 +1,15 @@
 {
   "version": 2,
-  "dgSpecHash": "OVH2scwrccAxk2HVqpzqjUafqJTqjGLEBUeOBX9qK63SorGKjBzECrONfQiqEbz+rs/Y8rxJDjKj49U+czM0RQ==",
+  "dgSpecHash": "2ee9FYGB4GJPL3/VxY3i4FNe+QYS57KdtIc/ytejjLG8EtQ26msK3lfdJ5Vam8FmTRawyogBB2aYKavGVypBdw==",
   "success": true,
   "projectFilePath": "C:\\Users\\Mikolaj\\Documents\\GitHub\\Poker\\RunPy\\ConsoleEndpoint\\ConsoleEndpoint.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\Mikolaj\\.nuget\\packages\\autofac\\6.1.0\\autofac.6.1.0.nupkg.sha512",
     "C:\\Users\\Mikolaj\\.nuget\\packages\\microsoft.netcore.platforms\\1.1.0\\microsoft.netcore.platforms.1.1.0.nupkg.sha512",
     "C:\\Users\\Mikolaj\\.nuget\\packages\\microsoft.netcore.targets\\1.1.0\\microsoft.netcore.targets.1.1.0.nupkg.sha512",
     "C:\\Users\\Mikolaj\\.nuget\\packages\\system.collections\\4.3.0\\system.collections.4.3.0.nupkg.sha512",
     "C:\\Users\\Mikolaj\\.nuget\\packages\\system.diagnostics.debug\\4.3.0\\system.diagnostics.debug.4.3.0.nupkg.sha512",
+    "C:\\Users\\Mikolaj\\.nuget\\packages\\system.diagnostics.diagnosticsource\\4.7.1\\system.diagnostics.diagnosticsource.4.7.1.nupkg.sha512",
     "C:\\Users\\Mikolaj\\.nuget\\packages\\system.globalization\\4.3.0\\system.globalization.4.3.0.nupkg.sha512",
     "C:\\Users\\Mikolaj\\.nuget\\packages\\system.io\\4.3.0\\system.io.4.3.0.nupkg.sha512",
     "C:\\Users\\Mikolaj\\.nuget\\packages\\system.linq\\4.3.0\\system.linq.4.3.0.nupkg.sha512",
