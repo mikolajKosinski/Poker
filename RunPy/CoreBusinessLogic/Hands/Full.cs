@@ -16,14 +16,14 @@ namespace CoreBusinessLogic.Hands
         public void Check()
         {
             var tempHand = hand.Concat(desk).ToList();
-
-            if (!CheckGroupCount(tempHand, 2)) return;
-            if (!CheckGroupCount(tempHand, 3)) return;
-
             var pair = GetGroup(tempHand, 2);
             var threeOfKind = GetGroup(tempHand, 3);
 
-            if (!pair.Any() || !threeOfKind.Any()) return;
+            if (!pair.Any() || !threeOfKind.Any())
+            {
+                Probability = (int)GetOddsPercentage(GetOuts().Count());
+                return;
+            }
 
             var full = pair.Concat(threeOfKind).ToList();
             foreach (var card in full)

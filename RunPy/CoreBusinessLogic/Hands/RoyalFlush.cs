@@ -18,11 +18,20 @@ namespace CoreBusinessLogic.Hands
             var flush = new Flush(hand, desk);
             flush.Check();
 
-            if (flush.Probability != 100) return;
+            if (flush.Probability != 100 || NotInOrder(flush.CardList))
+            {
+                Probability = (int)GetOddsPercentage(GetOuts().Count());
+                return;
+            }
 
-            if (NotInOrder(flush.CardList)) return;
-
-            if (flush.CardList.Any(x => x.Figure == CardFigure._As)) Probability = 100;
+            if (flush.CardList.Any(x => x.Figure == CardFigure._As))
+            {
+                Probability = 100;
+            }
+            else
+            {
+                Probability = (int)GetOddsPercentage(GetOuts().Count());
+            }
         }
 
         public IList<ICard> GetOuts()

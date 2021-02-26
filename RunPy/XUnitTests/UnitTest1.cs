@@ -136,18 +136,18 @@ namespace XUnitTests
         {
             var hand = new List<ICard>
             {
-                new Card(CardFigure._4, CardColor.spade),
-                new Card(CardFigure._Queen, CardColor.spade)
+                new Card(CardFigure._9, CardColor.heart),
+                new Card(CardFigure._Queen, CardColor.heart)
             };
             var desk = new List<ICard>
             {
-                new Card(CardFigure._10, CardColor.spade) ,
-                new Card(CardFigure._2, CardColor.club) ,
-                new Card(CardFigure._4, CardColor.diamond) ,
-                new Card(CardFigure._2, CardColor.spade)
+                new Card(CardFigure._As, CardColor.heart) ,
+                new Card(CardFigure._King, CardColor.heart) ,
+                new Card(CardFigure._7, CardColor.spade) ,
+                new Card(CardFigure._4, CardColor.spade)
             };
-            var rf = new ThreeOfKind(hand, desk);
-
+            var rf = new Flush(hand, desk);
+            rf.Check();
             var outs = rf.GetOuts();
 
             Console.WriteLine();

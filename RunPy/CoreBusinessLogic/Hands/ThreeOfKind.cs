@@ -36,6 +36,10 @@ namespace CoreBusinessLogic.Hands
                 }
                 Probability = 100;
             }
+            else
+            {
+                Probability = (int)GetOddsPercentage(GetOuts().Count());
+            }
         }
     }
 }

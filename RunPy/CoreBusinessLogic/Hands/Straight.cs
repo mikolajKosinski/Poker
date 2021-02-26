@@ -48,8 +48,11 @@ namespace CoreBusinessLogic.Hands
         {
             var th = tempHand.OrderBy(c => c.Figure).ToList();
 
-            if (th.Count < 5) return;
-            if (!IsInOrder(tempHand)) return;
+            if (th.Count < 5 || !IsInOrder(tempHand))
+            {
+                Probability = (int)GetOddsPercentage(GetOuts().Count());
+                return;
+            }
 
             Probability = 100;
         }

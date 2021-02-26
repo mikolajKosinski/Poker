@@ -17,14 +17,25 @@ namespace CoreBusinessLogic.Hands
         {
             var tempHand = hand.Concat(desk).ToList();
 
-            if (!CheckGroupCount(tempHand, 4)) return;
-
-            var fourOf = GetGroup(tempHand, 4);
-            foreach (var card in fourOf)
+            if (_gotFour())
             {
-                CardList.Add(tempHand.First(c => c.ID == card.ID));
+                var fourOf = GetGroup(tempHand, 4);
+                foreach (var card in fourOf)
+                {
+                    CardList.Add(tempHand.First(c => c.ID == card.ID));
+                }
+                Probability = 100;
             }
-            Probability = 100;
+            else
+            {
+                var outs = GetOuts().Count();
+                Probability = (int)GetOddsPercentage(outs);
+            }
+        }
+
+        private bool _gotFour()
+        {
+            return CheckGroupCount(tempHand, 4);
         }
 
         public IList<ICard> GetOuts()

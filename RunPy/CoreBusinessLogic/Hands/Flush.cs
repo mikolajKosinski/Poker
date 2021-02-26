@@ -17,16 +17,27 @@ namespace CoreBusinessLogic.Hands
         {
             var tempHand = hand.Concat(desk).ToList();
 
-            if (!tempHand.GroupBy(x => x.Color)
+            if (_gotFlush())
+            {
+                var key = tempHand.GroupBy(x => x.Color)
+                            .Where(group => group.Count() >= 5)
+                            .Select(group => group.Key)
+                            .First();
+                CardList = tempHand.Where(x => x.Color == key).ToList();
+                Probability = 100;
+            }
+            else
+            {
+                Probability = (int)GetOddsPercentage(GetOuts().Count());
+            }
+        }
+
+        private bool _gotFlush()
+        {
+            return tempHand.GroupBy(x => x.Color)
                         .Where(group => group.Count() >= 5)
                         .ToList()
-                        .Any()) return;
-            var key = tempHand.GroupBy(x => x.Color)
-                        .Where(group => group.Count() >= 5)
-                        .Select(group => group.Key)
-                        .First();
-            CardList = tempHand.Where(x => x.Color == key).ToList();
-            Probability = 100;
+                        .Any();
         }
 
         public IList<ICard> GetOuts()
@@ -34,7 +45,6 @@ namespace CoreBusinessLogic.Hands
             return GetMatchingCardsFromDeck();
         }
                
-
         private IList<ICard> GetMatchingCardsFromDeck()
         {
             var colorGroup = GetDominatingColorGroup();

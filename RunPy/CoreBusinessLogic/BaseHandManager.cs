@@ -12,7 +12,7 @@ namespace CoreBusinessLogic
         {
             this.hand = hand;
             this.desk = desk;
-            CardList = new List<ICard>();
+            CardList = tempHand;
             Probability = 0;
             cardsDeck = GetDeck();
         }
@@ -27,7 +27,14 @@ namespace CoreBusinessLogic
 
         protected void SetHand(IList<ICard> hand) => this.hand = hand;
         protected void SetDesk(IList<ICard> desk) => this.desk = desk;
-        
+
+        protected decimal GetOddsPercentage(int outs)
+        {
+            decimal restOfCards = GetDeckExceptTempHand().Count();
+            decimal loose = restOfCards - outs;
+            decimal result = (outs / loose) * 100;
+            return result;
+        }
 
         protected List<ICard> GetGroup(List<ICard> cards, int groupCount)
         {
