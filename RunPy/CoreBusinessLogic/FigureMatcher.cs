@@ -32,10 +32,10 @@ namespace CoreBusinessLogic
                 { PokerHands.ThreeOfKind, new ThreeOfKind(hand, desk) },
                 { PokerHands.Straight, new Straight(hand, desk) },
                 { PokerHands.Flush, new Flush(hand, desk) },
-                { PokerHands.FourOfKind, new Flush(hand, desk) },
-                { PokerHands.Full, new Flush(hand, desk) },
-                { PokerHands.RoyalFlush, new Flush(hand, desk) },
-                { PokerHands.StraightFlush, new Flush(hand, desk) }
+                { PokerHands.FourOfKind, new FourOfKind(hand, desk) },
+                { PokerHands.Full, new Full(hand, desk) },
+                { PokerHands.RoyalFlush, new RoyalFlush(hand, desk) },
+                { PokerHands.StraightFlush, new StraightFlush(hand, desk) }
             };
         }
 

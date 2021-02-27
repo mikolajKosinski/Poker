@@ -11,7 +11,7 @@ namespace XUnitTests
     public class UnitTest1
     {
         [Fact]
-        public void GetCardByImage_Proper2CImage_ShouldReturnCardObject()
+        public void Flush_GotFlush_C()
         {
             //var cardReco = new CardRecognition();
             //var cardManager = new CardManager(cardReco);

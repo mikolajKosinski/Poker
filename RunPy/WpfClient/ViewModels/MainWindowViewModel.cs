@@ -34,10 +34,10 @@ namespace WpfClient.ViewModels
             g.CopyFromScreen(rect.Left, rect.Top, 0, 0, bmp.Size, CopyPixelOperation.SourceCopy);
             bmp.Save("image.jpg", ImageFormat.Jpeg);
 
-            _figureMatcher.AddCardToFlop(CardFigure._4, CardColor.diamond);
+            _figureMatcher.AddCardToFlop(CardFigure._King, CardColor.spade);
             _figureMatcher.AddCardToFlop(CardFigure._4, CardColor.club);
             _figureMatcher.AddCardToFlop(CardFigure._10, CardColor.club);
-            _figureMatcher.AddCardToFlop(CardFigure._10, CardColor.diamond);
+            _figureMatcher.AddCardToFlop(CardFigure._5, CardColor.diamond);
             _figureMatcher.AddCardToFlop(CardFigure._Queen, CardColor.club);
 
             _figureMatcher.AddCardToHand(CardFigure._King, CardColor.club);

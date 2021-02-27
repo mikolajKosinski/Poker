@@ -18,7 +18,7 @@ namespace CoreBusinessLogic
         }
 
         public int Probability { get; set; }
-        public IList<ICard> CardList { get; set; } 
+        public List<ICard> CardList { get; set; } 
         protected IList<ICard> hand;
         protected IList<ICard> desk;
         protected IList<ICard> cardsDeck;

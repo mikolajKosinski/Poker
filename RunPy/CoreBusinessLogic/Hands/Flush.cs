@@ -16,20 +16,23 @@ namespace CoreBusinessLogic.Hands
         public void Check()
         {
             var tempHand = hand.Concat(desk).ToList();
+            CardColor color;
 
             if (_gotFlush())
-            {
-                var key = tempHand.GroupBy(x => x.Color)
-                            .Where(group => group.Count() >= 5)
-                            .Select(group => group.Key)
-                            .First();
-                CardList = tempHand.Where(x => x.Color == key).ToList();
+            {               
                 Probability = 100;
+                color = tempHand.GroupBy(x => x.Color)
+                          .Where(group => group.Count() >= 5)
+                          .Select(group => group.Key)
+                          .First();
             }
             else
             {
                 Probability = (int)GetOddsPercentage(GetOuts().Count());
+                color = GetDominatingColorGroup()[0].Color;
             }
+
+            CardList = tempHand.Where(x => x.Color == color).ToList();
         }
 
         private bool _gotFlush()

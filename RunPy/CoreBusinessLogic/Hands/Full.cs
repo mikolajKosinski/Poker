@@ -22,6 +22,8 @@ namespace CoreBusinessLogic.Hands
             if (!pair.Any() || !threeOfKind.Any())
             {
                 Probability = (int)GetOddsPercentage(GetOuts().Count());
+                CardList.AddRange(pair);
+                CardList.AddRange(threeOfKind);
                 return;
             }
 

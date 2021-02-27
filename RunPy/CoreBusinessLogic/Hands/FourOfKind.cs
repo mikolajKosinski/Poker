@@ -15,21 +15,23 @@ namespace CoreBusinessLogic.Hands
 
         public void Check()
         {
-            var tempHand = hand.Concat(desk).ToList();
-
             if (_gotFour())
-            {
-                var fourOf = GetGroup(tempHand, 4);
-                foreach (var card in fourOf)
-                {
-                    CardList.Add(tempHand.First(c => c.ID == card.ID));
-                }
+            {               
                 Probability = 100;
             }
             else
             {
                 var outs = GetOuts().Count();
                 Probability = (int)GetOddsPercentage(outs);
+            }
+
+            var group = GetGroup(tempHand, 4);
+            if (!group.Any()) group = GetGroup(tempHand, 3);
+            if (!group.Any()) group = GetGroup(tempHand, 2);
+
+            foreach (var card in group)
+            {
+                CardList.Add(tempHand.First(c => c.ID == card.ID));
             }
         }
 
@@ -45,7 +47,6 @@ namespace CoreBusinessLogic.Hands
 
         private IList<ICard> GetMatchingCardsFromDeck()
         {
-            var tempHand = hand.Concat(desk).ToList();
             var groups = GetAllGroupsByFigure(tempHand);
             var matchingCards = new List<ICard>();
 

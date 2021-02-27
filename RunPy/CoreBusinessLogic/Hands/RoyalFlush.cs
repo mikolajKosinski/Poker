@@ -17,19 +17,26 @@ namespace CoreBusinessLogic.Hands
         {
             var flush = new Flush(hand, desk);
             flush.Check();
-
+            
             if (flush.Probability != 100 || NotInOrder(flush.CardList))
             {
                 Probability = (int)GetOddsPercentage(GetOuts().Count());
+                var color = GetDominatingColorGroup()[0].Color;
+                CardList = tempHand.Where(p => p.Color == color).ToList();
                 return;
             }
 
             if (flush.CardList.Any(x => x.Figure == CardFigure._As))
             {
                 Probability = 100;
+                var color = GetDominatingColorGroup()[0].Color;
+                CardList = GetRFByColor(color);
             }
             else
             {
+                var sf = new StraightFlush(hand, desk);
+                sf.Check();
+                CardList = sf.CardList;
                 Probability = (int)GetOddsPercentage(GetOuts().Count());
             }
         }
@@ -37,14 +44,7 @@ namespace CoreBusinessLogic.Hands
         public IList<ICard> GetOuts()
         {
             var color = GetDominatingColorGroup()[0].Color;
-            var rf = new List<ICard>
-            {
-                new Card(CardFigure._As, color),
-                new Card(CardFigure._King, color),
-                new Card(CardFigure._Queen, color),
-                new Card(CardFigure._Jack, color),
-                new Card(CardFigure._10, color)
-            };
+            var rf = GetRFByColor(color);
 
             foreach(var item in tempHand)
             {
@@ -54,6 +54,18 @@ namespace CoreBusinessLogic.Hands
             }
 
             return rf;
+        }
+
+        private List<ICard> GetRFByColor(CardColor color)
+        {
+            return new List<ICard>
+            {
+                new Card(CardFigure._As, color),
+                new Card(CardFigure._King, color),
+                new Card(CardFigure._Queen, color),
+                new Card(CardFigure._Jack, color),
+                new Card(CardFigure._10, color)
+            };
         }
     }
 }
