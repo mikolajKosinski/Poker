@@ -28,11 +28,7 @@ namespace CoreBusinessLogic.Hands
             var group = GetGroup(tempHand, 4);
             if (!group.Any()) group = GetGroup(tempHand, 3);
             if (!group.Any()) group = GetGroup(tempHand, 2);
-
-            foreach (var card in group)
-            {
-                CardList.Add(tempHand.First(c => c.ID == card.ID));
-            }
+            CardList = group;
         }
 
         private bool _gotFour()
@@ -62,7 +58,7 @@ namespace CoreBusinessLogic.Hands
 
         private IList<ICard> GetMatchingCardsFromDeckByFigure(List<ICard> group, CardFigure figure)
         {
-            return cardsDeck.Where(p => p.Figure == figure && !group.Any(c => c.Color == p.Color)).ToList();
+            return GetDeckExceptTempHand().Where(p => p.Figure == figure && !group.Any(c => c.Color == p.Color)).ToList();
         }
     }
 }

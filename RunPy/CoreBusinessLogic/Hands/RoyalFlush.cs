@@ -21,7 +21,7 @@ namespace CoreBusinessLogic.Hands
             if (flush.Probability != 100 || NotInOrder(flush.CardList))
             {
                 Probability = (int)GetOddsPercentage(GetOuts().Count());
-                var color = GetDominatingColorGroup()[0].Color;
+                var color = GetDominatingColor();
                 CardList = tempHand.Where(p => p.Color == color).ToList();
                 return;
             }
@@ -29,7 +29,7 @@ namespace CoreBusinessLogic.Hands
             if (flush.CardList.Any(x => x.Figure == CardFigure._As))
             {
                 Probability = 100;
-                var color = GetDominatingColorGroup()[0].Color;
+                var color = GetDominatingColor();
                 CardList = GetRFByColor(color);
             }
             else
@@ -43,7 +43,7 @@ namespace CoreBusinessLogic.Hands
 
         public IList<ICard> GetOuts()
         {
-            var color = GetDominatingColorGroup()[0].Color;
+            var color = GetDominatingColor();
             var rf = GetRFByColor(color);
 
             foreach(var item in tempHand)

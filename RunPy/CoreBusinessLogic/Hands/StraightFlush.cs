@@ -15,16 +15,19 @@ namespace CoreBusinessLogic.Hands
 
         public void Check()
         {
-            var flush = new Flush(hand, desk);
-            flush.Check();
+            var color = GetDominatingColor();
+            var straight = new Straight(hand, desk);
+            var gotSF = straight.Probability == 100 && straight.CardList.All(p => p.Color == color);
 
-            if (IsInOrder(tempHand))
-            { 
-                Probability = 100; 
+            if (gotSF)
+            {
+                Probability = 100;
+                CardList = tempHand.OrderBy(p => p.Figure).Take(5).ToList();
             }
             else
             {
                 Probability = (int)GetOddsPercentage(GetOuts().Count());
+                CardList = straight.CardList.Where(p => p.Color == color).ToList();                
             }
         }
 
@@ -32,7 +35,7 @@ namespace CoreBusinessLogic.Hands
         {
             var straight = new Straight(hand, desk);
             var outs = straight.GetOuts();
-            var color = GetDominatingColorGroup()[0].Color;
+            var color = GetDominatingColor();
 
             return outs.Where(p => p.Color == color).ToList();
         }

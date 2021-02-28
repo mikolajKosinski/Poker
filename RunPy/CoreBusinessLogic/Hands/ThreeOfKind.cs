@@ -38,6 +38,7 @@ namespace CoreBusinessLogic.Hands
             }
             else
             {
+                if (CheckGroupCount(tempHand, 2)) CardList = GetGroup(tempHand, 2);
                 Probability = (int)GetOddsPercentage(GetOuts().Count());
             }
         }

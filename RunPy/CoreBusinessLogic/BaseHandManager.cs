@@ -14,19 +14,14 @@ namespace CoreBusinessLogic
             this.desk = desk;
             CardList = tempHand;
             Probability = 0;
-            cardsDeck = GetDeck();
         }
 
         public int Probability { get; set; }
         public List<ICard> CardList { get; set; } 
         protected IList<ICard> hand;
         protected IList<ICard> desk;
-        protected IList<ICard> cardsDeck;
 
         protected List<ICard> tempHand { get { return hand.Concat(desk).ToList(); } }
-
-        protected void SetHand(IList<ICard> hand) => this.hand = hand;
-        protected void SetDesk(IList<ICard> desk) => this.desk = desk;
 
         protected decimal GetOddsPercentage(int outs)
         {
@@ -66,26 +61,25 @@ namespace CoreBusinessLogic
 
         public bool IsInOrder(IList<ICard> tempHand)
         {
-            var orderedList = tempHand.OrderBy(p => p.Figure).ToList();
-            var elementsNotInOrder = orderedList
-                .Where(p => p.Figure < CardFigure._As && !orderedList.Any(c => c.Figure == p.Figure + 1))
-                .ToList();
-            return elementsNotInOrder.Count() < 3;
-        }
+            if (tempHand.Count() < 5) return false;
+            tempHand = tempHand.OrderBy(p => p.Figure).ToList();
+            var index = 0;
+            var elementsNotInOrder = new List<ICard>();
 
-        protected bool NotInOrder(IList<ICard> tempHand)
-        {
-            tempHand = tempHand.OrderBy(x => x.Figure).ToList();
-            for (int q = 0; q < tempHand.Count - 1; q++)
+            while(index < tempHand.Count())
             {
-                var firstCard = tempHand[q].Figure;
-                var nextCard = tempHand[q + 1].Figure;
-
-                if (firstCard != nextCard - 1) return true;
+                var item = tempHand[index];
+                var itemPlus = tempHand.FirstOrDefault(p => p.Figure == item.Figure + 1);
+                if (itemPlus == null && index != tempHand.Count -1) elementsNotInOrder.Add(item);
+                index++;
             }
 
-            return false;
+            if (tempHand.Count() == 7) return elementsNotInOrder.Count() < 3;
+            if (tempHand.Count() == 6) return elementsNotInOrder.Count() < 2;
+            return elementsNotInOrder.Count() < 1;
         }
+
+        protected bool NotInOrder(IList<ICard> tempHand) => !IsInOrder(tempHand);
 
         public List<ICard> GetDeckExceptTempHand()
         {
@@ -107,6 +101,8 @@ namespace CoreBusinessLogic
             var groupedByColor = tempHand.GroupBy(p => p.Color).OrderBy(m => m.Count()).ToList();
             return groupedByColor.Last().ToList();
         }
+
+        protected CardColor GetDominatingColor() => GetDominatingColorGroup()[0].Color;
 
         protected List<ICard> GetDeck()
         {

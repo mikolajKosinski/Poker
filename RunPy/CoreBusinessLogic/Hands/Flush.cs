@@ -29,7 +29,7 @@ namespace CoreBusinessLogic.Hands
             else
             {
                 Probability = (int)GetOddsPercentage(GetOuts().Count());
-                color = GetDominatingColorGroup()[0].Color;
+                color = GetDominatingColor();
             }
 
             CardList = tempHand.Where(x => x.Color == color).ToList();
@@ -53,7 +53,8 @@ namespace CoreBusinessLogic.Hands
             var colorGroup = GetDominatingColorGroup();
             var figures = colorGroup.Select(p => p.Figure).ToList();
             var color = colorGroup[0].Color;
-            return cardsDeck.Where(p => p.Color == color && !figures.Contains(p.Figure)).ToList();
+            var restOfCards = GetDeckExceptTempHand();
+            return restOfCards.Where(p => p.Color == color && !figures.Contains(p.Figure)).ToList();
         }
     }
 }

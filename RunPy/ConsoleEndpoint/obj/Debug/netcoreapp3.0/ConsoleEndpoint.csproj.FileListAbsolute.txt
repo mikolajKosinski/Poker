@@ -32,3 +32,5 @@ C:\Users\Mikolaj\Documents\GitHub\Poker\RunPy\ConsoleEndpoint\obj\Debug\netcorea
 C:\Users\Mikolaj\Documents\GitHub\Poker\RunPy\ConsoleEndpoint\obj\Debug\netcoreapp3.0\ConsoleEndpoint.dll
 C:\Users\Mikolaj\Documents\GitHub\Poker\RunPy\ConsoleEndpoint\obj\Debug\netcoreapp3.0\ConsoleEndpoint.pdb
 C:\Users\Mikolaj\Documents\GitHub\Poker\RunPy\ConsoleEndpoint\obj\Debug\netcoreapp3.0\ConsoleEndpoint.genruntimeconfig.cache
+C:\Users\Mikolaj\Documents\GitHub\Poker\RunPy\ConsoleEndpoint\bin\Debug\netcoreapp3.0\Autofac.dll
+C:\Users\Mikolaj\Documents\GitHub\Poker\RunPy\ConsoleEndpoint\bin\Debug\netcoreapp3.0\System.Diagnostics.DiagnosticSource.dll
