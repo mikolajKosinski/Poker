@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace CoreDomain
+namespace CoreBusinessLogic
 {
     public interface ICardRecognition
     {

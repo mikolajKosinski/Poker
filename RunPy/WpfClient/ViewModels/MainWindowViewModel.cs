@@ -1,6 +1,5 @@
 ﻿using Autofac;
 using CoreBusinessLogic;
-using CoreDomain;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -27,12 +26,12 @@ namespace WpfClient.ViewModels
 
         public void TakeScreenShoot(System.Windows.Point pointToWindow, System.Windows.Point pointToScreen)
         {
-            var (xStart, yStart, xWidth, yWidth) = GetCaptureArea(pointToScreen, pointToWindow);
-            Rectangle rect = new Rectangle(xStart, yStart, xWidth, yWidth);
-            Bitmap bmp = new Bitmap(150, 110);
-            Graphics g = Graphics.FromImage(bmp);
-            g.CopyFromScreen(rect.Left, rect.Top, 0, 0, bmp.Size, CopyPixelOperation.SourceCopy);
-            bmp.Save("image.jpg", ImageFormat.Jpeg);
+            //var (xStart, yStart, xWidth, yWidth) = GetCaptureArea(pointToScreen, pointToWindow);
+            //Rectangle rect = new Rectangle(xStart, yStart, xWidth, yWidth);
+            //Bitmap bmp = new Bitmap(150, 110);
+            //Graphics g = Graphics.FromImage(bmp);
+            //g.CopyFromScreen(rect.Left, rect.Top, 0, 0, bmp.Size, CopyPixelOperation.SourceCopy);
+            //bmp.Save("image.jpg", ImageFormat.Jpeg);
 
             _figureMatcher.AddCardToFlop(CardFigure._King, CardColor.spade);
             _figureMatcher.AddCardToFlop(CardFigure._4, CardColor.club);
@@ -42,10 +41,13 @@ namespace WpfClient.ViewModels
 
             _figureMatcher.AddCardToHand(CardFigure._King, CardColor.club);
             _figureMatcher.AddCardToHand(CardFigure._King, CardColor.diamond);
-            //var path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "image.jpg");
-            //var card = manager.GetCardByImage(path);// C:\\Users\\mkosi\\PycharmProjects\\tensorEnv\\dataset\\2C\\test.jpg");
+            var path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "image.jpg");
+           // var card = manager.GetCardByImage(path);// C:\\Users\\mkosi\\PycharmProjects\\tensorEnv\\dataset\\2C\\test.jpg");
 
             _figureMatcher.CheckHand();
+
+            var cr = new CardRecognition();
+            var res = cr.GetCard();
 
             Console.WriteLine();
         }

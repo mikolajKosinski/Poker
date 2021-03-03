@@ -1,7 +1,6 @@
 ﻿using Autofac;
 using CoreBusinessLogic;
 using CoreBusinessLogic.IoC;
-using CoreDomain;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;

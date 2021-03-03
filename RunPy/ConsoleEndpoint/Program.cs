@@ -1,5 +1,4 @@
 ﻿using CoreBusinessLogic;
-using CoreDomain;
 using System;
 
 namespace ConsoleEndpoint

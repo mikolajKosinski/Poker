@@ -6,14 +6,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WpfClient"
         mc:Ignorable="d"
-        AllowsTransparency="True" 
-        WindowStyle="None" 
-        Background="Blue"
-        Opacity="0.2"
-        BorderThickness="15" 
-        BorderBrush="Red"
         Focusable="True"
-        WindowState ="Maximized"
         MouseDown="MainWindow_MouseDown"
         Title="MainWindow" Height="450" Width="800">    
     <Grid>

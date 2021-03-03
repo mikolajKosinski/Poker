@@ -85,12 +85,12 @@ namespace CoreBusinessLogic
         {
             var deck = GetDeck();
             var tempHand = hand.Concat(desk).ToList();
-
-            foreach(var item in tempHand)
-            {
-                var card = deck.First(p => p.Color == item.Color && p.Figure == item.Figure);
-                deck.Remove(card);
-            }
+            
+            //foreach(var item in tempHand)
+           // {
+             //   var card = deck.First(p => p.Color == item.Color && p.Figure == item.Figure);
+            //    deck.Remove(card);
+            //}
 
             return deck;
         }

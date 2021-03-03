@@ -1,6 +1,5 @@
 using CoreBusinessLogic;
 using CoreBusinessLogic.Hands;
-using CoreDomain;
 using System;
 using System.Collections.Generic;
 using System.Linq;
