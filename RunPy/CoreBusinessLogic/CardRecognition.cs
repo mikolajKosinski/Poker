@@ -72,7 +72,7 @@ namespace CoreBusinessLogic
             Process process = new Process();
             string argument = rc == recoType.figure ?
                 @"C:\Users\Mikolaj\PycharmProjects\pythonProject1\PredictFigure.py" :
-                @"C:\Users\Mikolaj\PycharmProjects\pythonProject1\PredictFigure.py";
+                @"C:\Users\Mikolaj\PycharmProjects\pythonProject1\PredictColor.py";
             process.StartInfo = new System.Diagnostics.ProcessStartInfo()
             {
                 UseShellExecute = false,

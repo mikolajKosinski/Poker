@@ -9,6 +9,7 @@ using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Media;
 using WpfClient.Interfaces;
 using WpfClient.ViewModels;
 
@@ -20,6 +21,7 @@ namespace WpfClient
     public partial class App : Application
     {
         public ServiceProvider ServiceProvider { get; set; }
+        private MainWindow _mainWindow;
         private IContainer _container;
 
         public App()
@@ -40,13 +42,40 @@ namespace WpfClient
             services.AddScoped<IScreenAnalyser, ScreenAnalyser>();
         }
 
+        public bool IsScreenCaptureMode() => _mainWindow.WindowStyle == WindowStyle.None;
+
+        public void HideWindow()
+        {
+            Current.MainWindow.Hide();
+            //_mainWindow.Background = new SolidColorBrush(Colors.Blue);
+            //_mainWindow.Opacity = 0.1;
+            //_mainWindow.WindowStyle = WindowStyle.None;
+        }
+
+        public void ShowWindow()
+        {
+            Current.MainWindow.Show();
+            //Current.MainWindow.Hide();
+            //Current.MainWindow = null;
+            //Current.MainWindow = _mainWindow;
+            //Current.MainWindow.WindowStyle = WindowStyle.SingleBorderWindow;
+            //Style style = new Style(typeof(Window));
+            //style.Setters.Add(new Setter(Window.AllowsTransparencyProperty, false));
+            //style.Setters.Add(new Setter(Window.StyleProperty, WindowStyle.SingleBorderWindow));
+            //style.Setters.Add(new Setter(Window.OpacityProperty, 1));
+            //_mainWindow.Style = style;
+            //_mainWindow.Background = new SolidColorBrush(Colors.White);
+            //_mainWindow.Opacity = 1;
+            //_mainWindow.WindowStyle = WindowStyle.SingleBorderWindow;
+        }
+
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
             var mainWindowVM = ServiceProvider.GetService<IMainWindoViewModel>();
-            var mainWindow = new MainWindow(mainWindowVM);
+            _mainWindow = new MainWindow(mainWindowVM);
 
-            Current.MainWindow = mainWindow;
+            Current.MainWindow = _mainWindow;
             Current.MainWindow.Show();
         }
     }

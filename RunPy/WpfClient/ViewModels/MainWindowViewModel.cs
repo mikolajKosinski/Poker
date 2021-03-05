@@ -6,6 +6,7 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Text;
+using System.Windows;
 using System.Windows.Input;
 using WpfClient.Interfaces;
 
@@ -16,12 +17,40 @@ namespace WpfClient.ViewModels
         ICardRecognition _cardRecognition;
         IFigureMatcher _figureMatcher;
         ICardManager _cardManager;
+        public ICommand HandSelectCommand { get; set; }
+        public ICommand GetBackCommand { get; set; }
 
         public MainWindowViewModel(ICardRecognition cardRecognition, IFigureMatcher figureMatcher, ICardManager cardManager)
         {
             _cardManager = cardManager;
             _cardRecognition = cardRecognition;
             _figureMatcher = figureMatcher;
+            HandSelectCommand = new CustomCommand(SelectArea, CanSelect);
+            GetBackCommand = new CustomCommand(GetBack, CanSelect);
+        }
+
+        public bool CanSelect(object parameter)
+        {
+            return true;
+        }
+
+        private void SelectArea(object parameter)
+        {
+            var pageAnalyze = new ScreenAnalyzePage();
+            pageAnalyze.Closed += PageAnalyze_Closed;
+            ((App)Application.Current).HideWindow();
+            pageAnalyze.Show();
+        }
+
+        private void PageAnalyze_Closed(object sender, EventArgs e)
+        {
+            var area = (sender as ScreenAnalyzePage).Area;
+            ((App)Application.Current).ShowWindow();
+        }
+
+        private void GetBack(object sender)
+        {
+            //((App)Application.Current).Test2();
         }
 
         public void TakeScreenShoot(System.Windows.Point pointToWindow, System.Windows.Point pointToScreen)

@@ -7,6 +7,8 @@ namespace WpfClient
 {
     public class ScreenAnalyser : IScreenAnalyser
     {
+        private CardArea _desk;
+        private CardArea _hand;
         private Dictionary<CardType, Tuple<int, int>> cardsPositionDict;
 
         public ScreenAnalyser()

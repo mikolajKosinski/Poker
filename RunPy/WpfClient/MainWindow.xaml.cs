@@ -1,6 +1,8 @@
 ﻿using System.Windows;
 using System.Windows.Input;
+using System.Windows.Media;
 using WpfClient.Interfaces;
+using WpfClient.ViewModels;
 
 namespace WpfClient
 {
@@ -21,9 +23,22 @@ namespace WpfClient
         
         private void MainWindow_MouseDown(object sender, MouseButtonEventArgs e)
         {
+            if (!((App)Application.Current).IsScreenCaptureMode()) return;
+
             var pointToWindow = Mouse.GetPosition(this);
             var pointToScreen = PointToScreen(pointToWindow);
-            mainWindowViewModel.TakeScreenShoot(pointToWindow, pointToScreen);
+            System.Console.WriteLine();
+            //((App)Application.Current).Test2();
+            //AllowsTransparency = false;
+            //WindowStyle = WindowStyle.SingleBorderWindow;
+
+            //((App)Application.Current).Test2();
+            //mainWindowViewModel.TakeScreenShoot(pointToWindow, pointToScreen);
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }
