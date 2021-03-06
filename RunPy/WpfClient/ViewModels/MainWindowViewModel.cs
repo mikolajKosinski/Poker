@@ -17,8 +17,9 @@ namespace WpfClient.ViewModels
         ICardRecognition _cardRecognition;
         IFigureMatcher _figureMatcher;
         ICardManager _cardManager;
+        List<CardArea> _areas;
         public ICommand HandSelectCommand { get; set; }
-        public ICommand GetBackCommand { get; set; }
+        public ICommand AnalyzeCommand { get; set; }
 
         public MainWindowViewModel(ICardRecognition cardRecognition, IFigureMatcher figureMatcher, ICardManager cardManager)
         {
@@ -26,7 +27,7 @@ namespace WpfClient.ViewModels
             _cardRecognition = cardRecognition;
             _figureMatcher = figureMatcher;
             HandSelectCommand = new CustomCommand(SelectArea, CanSelect);
-            GetBackCommand = new CustomCommand(GetBack, CanSelect);
+            AnalyzeCommand = new CustomCommand(Analyze, CanSelect);
         }
 
         public bool CanSelect(object parameter)
@@ -44,13 +45,51 @@ namespace WpfClient.ViewModels
 
         private void PageAnalyze_Closed(object sender, EventArgs e)
         {
-            var area = (sender as ScreenAnalyzePage).Area;
+            _areas = (sender as ScreenAnalyzePage).AreasList;
             ((App)Application.Current).ShowWindow();
         }
 
-        private void GetBack(object sender)
+        private void Analyze(object sender)
         {
-            //((App)Application.Current).Test2();
+            foreach(var item in _areas)
+            {
+                var cardTuple = GetCardImageName(item);
+                var cr = new CardRecognition();
+                var res = cr.GetCard();
+                Console.WriteLine();
+            }
+        }
+
+        private Tuple<string,string> GetCardImageName(CardArea item)
+        {
+            double screenLeft = SystemParameters.VirtualScreenLeft;
+            double screenTop = SystemParameters.VirtualScreenTop;
+            double screenWidth = SystemParameters.VirtualScreenWidth;
+            double screenHeight = SystemParameters.VirtualScreenHeight;
+
+            using (Bitmap bmp = new Bitmap((int)screenWidth,
+                (int)screenHeight))
+            {
+                using (Graphics g = Graphics.FromImage(bmp))
+                {
+                    var guid = new Guid();
+                    var figureName = @"C:\Users\Mikolaj\PycharmProjects\pythonProject1\figure.png";
+                    var colorName = @"C:\Users\Mikolaj\PycharmProjects\pythonProject1\color.png";
+                    var figureWidth = (int)(item.xEnd - item.xStart) / 2;
+                    var figureHeight = (int)(item.yEnd - item.yStart) / 2; 
+                    g.CopyFromScreen((int)screenLeft, (int)screenTop, 0, 0, bmp.Size);
+                    Bitmap figure = bmp.Clone(new Rectangle((int)item.xStart, (int)item.yStart-2, 20, 25), bmp.PixelFormat);
+                    Bitmap color = bmp.Clone(new Rectangle((int)item.xStart, (int)item.yStart +22, 25, 25), bmp.PixelFormat);
+                    //Bitmap croppedFigure = card.Clone(new Rectangle((int)item.xStart, (int)item.yStart - 2, 20, 35), bmp.PixelFormat);
+                    Bitmap resizedFigure = new Bitmap(figure, new System.Drawing.Size(30,30));
+                    Bitmap resizedColor = new Bitmap(color, new System.Drawing.Size(30, 30));
+                    //card.Save(figureName);
+                    resizedFigure.Save(figureName);
+                    resizedFigure.Save("figure.png");
+                    resizedColor.Save(colorName);
+                    return new Tuple<string, string>(figureName, colorName);
+                }
+            }
         }
 
         public void TakeScreenShoot(System.Windows.Point pointToWindow, System.Windows.Point pointToScreen)

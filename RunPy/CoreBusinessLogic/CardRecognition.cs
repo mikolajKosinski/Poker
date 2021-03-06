@@ -63,8 +63,8 @@ namespace CoreBusinessLogic
 
         private CardColor RecognizeColor()
         {
-            var result = RecognizeImage(recoType.color);
-            return _colorDict[result];
+            //var result = RecognizeImage(recoType.color);
+            return CardColor.club;
         }
 
         private string RecognizeImage(recoType rc)

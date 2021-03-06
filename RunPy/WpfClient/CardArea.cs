@@ -6,12 +6,12 @@ namespace WpfClient
 {
     public class CardArea
     {
-        int xStart { get; set; }
-        int yStart { get; set; }
-        int xEnd { get; set; }
-        int yEnd { get; set; }
+        public double xStart { get; set; }
+        public double yStart { get; set; }
+        public double xEnd { get; set; }
+        public double yEnd { get; set; }
 
-        public CardArea(int xs, int ys, int xe, int ye)
+        public CardArea(double xs, double ys, double xe, double ye)
         {
             xStart = xs;
             yStart = ys;

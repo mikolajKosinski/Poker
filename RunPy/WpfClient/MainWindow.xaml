@@ -31,7 +31,7 @@
         </Grid.RowDefinitions>
             <StackPanel Grid.Row="0" Grid.Column="1">
                 <Button Content="GetCardsArea" Width="80" Height="30" Command="{Binding HandSelectCommand}" Grid.Column="1" Grid.Row="0"/>
-                <Button Content="GetBack" Width="80" Height="30" Command="{Binding HandSelectCommand}" Grid.Column="1" Grid.Row="0"/>
+                <Button Content="Analyze" Width="80" Height="30" Command="{Binding AnalyzeCommand}" Grid.Column="1" Grid.Row="0"/>
             </StackPanel>        
     </Grid>
     </Border>

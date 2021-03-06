@@ -7,20 +7,15 @@
         mc:Ignorable="d"
         WindowStyle="None"
         AllowsTransparency="True"
-        Opacity="0.1"
+        Opacity="0.3"
         Background="Blue"
         WindowState="Maximized"
         Title="ScreenAnalyzePage" Height="450" Width="800">
     <Grid>
-        <Canvas x:Name="Cnv">
-            <Button HorizontalAlignment="Center" 
-                    VerticalAlignment="Center" 
-                    Click="Button_Click" 
-                    Width="150"
-                    Background="Red"
-                    Opacity="1"
-                    Height="50" 
-                    Content="Close"/>
+        <Canvas MouseMove="ScreenAnalyzePage_MouseMove" x:Name="canv"
+          Background="Transparent">
+            <Rectangle Name="rect" Fill="Yellow"
+             Width="20" Height="35"/>
         </Canvas>
     </Grid>
 </Window>
