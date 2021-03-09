@@ -8,14 +8,35 @@
         WindowStyle="None"
         AllowsTransparency="True"
         Opacity="0.3"
-        Background="Blue"
         WindowState="Maximized"
         Title="ScreenAnalyzePage" Height="450" Width="800">
     <Grid>
-        <Canvas MouseMove="ScreenAnalyzePage_MouseMove" x:Name="canv"
-          Background="Transparent">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="9*" />
+            <ColumnDefinition Width="1*" />
+        </Grid.ColumnDefinitions>
+        <Canvas MouseMove="ScreenAnalyzePage_MouseMove" x:Name="canv" Grid.Column="0"
+                
+          Background="Blue" Opacity="0.5">
             <Rectangle Name="rect" Fill="Yellow"
-             Width="20" Height="35"/>
+             Width="20" Height="35"/>            
         </Canvas>
+        <StackPanel Grid.Column="1" HorizontalAlignment="Stretch">
+            <ListBox 
+                ItemsSource="{Binding RecoList}" 
+                Background="Red" Foreground="White" HorizontalAlignment="Stretch" Height="150">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="{Binding Figure}" />
+                            <TextBlock Text="{Binding Color}" />
+                        </StackPanel>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+            <StackPanel Orientation="Horizontal">
+                <Button Content="Appluy Cards" Click="Button_Click_2" />
+            </StackPanel>
+        </StackPanel>
     </Grid>
 </Window>

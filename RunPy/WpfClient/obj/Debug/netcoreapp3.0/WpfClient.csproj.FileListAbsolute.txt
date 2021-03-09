@@ -60,3 +60,5 @@ C:\Users\Mikolaj\Documents\GitHub\Poker\RunPy\WpfClient\bin\Debug\netcoreapp3.0\
 C:\Users\Mikolaj\Documents\GitHub\Poker\RunPy\WpfClient\bin\Debug\netcoreapp3.0\System.Diagnostics.DiagnosticSource.dll
 C:\Users\Mikolaj\Documents\GitHub\Poker\RunPy\WpfClient\obj\Debug\netcoreapp3.0\ScreenAnalyzePage.g.cs
 C:\Users\Mikolaj\Documents\GitHub\Poker\RunPy\WpfClient\obj\Debug\netcoreapp3.0\ScreenAnalyzePage.baml
+C:\Users\Mikolaj\Documents\GitHub\Poker\RunPy\WpfClient\obj\Debug\netcoreapp3.0\CardApproveWindow.g.cs
+C:\Users\Mikolaj\Documents\GitHub\Poker\RunPy\WpfClient\obj\Debug\netcoreapp3.0\CardApproveWindow.baml

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CoreBusinessLogic;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Windows;
@@ -9,6 +10,8 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using WpfClient.Interfaces;
+using WpfClient.ViewModels;
 
 namespace WpfClient
 {
@@ -17,14 +20,40 @@ namespace WpfClient
     /// </summary>
     public partial class ScreenAnalyzePage : Window
     {
+        private IMainWindoViewModel _mainWindowViewModel;
+        private CardArea _currentCardArea;
+        private ICard _currentCard;
         public List<CardArea> AreasList { get; set; }
+        public List<CardArea> ApprovedList { get; set; }
 
-        public ScreenAnalyzePage()
+        public ScreenAnalyzePage(IMainWindoViewModel mainWindowViewModel)
         {
             InitializeComponent();
+            _mainWindowViewModel = mainWindowViewModel;
+            DataContext = _mainWindowViewModel;
             AreasList = new List<CardArea>();
+            ApprovedList = new List<CardArea>();
             MouseDown += ScreenAnalyzePage_MouseDown;
             MouseMove += ScreenAnalyzePage_MouseMove;
+            _mainWindowViewModel.CardRecognized += _mainWindowViewModel_CardRecognized;
+        }
+
+        private void _mainWindowViewModel_CardRecognized(object sender, ICard card)
+        {
+            var approveWindow = new CardApproveWindow(card);
+            _currentCard = card;
+            approveWindow.Closed += ApproveWindow_Closed;
+            approveWindow.Show();
+        }
+
+        private void ApproveWindow_Closed(object sender, EventArgs e)
+        {
+            var cardApproved = (sender as CardApproveWindow).Approved;
+            if (cardApproved)
+            {
+                ApprovedList.Add(_currentCardArea);
+                _mainWindowViewModel.RecoList.Add(_currentCard);
+            }
         }
 
         private void ScreenAnalyzePage_MouseMove(object sender, MouseEventArgs e)
@@ -69,11 +98,14 @@ namespace WpfClient
             //selectedRect.StrokeThickness = 2;
             
             //canv.Children.Add(rect);
-            AreasList.Add(GetAreaByPoint());
-
+            //AreasList.Add(GetAreaByPoint());
+            //AreasList.Clear();
+            _mainWindowViewModel.Areas.Add(GetAreaByPoint());
             //Canvas.SetLeft(rect, e.GetPosition(rect).X);
             //Canvas.SetTop(rect, e.GetPosition(rect).Y);
-            this.Close();
+            _mainWindowViewModel.Analyze(null);
+            _mainWindowViewModel.Areas.Clear();
+            ApprovedList.Add(GetAreaByPoint());
         }
 
         private CardArea GetAreaByPoint()
@@ -82,14 +114,25 @@ namespace WpfClient
             var pointToScreen = PointToScreen(pointToWindow);
             var heightHalf = rect.Height / 2;
             var widthHalf = rect.Width / 2;
-            return new CardArea(
+            _currentCardArea = new CardArea(
                 pointToScreen.X - widthHalf, 
                 pointToScreen.Y - heightHalf, 
                 pointToScreen.X + widthHalf, 
                 pointToScreen.Y + heightHalf);
+            return _currentCardArea;
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
+        }
+
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+            _mainWindowViewModel.RecognizedCardsList.Add(new Card(CardFigure._10, CardColor.club));
+        }
+
+        private void Button_Click_2(object sender, RoutedEventArgs e)
         {
             this.Close();
         }

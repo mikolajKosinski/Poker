@@ -2,6 +2,8 @@
 using CoreBusinessLogic;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
@@ -12,17 +14,48 @@ using WpfClient.Interfaces;
 
 namespace WpfClient.ViewModels
 {
-    public class MainWindowViewModel : IMainWindoViewModel
+    public class MainWindowViewModel : IMainWindoViewModel, INotifyPropertyChanged
     {
+        public event PropertyChangedEventHandler PropertyChanged;
+        public event EventHandler<ICard> CardRecognized;
+        public bool ElementAdded { get; set; }
+        private void NotifyPropertyChanged(string propertyName = "")
+        {
+            if (PropertyChanged != null)
+            {
+                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+            }
+        }
+
         ICardRecognition _cardRecognition;
         IFigureMatcher _figureMatcher;
         ICardManager _cardManager;
-        List<CardArea> _areas;
+        public List<CardArea> Areas { get; set; }
         public ICommand HandSelectCommand { get; set; }
         public ICommand AnalyzeCommand { get; set; }
 
+        public ObservableCollection<ICard> RecoList { get; set; }
+
+        private List<ICard> _recognizedCardsList;
+        public List<ICard> RecognizedCardsList
+        {
+            get
+            {
+                return _recognizedCardsList;
+            }
+            set
+            {
+                _recognizedCardsList = value;
+                NotifyPropertyChanged("RecognizedCardsList");
+            }
+        }
+
+
         public MainWindowViewModel(ICardRecognition cardRecognition, IFigureMatcher figureMatcher, ICardManager cardManager)
         {
+            Areas = new List<CardArea>();
+            RecognizedCardsList = new List<ICard>();
+            RecoList = new ObservableCollection<ICard>();
             _cardManager = cardManager;
             _cardRecognition = cardRecognition;
             _figureMatcher = figureMatcher;
@@ -37,7 +70,7 @@ namespace WpfClient.ViewModels
 
         private void SelectArea(object parameter)
         {
-            var pageAnalyze = new ScreenAnalyzePage();
+            var pageAnalyze = new ScreenAnalyzePage(this);
             pageAnalyze.Closed += PageAnalyze_Closed;
             ((App)Application.Current).HideWindow();
             pageAnalyze.Show();
@@ -45,18 +78,21 @@ namespace WpfClient.ViewModels
 
         private void PageAnalyze_Closed(object sender, EventArgs e)
         {
-            _areas = (sender as ScreenAnalyzePage).AreasList;
+            Areas = (sender as ScreenAnalyzePage).ApprovedList;
             ((App)Application.Current).ShowWindow();
         }
 
-        private void Analyze(object sender)
+        public void Analyze(object sender)
         {
-            foreach(var item in _areas)
+            foreach(var item in Areas)
             {
                 var cardTuple = GetCardImageName(item);
                 var cr = new CardRecognition();
-                var res = cr.GetCard();
-                Console.WriteLine();
+                var card = cr.GetCard();
+                //RecoList.Add(card);
+                RecognizedCardsList.Add(card);
+                CardRecognized?.Invoke(this, card);
+                ElementAdded = true;
             }
         }
 
@@ -79,10 +115,10 @@ namespace WpfClient.ViewModels
                     var figureHeight = (int)(item.yEnd - item.yStart) / 2; 
                     g.CopyFromScreen((int)screenLeft, (int)screenTop, 0, 0, bmp.Size);
                     Bitmap figure = bmp.Clone(new Rectangle((int)item.xStart, (int)item.yStart-2, 20, 25), bmp.PixelFormat);
-                    Bitmap color = bmp.Clone(new Rectangle((int)item.xStart, (int)item.yStart +22, 25, 25), bmp.PixelFormat);
+                    Bitmap color = bmp.Clone(new Rectangle((int)item.xStart, (int)item.yStart +22, 20, 20), bmp.PixelFormat);
                     //Bitmap croppedFigure = card.Clone(new Rectangle((int)item.xStart, (int)item.yStart - 2, 20, 35), bmp.PixelFormat);
                     Bitmap resizedFigure = new Bitmap(figure, new System.Drawing.Size(30,30));
-                    Bitmap resizedColor = new Bitmap(color, new System.Drawing.Size(30, 30));
+                    Bitmap resizedColor = new Bitmap(color, new System.Drawing.Size(15, 15));
                     //card.Save(figureName);
                     resizedFigure.Save(figureName);
                     resizedFigure.Save("figure.png");
