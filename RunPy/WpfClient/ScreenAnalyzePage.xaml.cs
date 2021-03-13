@@ -112,13 +112,12 @@ namespace WpfClient
         {
             var pointToWindow = Mouse.GetPosition(this);
             var pointToScreen = PointToScreen(pointToWindow);
-            var heightHalf = rect.Height / 2;
-            var widthHalf = rect.Width / 2;
+            var xStart = pointToScreen.X - 225;
+            var xEnd = pointToScreen.X + 175;
+            var yStart = pointToScreen.Y - 75;
+            var yEnd = pointToScreen.Y + 75;
             _currentCardArea = new CardArea(
-                pointToScreen.X - widthHalf, 
-                pointToScreen.Y - heightHalf, 
-                pointToScreen.X + widthHalf, 
-                pointToScreen.Y + heightHalf);
+                xStart, yStart, xEnd, yEnd);
             return _currentCardArea;
         }
 

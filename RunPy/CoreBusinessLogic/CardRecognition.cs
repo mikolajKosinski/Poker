@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Drawing;
 using System.IO;
 
 namespace CoreBusinessLogic
@@ -67,6 +68,38 @@ namespace CoreBusinessLogic
             Console.WriteLine();
             return CardColor.club;
             
+        }
+
+        public Tuple<int,int,int,int> GetCardsArea()
+        {
+            Process process = new Process();
+            string argument = @"C:\Users\Mikolaj\PycharmProjects\pythonProject1\GetArea.py";
+            process.StartInfo = new System.Diagnostics.ProcessStartInfo()
+            {
+                UseShellExecute = false,
+                CreateNoWindow = true,
+                WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden,
+                FileName = @"C:\Users\Mikolaj\AppData\Local\Programs\Python\Python37\python.exe",
+                Arguments = argument,
+                RedirectStandardError = true,
+                RedirectStandardOutput = true
+            };
+
+            process.EnableRaisingEvents = true;
+            process.Start();
+            var result = process
+                .StandardOutput
+                .ReadToEnd()
+                .Replace("\t", "")
+                .Replace("\r", "")
+                .Replace("\n", "");
+            var points = result.Split(',');
+            //var er = process.StandardError.ReadToEnd();
+            return new Tuple<int, int, int, int>(
+                Convert.ToInt32(points[0]) -10, 
+                Convert.ToInt32(points[1]) +5, 
+                Convert.ToInt32(points[2]), 
+                Convert.ToInt32(points[3]));
         }
 
         private string RecognizeImage(recoType rc)

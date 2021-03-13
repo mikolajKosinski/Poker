@@ -19,7 +19,7 @@
                 
           Background="Blue" Opacity="0.5">
             <Rectangle Name="rect" Fill="Yellow"
-             Width="20" Height="35"/>            
+             Width="450" Height="150"/>            
         </Canvas>
         <StackPanel Grid.Column="1" HorizontalAlignment="Stretch">
             <ListBox 

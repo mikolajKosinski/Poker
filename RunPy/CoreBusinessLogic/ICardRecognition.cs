@@ -7,5 +7,6 @@ namespace CoreBusinessLogic
     public interface ICardRecognition
     {
         string RecogniseByPath(string path);
+        Tuple<int, int, int, int> GetCardsArea();
     }
 }

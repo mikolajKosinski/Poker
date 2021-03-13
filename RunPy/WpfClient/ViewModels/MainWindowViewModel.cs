@@ -18,6 +18,7 @@ namespace WpfClient.ViewModels
     {
         public event PropertyChangedEventHandler PropertyChanged;
         public event EventHandler<ICard> CardRecognized;
+        private CardArea _deskCardsArea;
         public bool ElementAdded { get; set; }
         private void NotifyPropertyChanged(string propertyName = "")
         {
@@ -86,13 +87,53 @@ namespace WpfClient.ViewModels
         {
             foreach(var item in Areas)
             {
-                var cardTuple = GetCardImageName(item);
-                var cr = new CardRecognition();
-                var card = cr.GetCard();
-                //RecoList.Add(card);
-                RecognizedCardsList.Add(card);
-                CardRecognized?.Invoke(this, card);
-                ElementAdded = true;
+                SaveTableCardsArea(item);
+                var points = _cardRecognition.GetCardsArea();
+
+                Console.WriteLine();
+                //var cardTuple = GetCardImageName(item);
+                //var cr = new CardRecognition();
+                //var card = cr.GetCard();
+                ////RecoList.Add(card);
+                //RecognizedCardsList.Add(card);
+                //CardRecognized?.Invoke(this, card);
+                //ElementAdded = true;
+            }
+        }
+
+        private void SaveTableCardsArea(CardArea item)
+        {
+            double screenLeft = SystemParameters.VirtualScreenLeft;
+            double screenTop = SystemParameters.VirtualScreenTop;
+            double screenWidth = SystemParameters.VirtualScreenWidth;
+            double screenHeight = SystemParameters.VirtualScreenHeight;
+
+            using (Bitmap bmp = new Bitmap((int)screenWidth,
+                (int)screenHeight))
+            {
+                using (Graphics g = Graphics.FromImage(bmp))
+                {
+                    var cardsAreaName = @"C:\Users\Mikolaj\PycharmProjects\pythonProject1\allCards.png";
+                    var cutOff = @"C:\Users\Mikolaj\PycharmProjects\pythonProject1\allCardsCutOff.png";
+                    g.CopyFromScreen((int)screenLeft, (int)screenTop, 0, 0, bmp.Size);
+                    Bitmap allCards = bmp.Clone(new Rectangle((int)item.xStart, (int)item.yStart, 450, 150), bmp.PixelFormat);
+                    allCards.Save(cardsAreaName);
+                    var points = _cardRecognition.GetCardsArea();
+                    var width = points.Item2 - points.Item1;
+                    var height = points.Item4 - points.Item3;
+                    var xStart = (int)item.xStart + points.Item1;
+                    var yStart = (int)item.yStart + points.Item3;
+                    var xEnd = xStart + width;
+                    var yEnd = yStart + height;
+                    _deskCardsArea = new CardArea(xStart, yStart, xEnd, yEnd);
+                    Bitmap cutOffAll = bmp.Clone(
+                        new Rectangle(
+                        (int)item.xStart + points.Item1, 
+                        (int)item.yStart + points.Item3, 
+                        width, 
+                        height), bmp.PixelFormat);
+                    cutOffAll.Save(cutOff);
+                }
             }
         }
 
@@ -109,13 +150,14 @@ namespace WpfClient.ViewModels
                 using (Graphics g = Graphics.FromImage(bmp))
                 {
                     var guid = new Guid();
+                    var cardsAreaName = @"C:\Users\Mikolaj\PycharmProjects\pythonProject1\figure.png";
                     var figureName = @"C:\Users\Mikolaj\PycharmProjects\pythonProject1\figure.png";
                     var colorName = @"C:\Users\Mikolaj\PycharmProjects\pythonProject1\color.png";
                     var figureWidth = (int)(item.xEnd - item.xStart) / 2;
                     var figureHeight = (int)(item.yEnd - item.yStart) / 2; 
                     g.CopyFromScreen((int)screenLeft, (int)screenTop, 0, 0, bmp.Size);
                     Bitmap figure = bmp.Clone(new Rectangle((int)item.xStart, (int)item.yStart-2, 20, 25), bmp.PixelFormat);
-                    Bitmap color = bmp.Clone(new Rectangle((int)item.xStart, (int)item.yStart +22, 20, 20), bmp.PixelFormat);
+                    Bitmap color = bmp.Clone(new Rectangle((int)item.xStart, (int)item.yStart + 22, 20, 20), bmp.PixelFormat);
                     //Bitmap croppedFigure = card.Clone(new Rectangle((int)item.xStart, (int)item.yStart - 2, 20, 35), bmp.PixelFormat);
                     Bitmap resizedFigure = new Bitmap(figure, new System.Drawing.Size(30,30));
                     Bitmap resizedColor = new Bitmap(color, new System.Drawing.Size(15, 15));
