@@ -10,9 +10,11 @@ namespace WpfClient.Interfaces
     public interface IMainWindoViewModel
     {
         void TakeScreenShoot(System.Windows.Point pointToWindow, System.Windows.Point pointToScreen);
-        ICommand HandSelectCommand { get; set; }
+        ICommand DeskSelectCommand { get; set; }
         void Analyze(object sender);
-        public List<CardArea> Areas { get; set; }
+        public CardArea DeskArea { get; set; }
+        public CardArea HandArea { get; set; }
+        public CardArea SingleCardArea { get; set; }
         List<ICard> RecognizedCardsList { get; set; }
         ObservableCollection<ICard> RecoList { get; set; }
         event EventHandler<ICard> CardRecognized;

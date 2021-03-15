@@ -87,6 +87,7 @@ namespace CoreBusinessLogic
 
             process.EnableRaisingEvents = true;
             process.Start();
+            var error = process.StandardError.ReadToEnd();
             var result = process
                 .StandardOutput
                 .ReadToEnd()
@@ -97,7 +98,7 @@ namespace CoreBusinessLogic
             //var er = process.StandardError.ReadToEnd();
             return new Tuple<int, int, int, int>(
                 Convert.ToInt32(points[0]) -10, 
-                Convert.ToInt32(points[1]) +5, 
+                Convert.ToInt32(points[1]), 
                 Convert.ToInt32(points[2]), 
                 Convert.ToInt32(points[3]));
         }

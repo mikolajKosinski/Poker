@@ -18,6 +18,7 @@ namespace WpfClient.ViewModels
     {
         public event PropertyChangedEventHandler PropertyChanged;
         public event EventHandler<ICard> CardRecognized;
+        private int _singleCardWidth;
         private CardArea _deskCardsArea;
         public bool ElementAdded { get; set; }
         private void NotifyPropertyChanged(string propertyName = "")
@@ -31,9 +32,13 @@ namespace WpfClient.ViewModels
         ICardRecognition _cardRecognition;
         IFigureMatcher _figureMatcher;
         ICardManager _cardManager;
-        public List<CardArea> Areas { get; set; }
+        public CardArea HandArea { get; set; }
+        public CardArea DeskArea { get; set; }
+        public CardArea SingleCardArea { get; set; }
         public ICommand HandSelectCommand { get; set; }
+        public ICommand DeskSelectCommand { get; set; }
         public ICommand AnalyzeCommand { get; set; }
+        public ICommand SingleCardCommand { get; set; }
 
         public ObservableCollection<ICard> RecoList { get; set; }
 
@@ -54,13 +59,14 @@ namespace WpfClient.ViewModels
 
         public MainWindowViewModel(ICardRecognition cardRecognition, IFigureMatcher figureMatcher, ICardManager cardManager)
         {
-            Areas = new List<CardArea>();
             RecognizedCardsList = new List<ICard>();
             RecoList = new ObservableCollection<ICard>();
             _cardManager = cardManager;
             _cardRecognition = cardRecognition;
             _figureMatcher = figureMatcher;
-            HandSelectCommand = new CustomCommand(SelectArea, CanSelect);
+            DeskSelectCommand = new CustomCommand(SelectDesk, CanSelect);
+            HandSelectCommand = new CustomCommand(SelectHand, CanSelect);
+            SingleCardCommand = new CustomCommand(SelectSingleCard, CanSelect);
             AnalyzeCommand = new CustomCommand(Analyze, CanSelect);
         }
 
@@ -69,9 +75,24 @@ namespace WpfClient.ViewModels
             return true;
         }
 
-        private void SelectArea(object parameter)
+        private void SelectHand(object parameter)
         {
-            var pageAnalyze = new ScreenAnalyzePage(this);
+            SelectArea(AnalyzeType.Hand);
+        }
+
+        private void SelectDesk(object parameter)
+        {
+            SelectArea(AnalyzeType.Desk);
+        }
+
+        private void SelectSingleCard(object parameter)
+        {
+            SelectArea(AnalyzeType.SingleCard);
+        }
+
+        private void SelectArea(AnalyzeType at)
+        {
+            var pageAnalyze = new ScreenAnalyzePage(this, at);
             pageAnalyze.Closed += PageAnalyze_Closed;
             ((App)Application.Current).HideWindow();
             pageAnalyze.Show();
@@ -79,29 +100,22 @@ namespace WpfClient.ViewModels
 
         private void PageAnalyze_Closed(object sender, EventArgs e)
         {
-            Areas = (sender as ScreenAnalyzePage).ApprovedList;
+            var analyze = (sender as ScreenAnalyzePage).AT;
             ((App)Application.Current).ShowWindow();
+
+            if (analyze == AnalyzeType.Desk) SaveCardsArea(DeskArea, analyze);
+            if (analyze == AnalyzeType.Hand) SaveCardsArea(HandArea, analyze);
+            if (analyze == AnalyzeType.SingleCard) SaveCardsArea(SingleCardArea, analyze);
         }
 
         public void Analyze(object sender)
         {
-            foreach(var item in Areas)
-            {
-                SaveTableCardsArea(item);
-                var points = _cardRecognition.GetCardsArea();
+            //SaveCardsArea(DeskArea, AnalyzeType.Desk);
+            //SaveCardsArea(HandArea, AnalyzeType.Hand);
 
-                Console.WriteLine();
-                //var cardTuple = GetCardImageName(item);
-                //var cr = new CardRecognition();
-                //var card = cr.GetCard();
-                ////RecoList.Add(card);
-                //RecognizedCardsList.Add(card);
-                //CardRecognized?.Invoke(this, card);
-                //ElementAdded = true;
-            }
         }
 
-        private void SaveTableCardsArea(CardArea item)
+        private void GetSingleCardArea()
         {
             double screenLeft = SystemParameters.VirtualScreenLeft;
             double screenTop = SystemParameters.VirtualScreenTop;
@@ -113,26 +127,70 @@ namespace WpfClient.ViewModels
             {
                 using (Graphics g = Graphics.FromImage(bmp))
                 {
-                    var cardsAreaName = @"C:\Users\Mikolaj\PycharmProjects\pythonProject1\allCards.png";
-                    var cutOff = @"C:\Users\Mikolaj\PycharmProjects\pythonProject1\allCardsCutOff.png";
+                    var cardsAreaName = @$"C:\Users\Mikolaj\PycharmProjects\pythonProject1\allCards.png";
+                    var cutOff = @$"C:\Users\Mikolaj\PycharmProjects\pythonProject1\allCardsCutOff.png";
+                }
+            }
+        }
+
+        private void SaveCardsArea(CardArea item, AnalyzeType at)
+        {
+            double screenLeft = SystemParameters.VirtualScreenLeft;
+            double screenTop = SystemParameters.VirtualScreenTop;
+            double screenWidth = SystemParameters.VirtualScreenWidth;
+            double screenHeight = SystemParameters.VirtualScreenHeight;
+            //var cardName = at == AnalyzeType.Desk ? "desk" : "hand";
+            //int areaWidth = at == AnalyzeType.Desk ? 450 : 50;
+            var areaWidth = 450;
+            var cutOffName = "";
+            if (at == AnalyzeType.Desk)
+            {
+
+            }
+            if (at == AnalyzeType.Hand) cutOffName = "handCutOff";
+            if (at == AnalyzeType.SingleCard)
+            {
+                cutOffName = "singleCutOff";
+                areaWidth = 70;
+            }
+
+            using (Bitmap bmp = new Bitmap((int)screenWidth,
+                (int)screenHeight))
+            {
+                using (Graphics g = Graphics.FromImage(bmp))
+                {
+                    var cardsAreaName = @$"C:\Users\Mikolaj\PycharmProjects\pythonProject1\allCards.png";
+                    var cutOff = @$"C:\Users\Mikolaj\PycharmProjects\pythonProject1\{cutOffName}.png";
                     g.CopyFromScreen((int)screenLeft, (int)screenTop, 0, 0, bmp.Size);
-                    Bitmap allCards = bmp.Clone(new Rectangle((int)item.xStart, (int)item.yStart, 450, 150), bmp.PixelFormat);
+                    Bitmap allCards = bmp.Clone(new Rectangle((int)item.xStart, (int)item.yStart, areaWidth, 150), bmp.PixelFormat);
                     allCards.Save(cardsAreaName);
+
                     var points = _cardRecognition.GetCardsArea();
                     var width = points.Item2 - points.Item1;
+
+                    if (at == AnalyzeType.SingleCard) width -= 2;
+                    
+
                     var height = points.Item4 - points.Item3;
+                    if (at == AnalyzeType.SingleCard) height += 2;
+
                     var xStart = (int)item.xStart + points.Item1;
                     var yStart = (int)item.yStart + points.Item3;
-                    var xEnd = xStart + width;
-                    var yEnd = yStart + height;
-                    _deskCardsArea = new CardArea(xStart, yStart, xEnd, yEnd);
+                    if (at == AnalyzeType.SingleCard)
+                    {
+                        xStart -= 3;
+                        yStart -= 5;
+                    }
+
                     Bitmap cutOffAll = bmp.Clone(
                         new Rectangle(
-                        (int)item.xStart + points.Item1, 
-                        (int)item.yStart + points.Item3, 
+                        xStart, 
+                        yStart, 
                         width, 
                         height), bmp.PixelFormat);
+                    _singleCardWidth = width;
                     cutOffAll.Save(cutOff);
+                    Console.WriteLine();
                 }
             }
         }

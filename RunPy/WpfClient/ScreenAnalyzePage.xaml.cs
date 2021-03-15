@@ -23,12 +23,18 @@ namespace WpfClient
         private IMainWindoViewModel _mainWindowViewModel;
         private CardArea _currentCardArea;
         private ICard _currentCard;
+        public Visibility DeskAreaVisibiity;
+        public Visibility SingleCardAreaVisibility;
+        public Visibility HandAreaVisibility;
+        public AnalyzeType AT { get; set; }
         public List<CardArea> AreasList { get; set; }
         public List<CardArea> ApprovedList { get; set; }
 
-        public ScreenAnalyzePage(IMainWindoViewModel mainWindowViewModel)
+        public ScreenAnalyzePage(IMainWindoViewModel mainWindowViewModel, AnalyzeType at)
         {
             InitializeComponent();
+            AT = at;
+            SetAreasVisibility();
             _mainWindowViewModel = mainWindowViewModel;
             DataContext = _mainWindowViewModel;
             AreasList = new List<CardArea>();
@@ -36,6 +42,22 @@ namespace WpfClient
             MouseDown += ScreenAnalyzePage_MouseDown;
             MouseMove += ScreenAnalyzePage_MouseMove;
             _mainWindowViewModel.CardRecognized += _mainWindowViewModel_CardRecognized;
+        }
+
+        private void SetAreasVisibility()
+        {
+            switch(AT)
+            {
+                case AnalyzeType.Desk:
+                    DeskAreaVisibiity = Visibility.Visible;
+                    return;
+                case AnalyzeType.SingleCard:
+                    SingleCardAreaVisibility = Visibility.Visible;
+                    return;
+                case AnalyzeType.Hand:
+                    DeskAreaVisibiity = Visibility.Visible;
+                    return;
+            }    
         }
 
         private void _mainWindowViewModel_CardRecognized(object sender, ICard card)
@@ -56,12 +78,27 @@ namespace WpfClient
             }
         }
 
+        private Rectangle GetRectangle()
+        {
+            if (AT == AnalyzeType.Desk) return DeskAreaRect;
+            if (AT == AnalyzeType.SingleCard) return SingleCardAreaRect;
+            return HandAreaRect;
+        }
+
+        private Canvas GetCanv()
+        {
+            if (AT == AnalyzeType.Desk) return DeskCanv;
+            if (AT == AnalyzeType.SingleCard) return SingleCardCanv;
+            return HandCanv;
+        }
+
         private void ScreenAnalyzePage_MouseMove(object sender, MouseEventArgs e)
         {
+            var canv = GetCanv();
 
             Point canvPosToWindow = canv.TransformToAncestor(this).Transform(new Point(0, 0));
 
-            Rectangle r = rect;
+            Rectangle r = GetRectangle();
             var upperlimit = canvPosToWindow.Y + (r.Height / 2);
             var lowerlimit = canvPosToWindow.Y + canv.ActualHeight - (r.Height / 2);
 
@@ -96,24 +133,55 @@ namespace WpfClient
             //selectedRect.Width = 20;
             //selectedRect.Height = 40;
             //selectedRect.StrokeThickness = 2;
-            
+
             //canv.Children.Add(rect);
             //AreasList.Add(GetAreaByPoint());
             //AreasList.Clear();
-            _mainWindowViewModel.Areas.Add(GetAreaByPoint());
+            
+            if (AT == AnalyzeType.Desk) _mainWindowViewModel.DeskArea = GetDeskArea();
+            if(AT == AnalyzeType.Hand) _mainWindowViewModel.HandArea = GetHandArea();
+            if (AT == AnalyzeType.SingleCard) _mainWindowViewModel.SingleCardArea = GetSingleCardArea();
+
+            this.Close();
             //Canvas.SetLeft(rect, e.GetPosition(rect).X);
             //Canvas.SetTop(rect, e.GetPosition(rect).Y);
-            _mainWindowViewModel.Analyze(null);
-            _mainWindowViewModel.Areas.Clear();
-            ApprovedList.Add(GetAreaByPoint());
+            //_mainWindowViewModel.Analyze(null);
+            //_mainWindowViewModel.Areas.Clear();
+            //ApprovedList.Add(GetAreaByPoint());
         }
 
-        private CardArea GetAreaByPoint()
+        private CardArea GetDeskArea()
         {
             var pointToWindow = Mouse.GetPosition(this);
             var pointToScreen = PointToScreen(pointToWindow);
             var xStart = pointToScreen.X - 225;
             var xEnd = pointToScreen.X + 175;
+            var yStart = pointToScreen.Y - 75;
+            var yEnd = pointToScreen.Y + 75;
+            _currentCardArea = new CardArea(
+                xStart, yStart, xEnd, yEnd);
+            return _currentCardArea;
+        }
+
+        private CardArea GetHandArea()
+        {
+            var pointToWindow = Mouse.GetPosition(this);
+            var pointToScreen = PointToScreen(pointToWindow);
+            var xStart = pointToScreen.X - 70;
+            var xEnd = pointToScreen.X + 70;
+            var yStart = pointToScreen.Y - 75;
+            var yEnd = pointToScreen.Y + 75;
+            _currentCardArea = new CardArea(
+                xStart, yStart, xEnd, yEnd);
+            return _currentCardArea;
+        }
+
+        private CardArea GetSingleCardArea()
+        {
+            var pointToWindow = Mouse.GetPosition(this);
+            var pointToScreen = PointToScreen(pointToWindow);
+            var xStart = pointToScreen.X - 35;
+            var xEnd = pointToScreen.X + 35;
             var yStart = pointToScreen.Y - 75;
             var yEnd = pointToScreen.Y + 75;
             _currentCardArea = new CardArea(

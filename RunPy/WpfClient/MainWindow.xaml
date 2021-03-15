@@ -30,7 +30,9 @@
             <RowDefinition Height="30" />
         </Grid.RowDefinitions>
             <StackPanel Grid.Row="0" Grid.Column="1">
-                <Button Content="GetCardsArea" Width="80" Height="30" Command="{Binding HandSelectCommand}" Grid.Column="1" Grid.Row="0"/>
+                <Button Content="GetSingleCard" Width="80" Height="30" Command="{Binding SingleCardCommand}" Grid.Column="1" Grid.Row="0"/>
+                <Button Content="GetDeskArea" Width="80" Height="30" Command="{Binding DeskSelectCommand}" Grid.Column="1" Grid.Row="0"/>
+                <Button Content="GetHandArea" Width="80" Height="30" Command="{Binding HandSelectCommand}" Grid.Column="1" Grid.Row="0"/>
                 <Button Content="Analyze" Width="80" Height="30" Command="{Binding AnalyzeCommand}" Grid.Column="1" Grid.Row="0"/>
             </StackPanel>        
     </Grid>
