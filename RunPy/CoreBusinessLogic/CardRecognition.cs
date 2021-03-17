@@ -51,7 +51,8 @@ namespace CoreBusinessLogic
 
         public ICard GetCard()
         {
-            var color = RecognizeColor();
+            var color = CardColor.club;
+            //var color = RecognizeColor();
             var figure = RecognizeFigure();
             return new Card(figure, color);
         }
@@ -148,8 +149,7 @@ namespace CoreBusinessLogic
                 RedirectStandardError = true,
                 RedirectStandardOutput = true
             };
-
-            process.EnableRaisingEvents = true;
+                        
             process.Start();
             var result = process.StandardOutput.ReadToEnd();
             return result.Replace("\t", "").Replace("\r", "").Replace("\n", "");

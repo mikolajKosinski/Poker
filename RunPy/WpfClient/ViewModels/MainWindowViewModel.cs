@@ -109,35 +109,60 @@ namespace WpfClient.ViewModels
             if (at == AnalyzeType.Desk) area = DeskArea;
             if (at == AnalyzeType.Hand) area = HandArea;            
 
-            GetAreas(area, at);
+            //GetAreas(area, at);
         }
 
         public void Analyze(object sender)
         {
-            GetAreas(DeskArea, AnalyzeType.Desk);
-            GetAreas(HandArea, AnalyzeType.Hand);
-            GetAreas(SingleCardArea, AnalyzeType.SingleCard);
+            var desk = GetAreaBitmap(DeskArea, AnalyzeType.Desk);
+            //var hand = GetArea(HandArea, AnalyzeType.Hand);
+            var single = GetAreaBitmap(SingleCardArea, AnalyzeType.SingleCard);
+
+            AnalyzeDesk(desk);
         }
 
-        private void GetSingleCardArea()
+        private void AnalyzeDesk(Bitmap desk)
         {
-            double screenLeft = SystemParameters.VirtualScreenLeft;
-            double screenTop = SystemParameters.VirtualScreenTop;
-            double screenWidth = SystemParameters.VirtualScreenWidth;
-            double screenHeight = SystemParameters.VirtualScreenHeight;
-
-            using (Bitmap bmp = new Bitmap((int)screenWidth,
-                (int)screenHeight))
+            int count = _deskWidth / _singleCardWidth;
+            var topName = @$"C:\Users\Mikolaj\PycharmProjects\pythonProject1\top.png";
+            var top = desk.Clone(new Rectangle(0, 0, _deskWidth, 40), desk.PixelFormat);
+            var offset = (_deskWidth - (_singleCardWidth * count)) / 5;
+            var width = _singleCardWidth + offset;
+            var list = new List<ICard>();
+            
+            for(int idx = 0; idx < count; idx++)
             {
-                using (Graphics g = Graphics.FromImage(bmp))
-                {
-                    var cardsAreaName = @$"C:\Users\Mikolaj\PycharmProjects\pythonProject1\allCards.png";
-                    var cutOff = @$"C:\Users\Mikolaj\PycharmProjects\pythonProject1\allCardsCutOff.png";
-                }
+                if ((width * idx) > _deskWidth) return;
+
+                var card = top.Clone(new Rectangle(width * idx + 0, 5, 30, 30), top.PixelFormat);
+                card.Save(@$"C:\Users\Mikolaj\PycharmProjects\pythonProject1\figure.png");
+                card.Save("figure.png");
+                var cardd = _cardRecognition.GetCard();
+                RecoList.Add(cardd);
             }
+
+            Console.WriteLine();
         }
+
+        //private void GetSingleCardArea()
+        //{
+        //    double screenLeft = SystemParameters.VirtualScreenLeft;
+        //    double screenTop = SystemParameters.VirtualScreenTop;
+        //    double screenWidth = SystemParameters.VirtualScreenWidth;
+        //    double screenHeight = SystemParameters.VirtualScreenHeight;
+
+        //    using (Bitmap bmp = new Bitmap((int)screenWidth,
+        //        (int)screenHeight))
+        //    {
+        //        using (Graphics g = Graphics.FromImage(bmp))
+        //        {
+        //            var cardsAreaName = @$"C:\Users\Mikolaj\PycharmProjects\pythonProject1\allCards.png";
+        //            var cutOff = @$"C:\Users\Mikolaj\PycharmProjects\pythonProject1\allCardsCutOff.png";
+        //        }
+        //    }
+        //}
         
-        private void GetAreas(CardArea item, AnalyzeType at)
+        private Bitmap GetAreaBitmap(CardArea item, AnalyzeType at)
         {
             double screenLeft = SystemParameters.VirtualScreenLeft;
             double screenTop = SystemParameters.VirtualScreenTop;
@@ -170,13 +195,16 @@ namespace WpfClient.ViewModels
                     var xStart = points.Item1;
                     var yStart = points.Item3;
 
-                    Bitmap cutOffImg = basicPicture.Clone(
-                        new Rectangle(
-                        xStart,
-                        yStart,
-                        cutOffWidth,
-                        height), basicPicture.PixelFormat);
-                    cutOffImg.Save(cutOffName);
+                   
+                        Bitmap cutOffImg = basicPicture.Clone(
+                            new Rectangle(
+                            xStart,
+                            yStart,
+                            cutOffWidth,
+                            height), basicPicture.PixelFormat);
+                        cutOffImg.Save(cutOffName);
+                        return cutOffImg;
+                 
                 }
             }
         }

@@ -22,6 +22,7 @@
             <Grid.ColumnDefinitions>
             <ColumnDefinition Width="30" />
             <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
             <ColumnDefinition Width="30" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
@@ -34,7 +35,17 @@
                 <Button Content="GetDeskArea" Width="80" Height="30" Command="{Binding DeskSelectCommand}" Grid.Column="1" Grid.Row="0"/>
                 <Button Content="GetHandArea" Width="80" Height="30" Command="{Binding HandSelectCommand}" Grid.Column="1" Grid.Row="0"/>
                 <Button Content="Analyze" Width="80" Height="30" Command="{Binding AnalyzeCommand}" Grid.Column="1" Grid.Row="0"/>
-            </StackPanel>        
-    </Grid>
+            </StackPanel>
+            <ListBox Grid.Row="0" ItemsSource="{Binding RecoList}" Grid.Column="2" Height="150" Width="40">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="{Binding Figure}" />
+                            <TextBlock Text="{Binding Color}" />
+                        </StackPanel>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+        </Grid>
     </Border>
 </Window>
