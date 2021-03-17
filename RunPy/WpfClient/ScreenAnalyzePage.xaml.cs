@@ -20,12 +20,16 @@ namespace WpfClient
     /// </summary>
     public partial class ScreenAnalyzePage : Window
     {
+        private Point _startPoint;
+        private Point _endPoint;
         private IMainWindoViewModel _mainWindowViewModel;
         private CardArea _currentCardArea;
         private ICard _currentCard;
         public Visibility DeskAreaVisibiity;
         public Visibility SingleCardAreaVisibility;
         public Visibility HandAreaVisibility;
+        private bool _isDragging;
+        private Point _anchorPoint;
         public AnalyzeType AT { get; set; }
         public List<CardArea> AreasList { get; set; }
         public List<CardArea> ApprovedList { get; set; }
@@ -40,8 +44,21 @@ namespace WpfClient
             AreasList = new List<CardArea>();
             ApprovedList = new List<CardArea>();
             MouseDown += ScreenAnalyzePage_MouseDown;
+            MouseUp += ScreenAnalyzePage_MouseUp;
             MouseMove += ScreenAnalyzePage_MouseMove;
             _mainWindowViewModel.CardRecognized += _mainWindowViewModel_CardRecognized;
+        }
+
+        private void ScreenAnalyzePage_MouseUp(object sender, MouseButtonEventArgs e)
+        {
+            var pointToWindow = Mouse.GetPosition(this);
+            _endPoint = PointToScreen(pointToWindow);
+            var area = new CardArea(_startPoint.X, _startPoint.Y, _endPoint.X, _endPoint.Y);
+
+            if (AT == AnalyzeType.SingleCard) _mainWindowViewModel.SingleCardArea = area;
+            if (AT == AnalyzeType.Desk) _mainWindowViewModel.DeskArea = area;
+            if (AT == AnalyzeType.Hand) _mainWindowViewModel.HandArea = area;
+            this.Close();
         }
 
         private void SetAreasVisibility()
@@ -94,60 +111,25 @@ namespace WpfClient
 
         private void ScreenAnalyzePage_MouseMove(object sender, MouseEventArgs e)
         {
-            var canv = GetCanv();
+            if (!_isDragging) return;
 
-            Point canvPosToWindow = canv.TransformToAncestor(this).Transform(new Point(0, 0));
+            var rect = GetRectangle();
+            var x = e.GetPosition(GetCanv()).X;
+            var y = e.GetPosition(GetCanv()).Y;
+            rect.SetValue(Canvas.LeftProperty, _anchorPoint.X);
+            rect.SetValue(Canvas.TopProperty, _anchorPoint.Y);
+            rect.Width = Math.Abs(x - _anchorPoint.X);
+            rect.Height = Math.Abs(y - _anchorPoint.Y);
 
-            Rectangle r = GetRectangle();
-            var upperlimit = canvPosToWindow.Y + (r.Height / 2);
-            var lowerlimit = canvPosToWindow.Y + canv.ActualHeight - (r.Height / 2);
-
-            var leftlimit = canvPosToWindow.X + (r.Width / 2);
-            var rightlimit = canvPosToWindow.X + canv.ActualWidth - (r.Width / 2);
-
-
-            var absmouseXpos = e.GetPosition(this).X;
-            var absmouseYpos = e.GetPosition(this).Y;
-
-            if ((absmouseXpos > leftlimit && absmouseXpos < rightlimit)
-                && (absmouseYpos > upperlimit && absmouseYpos < lowerlimit))
-            {
-                Canvas.SetLeft(r, e.GetPosition(canv).X - (r.Width / 2));
-                Canvas.SetTop(r, e.GetPosition(canv).Y - (r.Height / 2));
-            }
-            //System.Windows.Point position = e.GetPosition(this);
-            //double pX = position.X;
-            //double pY = position.Y;
-
-
-
-            //// Sets the Height/Width of the circle to the mouse coordinates.
-            //rect.Width = 50;
-            //rect.Height = 50;
         }
 
         private void ScreenAnalyzePage_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            //Rectangle selectedRect = new Rectangle();
-            //selectedRect.Fill = Brushes.Red;
-            //selectedRect.Width = 20;
-            //selectedRect.Height = 40;
-            //selectedRect.StrokeThickness = 2;
-
-            //canv.Children.Add(rect);
-            //AreasList.Add(GetAreaByPoint());
-            //AreasList.Clear();
-            
-            if (AT == AnalyzeType.Desk) _mainWindowViewModel.DeskArea = GetDeskArea();
-            if(AT == AnalyzeType.Hand) _mainWindowViewModel.HandArea = GetHandArea();
-            if (AT == AnalyzeType.SingleCard) _mainWindowViewModel.SingleCardArea = GetSingleCardArea();
-
-            this.Close();
-            //Canvas.SetLeft(rect, e.GetPosition(rect).X);
-            //Canvas.SetTop(rect, e.GetPosition(rect).Y);
-            //_mainWindowViewModel.Analyze(null);
-            //_mainWindowViewModel.Areas.Clear();
-            //ApprovedList.Add(GetAreaByPoint());
+            _anchorPoint.X = e.GetPosition(GetCanv()).X;
+            _anchorPoint.Y = e.GetPosition(GetCanv()).Y;
+            _isDragging = true;
+            var pointToWindow = Mouse.GetPosition(this);
+            _startPoint = PointToScreen(pointToWindow);
         }
 
         private CardArea GetDeskArea()
@@ -180,8 +162,8 @@ namespace WpfClient
         {
             var pointToWindow = Mouse.GetPosition(this);
             var pointToScreen = PointToScreen(pointToWindow);
-            var xStart = pointToScreen.X - 35;
-            var xEnd = pointToScreen.X + 35;
+            var xStart = pointToScreen.X - 50;
+            var xEnd = pointToScreen.X + 50;
             var yStart = pointToScreen.Y - 75;
             var yEnd = pointToScreen.Y + 75;
             _currentCardArea = new CardArea(

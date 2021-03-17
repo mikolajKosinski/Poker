@@ -23,7 +23,7 @@
         <Canvas MouseMove="ScreenAnalyzePage_MouseMove" x:Name="SingleCardCanv" Grid.Column="0"                
           Background="Blue" Opacity="0.5">
             <Rectangle Name="SingleCardAreaRect" Fill="Yellow" Visibility="{Binding SingleCardAreaVisibility}"
-             Width="30" Height="40"/>
+             Width="80" Height="100" />
         </Canvas>
         <Canvas MouseMove="ScreenAnalyzePage_MouseMove" x:Name="HandCanv" Grid.Column="0"                
           Background="Blue" Opacity="0.5">

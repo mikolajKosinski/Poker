@@ -19,6 +19,8 @@ namespace WpfClient.ViewModels
         public event PropertyChangedEventHandler PropertyChanged;
         public event EventHandler<ICard> CardRecognized;
         private int _singleCardWidth;
+        private int _deskWidth;
+        private int _handWidth;
         private CardArea _deskCardsArea;
         public bool ElementAdded { get; set; }
         private void NotifyPropertyChanged(string propertyName = "")
@@ -100,19 +102,21 @@ namespace WpfClient.ViewModels
 
         private void PageAnalyze_Closed(object sender, EventArgs e)
         {
-            var analyze = (sender as ScreenAnalyzePage).AT;
+            var at = (sender as ScreenAnalyzePage).AT;
             ((App)Application.Current).ShowWindow();
+            CardArea area = SingleCardArea;
 
-            if (analyze == AnalyzeType.Desk) SaveCardsArea(DeskArea, analyze);
-            if (analyze == AnalyzeType.Hand) SaveCardsArea(HandArea, analyze);
-            if (analyze == AnalyzeType.SingleCard) SaveCardsArea(SingleCardArea, analyze);
+            if (at == AnalyzeType.Desk) area = DeskArea;
+            if (at == AnalyzeType.Hand) area = HandArea;            
+
+            GetAreas(area, at);
         }
 
         public void Analyze(object sender)
         {
-            //SaveCardsArea(DeskArea, AnalyzeType.Desk);
-            //SaveCardsArea(HandArea, AnalyzeType.Hand);
-
+            GetAreas(DeskArea, AnalyzeType.Desk);
+            GetAreas(HandArea, AnalyzeType.Hand);
+            GetAreas(SingleCardArea, AnalyzeType.SingleCard);
         }
 
         private void GetSingleCardArea()
@@ -132,27 +136,17 @@ namespace WpfClient.ViewModels
                 }
             }
         }
-
-        private void SaveCardsArea(CardArea item, AnalyzeType at)
+        
+        private void GetAreas(CardArea item, AnalyzeType at)
         {
             double screenLeft = SystemParameters.VirtualScreenLeft;
             double screenTop = SystemParameters.VirtualScreenTop;
             double screenWidth = SystemParameters.VirtualScreenWidth;
             double screenHeight = SystemParameters.VirtualScreenHeight;
-            //var cardName = at == AnalyzeType.Desk ? "desk" : "hand";
-            //int areaWidth = at == AnalyzeType.Desk ? 450 : 50;
-            var areaWidth = 450;
-            var cutOffName = "";
-            if (at == AnalyzeType.Desk)
-            {
-
-            }
-            if (at == AnalyzeType.Hand) cutOffName = "handCutOff";
-            if (at == AnalyzeType.SingleCard)
-            {
-                cutOffName = "singleCutOff";
-                areaWidth = 70;
-            }
+            Tuple<int, int, int, int> points = new Tuple<int, int, int, int>(0,0,0,0);
+            int width = GetWidth(at);
+            int cutOffWidth = 0;
+            var cutOffVersion = GetCutOffVersion(at);
 
             using (Bitmap bmp = new Bitmap((int)screenWidth,
                 (int)screenHeight))
@@ -160,39 +154,68 @@ namespace WpfClient.ViewModels
                 using (Graphics g = Graphics.FromImage(bmp))
                 {
                     var cardsAreaName = @$"C:\Users\Mikolaj\PycharmProjects\pythonProject1\allCards.png";
-                    var cutOff = @$"C:\Users\Mikolaj\PycharmProjects\pythonProject1\{cutOffName}.png";
+                    var cutOffName = @$"C:\Users\Mikolaj\PycharmProjects\pythonProject1\{cutOffVersion}.png";
                     g.CopyFromScreen((int)screenLeft, (int)screenTop, 0, 0, bmp.Size);
-                    Bitmap allCards = bmp.Clone(new Rectangle((int)item.xStart, (int)item.yStart, areaWidth, 150), bmp.PixelFormat);
-                    allCards.Save(cardsAreaName);
+                    Bitmap basicPicture = bmp.Clone(new Rectangle((int)item.xStart, (int)item.yStart, width, 150), bmp.PixelFormat);
+                    basicPicture = GetRepainted(basicPicture);
+                    basicPicture.Save(cardsAreaName);
+                    points = GetPoints(at);
+                    cutOffWidth = points.Item2 - points.Item1;
 
-                    var points = _cardRecognition.GetCardsArea();
-                    var width = points.Item2 - points.Item1;
-
-                    if (at == AnalyzeType.SingleCard) width -= 2;
-                    
+                    if (at == AnalyzeType.SingleCard) _singleCardWidth = cutOffWidth;
+                    if (at == AnalyzeType.Desk) _deskWidth = cutOffWidth;
+                    if (at == AnalyzeType.Hand) _handWidth = cutOffWidth;
 
                     var height = points.Item4 - points.Item3;
-                    if (at == AnalyzeType.SingleCard) height += 2;
+                    var xStart = points.Item1;
+                    var yStart = points.Item3;
 
-                    var xStart = (int)item.xStart + points.Item1;
-                    var yStart = (int)item.yStart + points.Item3;
-                    if (at == AnalyzeType.SingleCard)
-                    {
-                        xStart -= 3;
-                        yStart -= 5;
-                    }
-
-                    Bitmap cutOffAll = bmp.Clone(
+                    Bitmap cutOffImg = basicPicture.Clone(
                         new Rectangle(
-                        xStart, 
-                        yStart, 
-                        width, 
-                        height), bmp.PixelFormat);
-                    _singleCardWidth = width;
-                    cutOffAll.Save(cutOff);
-                    Console.WriteLine();
+                        xStart,
+                        yStart,
+                        cutOffWidth,
+                        height), basicPicture.PixelFormat);
+                    cutOffImg.Save(cutOffName);
                 }
             }
+        }
+
+        private Tuple<int, int, int, int> GetPoints(AnalyzeType at)
+        {
+            if (at == AnalyzeType.SingleCard) return _cardRecognition.GetSingleCardArea();
+            return _cardRecognition.GetArea();
+        }
+
+        private string GetCutOffVersion(AnalyzeType at)
+        {
+            if (at == AnalyzeType.SingleCard) return "singleCutOff";
+            if (at == AnalyzeType.Hand) return "HandCutOff";
+            return "DeskCutOff";
+        }
+
+        private int GetWidth(AnalyzeType at)
+        {
+            if (at == AnalyzeType.SingleCard) return 120;
+            if (at == AnalyzeType.Hand) return 250;
+            return 450;
+        }
+
+        private Bitmap GetRepainted(Bitmap basicPicture)
+        {
+            for (int x = 0; x < basicPicture.Width; x++)
+            {
+                for (int y = 0; y < basicPicture.Height; y++)
+                {
+                    var c = basicPicture.GetPixel(x, y);
+                    if (c.G > 70 && c.B < 90)
+                    {
+                        basicPicture.SetPixel(x, y, Color.Black);
+                    }
+                }
+            }
+
+            return basicPicture;
         }
 
         private Tuple<string,string> GetCardImageName(CardArea item)
