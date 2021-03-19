@@ -7,6 +7,7 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Windows;
 using System.Windows.Input;
@@ -19,6 +20,7 @@ namespace WpfClient.ViewModels
         public event PropertyChangedEventHandler PropertyChanged;
         public event EventHandler<ICard> CardRecognized;
         private int _singleCardWidth;
+        private int _singleCardHeight;
         private int _deskWidth;
         private int _handWidth;
         private CardArea _deskCardsArea;
@@ -115,10 +117,17 @@ namespace WpfClient.ViewModels
         public void Analyze(object sender)
         {
             var desk = GetAreaBitmap(DeskArea, AnalyzeType.Desk);
+
+            if(desk == null)
+            {
+                MessageBox.Show("Try again");
+                return;
+            }
+
             //var hand = GetArea(HandArea, AnalyzeType.Hand);
             var single = GetAreaBitmap(SingleCardArea, AnalyzeType.SingleCard);
 
-            AnalyzeDesk(desk);
+            AnalyzeDesk(desk);            
         }
 
         private void AnalyzeDesk(Bitmap desk)
@@ -126,17 +135,23 @@ namespace WpfClient.ViewModels
             int count = _deskWidth / _singleCardWidth;
             var topName = @$"C:\Users\Mikolaj\PycharmProjects\pythonProject1\top.png";
             var top = desk.Clone(new Rectangle(0, 0, _deskWidth, 40), desk.PixelFormat);
-            var offset = (_deskWidth - (_singleCardWidth * count)) / 5;
+            var offset = (_deskWidth - (_singleCardWidth * count)) / 4;
             var width = _singleCardWidth + offset;
             var list = new List<ICard>();
+
+            var ww = _singleCardWidth / 3.45;
             
+
             for(int idx = 0; idx < count; idx++)
             {
                 if ((width * idx) > _deskWidth) return;
 
-                var card = top.Clone(new Rectangle(width * idx + 0, 5, 30, 30), top.PixelFormat);
-                card.Save(@$"C:\Users\Mikolaj\PycharmProjects\pythonProject1\figure.png");
-                card.Save("figure.png");
+                var card = top.Clone(new Rectangle(width * idx, 5, 30, 30), top.PixelFormat);
+                card.Save(@$"C:\Users\Mikolaj\PycharmProjects\pythonProject1\allCards.png");                
+                var points = _cardRecognition.GetSingleCardArea();
+                var figure = top.Clone(new Rectangle((width * idx) + points.Item1, 5, points.Item2 - 5, points.Item4 - points.Item3), top.PixelFormat);
+                //figure = GetRepaintedFromBlack(figure, Color.White);
+                figure.Save("figure.png");
                 var cardd = _cardRecognition.GetCard();
                 RecoList.Add(cardd);
             }
@@ -171,7 +186,8 @@ namespace WpfClient.ViewModels
             Tuple<int, int, int, int> points = new Tuple<int, int, int, int>(0,0,0,0);
             int width = GetWidth(at);
             int cutOffWidth = 0;
-            var cutOffVersion = GetCutOffVersion(at);
+            int cutOffHeight = 0;
+            var name = GetCutOffName(at);
 
             using (Bitmap bmp = new Bitmap((int)screenWidth,
                 (int)screenHeight))
@@ -179,15 +195,20 @@ namespace WpfClient.ViewModels
                 using (Graphics g = Graphics.FromImage(bmp))
                 {
                     var cardsAreaName = @$"C:\Users\Mikolaj\PycharmProjects\pythonProject1\allCards.png";
-                    var cutOffName = @$"C:\Users\Mikolaj\PycharmProjects\pythonProject1\{cutOffVersion}.png";
+                    var cutOffName = @$"C:\Users\Mikolaj\PycharmProjects\pythonProject1\{name}.png";
                     g.CopyFromScreen((int)screenLeft, (int)screenTop, 0, 0, bmp.Size);
                     Bitmap basicPicture = bmp.Clone(new Rectangle((int)item.xStart, (int)item.yStart, width, 150), bmp.PixelFormat);
-                    basicPicture = GetRepainted(basicPicture);
+                    basicPicture = GetRepaintedFromGreen(basicPicture, Color.Black);
                     basicPicture.Save(cardsAreaName);
                     points = GetPoints(at);
                     cutOffWidth = points.Item2 - points.Item1;
+                    cutOffHeight = points.Item4 - points.Item3;
 
-                    if (at == AnalyzeType.SingleCard) _singleCardWidth = cutOffWidth;
+                    if (at == AnalyzeType.SingleCard)
+                    {
+                        _singleCardWidth = cutOffWidth;
+                        _singleCardHeight = cutOffHeight;
+                    }
                     if (at == AnalyzeType.Desk) _deskWidth = cutOffWidth;
                     if (at == AnalyzeType.Hand) _handWidth = cutOffWidth;
 
@@ -195,7 +216,8 @@ namespace WpfClient.ViewModels
                     var xStart = points.Item1;
                     var yStart = points.Item3;
 
-                   
+                    try
+                    {
                         Bitmap cutOffImg = basicPicture.Clone(
                             new Rectangle(
                             xStart,
@@ -204,7 +226,11 @@ namespace WpfClient.ViewModels
                             height), basicPicture.PixelFormat);
                         cutOffImg.Save(cutOffName);
                         return cutOffImg;
-                 
+                    }
+                    catch
+                    {
+                        return null;
+                    }
                 }
             }
         }
@@ -215,7 +241,7 @@ namespace WpfClient.ViewModels
             return _cardRecognition.GetArea();
         }
 
-        private string GetCutOffVersion(AnalyzeType at)
+        private string GetCutOffName(AnalyzeType at)
         {
             if (at == AnalyzeType.SingleCard) return "singleCutOff";
             if (at == AnalyzeType.Hand) return "HandCutOff";
@@ -229,7 +255,7 @@ namespace WpfClient.ViewModels
             return 450;
         }
 
-        private Bitmap GetRepainted(Bitmap basicPicture)
+        private Bitmap GetRepaintedFromGreen(Bitmap basicPicture, Color color)
         {
             for (int x = 0; x < basicPicture.Width; x++)
             {
@@ -238,7 +264,24 @@ namespace WpfClient.ViewModels
                     var c = basicPicture.GetPixel(x, y);
                     if (c.G > 70 && c.B < 90)
                     {
-                        basicPicture.SetPixel(x, y, Color.Black);
+                        basicPicture.SetPixel(x, y, color);
+                    }
+                }
+            }
+
+            return basicPicture;
+        }
+
+        private Bitmap GetRepaintedFromBlack(Bitmap basicPicture, Color color)
+        {
+            for (int x = 0; x < basicPicture.Width; x++)
+            {
+                for (int y = 0; y < basicPicture.Height; y++)
+                {
+                    var c = basicPicture.GetPixel(x, y);
+                    if (c.G == 255 && c.B  == 255)
+                    {
+                        basicPicture.SetPixel(x, y, color);
                     }
                 }
             }

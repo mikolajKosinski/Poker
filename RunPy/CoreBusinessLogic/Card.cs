@@ -19,6 +19,11 @@ namespace CoreBusinessLogic
             return Equals(obj as ICard);
         }
 
+        public override int GetHashCode()
+        {
+            return ID.GetHashCode();
+        }
+
         public bool Equals(ICard card)
         {
             return card.Color == Color && card.Figure == Figure;

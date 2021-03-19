@@ -26,7 +26,7 @@
             <ColumnDefinition Width="30" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="120" />
+            <RowDefinition Height="150" />
             <RowDefinition Height="*" />
             <RowDefinition Height="30" />
         </Grid.RowDefinitions>
@@ -35,6 +35,7 @@
                 <Button Content="GetDeskArea" Width="80" Height="30" Command="{Binding DeskSelectCommand}" Grid.Column="1" Grid.Row="0"/>
                 <Button Content="GetHandArea" Width="80" Height="30" Command="{Binding HandSelectCommand}" Grid.Column="1" Grid.Row="0"/>
                 <Button Content="Analyze" Width="80" Height="30" Command="{Binding AnalyzeCommand}" Grid.Column="1" Grid.Row="0"/>
+                <Button Content="Add" Command="{Binding AddCommand}" />
             </StackPanel>
             <ListBox Grid.Row="0" ItemsSource="{Binding RecoList}" Grid.Column="2" Height="150" Width="40">
                 <ListBox.ItemTemplate>
