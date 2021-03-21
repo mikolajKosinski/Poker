@@ -51,8 +51,7 @@ namespace CoreBusinessLogic
 
         public ICard GetCard()
         {
-            var color = CardColor.club;
-            //var color = RecognizeColor();
+            var color = RecognizeColor();
             var figure = RecognizeFigure();
             return new Card(figure, color);
         }
@@ -66,8 +65,7 @@ namespace CoreBusinessLogic
         private CardColor RecognizeColor()
         {
             var result = RecognizeImage(recoType.color);
-            Console.WriteLine();
-            return CardColor.club;
+            return _colorDict[result];
             
         }
 

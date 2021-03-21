@@ -131,10 +131,11 @@ namespace WpfClient.ViewModels
         }
 
         private void AnalyzeDesk(Bitmap desk)
-        {
+        {            
             int count = _deskWidth / _singleCardWidth;
             var topName = @$"C:\Users\Mikolaj\PycharmProjects\pythonProject1\top.png";
             var top = desk.Clone(new Rectangle(0, 0, _deskWidth, 40), desk.PixelFormat);
+            
             var offset = (_deskWidth - (_singleCardWidth * count)) / 4;
             var width = _singleCardWidth + offset;
             var list = new List<ICard>();
@@ -149,9 +150,21 @@ namespace WpfClient.ViewModels
                 var card = top.Clone(new Rectangle(width * idx, 5, 30, 30), top.PixelFormat);
                 card.Save(@$"C:\Users\Mikolaj\PycharmProjects\pythonProject1\allCards.png");                
                 var points = _cardRecognition.GetSingleCardArea();
-                var figure = top.Clone(new Rectangle((width * idx) + points.Item1, 5, points.Item2 - 5, points.Item4 - points.Item3), top.PixelFormat);
+                var xStart = (width * idx) + points.Item1;
+                var yStart = 5;
+                var figureWidth = points.Item2 - 5;
+                var figureHeight = points.Item4 - points.Item3;
+                var figure = top.Clone(new Rectangle(xStart, yStart, figureWidth, figureHeight), top.PixelFormat);
+
+                var bottom = desk.Clone(new Rectangle(xStart, figureHeight, figureWidth, figureHeight), desk.PixelFormat);
+                bottom.Save(@$"C:\Users\Mikolaj\PycharmProjects\pythonProject1\color.png");
+                //points = _cardRecognition.GetSingleCardArea();
+                //var color = bottom.Clone(new Rectangle(points.Item1, points.Item3, points.Item2 - points.Item1, points.Item4 - points.Item3), desk.PixelFormat);
+                //color.Save(@$"C:\Users\Mikolaj\PycharmProjects\pythonProject1\color.png");
+                bottom.Save("color.png");
                 //figure = GetRepaintedFromBlack(figure, Color.White);
                 figure.Save("figure.png");
+                //color.Save("color.png");
                 var cardd = _cardRecognition.GetCard();
                 RecoList.Add(cardd);
             }
