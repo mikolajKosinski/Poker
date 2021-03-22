@@ -26,11 +26,12 @@ namespace CoreBusinessLogic
 
         public bool Equals(ICard card)
         {
+            if (card == null) return false;
             return card.Color == Color && card.Figure == Figure;
         }
 
-        public CardFigure Figure { get; }
-        public CardColor Color { get; }
-        public Guid ID { get; }
+        public CardFigure Figure { get; private set; }
+        public CardColor Color { get; private set; }
+        public Guid ID { get; private set; }
     }
 }

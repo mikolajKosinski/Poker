@@ -26,7 +26,7 @@
             <ColumnDefinition Width="30" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="150" />
+            <RowDefinition Height="170" />
             <RowDefinition Height="*" />
             <RowDefinition Height="30" />
         </Grid.RowDefinitions>
@@ -36,8 +36,9 @@
                 <Button Content="GetHandArea" Width="80" Height="30" Command="{Binding HandSelectCommand}" Grid.Column="1" Grid.Row="0"/>
                 <Button Content="Analyze" Width="80" Height="30" Command="{Binding AnalyzeCommand}" Grid.Column="1" Grid.Row="0"/>
                 <Button Content="Add" Command="{Binding AddCommand}" />
+                <Button Content="Remove" Command="{Binding RemoveCommand}" />
             </StackPanel>
-            <ListBox Grid.Row="0" ItemsSource="{Binding RecoList}" Grid.Column="2" Height="150" Width="80">
+            <ListBox Grid.Row="0" ItemsSource="{Binding RecoList, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Grid.Column="2" Height="150" Width="80">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <StackPanel Orientation="Horizontal">

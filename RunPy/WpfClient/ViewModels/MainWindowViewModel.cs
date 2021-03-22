@@ -43,8 +43,26 @@ namespace WpfClient.ViewModels
         public ICommand DeskSelectCommand { get; set; }
         public ICommand AnalyzeCommand { get; set; }
         public ICommand SingleCardCommand { get; set; }
+        public ICommand AddCommand { get; set; }
+        public ICommand RemoveCommand { get; set; }
 
-        public ObservableCollection<ICard> RecoList { get; set; }
+        private ObservableCollection<ICard> _recoList;
+        public ObservableCollection<ICard> RecoList
+        {
+            get
+            {
+                if (_recoList == null)
+                {
+                    _recoList = new ObservableCollection<ICard>();
+                }
+                return _recoList;
+            }
+            set
+            {
+                _recoList = value;
+                NotifyPropertyChanged(nameof(RecoList));
+            }
+        }
 
         private List<ICard> _recognizedCardsList;
         public List<ICard> RecognizedCardsList
@@ -64,7 +82,6 @@ namespace WpfClient.ViewModels
         public MainWindowViewModel(ICardRecognition cardRecognition, IFigureMatcher figureMatcher, ICardManager cardManager)
         {
             RecognizedCardsList = new List<ICard>();
-            RecoList = new ObservableCollection<ICard>();
             _cardManager = cardManager;
             _cardRecognition = cardRecognition;
             _figureMatcher = figureMatcher;
@@ -72,6 +89,18 @@ namespace WpfClient.ViewModels
             HandSelectCommand = new CustomCommand(SelectHand, CanSelect);
             SingleCardCommand = new CustomCommand(SelectSingleCard, CanSelect);
             AnalyzeCommand = new CustomCommand(Analyze, CanSelect);
+            AddCommand = new CustomCommand(Add, CanSelect);
+            RemoveCommand = new CustomCommand(Remove, CanSelect);
+        }
+
+        public void Add(object parameter)
+        {
+            RecoList.Add(new Card(CardFigure._2, CardColor.club));
+        }
+
+        public void Remove(object parameter)
+        {
+            ClearList();
         }
 
         public bool CanSelect(object parameter)
@@ -114,8 +143,18 @@ namespace WpfClient.ViewModels
             //GetAreas(area, at);
         }
 
+        private void ClearList()
+        {
+            var count = RecoList.Count();
+            foreach(var item in RecoList.ToList())
+            {
+                RecoList.Remove(RecoList.First());
+            }
+        }
+
         public void Analyze(object sender)
         {
+            ClearList();
             var desk = GetAreaBitmap(DeskArea, AnalyzeType.Desk);
 
             if(desk == null)
