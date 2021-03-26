@@ -38,7 +38,7 @@
                 <Button Content="Add" Command="{Binding AddCommand}" />
                 <Button Content="Remove" Command="{Binding RemoveCommand}" />
             </StackPanel>
-            <ListBox Grid.Row="0" ItemsSource="{Binding RecoList, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Grid.Column="2" Height="150" Width="80">
+            <ListBox Grid.Row="0" ItemsSource="{Binding DeskCards, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Grid.Column="2" Height="150" Width="80">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <StackPanel Orientation="Horizontal">

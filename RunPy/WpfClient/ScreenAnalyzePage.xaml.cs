@@ -91,7 +91,7 @@ namespace WpfClient
             if (cardApproved)
             {
                 ApprovedList.Add(_currentCardArea);
-                _mainWindowViewModel.RecoList.Add(_currentCard);
+                _mainWindowViewModel.DeskCards.Add(_currentCard);
             }
         }
 

@@ -16,7 +16,8 @@ namespace WpfClient.Interfaces
         public CardArea HandArea { get; set; }
         public CardArea SingleCardArea { get; set; }
         List<ICard> RecognizedCardsList { get; set; }
-        ObservableCollection<ICard> RecoList { get; set; }
+        ObservableCollection<ICard> HandCards { get; set; }
+        ObservableCollection<ICard> DeskCards { get; set; }
         event EventHandler<ICard> CardRecognized;
         bool ElementAdded { get; set; }
     }

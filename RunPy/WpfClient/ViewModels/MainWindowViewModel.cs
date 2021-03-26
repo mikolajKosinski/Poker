@@ -21,6 +21,7 @@ namespace WpfClient.ViewModels
         public event EventHandler<ICard> CardRecognized;
         private int _singleCardWidth;
         private int _singleCardHeight;
+        private int _deskOffset;
         private int _deskWidth;
         private int _handWidth;
         private CardArea _deskCardsArea;
@@ -46,21 +47,39 @@ namespace WpfClient.ViewModels
         public ICommand AddCommand { get; set; }
         public ICommand RemoveCommand { get; set; }
 
-        private ObservableCollection<ICard> _recoList;
-        public ObservableCollection<ICard> RecoList
+        private ObservableCollection<ICard> _handCards;
+        public ObservableCollection<ICard> HandCards
         {
             get
             {
-                if (_recoList == null)
+                if (_handCards == null)
                 {
-                    _recoList = new ObservableCollection<ICard>();
+                    _handCards = new ObservableCollection<ICard>();
                 }
-                return _recoList;
+                return _handCards;
             }
             set
             {
-                _recoList = value;
-                NotifyPropertyChanged(nameof(RecoList));
+                _handCards = value;
+                NotifyPropertyChanged(nameof(HandCards));
+            }
+        }
+
+        private ObservableCollection<ICard> _deskCards;
+        public ObservableCollection<ICard> DeskCards
+        {
+            get
+            {
+                if (_deskCards == null)
+                {
+                    _deskCards = new ObservableCollection<ICard>();
+                }
+                return _deskCards;
+            }
+            set
+            {
+                _deskCards = value;
+                NotifyPropertyChanged(nameof(DeskCards));
             }
         }
 
@@ -95,7 +114,7 @@ namespace WpfClient.ViewModels
 
         public void Add(object parameter)
         {
-            RecoList.Add(new Card(CardFigure._2, CardColor.club));
+            DeskCards.Add(new Card(CardFigure._2, CardColor.club));
         }
 
         public void Remove(object parameter)
@@ -145,10 +164,10 @@ namespace WpfClient.ViewModels
 
         private void ClearList()
         {
-            var count = RecoList.Count();
-            foreach(var item in RecoList.ToList())
+            var count = DeskCards.Count();
+            foreach(var item in DeskCards.ToList())
             {
-                RecoList.Remove(RecoList.First());
+                DeskCards.Remove(DeskCards.First());
             }
         }
 
@@ -163,23 +182,27 @@ namespace WpfClient.ViewModels
                 return;
             }
 
-            //var hand = GetArea(HandArea, AnalyzeType.Hand);
+            //var hand = GetAreaBitmap(HandArea, AnalyzeType.Hand);
             var single = GetAreaBitmap(SingleCardArea, AnalyzeType.SingleCard);
 
             AnalyzeDesk(desk);            
         }
 
         private void AnalyzeDesk(Bitmap desk)
-        {            
+        {
+            double exact = (double)_deskWidth / (double)_singleCardWidth;
             int count = _deskWidth / _singleCardWidth;
+
+            if (exact < 3) count++;
+            if (3 < exact && exact < 4) count++;
             var topName = @$"C:\Users\Mikolaj\PycharmProjects\pythonProject1\top.png";
             var top = desk.Clone(new Rectangle(0, 0, _deskWidth, 40), desk.PixelFormat);
-            
-            var offset = (_deskWidth - (_singleCardWidth * count)) / 4;
-            var width = _singleCardWidth + offset;
-            var list = new List<ICard>();
+            var _offsetCount = 4;
+            //if (count > 3) _offsetCount++;
+            //if (count > 4) _offsetCount++;
 
-            var ww = _singleCardWidth / 3.45;
+            if(count == 5) _deskOffset = (_deskWidth - (_singleCardWidth * count)) / _offsetCount;
+            var width = _singleCardWidth + _deskOffset;
             
 
             for(int idx = 0; idx < count; idx++)
@@ -202,10 +225,11 @@ namespace WpfClient.ViewModels
                 //color.Save(@$"C:\Users\Mikolaj\PycharmProjects\pythonProject1\color.png");
                 bottom.Save("color.png");
                 //figure = GetRepaintedFromBlack(figure, Color.White);
+                figure = new Bitmap(figure, new System.Drawing.Size(30, 30));
                 figure.Save("figure.png");
                 //color.Save("color.png");
                 var cardd = _cardRecognition.GetCard();
-                RecoList.Add(cardd);
+                DeskCards.Add(cardd);
             }
 
             Console.WriteLine();
@@ -249,7 +273,7 @@ namespace WpfClient.ViewModels
                     var cardsAreaName = @$"C:\Users\Mikolaj\PycharmProjects\pythonProject1\allCards.png";
                     var cutOffName = @$"C:\Users\Mikolaj\PycharmProjects\pythonProject1\{name}.png";
                     g.CopyFromScreen((int)screenLeft, (int)screenTop, 0, 0, bmp.Size);
-                    Bitmap basicPicture = bmp.Clone(new Rectangle((int)item.xStart, (int)item.yStart, width, 150), bmp.PixelFormat);
+                    Bitmap basicPicture = bmp.Clone(new Rectangle((int)item.xStart, (int)item.yStart, width, 100), bmp.PixelFormat);
                     basicPicture = GetRepaintedFromGreen(basicPicture, Color.Black);
                     basicPicture.Save(cardsAreaName);
                     points = GetPoints(at);
