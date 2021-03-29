@@ -9,6 +9,6 @@ namespace CoreBusinessLogic
         string RecogniseByPath(string path);
         Tuple<int, int, int, int> GetSingleCardArea();
         Tuple<int, int, int, int> GetArea();
-        ICard GetCard();
+        ICard GetCard(string figure, string color);
     }
 }

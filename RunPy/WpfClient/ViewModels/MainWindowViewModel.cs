@@ -8,7 +8,9 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using WpfClient.Interfaces;
@@ -25,6 +27,7 @@ namespace WpfClient.ViewModels
         private int _deskWidth;
         private int _handWidth;
         private CardArea _deskCardsArea;
+        private event EventHandler<CardRecognitionEventArgs> _cardRecognized;
         public bool ElementAdded { get; set; }
         private void NotifyPropertyChanged(string propertyName = "")
         {
@@ -32,6 +35,11 @@ namespace WpfClient.ViewModels
             {
                 PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
             }
+        }
+
+        private void OnCardRecognized(CardRecognitionEventArgs e)
+        {
+            _cardRecognized?.Invoke(this, e);
         }
 
         ICardRecognition _cardRecognition;
@@ -101,15 +109,22 @@ namespace WpfClient.ViewModels
         public MainWindowViewModel(ICardRecognition cardRecognition, IFigureMatcher figureMatcher, ICardManager cardManager)
         {
             RecognizedCardsList = new List<ICard>();
+            DeskCards = new ObservableCollection<ICard>();
             _cardManager = cardManager;
             _cardRecognition = cardRecognition;
             _figureMatcher = figureMatcher;
+            _cardRecognized += MainWindowViewModel__cardRecognized;
             DeskSelectCommand = new CustomCommand(SelectDesk, CanSelect);
             HandSelectCommand = new CustomCommand(SelectHand, CanSelect);
             SingleCardCommand = new CustomCommand(SelectSingleCard, CanSelect);
             AnalyzeCommand = new CustomCommand(Analyze, CanSelect);
             AddCommand = new CustomCommand(Add, CanSelect);
             RemoveCommand = new CustomCommand(Remove, CanSelect);
+        }
+
+        private void MainWindowViewModel__cardRecognized(object sender, CardRecognitionEventArgs e)
+        {
+            DeskCards.Add(e.Card);
         }
 
         public void Add(object parameter)
@@ -194,45 +209,61 @@ namespace WpfClient.ViewModels
             int count = _deskWidth / _singleCardWidth;
 
             if (exact < 3) count++;
-            if (3 < exact && exact < 4) count++;
+            if (3.5 < exact && exact < 4) count = 4;
+            if (exact > 4.5) count = 5;
             var topName = @$"C:\Users\Mikolaj\PycharmProjects\pythonProject1\top.png";
             var top = desk.Clone(new Rectangle(0, 0, _deskWidth, 40), desk.PixelFormat);
             var _offsetCount = 4;
-            //if (count > 3) _offsetCount++;
-            //if (count > 4) _offsetCount++;
 
             if(count == 5) _deskOffset = (_deskWidth - (_singleCardWidth * count)) / _offsetCount;
             var width = _singleCardWidth + _deskOffset;
-            
 
-            for(int idx = 0; idx < count; idx++)
+
+            for (int idx = 0; idx < count; idx++)
             {
                 if ((width * idx) > _deskWidth) return;
 
                 var card = top.Clone(new Rectangle(width * idx, 5, 30, 30), top.PixelFormat);
-                card.Save(@$"C:\Users\Mikolaj\PycharmProjects\pythonProject1\allCards.png");                
+                card.Save(@$"C:\Users\Mikolaj\PycharmProjects\pythonProject1\allCards.png");
                 var points = _cardRecognition.GetSingleCardArea();
                 var xStart = (width * idx) + points.Item1;
                 var yStart = 5;
                 var figureWidth = points.Item2 - 5;
                 var figureHeight = points.Item4 - points.Item3;
                 var figure = top.Clone(new Rectangle(xStart, yStart, figureWidth, figureHeight), top.PixelFormat);
-
-                var bottom = desk.Clone(new Rectangle(xStart, figureHeight, figureWidth, figureHeight), desk.PixelFormat);
-                bottom.Save(@$"C:\Users\Mikolaj\PycharmProjects\pythonProject1\color.png");
-                //points = _cardRecognition.GetSingleCardArea();
-                //var color = bottom.Clone(new Rectangle(points.Item1, points.Item3, points.Item2 - points.Item1, points.Item4 - points.Item3), desk.PixelFormat);
-                //color.Save(@$"C:\Users\Mikolaj\PycharmProjects\pythonProject1\color.png");
-                bottom.Save("color.png");
-                //figure = GetRepaintedFromBlack(figure, Color.White);
-                figure = new Bitmap(figure, new System.Drawing.Size(30, 30));
-                figure.Save("figure.png");
-                //color.Save("color.png");
-                var cardd = _cardRecognition.GetCard();
-                DeskCards.Add(cardd);
+                var color = desk.Clone(new Rectangle(xStart, figureHeight, figureWidth, figureHeight), desk.PixelFormat);
+                color.Save($"color{idx}.png");
+                figure.Save($"figure{idx}.png");
+                var path = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+                var figurePath = Path.Combine(path, $"figure{idx}.png");
+                var colorPath = Path.Combine(path, $"color{idx}.png");
+                figurePath = figurePath.Replace("\\", "/");
+                colorPath = colorPath.Replace("\\", "/");
+                Task.Run(() => { PredictCard(idx, figurePath, colorPath); });
+                //var cardd = _cardRecognition.GetCard(figurePath, colorPath);
+                //DeskCards.Add(cardd);                
             }
+        }
 
-            Console.WriteLine();
+        private async void PredictCard(int idx, string figurePath, string colorPath)
+        {
+            //var card = _cardRecognition.GetCard(figurePath, colorPath);
+            var card = await GetCard(figurePath, colorPath);
+            
+            File.Delete(figurePath);
+            File.Delete(colorPath);
+            //OnCardRecognized(new CardRecognitionEventArgs(card));
+        }
+
+        public static void AddOnUI<T>(this ICollection<T> collection, ICard item)
+        {
+            Action<T> addMethod = collection.Add;
+            Application.Current.Dispatcher.BeginInvoke(addMethod, item);
+        }
+
+        private async Task<ICard> GetCard(string figurePath, string colorPath)
+        {
+            return _cardRecognition.GetCard(figurePath, colorPath);
         }
 
         //private void GetSingleCardArea()
@@ -273,7 +304,7 @@ namespace WpfClient.ViewModels
                     var cardsAreaName = @$"C:\Users\Mikolaj\PycharmProjects\pythonProject1\allCards.png";
                     var cutOffName = @$"C:\Users\Mikolaj\PycharmProjects\pythonProject1\{name}.png";
                     g.CopyFromScreen((int)screenLeft, (int)screenTop, 0, 0, bmp.Size);
-                    Bitmap basicPicture = bmp.Clone(new Rectangle((int)item.xStart, (int)item.yStart, width, 100), bmp.PixelFormat);
+                    Bitmap basicPicture = bmp.Clone(new Rectangle((int)item.xStart, (int)item.yStart, width, 150), bmp.PixelFormat);
                     basicPicture = GetRepaintedFromGreen(basicPicture, Color.Black);
                     basicPicture.Save(cardsAreaName);
                     points = GetPoints(at);
@@ -421,7 +452,7 @@ namespace WpfClient.ViewModels
             _figureMatcher.CheckHand();
 
             var cr = new CardRecognition();
-            var res = cr.GetCard();
+            //var res = cr.GetCard();
 
             Console.WriteLine();
         }

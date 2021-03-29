@@ -49,22 +49,22 @@ namespace CoreBusinessLogic
             };
         }
 
-        public ICard GetCard()
+        public ICard GetCard(string figurePath, string colorPath)
         {
-            var color = RecognizeColor();
-            var figure = RecognizeFigure();
+            var figure = RecognizeFigure(figurePath);
+            var color = RecognizeColor(colorPath);            
             return new Card(figure, color);
         }
 
-        private CardFigure RecognizeFigure()
+        private CardFigure RecognizeFigure(string imagePath)
         {
-            var result = RecognizeImage(recoType.figure);
+            var result = RecognizeImage(recoType.figure, imagePath);
             return _figureDict[result];
         }
 
-        private CardColor RecognizeColor()
+        private CardColor RecognizeColor(string imagePath)
         {
-            var result = RecognizeImage(recoType.color);
+            var result = RecognizeImage(recoType.color, imagePath);
             return _colorDict[result];
             
         }
@@ -131,12 +131,12 @@ namespace CoreBusinessLogic
                 Convert.ToInt32(points[3]));
         }
 
-        private string RecognizeImage(recoType rc)
+        private string RecognizeImage(recoType rc, string imagePath)
         {
             Process process = new Process();
             string argument = rc == recoType.figure ?
-                @"C:\Users\Mikolaj\PycharmProjects\pythonProject1\PredictFigure.py" :
-                @"C:\Users\Mikolaj\PycharmProjects\pythonProject1\PredictColor.py";
+                $@"C:\Users\Mikolaj\PycharmProjects\pythonProject1\PredictFigure.py {imagePath}" :
+                $@"C:\Users\Mikolaj\PycharmProjects\pythonProject1\PredictColor.py {imagePath}";
             process.StartInfo = new System.Diagnostics.ProcessStartInfo()
             {
                 UseShellExecute = false,
