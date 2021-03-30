@@ -13,6 +13,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using System.Windows.Threading;
 using WpfClient.Interfaces;
 
 namespace WpfClient.ViewModels
@@ -177,6 +178,20 @@ namespace WpfClient.ViewModels
             //GetAreas(area, at);
         }
 
+        private Dispatcher _getDispatcher()
+        {
+            var _dispatcher = Application.Current.Dispatcher;
+
+            //if (_dispatcher == null)
+            //{
+            //    throw new DispatcherNotFoundException("An attempt to dispatch the action to UI thread before dispatcher was found");
+            //}
+
+            return _dispatcher;
+        }
+
+        async Task DispatchToUiThread(Action action) => await _getDispatcher().InvokeAsync(action);
+
         private void ClearList()
         {
             var count = DeskCards.Count();
@@ -249,17 +264,15 @@ namespace WpfClient.ViewModels
         {
             //var card = _cardRecognition.GetCard(figurePath, colorPath);
             var card = await GetCard(figurePath, colorPath);
-            
+
+            DispatchToUiThread(() => { DeskCards.Add(card); });
+
             File.Delete(figurePath);
             File.Delete(colorPath);
             //OnCardRecognized(new CardRecognitionEventArgs(card));
         }
 
-        public static void AddOnUI<T>(this ICollection<T> collection, ICard item)
-        {
-            Action<T> addMethod = collection.Add;
-            Application.Current.Dispatcher.BeginInvoke(addMethod, item);
-        }
+       
 
         private async Task<ICard> GetCard(string figurePath, string colorPath)
         {
