@@ -26,7 +26,7 @@
             <ColumnDefinition Width="30" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="170" />
+            <RowDefinition Height="190" />
             <RowDefinition Height="*" />
             <RowDefinition Height="30" />
         </Grid.RowDefinitions>
@@ -38,7 +38,8 @@
                 <Button Content="Add" Command="{Binding AddCommand}" />
                 <Button Content="Remove" Command="{Binding RemoveCommand}" />
             </StackPanel>
-            <ListBox Grid.Row="0" ItemsSource="{Binding DeskCards, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Grid.Column="2" Height="150" Width="80">
+            <StackPanel Grid.Row="0" Orientation="Horizontal" Grid.Column="2" Background="Red">
+            <ListBox ItemsSource="{Binding DeskCards, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Grid.Column="2" Height="150" Width="80">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <StackPanel Orientation="Horizontal">
@@ -48,6 +49,17 @@
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
+                <ListBox ItemsSource="{Binding HandCards, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Grid.Column="2" Height="150" Width="80">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="{Binding Figure}" />
+                                <TextBlock Text="{Binding Color}" />
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </StackPanel>
         </Grid>
     </Border>
 </Window>

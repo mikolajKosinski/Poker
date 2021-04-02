@@ -17,16 +17,25 @@ using System.Windows.Threading;
 using WpfClient.Interfaces;
 
 namespace WpfClient.ViewModels
-{
+{    
     public class MainWindowViewModel : IMainWindoViewModel, INotifyPropertyChanged
     {
+        private enum CardTypeEnum
+        {
+            Desk = 0,
+            Hand = 1
+        }
+
         public event PropertyChangedEventHandler PropertyChanged;
         public event EventHandler<ICard> CardRecognized;
         private int _singleCardWidth;
         private int _singleCardHeight;
         private int _deskOffset;
+        private int _handOffset;
         private int _deskWidth;
         private int _handWidth;
+        private List<Tuple<int, int, int, int>> _deskPointsList;
+        private List<Tuple<int, int, int, int>> _handPointsList;
         private CardArea _deskCardsArea;
         private event EventHandler<CardRecognitionEventArgs> _cardRecognized;
         public bool ElementAdded { get; set; }
@@ -111,9 +120,12 @@ namespace WpfClient.ViewModels
         {
             RecognizedCardsList = new List<ICard>();
             DeskCards = new ObservableCollection<ICard>();
+            HandCards = new ObservableCollection<ICard>();
             _cardManager = cardManager;
             _cardRecognition = cardRecognition;
             _figureMatcher = figureMatcher;
+            _deskPointsList = new List<Tuple<int, int, int, int>>();
+            _handPointsList = new List<Tuple<int, int, int, int>>();
             _cardRecognized += MainWindowViewModel__cardRecognized;
             DeskSelectCommand = new CustomCommand(SelectDesk, CanSelect);
             HandSelectCommand = new CustomCommand(SelectHand, CanSelect);
@@ -180,24 +192,21 @@ namespace WpfClient.ViewModels
 
         private Dispatcher _getDispatcher()
         {
-            var _dispatcher = Application.Current.Dispatcher;
-
-            //if (_dispatcher == null)
-            //{
-            //    throw new DispatcherNotFoundException("An attempt to dispatch the action to UI thread before dispatcher was found");
-            //}
-
-            return _dispatcher;
+            return Application.Current.Dispatcher;
         }
 
         async Task DispatchToUiThread(Action action) => await _getDispatcher().InvokeAsync(action);
 
         private void ClearList()
         {
-            var count = DeskCards.Count();
             foreach(var item in DeskCards.ToList())
             {
                 DeskCards.Remove(DeskCards.First());
+            }
+
+            foreach (var item in HandCards.ToList())
+            {
+                HandCards.Remove(HandCards.First());
             }
         }
 
@@ -206,16 +215,17 @@ namespace WpfClient.ViewModels
             ClearList();
             var desk = GetAreaBitmap(DeskArea, AnalyzeType.Desk);
 
-            if(desk == null)
+            if (desk == null)
             {
                 MessageBox.Show("Try again");
                 return;
             }
 
-            //var hand = GetAreaBitmap(HandArea, AnalyzeType.Hand);
+            var hand = GetAreaBitmap(HandArea, AnalyzeType.Hand);
             var single = GetAreaBitmap(SingleCardArea, AnalyzeType.SingleCard);
 
-            AnalyzeDesk(desk);            
+            AnalyzeDesk(desk);
+            AnalyzeHand(hand);
         }
 
         private void AnalyzeDesk(Bitmap desk)
@@ -240,36 +250,89 @@ namespace WpfClient.ViewModels
 
                 var card = top.Clone(new Rectangle(width * idx, 5, 30, 30), top.PixelFormat);
                 card.Save(@$"C:\Users\Mikolaj\PycharmProjects\pythonProject1\allCards.png");
-                var points = _cardRecognition.GetSingleCardArea();
+                var points = GetDeskPoints(idx);// _cardRecognition.GetSingleCardArea();
                 var xStart = (width * idx) + points.Item1;
                 var yStart = 5;
                 var figureWidth = points.Item2 - 5;
                 var figureHeight = points.Item4 - points.Item3;
                 var figure = top.Clone(new Rectangle(xStart, yStart, figureWidth, figureHeight), top.PixelFormat);
                 var color = desk.Clone(new Rectangle(xStart, figureHeight, figureWidth, figureHeight), desk.PixelFormat);
-                color.Save($"color{idx}.png");
-                figure.Save($"figure{idx}.png");
+                color.Save($"deskColor{idx}.png");
+                figure.Save($"deskFigure{idx}.png");
                 var path = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-                var figurePath = Path.Combine(path, $"figure{idx}.png");
-                var colorPath = Path.Combine(path, $"color{idx}.png");
+                var figurePath = Path.Combine(path, $"deskFigure{idx}.png");
+                var colorPath = Path.Combine(path, $"deskColor{idx}.png");
                 figurePath = figurePath.Replace("\\", "/");
                 colorPath = colorPath.Replace("\\", "/");
-                Task.Run(() => { PredictCard(idx, figurePath, colorPath); });
+                Task.Run(() => { PredictCard(idx, figurePath, colorPath, CardTypeEnum.Desk); });
                 //var cardd = _cardRecognition.GetCard(figurePath, colorPath);
                 //DeskCards.Add(cardd);                
             }
         }
 
-        private async void PredictCard(int idx, string figurePath, string colorPath)
+        private void AnalyzeHand(Bitmap hand)
+        {            
+            
+            var topName = @$"C:\Users\Mikolaj\PycharmProjects\pythonProject1\top.png";
+            var top = hand.Clone(new Rectangle(0, 0, _handWidth, 40), hand.PixelFormat);
+            top.Save("toppHand.png");
+            var _offsetCount = 1;
+            _handOffset = (_handWidth - (_singleCardWidth * 2)) / _offsetCount;
+            var width = _singleCardWidth + _handOffset;
+
+            for (int idx = 0; idx < 2; idx++)
+            {
+                if ((width * idx) > _handWidth) return;
+
+                var card = top.Clone(new Rectangle(width * idx, 5, 30, 30), top.PixelFormat);
+                card.Save(@$"C:\Users\Mikolaj\PycharmProjects\pythonProject1\allCards.png");
+                var points = GetHandPoints(idx);// _cardRecognition.GetSingleCardArea();
+                var xStart = (width * idx) + points.Item1;
+                var yStart = 5;
+                var figureWidth = points.Item2 - 5;
+                var figureHeight = points.Item4 - points.Item3;
+                var figure = top.Clone(new Rectangle(xStart, yStart, figureWidth, figureHeight), top.PixelFormat);
+                var color = hand.Clone(new Rectangle(xStart, figureHeight, figureWidth, figureHeight), hand.PixelFormat);
+                color.Save($"handColor{idx}.png");
+                figure.Save($"handFigure{idx}.png");
+                var path = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+                var figurePath = Path.Combine(path, $"handFigure{idx}.png");
+                var colorPath = Path.Combine(path, $"handColor{idx}.png");
+                figurePath = figurePath.Replace("\\", "/");
+                colorPath = colorPath.Replace("\\", "/");
+                Task.Run(() => { PredictCard(idx, figurePath, colorPath, CardTypeEnum.Hand); });
+                //var cardd = _cardRecognition.GetCard(figurePath, colorPath);
+                //DeskCards.Add(cardd);                
+            }
+        }
+
+        private Tuple<int,int,int,int> GetDeskPoints (int idx)
         {
-            //var card = _cardRecognition.GetCard(figurePath, colorPath);
+            if (_deskPointsList.Count() > idx) return _deskPointsList[idx];
+            _deskPointsList.Add(_cardRecognition.GetSingleCardArea());
+            return _deskPointsList[idx];
+        }
+
+        private Tuple<int, int, int, int> GetHandPoints(int idx)
+        {
+            if (_handPointsList.Count() > idx) return _handPointsList[idx];
+            _handPointsList.Add(_cardRecognition.GetSingleCardArea());
+            return _handPointsList[idx];
+        }
+
+        private async void PredictCard(int idx, string figurePath, string colorPath, CardTypeEnum ct)
+        {
             var card = await GetCard(figurePath, colorPath);
-
-            DispatchToUiThread(() => { DeskCards.Add(card); });
-
+            if (ct == CardTypeEnum.Desk)
+            {
+                DispatchToUiThread(() => { DeskCards.Add(card); });
+            }
+            else
+            {
+                DispatchToUiThread(() => { HandCards.Add(card); });
+            }
             File.Delete(figurePath);
             File.Delete(colorPath);
-            //OnCardRecognized(new CardRecognitionEventArgs(card));
         }
 
        
@@ -317,8 +380,10 @@ namespace WpfClient.ViewModels
                     var cardsAreaName = @$"C:\Users\Mikolaj\PycharmProjects\pythonProject1\allCards.png";
                     var cutOffName = @$"C:\Users\Mikolaj\PycharmProjects\pythonProject1\{name}.png";
                     g.CopyFromScreen((int)screenLeft, (int)screenTop, 0, 0, bmp.Size);
-                    Bitmap basicPicture = bmp.Clone(new Rectangle((int)item.xStart, (int)item.yStart, width, 150), bmp.PixelFormat);
+                    var cardHeight = at == AnalyzeType.Desk ? 150 : 80;
+                    Bitmap basicPicture = bmp.Clone(new Rectangle((int)item.xStart, (int)item.yStart, width, cardHeight), bmp.PixelFormat);
                     basicPicture = GetRepaintedFromGreen(basicPicture, Color.Black);
+                    if (at == AnalyzeType.Hand) basicPicture = GetRepaintedHand(basicPicture, Color.Black);
                     basicPicture.Save(cardsAreaName);
                     points = GetPoints(at);
                     cutOffWidth = points.Item2 - points.Item1;
@@ -336,6 +401,8 @@ namespace WpfClient.ViewModels
                     var xStart = points.Item1;
                     var yStart = points.Item3;
 
+                    if (at == AnalyzeType.Hand) height = 60;
+
                     try
                     {
                         Bitmap cutOffImg = basicPicture.Clone(
@@ -347,7 +414,7 @@ namespace WpfClient.ViewModels
                         cutOffImg.Save(cutOffName);
                         return cutOffImg;
                     }
-                    catch
+                    catch(Exception x)
                     {
                         return null;
                     }
@@ -386,6 +453,19 @@ namespace WpfClient.ViewModels
                     {
                         basicPicture.SetPixel(x, y, color);
                     }
+                }
+            }
+
+            return basicPicture;
+        }
+
+        private Bitmap GetRepaintedHand(Bitmap basicPicture, Color color)
+        {
+            for (int x = 0; x < basicPicture.Width; x++)
+            {
+                for (int y = 70; y < basicPicture.Height; y++)
+                {
+                    basicPicture.SetPixel(x, y, color);
                 }
             }
 
