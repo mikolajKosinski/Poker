@@ -9,7 +9,7 @@ namespace WpfClient.Interfaces
 {
     public interface IMainWindoViewModel
     {
-        void TakeScreenShoot(System.Windows.Point pointToWindow, System.Windows.Point pointToScreen);
+        void TakeScreenShoot();
         ICommand DeskSelectCommand { get; set; }
         void Analyze(object sender);
         public CardArea DeskArea { get; set; }

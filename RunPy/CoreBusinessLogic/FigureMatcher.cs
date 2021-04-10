@@ -54,5 +54,15 @@ namespace CoreBusinessLogic
         {
             hand.Add(new Card(figure, color));
         }
+
+        public void AddCardToFlop(ICard card)
+        {
+            desk.Add(card);
+        }
+
+        public void AddCardToHand(ICard card)
+        {
+            hand.Add(card);
+        }
     }
 }

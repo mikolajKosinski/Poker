@@ -17,6 +17,7 @@ namespace CoreBusinessLogic
         }
 
         public int Probability { get; set; }
+        public int HowManyCardsNeeded { get; set; }
         public List<ICard> CardList { get; set; } 
         protected IList<ICard> hand;
         protected IList<ICard> desk;
@@ -25,6 +26,9 @@ namespace CoreBusinessLogic
 
         protected decimal GetOddsPercentage(int outs)
         {
+            var cardsLeft = 7 - tempHand.Count();
+            if (HowManyCardsNeeded > cardsLeft) return 0;
+
             decimal restOfCards = GetDeckExceptTempHand().Count();
             decimal loose = restOfCards - outs;
             decimal result = (outs / loose) * 100;
@@ -85,12 +89,12 @@ namespace CoreBusinessLogic
         {
             var deck = GetDeck();
             var tempHand = hand.Concat(desk).ToList();
-            
-            //foreach(var item in tempHand)
-           // {
-             //   var card = deck.First(p => p.Color == item.Color && p.Figure == item.Figure);
-            //    deck.Remove(card);
-            //}
+
+            foreach (var item in tempHand)
+            {
+                var card = deck.First(p => p.Color == item.Color && p.Figure == item.Figure);
+                deck.Remove(card);
+            }
 
             return deck;
         }

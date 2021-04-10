@@ -45,7 +45,19 @@ namespace CoreBusinessLogic.Hands
 
         public IList<ICard> GetOuts()
         {
+            HowManyCardsNeeded = GetNeededCardsCount();
             return GetMatchingCardsFromDeck();
+        }
+
+        private int GetNeededCardsCount()
+        {
+            var cardNeeded = 0;
+            var gotPair = CheckGroupCount(tempHand, 2);
+            if (!gotPair) cardNeeded++;
+            var gotThreeOf = CheckGroupCount(tempHand, 3);
+            if (!gotThreeOf) cardNeeded += 2;
+
+            return cardNeeded;
         }
                
         private IList<ICard> GetMatchingCardsFromDeck()
