@@ -22,7 +22,7 @@ namespace CoreBusinessLogic.Hands
             {
                 Probability = (int)GetOddsPercentage(GetOuts().Count());
                 var color = GetDominatingColor();
-                CardList = tempHand.Where(p => p.Color == color).ToList();
+                CardList = tempHand.Where(p => p.Color == color && p.Figure >= CardFigure._10).ToList();
                 return;
             }
 
@@ -43,6 +43,7 @@ namespace CoreBusinessLogic.Hands
 
         public IList<ICard> GetOuts()
         {
+            CardsNeeded = GetNeededCardsCount();
             var color = GetDominatingColor();
             var rf = GetRFByColor(color);
 
@@ -54,6 +55,17 @@ namespace CoreBusinessLogic.Hands
             }
 
             return rf;
+        }
+
+        private int GetNeededCardsCount()
+        {
+            var highestCardHand = tempHand.Any(c => c.Figure == CardFigure._As) ? 
+                tempHand.First(c => c.Figure == CardFigure._As) :
+                new Card(CardFigure._As, CardColor.club);
+            var lowestCard = highestCardHand.Figure - 5;
+            var elements = tempHand.Where(p => p.Figure >= lowestCard).OrderByDescending(x => x.Figure).ToList();
+
+            return 5 - elements.Count();
         }
 
         private List<ICard> GetRFByColor(CardColor color)

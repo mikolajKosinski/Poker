@@ -14,6 +14,9 @@ namespace CoreBusinessLogic.Hands
 
         public IList<ICard> GetOuts()
         {
+            if (!tempHand.Any()) return new List<ICard>();
+
+            CardsNeeded = GetNeededCardsCount();
             var highestCardHand = tempHand.OrderByDescending(x => x.Figure).First();
             var highestPossibleFigure = highestCardHand.Figure + 2;
 
@@ -43,12 +46,23 @@ namespace CoreBusinessLogic.Hands
             return outs;
         }
 
+        private int GetNeededCardsCount()
+        {
+            var highestCardHand = tempHand.OrderByDescending(x => x.Figure).First();
+            var lowestCard = highestCardHand.Figure - 5;
+            var elements = tempHand.Where(p => p.Figure >= lowestCard).OrderByDescending(x => x.Figure).ToList();
+
+            return 5 - elements.Count();
+        }
+
         public void Check()
         {
             if (NotInOrder(tempHand))
             {
                 Probability = (int)GetOddsPercentage(GetOuts().Count());
-                var elements = tempHand.OrderByDescending(x => x.Figure).ToList();
+                var highestCardHand = tempHand.OrderByDescending(x => x.Figure).First();
+                var lowestCard = highestCardHand.Figure - 5;
+                var elements = tempHand.Where(p => p.Figure >= lowestCard).OrderByDescending(x => x.Figure).ToList();
                 CardList = GetWithNoRept(elements);
                 return;
             }

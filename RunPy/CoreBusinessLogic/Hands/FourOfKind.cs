@@ -38,7 +38,7 @@ namespace CoreBusinessLogic.Hands
 
         public IList<ICard> GetOuts()
         {
-            HowManyCardsNeeded = GetNeededCardsCount();
+            CardsNeeded = GetNeededCardsCount();
             return GetMatchingCardsFromDeck();
         }
 

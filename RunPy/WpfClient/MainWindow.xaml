@@ -20,10 +20,11 @@
                 </VisualStateGroup>
             </VisualStateManager.VisualStateGroups>
             <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="30" />
+            <ColumnDefinition Width="10" />
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="*" />
-            <ColumnDefinition Width="30" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="10" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="190" />
@@ -55,6 +56,16 @@
                             <StackPanel Orientation="Horizontal">
                                 <TextBlock Text="{Binding Figure}" />
                                 <TextBlock Text="{Binding Color}" />
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+                <ListBox ItemsSource="{Binding Hands, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Grid.Column="3" Height="150" Width="120">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="{Binding HandName}" />
+                                <TextBlock Text="{Binding HandProbability}" />
                             </StackPanel>
                         </DataTemplate>
                     </ListBox.ItemTemplate>

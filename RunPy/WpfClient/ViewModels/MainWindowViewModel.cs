@@ -104,6 +104,24 @@ namespace WpfClient.ViewModels
             }
         }
 
+        private ObservableCollection<IHandDescription> _hands;
+        public ObservableCollection<IHandDescription> Hands
+        {
+            get
+            {
+                if (_hands == null)
+                {
+                    _hands = new ObservableCollection<IHandDescription>();
+                }
+                return _hands;
+            }
+            set
+            {
+                _hands = value;
+                NotifyPropertyChanged(nameof(Hands));
+            }
+        }
+
         private List<ICard> _recognizedCardsList;
         public List<ICard> RecognizedCardsList
         {
@@ -169,6 +187,11 @@ namespace WpfClient.ViewModels
                 }
 
                 matcher.CheckHand();
+                foreach (var key in matcher.PokerHandsDict.Keys)
+                {
+                    var hand = matcher.PokerHandsDict[key];
+                    Hands.Add(new HandDescription(key.ToString(), hand.Probability));
+                }
                 Console.WriteLine();
             }
         }
@@ -250,33 +273,33 @@ namespace WpfClient.ViewModels
 
         public void Analyze(object sender)
         {
-            TakeScreenShoot();
-            //ClearList();
-            //var desk = GetAreaBitmap(DeskArea, AnalyzeType.Desk);
+            //TakeScreenShoot();
+            ClearList();
+            var desk = GetAreaBitmap(DeskArea, AnalyzeType.Desk);
 
-            //if (desk == null)
-            //{
-            //    MessageBox.Show("Try again");
-            //    return;
-            //}
+            if (desk == null)
+            {
+                MessageBox.Show("Try again");
+                return;
+            }
 
-            //var hand = GetAreaBitmap(HandArea, AnalyzeType.Hand);
-            //var single = GetAreaBitmap(SingleCardArea, AnalyzeType.SingleCard);
+            var hand = GetAreaBitmap(HandArea, AnalyzeType.Hand);
+            var single = GetAreaBitmap(SingleCardArea, AnalyzeType.SingleCard);
 
-            //AnalyzeDesk(desk);
-            //AnalyzeHand(hand);
+            AnalyzeDesk(desk);
+            AnalyzeHand(hand);
 
-            //var matcher = new FigureMatcher();
-            
-            //foreach(var card in DeskCards)
-            //{
-            //    matcher.AddCardToFlop(card);
-            //}
+            var matcher = new FigureMatcher();
 
-            //foreach (var card in HandCards)
-            //{
-            //    matcher.AddCardToHand(card);
-            //}
+            foreach (var card in DeskCards)
+            {
+                matcher.AddCardToFlop(card);
+            }
+
+            foreach (var card in HandCards)
+            {
+                matcher.AddCardToHand(card);
+            }
 
             //matcher.CheckHand();
             //Console.WriteLine();
@@ -605,6 +628,13 @@ namespace WpfClient.ViewModels
 
             var cr = new CardRecognition();
             //var res = cr.GetCard();
+
+
+            foreach(var key in _figureMatcher.PokerHandsDict.Keys)
+            {
+                var hand = _figureMatcher.PokerHandsDict[key];
+                Hands.Add(new HandDescription(key.ToString(), hand.Probability));
+            }
 
             Console.WriteLine();
         }

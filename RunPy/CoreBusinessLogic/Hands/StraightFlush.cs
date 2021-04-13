@@ -27,17 +27,30 @@ namespace CoreBusinessLogic.Hands
             else
             {
                 Probability = (int)GetOddsPercentage(GetOuts().Count());
-                CardList = straight.CardList.Where(p => p.Color == color).ToList();                
+                var cardsByColor = straight.CardList.Where(p => p.Color == color).ToList();
+                var highestFigure = cardsByColor.Max(p => p.Figure);
+                var lowestFigure = highestFigure - 5;
+                CardList = cardsByColor.Where(p => p.Figure >= lowestFigure).ToList();
             }
         }
 
         public IList<ICard> GetOuts()
         {
+            CardsNeeded = GetNeededCardsCount();
             var straight = new Straight(hand, desk);
             var outs = straight.GetOuts();
             var color = GetDominatingColor();
 
             return outs.Where(p => p.Color == color).ToList();
+        }
+
+        private int GetNeededCardsCount()
+        {
+            var highestCardHand = tempHand.OrderByDescending(x => x.Figure).First();
+            var lowestCard = highestCardHand.Figure - 5;
+            var elements = tempHand.Where(p => p.Figure >= lowestCard).OrderByDescending(x => x.Figure).ToList();
+
+            return 5 - elements.Count();
         }
     }
 }

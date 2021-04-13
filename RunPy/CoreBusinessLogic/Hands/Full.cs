@@ -17,6 +17,17 @@ namespace CoreBusinessLogic.Hands
         {
             var pair = GetGroup(tempHand, 2);
             var threeOfKind = GetGroup(tempHand, 3);
+            
+            if(pair.Any())
+            {
+                var secondPairHand = tempHand;
+                secondPairHand.Remove(pair[0]);
+                secondPairHand.Remove(pair[1]);
+                var secondPair = GetGroup(secondPairHand, 2);
+                CardList.AddRange(secondPair);
+            }
+
+
             CardList.AddRange(pair);
             CardList.AddRange(threeOfKind);
 
@@ -31,6 +42,7 @@ namespace CoreBusinessLogic.Hands
 
         public IList<ICard> GetOuts()
         {
+            CardsNeeded = GetNeededCardsCount();
             var cards = GetDeckExceptTempHand();
             var outs = new List<ICard>();
 
@@ -61,6 +73,27 @@ namespace CoreBusinessLogic.Hands
             }
 
             return new List<ICard>();
+        }
+
+        private int GetNeededCardsCount()
+        {
+            if (!AreThreeOfKindAvailable())
+            {
+                if(AreTwoPairsAvailable())
+                {
+                    return 1;
+                }
+
+                if(GetGroup(tempHand, 2).Any())
+                {
+                    return 2;
+                }
+
+                return 3;
+            }
+
+            if (AreTwoPairsAvailable()) return 0;
+            return 1;
         }
 
         private bool AreTwoPairsAvailable()
