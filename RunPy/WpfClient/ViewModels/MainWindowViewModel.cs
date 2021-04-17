@@ -161,11 +161,13 @@ namespace WpfClient.ViewModels
         private void _handCards_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
             _deskRecognized = DeskCards.Count == _deskCardsCount;
+            _handRecognized = HandCards.Count == 2;
             _analyze();
         }
 
         private void _deskCards_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
+            _deskRecognized = DeskCards.Count == _deskCardsCount;
             _handRecognized = HandCards.Count == 2;
             _analyze();
         }
@@ -269,6 +271,11 @@ namespace WpfClient.ViewModels
             {
                 HandCards.Remove(HandCards.First());
             }
+
+            foreach (var item in Hands.ToList())
+            {
+                Hands.Remove(Hands.First());
+            }
         }
 
         public void Analyze(object sender)
@@ -302,7 +309,7 @@ namespace WpfClient.ViewModels
             }
 
             //matcher.CheckHand();
-            //Console.WriteLine();
+            Console.WriteLine();
         }
 
         private void AnalyzeDesk(Bitmap desk)
@@ -630,7 +637,7 @@ namespace WpfClient.ViewModels
             //var res = cr.GetCard();
 
 
-            foreach(var key in _figureMatcher.PokerHandsDict.Keys)
+            foreach (var key in _figureMatcher.PokerHandsDict.Keys)
             {
                 var hand = _figureMatcher.PokerHandsDict[key];
                 Hands.Add(new HandDescription(key.ToString(), hand.Probability));

@@ -49,9 +49,10 @@ namespace CoreBusinessLogic.Hands
         private int GetNeededCardsCount()
         {
             var highestCardHand = tempHand.OrderByDescending(x => x.Figure).First();
-            var lowestCard = highestCardHand.Figure - 5;
-            var elements = tempHand.Where(p => p.Figure >= lowestCard).OrderByDescending(x => x.Figure).ToList();
-
+            var lowestCard = highestCardHand.Figure - 4;
+            var elements = GetWithNoRept(tempHand)                
+                .Where(p => p.Figure >= lowestCard && p.Figure < highestCardHand.Figure)
+                .OrderByDescending(x => x.Figure).ToList();
             return 5 - elements.Count();
         }
 

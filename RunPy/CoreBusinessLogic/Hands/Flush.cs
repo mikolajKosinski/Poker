@@ -51,13 +51,10 @@ namespace CoreBusinessLogic.Hands
 
         private int GetNeededCardsCount()
         {
-            var cardNeeded = 0;
-            var gotPair = CheckGroupCount(tempHand, 2);
-            if (!gotPair) cardNeeded++;
-            var gotThreeOf = CheckGroupCount(tempHand, 3);
-            if (!gotThreeOf) cardNeeded += 2;
-
-            return cardNeeded;
+            var color = GetDominatingColor();
+            var hand = tempHand.Where(p => p.Color == color).ToList();
+            var count = hand.Count();
+            return count >= 5 ? 0 : 5 - count;
         }
                
         private IList<ICard> GetMatchingCardsFromDeck()

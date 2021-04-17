@@ -62,10 +62,25 @@ namespace CoreBusinessLogic.Hands
             var highestCardHand = tempHand.Any(c => c.Figure == CardFigure._As) ? 
                 tempHand.First(c => c.Figure == CardFigure._As) :
                 new Card(CardFigure._As, CardColor.club);
-            var lowestCard = highestCardHand.Figure - 5;
-            var elements = tempHand.Where(p => p.Figure >= lowestCard).OrderByDescending(x => x.Figure).ToList();
+            var lowestCard = highestCardHand.Figure - 4;
+            var elements = GetWithNoRept(tempHand).Where(p => p.Figure >= lowestCard).OrderByDescending(x => x.Figure).ToList();
 
             return 5 - elements.Count();
+        }
+
+        private List<ICard> GetWithNoRept(List<ICard> list)
+        {
+            var result = new List<ICard>();
+
+            foreach (var item in list)
+            {
+                if (!result.Any(p => p.Figure == item.Figure))
+                {
+                    result.Add(item);
+                }
+            }
+
+            return result;
         }
 
         private List<ICard> GetRFByColor(CardColor color)
