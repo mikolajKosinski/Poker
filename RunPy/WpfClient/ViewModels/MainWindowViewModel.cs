@@ -26,6 +26,20 @@ namespace WpfClient.ViewModels
             Hand = 1
         }
 
+        private bool _settingsVisible;
+        public bool IsSettingsVisible
+        {
+            get
+            {
+                return _settingsVisible;
+            }
+            set
+            {
+                _settingsVisible = value;
+                NotifyPropertyChanged(nameof(IsSettingsVisible));
+            }
+        }
+        public ISettingsWindowViewModel SettingsViewModel { get; set; }
         public event PropertyChangedEventHandler PropertyChanged;
         public event EventHandler<ICard> CardRecognized;
         private int _singleCardWidth;
@@ -61,10 +75,12 @@ namespace WpfClient.ViewModels
         public CardArea HandArea { get; set; }
         public CardArea DeskArea { get; set; }
         public CardArea SingleCardArea { get; set; }
-        public ICommand HandSelectCommand { get; set; }
-        public ICommand DeskSelectCommand { get; set; }
+       
         public ICommand AnalyzeCommand { get; set; }
-        public ICommand SingleCardCommand { get; set; }
+
+        public ICommand SettingsWindowCommand { get; set; }
+        public ICommand MainWindowCommand { get; set; }
+
         public ICommand AddCommand { get; set; }
         public ICommand RemoveCommand { get; set; }
 
@@ -138,7 +154,8 @@ namespace WpfClient.ViewModels
 
 
         public MainWindowViewModel(ICardRecognition cardRecognition, IFigureMatcher figureMatcher, ICardManager cardManager)
-        {
+        {            
+            SettingsViewModel = new SettingsWindowViewModel(this);
             RecognizedCardsList = new List<ICard>();
             DeskCards = new ObservableCollection<ICard>();
             HandCards = new ObservableCollection<ICard>();
@@ -148,14 +165,14 @@ namespace WpfClient.ViewModels
             _deskPointsList = new List<Tuple<int, int, int, int>>();
             _handPointsList = new List<Tuple<int, int, int, int>>();
             _cardRecognized += MainWindowViewModel__cardRecognized;
-            DeskSelectCommand = new CustomCommand(SelectDesk, CanSelect);
-            HandSelectCommand = new CustomCommand(SelectHand, CanSelect);
-            SingleCardCommand = new CustomCommand(SelectSingleCard, CanSelect);
             AnalyzeCommand = new CustomCommand(Analyze, CanSelect);
+            SettingsWindowCommand = new CustomCommand(ShowSettings, CanSelect);
+            MainWindowCommand = new CustomCommand(ShowMainWindow, CanSelect);
             AddCommand = new CustomCommand(Add, CanSelect);
             RemoveCommand = new CustomCommand(Remove, CanSelect);
             _deskCards.CollectionChanged += _deskCards_CollectionChanged;
             _handCards.CollectionChanged += _handCards_CollectionChanged;
+            IsSettingsVisible = false;
         }
 
         private void _handCards_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
@@ -218,28 +235,23 @@ namespace WpfClient.ViewModels
             return true;
         }
 
-        private void SelectHand(object parameter)
+        public void HideWindow()
         {
-            SelectArea(AnalyzeType.Hand);
-        }
-
-        private void SelectDesk(object parameter)
-        {
-            SelectArea(AnalyzeType.Desk);
-        }
-
-        private void SelectSingleCard(object parameter)
-        {
-            SelectArea(AnalyzeType.SingleCard);
-        }
-
-        private void SelectArea(AnalyzeType at)
-        {
-            var pageAnalyze = new ScreenAnalyzePage(this, at);
-            pageAnalyze.Closed += PageAnalyze_Closed;
             ((App)Application.Current).HideWindow();
-            pageAnalyze.Show();
         }
+
+        public void ShowWindow()
+        {
+            ((App)Application.Current).ShowWindow();
+        }
+
+        //private void SelectArea(AnalyzeType at)
+        //{
+        //    var pageAnalyze = new ScreenAnalyzePage(this, SettingsViewModel, at);
+        //    pageAnalyze.Closed += PageAnalyze_Closed;
+        //    ((App)Application.Current).HideWindow();
+        //    pageAnalyze.Show();
+        //}
 
         private void PageAnalyze_Closed(object sender, EventArgs e)
         {
@@ -276,6 +288,16 @@ namespace WpfClient.ViewModels
             {
                 Hands.Remove(Hands.First());
             }
+        }
+
+        public void ShowMainWindow(object sender)
+        {
+            IsSettingsVisible = false;
+        }
+
+        public void ShowSettings(object sender)
+        {
+
         }
 
         public void Analyze(object sender)

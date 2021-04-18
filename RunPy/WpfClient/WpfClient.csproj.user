@@ -13,6 +13,12 @@
     <Compile Update="ScreenAnalyzePage.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="SettingsPage.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="SettingsView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Page Update="CardApproveWindow.xaml">
@@ -22,6 +28,12 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="ScreenAnalyzePage.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="SettingsPage.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="SettingsView.xaml">
       <SubType>Designer</SubType>
     </Page>
   </ItemGroup>

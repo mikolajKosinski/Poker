@@ -7,6 +7,9 @@
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
         Title="MainWindow" Height="450" Width="800">
+    <Window.Resources>
+        <local:BooleanToVisConverter x:Key="boolToVisConv" />
+    </Window.Resources>
     <Border BorderThickness="1" BorderBrush="Black">
     <Grid>
             <VisualStateManager.VisualStateGroups>
@@ -19,19 +22,21 @@
                     </VisualState>
                 </VisualStateGroup>
             </VisualStateManager.VisualStateGroups>
-            <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="10" />
-            <ColumnDefinition Width="*" />
-            <ColumnDefinition Width="*" />
-            <ColumnDefinition Width="*" />
-            <ColumnDefinition Width="10" />
-        </Grid.ColumnDefinitions>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="190" />
-            <RowDefinition Height="*" />
-            <RowDefinition Height="30" />
-        </Grid.RowDefinitions>
-            <StackPanel Grid.Row="0" Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1*" />
+                <RowDefinition Height="8*" />
+            </Grid.RowDefinitions>
+            <StackPanel Orientation="Horizontal" Grid.Row="0" HorizontalAlignment="Center">
+                <Button Content="MainWindow" Command="{Binding MainWindowCommand}"/>
+                <Button Content="Settings" Command="{Binding SettingsWindowCommand}"/>
+            </StackPanel>
+            <local:SettingsView DataContext="{Binding SettingsViewModel}" 
+                                Visibility="{Binding XPath=IsSettingsVisible,
+                                UpdateSourceTrigger=PropertyChanged,  
+                                Converter={StaticResource boolToVisConv}}" 
+                                Grid.Row="1" />
+
+            <!--<StackPanel Grid.Row="1" Grid.Column="1">
                 <Button Content="GetSingleCard" Width="80" Height="30" Command="{Binding SingleCardCommand}" Grid.Column="1" Grid.Row="0"/>
                 <Button Content="GetDeskArea" Width="80" Height="30" Command="{Binding DeskSelectCommand}" Grid.Column="1" Grid.Row="0"/>
                 <Button Content="GetHandArea" Width="80" Height="30" Command="{Binding HandSelectCommand}" Grid.Column="1" Grid.Row="0"/>
@@ -39,7 +44,7 @@
                 <Button Content="Add" Command="{Binding AddCommand}" />
                 <Button Content="Remove" Command="{Binding RemoveCommand}" />
             </StackPanel>
-            <StackPanel Grid.Row="0" Orientation="Horizontal" Grid.Column="2" Background="Red">
+            <StackPanel Grid.Row="3" Orientation="Horizontal" Grid.Column="2" Background="Red">
             <ListBox ItemsSource="{Binding DeskCards, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Grid.Column="2" Height="150" Width="80">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
@@ -70,7 +75,7 @@
                         </DataTemplate>
                     </ListBox.ItemTemplate>
                 </ListBox>
-            </StackPanel>
+            </StackPanel>-->
         </Grid>
     </Border>
 </Window>

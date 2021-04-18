@@ -23,6 +23,7 @@ namespace WpfClient
         private Point _startPoint;
         private Point _endPoint;
         private IMainWindoViewModel _mainWindowViewModel;
+        private ISettingsWindowViewModel _settingsWindowViewModel;
         private CardArea _currentCardArea;
         private ICard _currentCard;
         public Visibility DeskAreaVisibiity;
@@ -34,12 +35,13 @@ namespace WpfClient
         public List<CardArea> AreasList { get; set; }
         public List<CardArea> ApprovedList { get; set; }
 
-        public ScreenAnalyzePage(IMainWindoViewModel mainWindowViewModel, AnalyzeType at)
+        public ScreenAnalyzePage(IMainWindoViewModel mainWindowViewModel, ISettingsWindowViewModel settingsWindowViewModel, AnalyzeType at)
         {
             InitializeComponent();
             AT = at;
             SetAreasVisibility();
             _mainWindowViewModel = mainWindowViewModel;
+            _settingsWindowViewModel = settingsWindowViewModel;
             DataContext = _mainWindowViewModel;
             AreasList = new List<CardArea>();
             ApprovedList = new List<CardArea>();
@@ -55,9 +57,9 @@ namespace WpfClient
             _endPoint = PointToScreen(pointToWindow);
             var area = new CardArea(_startPoint.X, _startPoint.Y, _endPoint.X, _endPoint.Y);
 
-            if (AT == AnalyzeType.SingleCard) _mainWindowViewModel.SingleCardArea = area;
-            if (AT == AnalyzeType.Desk) _mainWindowViewModel.DeskArea = area;
-            if (AT == AnalyzeType.Hand) _mainWindowViewModel.HandArea = area;
+            if (AT == AnalyzeType.SingleCard) _settingsWindowViewModel.SingleCardArea = area;
+            if (AT == AnalyzeType.Desk) _settingsWindowViewModel.DeskArea = area;
+            if (AT == AnalyzeType.Hand) _settingsWindowViewModel.HandArea = area;
             this.Close();
         }
 

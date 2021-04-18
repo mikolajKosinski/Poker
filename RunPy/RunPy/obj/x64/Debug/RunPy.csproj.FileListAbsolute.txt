@@ -275,4 +275,3 @@ C:\Users\Mikolaj\Documents\GitHub\Poker\RunPy\RunPy\obj\x64\Debug\RunPy.csproj.C
 C:\Users\Mikolaj\Documents\GitHub\Poker\RunPy\RunPy\obj\x64\Debug\RunPy.csproj.CopyComplete
 C:\Users\Mikolaj\Documents\GitHub\Poker\RunPy\RunPy\obj\x64\Debug\RunPy.exe
 C:\Users\Mikolaj\Documents\GitHub\Poker\RunPy\RunPy\obj\x64\Debug\RunPy.pdb
-C:\Users\Mikolaj\Documents\GitHub\Poker\RunPy\RunPy\obj\x64\Debug\RunPy.csprojAssemblyReference.cache
