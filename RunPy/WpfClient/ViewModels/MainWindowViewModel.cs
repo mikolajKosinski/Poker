@@ -39,6 +39,21 @@ namespace WpfClient.ViewModels
                 NotifyPropertyChanged(nameof(IsSettingsVisible));
             }
         }
+
+        private bool _isMainVisible;
+        public bool IsMainVisible
+        {
+            get
+            {
+                return _isMainVisible;
+            }
+            set
+            {
+                _isMainVisible = value;
+                NotifyPropertyChanged(nameof(IsMainVisible));
+            }
+        }
+
         public ISettingsWindowViewModel SettingsViewModel { get; set; }
         public event PropertyChangedEventHandler PropertyChanged;
         public event EventHandler<ICard> CardRecognized;
@@ -293,11 +308,13 @@ namespace WpfClient.ViewModels
         public void ShowMainWindow(object sender)
         {
             IsSettingsVisible = false;
+            IsMainVisible = true;
         }
 
         public void ShowSettings(object sender)
-        {
-
+        {            
+            IsSettingsVisible = true;
+            IsMainVisible = false;
         }
 
         public void Analyze(object sender)

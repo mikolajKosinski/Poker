@@ -57,9 +57,9 @@ namespace WpfClient
             _endPoint = PointToScreen(pointToWindow);
             var area = new CardArea(_startPoint.X, _startPoint.Y, _endPoint.X, _endPoint.Y);
 
-            if (AT == AnalyzeType.SingleCard) _settingsWindowViewModel.SingleCardArea = area;
-            if (AT == AnalyzeType.Desk) _settingsWindowViewModel.DeskArea = area;
-            if (AT == AnalyzeType.Hand) _settingsWindowViewModel.HandArea = area;
+            if (AT == AnalyzeType.SingleCard) _mainWindowViewModel.SingleCardArea = area;
+            if (AT == AnalyzeType.Desk) _mainWindowViewModel.DeskArea = area;
+            if (AT == AnalyzeType.Hand) _mainWindowViewModel.HandArea = area;
             this.Close();
         }
 

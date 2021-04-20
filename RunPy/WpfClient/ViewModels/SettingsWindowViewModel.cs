@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Text;
 using System.Windows.Input;
 using WpfClient.Interfaces;
@@ -8,6 +9,30 @@ namespace WpfClient.ViewModels
 {
     public class SettingsWindowViewModel : ISettingsWindowViewModel
     {
+        public event PropertyChangedEventHandler PropertyChanged;
+        private void NotifyPropertyChanged(string propertyName = "")
+        {
+            if (PropertyChanged != null)
+            {
+                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+            }
+        }
+
+        private bool _isVisible;
+        public bool IsVisible
+        {
+            get
+            {
+                return _isVisible;
+            }
+            set
+            {
+                _isVisible = value;
+                NotifyPropertyChanged(nameof(IsVisible));
+            }
+        }
+
+
         IMainWindoViewModel _mainWindowVM;
         public CardArea HandArea { get; set; }
         public CardArea DeskArea { get; set; }
@@ -22,6 +47,7 @@ namespace WpfClient.ViewModels
             DeskSelectCommand = new CustomCommand(SelectDesk, CanSelect);
             HandSelectCommand = new CustomCommand(SelectHand, CanSelect);
             SingleCardCommand = new CustomCommand(SelectSingleCard, CanSelect);
+            IsVisible = false;
         }
 
         public bool CanSelect(object parameter)

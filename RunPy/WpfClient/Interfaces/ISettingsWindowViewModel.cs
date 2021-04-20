@@ -7,6 +7,7 @@ namespace WpfClient.Interfaces
 {
     public interface ISettingsWindowViewModel
     {
+        bool IsVisible { get; set; }
         ICommand DeskSelectCommand { get; set; }
         ICommand HandSelectCommand { get; set; }
         ICommand SingleCardCommand { get; set; }

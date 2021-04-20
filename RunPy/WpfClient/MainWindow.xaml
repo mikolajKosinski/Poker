@@ -8,7 +8,7 @@
       d:DesignHeight="450" d:DesignWidth="800"
         Title="MainWindow" Height="450" Width="800">
     <Window.Resources>
-        <local:BooleanToVisConverter x:Key="boolToVisConv" />
+        <local:BoolToVisConverter x:Key="boolToVisConv" />
     </Window.Resources>
     <Border BorderThickness="1" BorderBrush="Black">
     <Grid>
@@ -29,12 +29,48 @@
             <StackPanel Orientation="Horizontal" Grid.Row="0" HorizontalAlignment="Center">
                 <Button Content="MainWindow" Command="{Binding MainWindowCommand}"/>
                 <Button Content="Settings" Command="{Binding SettingsWindowCommand}"/>
+                <Button Content="Analyze" Width="80" Height="30" Command="{Binding AnalyzeCommand}" Grid.Column="1" Grid.Row="0"/>
             </StackPanel>
-            <local:SettingsView DataContext="{Binding SettingsViewModel}" 
-                                Visibility="{Binding XPath=IsSettingsVisible,
-                                UpdateSourceTrigger=PropertyChanged,  
-                                Converter={StaticResource boolToVisConv}}" 
-                                Grid.Row="1" />
+
+            <Grid Grid.Row="1" 
+                  Visibility="{Binding IsSettingsVisible, Converter={StaticResource boolToVisConv}}">
+                <local:SettingsView 
+                DataContext="{Binding SettingsViewModel}" />
+            </Grid>
+            <StackPanel Grid.Row="1" 
+                        Orientation="Horizontal" 
+                        Visibility="{Binding IsMainVisible, Converter={StaticResource boolToVisConv}}">
+                <ListBox ItemsSource="{Binding DeskCards, Mode=TwoWay}" Grid.Column="2" Height="150" Width="80">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="{Binding Figure}" />
+                                <TextBlock Text="{Binding Color}" />
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+                <ListBox ItemsSource="{Binding HandCards, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Grid.Column="2" Height="150" Width="80">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="{Binding Figure}" />
+                                <TextBlock Text="{Binding Color}" />
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+                <ListBox ItemsSource="{Binding Hands, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Grid.Column="3" Height="150" Width="120">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="{Binding HandName}" />
+                                <TextBlock Text="{Binding HandProbability}" />
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </StackPanel>
 
             <!--<StackPanel Grid.Row="1" Grid.Column="1">
                 <Button Content="GetSingleCard" Width="80" Height="30" Command="{Binding SingleCardCommand}" Grid.Column="1" Grid.Row="0"/>
