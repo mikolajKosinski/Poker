@@ -28,18 +28,25 @@
             </Grid.RowDefinitions>
             <StackPanel Orientation="Horizontal" Grid.Row="0" HorizontalAlignment="Center">
                 <Button Content="MainWindow" Command="{Binding MainWindowCommand}"/>
+                <Button Content="Areas" Command="{Binding AreasWindowCommand}"/>
                 <Button Content="Settings" Command="{Binding SettingsWindowCommand}"/>
-                <Button Content="Analyze" Width="80" Height="30" Command="{Binding AnalyzeCommand}" Grid.Column="1" Grid.Row="0"/>
             </StackPanel>
 
-            <Grid Grid.Row="1" 
+            <Grid Grid.Row="1"
                   Visibility="{Binding IsSettingsVisible, Converter={StaticResource boolToVisConv}}">
-                <local:SettingsView 
-                DataContext="{Binding SettingsViewModel}" />
+                <local:SettingsView
+                    DataContext="{Binding SettingsViewModel}" />
+            </Grid>
+
+            <Grid Grid.Row="1" 
+                  Visibility="{Binding IsAreasVisible, Converter={StaticResource boolToVisConv}}">
+                <local:AreasView 
+                DataContext="{Binding AreasViewModel}" />
             </Grid>
             <StackPanel Grid.Row="1" 
                         Orientation="Horizontal" 
                         Visibility="{Binding IsMainVisible, Converter={StaticResource boolToVisConv}}">
+                <Button Content="Analyze" Width="80" Height="30" Command="{Binding AnalyzeCommand}" Grid.Column="1" Grid.Row="0"/>
                 <ListBox ItemsSource="{Binding DeskCards, Mode=TwoWay}" Grid.Column="2" Height="150" Width="80">
                     <ListBox.ItemTemplate>
                         <DataTemplate>

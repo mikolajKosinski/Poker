@@ -23,7 +23,7 @@ namespace WpfClient
         private Point _startPoint;
         private Point _endPoint;
         private IMainWindoViewModel _mainWindowViewModel;
-        private ISettingsWindowViewModel _settingsWindowViewModel;
+        private IAreasWindowViewModel _settingsWindowViewModel;
         private CardArea _currentCardArea;
         private ICard _currentCard;
         public Visibility DeskAreaVisibiity;
@@ -35,7 +35,7 @@ namespace WpfClient
         public List<CardArea> AreasList { get; set; }
         public List<CardArea> ApprovedList { get; set; }
 
-        public ScreenAnalyzePage(IMainWindoViewModel mainWindowViewModel, ISettingsWindowViewModel settingsWindowViewModel, AnalyzeType at)
+        public ScreenAnalyzePage(IMainWindoViewModel mainWindowViewModel, IAreasWindowViewModel settingsWindowViewModel, AnalyzeType at)
         {
             InitializeComponent();
             AT = at;

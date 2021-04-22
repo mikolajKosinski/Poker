@@ -26,16 +26,30 @@ namespace WpfClient.ViewModels
             Hand = 1
         }
 
-        private bool _settingsVisible;
+        private bool _areasVisible;
+        public bool IsAreasVisible
+        {
+            get
+            {
+                return _areasVisible;
+            }
+            set
+            {
+                _areasVisible = value;
+                NotifyPropertyChanged(nameof(IsAreasVisible));
+            }
+        }
+
+        private bool _isSettingsVisible;
         public bool IsSettingsVisible
         {
             get
             {
-                return _settingsVisible;
+                return _isSettingsVisible;
             }
             set
             {
-                _settingsVisible = value;
+                _isSettingsVisible = value;
                 NotifyPropertyChanged(nameof(IsSettingsVisible));
             }
         }
@@ -54,7 +68,8 @@ namespace WpfClient.ViewModels
             }
         }
 
-        public ISettingsWindowViewModel SettingsViewModel { get; set; }
+        public IAreasWindowViewModel AreasViewModel { get; set; }
+        public ISettingsViewModel SettingsViewModel { get; set; }
         public event PropertyChangedEventHandler PropertyChanged;
         public event EventHandler<ICard> CardRecognized;
         private int _singleCardWidth;
@@ -69,7 +84,7 @@ namespace WpfClient.ViewModels
         private List<Tuple<int, int, int, int>> _deskPointsList;
         private List<Tuple<int, int, int, int>> _handPointsList;
         private CardArea _deskCardsArea;
-        private event EventHandler<CardRecognitionEventArgs> _cardRecognized;
+        //private event EventHandler<CardRecognitionEventArgs> _cardRecognized;
         public bool ElementAdded { get; set; }
         private void NotifyPropertyChanged(string propertyName = "")
         {
@@ -79,10 +94,10 @@ namespace WpfClient.ViewModels
             }
         }
 
-        private void OnCardRecognized(CardRecognitionEventArgs e)
-        {
-            _cardRecognized?.Invoke(this, e);
-        }
+        //private void OnCardRecognized(CardRecognitionEventArgs e)
+        //{
+        //    _cardRecognized?.Invoke(this, e);
+        //}
 
         ICardRecognition _cardRecognition;
         IFigureMatcher _figureMatcher;
@@ -93,11 +108,12 @@ namespace WpfClient.ViewModels
        
         public ICommand AnalyzeCommand { get; set; }
 
-        public ICommand SettingsWindowCommand { get; set; }
+        public ICommand AreasWindowCommand { get; set; }
         public ICommand MainWindowCommand { get; set; }
 
-        public ICommand AddCommand { get; set; }
-        public ICommand RemoveCommand { get; set; }
+        public ICommand SettingsWindowCommand { get; set; }
+        //public ICommand AddCommand { get; set; }
+        //public ICommand RemoveCommand { get; set; }
 
         private ObservableCollection<ICard> _handCards;
         public ObservableCollection<ICard> HandCards
@@ -170,7 +186,8 @@ namespace WpfClient.ViewModels
 
         public MainWindowViewModel(ICardRecognition cardRecognition, IFigureMatcher figureMatcher, ICardManager cardManager)
         {            
-            SettingsViewModel = new SettingsWindowViewModel(this);
+            AreasViewModel = new AreasWindowViewModel(this);
+            SettingsViewModel = new SettingsViewModel(this);
             RecognizedCardsList = new List<ICard>();
             DeskCards = new ObservableCollection<ICard>();
             HandCards = new ObservableCollection<ICard>();
@@ -179,15 +196,16 @@ namespace WpfClient.ViewModels
             _figureMatcher = figureMatcher;
             _deskPointsList = new List<Tuple<int, int, int, int>>();
             _handPointsList = new List<Tuple<int, int, int, int>>();
-            _cardRecognized += MainWindowViewModel__cardRecognized;
+            //_cardRecognized += MainWindowViewModel__cardRecognized;
             AnalyzeCommand = new CustomCommand(Analyze, CanSelect);
-            SettingsWindowCommand = new CustomCommand(ShowSettings, CanSelect);
+            AreasWindowCommand = new CustomCommand(ShowAreas, CanSelect);
             MainWindowCommand = new CustomCommand(ShowMainWindow, CanSelect);
-            AddCommand = new CustomCommand(Add, CanSelect);
-            RemoveCommand = new CustomCommand(Remove, CanSelect);
+            SettingsWindowCommand = new CustomCommand(ShowSettings, CanSelect);
+            //AddCommand = new CustomCommand(Add, CanSelect);
+            //RemoveCommand = new CustomCommand(Remove, CanSelect);
             _deskCards.CollectionChanged += _deskCards_CollectionChanged;
             _handCards.CollectionChanged += _handCards_CollectionChanged;
-            IsSettingsVisible = false;
+            IsAreasVisible = false;
         }
 
         private void _handCards_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
@@ -230,20 +248,20 @@ namespace WpfClient.ViewModels
             }
         }
 
-        private void MainWindowViewModel__cardRecognized(object sender, CardRecognitionEventArgs e)
-        {
-            DeskCards.Add(e.Card);
-        }
+        //private void MainWindowViewModel__cardRecognized(object sender, CardRecognitionEventArgs e)
+        //{
+        //    DeskCards.Add(e.Card);
+        //}
 
-        public void Add(object parameter)
-        {
-            DeskCards.Add(new Card(CardFigure._2, CardColor.club));
-        }
+        //public void Add(object parameter)
+        //{
+        //    DeskCards.Add(new Card(CardFigure._2, CardColor.club));
+        //}
 
-        public void Remove(object parameter)
-        {
-            ClearList();
-        }
+        //public void Remove(object parameter)
+        //{
+        //    ClearList();
+        //}
 
         public bool CanSelect(object parameter)
         {
@@ -305,15 +323,24 @@ namespace WpfClient.ViewModels
             }
         }
 
+        private void ShowSettings(object sender)
+        {
+            IsAreasVisible = false;
+            IsMainVisible = false;
+            IsSettingsVisible = true;
+        }
+
         public void ShowMainWindow(object sender)
         {
             IsSettingsVisible = false;
+            IsAreasVisible = false;
             IsMainVisible = true;
         }
 
-        public void ShowSettings(object sender)
-        {            
-            IsSettingsVisible = true;
+        public void ShowAreas(object sender)
+        {
+            IsSettingsVisible = false;
+            IsAreasVisible = true;
             IsMainVisible = false;
         }
 
@@ -359,7 +386,7 @@ namespace WpfClient.ViewModels
             if (exact < 3) count++;
             if (3.5 < exact && exact < 4) count = 4;
             if (exact > 4.5) count = 5;
-            var topName = @$"C:\Users\Mikolaj\PycharmProjects\pythonProject1\top.png";
+            //var topName = @$"C:\Users\Mikolaj\PycharmProjects\pythonProject1\top.png";
             var top = desk.Clone(new Rectangle(0, 0, _deskWidth, 40), desk.PixelFormat);
             var _offsetCount = 4;
 
@@ -369,25 +396,26 @@ namespace WpfClient.ViewModels
 
             for (int idx = 0; idx < count; idx++)
             {
-                if ((width * idx) > _deskWidth) return;
+                _analyzeCards(width, _deskWidth, idx, top, desk, CardTypeEnum.Desk);
+                //if ((width * idx) > _deskWidth) return;
 
-                var card = top.Clone(new Rectangle(width * idx, 5, 30, 30), top.PixelFormat);
-                card.Save(@$"C:\Users\Mikolaj\PycharmProjects\pythonProject1\allCards.png");
-                var points = GetDeskPoints(idx);
-                var xStart = (width * idx) + points.Item1;
-                var yStart = 5;
-                var figureWidth = points.Item2 - 5;
-                var figureHeight = points.Item4 - points.Item3;
-                var figure = top.Clone(new Rectangle(xStart, yStart, figureWidth, figureHeight), top.PixelFormat);
-                var color = desk.Clone(new Rectangle(xStart, figureHeight, figureWidth, figureHeight), desk.PixelFormat);
-                color.Save($"deskColor{idx}.png");
-                figure.Save($"deskFigure{idx}.png");
-                var path = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-                var figurePath = Path.Combine(path, $"deskFigure{idx}.png");
-                var colorPath = Path.Combine(path, $"deskColor{idx}.png");
-                figurePath = figurePath.Replace("\\", "/");
-                colorPath = colorPath.Replace("\\", "/");
-                Task.Run(() => { PredictCard(idx, figurePath, colorPath, CardTypeEnum.Desk); });
+                //var card = top.Clone(new Rectangle(width * idx, 5, 30, 30), top.PixelFormat);
+                //card.Save(@$"C:\Users\Mikolaj\PycharmProjects\pythonProject1\allCards.png");
+                //var points = GetDeskPoints(idx);
+                //var xStart = (width * idx) + points.Item1;
+                //var yStart = 5;
+                //var figureWidth = points.Item2 - 5;
+                //var figureHeight = points.Item4 - points.Item3;
+                //var figure = top.Clone(new Rectangle(xStart, yStart, figureWidth, figureHeight), top.PixelFormat);
+                //var color = desk.Clone(new Rectangle(xStart, figureHeight, figureWidth, figureHeight), desk.PixelFormat);
+                //color.Save($"deskColor{idx}.png");
+                //figure.Save($"deskFigure{idx}.png");
+                //var path = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+                //var figurePath = Path.Combine(path, $"deskFigure{idx}.png");
+                //var colorPath = Path.Combine(path, $"deskColor{idx}.png");
+                //figurePath = figurePath.Replace("\\", "/");
+                //colorPath = colorPath.Replace("\\", "/");
+                //Task.Run(() => { PredictCard(idx, figurePath, colorPath, CardTypeEnum.Desk); });
             }
         }
 
@@ -403,26 +431,51 @@ namespace WpfClient.ViewModels
 
             for (int idx = 0; idx < 2; idx++)
             {
-                if ((width * idx) > _handWidth) return;
+                _analyzeCards(width, _handWidth, idx, top, hand, CardTypeEnum.Hand);
+                //if ((width * idx) > _handWidth) return;
 
-                var card = top.Clone(new Rectangle(width * idx, 5, 30, 30), top.PixelFormat);
-                card.Save(@$"C:\Users\Mikolaj\PycharmProjects\pythonProject1\allCards.png");
-                var points = GetHandPoints(idx);
-                var xStart = (width * idx) + points.Item1;
-                var yStart = 5;
-                var figureWidth = points.Item2 - 5;
-                var figureHeight = points.Item4 - points.Item3;
-                var figure = top.Clone(new Rectangle(xStart, yStart, figureWidth, figureHeight), top.PixelFormat);
-                var color = hand.Clone(new Rectangle(xStart, figureHeight, figureWidth, figureHeight), hand.PixelFormat);
-                color.Save($"handColor{idx}.png");
-                figure.Save($"handFigure{idx}.png");
-                var path = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-                var figurePath = Path.Combine(path, $"handFigure{idx}.png");
-                var colorPath = Path.Combine(path, $"handColor{idx}.png");
-                figurePath = figurePath.Replace("\\", "/");
-                colorPath = colorPath.Replace("\\", "/");
-                Task.Run(() => { PredictCard(idx, figurePath, colorPath, CardTypeEnum.Hand); });
+                //var card = top.Clone(new Rectangle(width * idx, 5, 30, 30), top.PixelFormat);
+                //card.Save(@$"C:\Users\Mikolaj\PycharmProjects\pythonProject1\allCards.png");
+                //var points = GetHandPoints(idx);
+                //var xStart = (width * idx) + points.Item1;
+                //var yStart = 5;
+                //var figureWidth = points.Item2 - 5;
+                //var figureHeight = points.Item4 - points.Item3;
+                //var figure = top.Clone(new Rectangle(xStart, yStart, figureWidth, figureHeight), top.PixelFormat);
+                //var color = hand.Clone(new Rectangle(xStart, figureHeight, figureWidth, figureHeight), hand.PixelFormat);
+                //color.Save($"handColor{idx}.png");
+                //figure.Save($"handFigure{idx}.png");
+                //var path = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+                //var figurePath = Path.Combine(path, $"handFigure{idx}.png");
+                //var colorPath = Path.Combine(path, $"handColor{idx}.png");
+                //figurePath = figurePath.Replace("\\", "/");
+                //colorPath = colorPath.Replace("\\", "/");
+                //Task.Run(() => { PredictCard(idx, figurePath, colorPath, CardTypeEnum.Hand); });
             }
+        }
+
+        private void _analyzeCards(int width, int areaWidth, int idx, Bitmap top, Bitmap source, CardTypeEnum cardType)
+        {
+            if ((width * idx) > areaWidth) return;
+
+            var cd = cardType == CardTypeEnum.Desk ? "desk" : "hand";
+            var card = top.Clone(new Rectangle(width * idx, 5, 30, 30), top.PixelFormat);
+            card.Save(@$"C:\Users\Mikolaj\PycharmProjects\pythonProject1\allCards.png");
+            var points = GetDeskPoints(idx);
+            var xStart = (width * idx) + points.Item1;
+            var yStart = 5;
+            var figureWidth = points.Item2 - 5;
+            var figureHeight = points.Item4 - points.Item3;
+            var figure = top.Clone(new Rectangle(xStart, yStart, figureWidth, figureHeight), top.PixelFormat);
+            var color = source.Clone(new Rectangle(xStart, figureHeight, figureWidth, figureHeight), source.PixelFormat);
+            color.Save($"{cd}Color{idx}.png");
+            figure.Save($"{cd}Figure{idx}.png");
+            var path = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+            var figurePath = Path.Combine(path, $"{cd}Figure{idx}.png");
+            var colorPath = Path.Combine(path, $"{cd}Color{idx}.png");
+            figurePath = figurePath.Replace("\\", "/");
+            colorPath = colorPath.Replace("\\", "/");
+            Task.Run(() => { PredictCard(idx, figurePath, colorPath, cardType); });
         }
 
         private Tuple<int,int,int,int> GetDeskPoints (int idx)
@@ -600,55 +653,55 @@ namespace WpfClient.ViewModels
             return basicPicture;
         }
 
-        private Bitmap GetRepaintedFromBlack(Bitmap basicPicture, Color color)
-        {
-            for (int x = 0; x < basicPicture.Width; x++)
-            {
-                for (int y = 0; y < basicPicture.Height; y++)
-                {
-                    var c = basicPicture.GetPixel(x, y);
-                    if (c.G == 255 && c.B  == 255)
-                    {
-                        basicPicture.SetPixel(x, y, color);
-                    }
-                }
-            }
+        //private Bitmap GetRepaintedFromBlack(Bitmap basicPicture, Color color)
+        //{
+        //    for (int x = 0; x < basicPicture.Width; x++)
+        //    {
+        //        for (int y = 0; y < basicPicture.Height; y++)
+        //        {
+        //            var c = basicPicture.GetPixel(x, y);
+        //            if (c.G == 255 && c.B  == 255)
+        //            {
+        //                basicPicture.SetPixel(x, y, color);
+        //            }
+        //        }
+        //    }
 
-            return basicPicture;
-        }
+        //    return basicPicture;
+        //}
 
-        private Tuple<string,string> GetCardImageName(CardArea item)
-        {
-            double screenLeft = SystemParameters.VirtualScreenLeft;
-            double screenTop = SystemParameters.VirtualScreenTop;
-            double screenWidth = SystemParameters.VirtualScreenWidth;
-            double screenHeight = SystemParameters.VirtualScreenHeight;
+        //private Tuple<string,string> GetCardImageName(CardArea item)
+        //{
+        //    double screenLeft = SystemParameters.VirtualScreenLeft;
+        //    double screenTop = SystemParameters.VirtualScreenTop;
+        //    double screenWidth = SystemParameters.VirtualScreenWidth;
+        //    double screenHeight = SystemParameters.VirtualScreenHeight;
 
-            using (Bitmap bmp = new Bitmap((int)screenWidth,
-                (int)screenHeight))
-            {
-                using (Graphics g = Graphics.FromImage(bmp))
-                {
-                    var guid = new Guid();
-                    var cardsAreaName = @"C:\Users\Mikolaj\PycharmProjects\pythonProject1\figure.png";
-                    var figureName = @"C:\Users\Mikolaj\PycharmProjects\pythonProject1\figure.png";
-                    var colorName = @"C:\Users\Mikolaj\PycharmProjects\pythonProject1\color.png";
-                    var figureWidth = (int)(item.xEnd - item.xStart) / 2;
-                    var figureHeight = (int)(item.yEnd - item.yStart) / 2; 
-                    g.CopyFromScreen((int)screenLeft, (int)screenTop, 0, 0, bmp.Size);
-                    Bitmap figure = bmp.Clone(new Rectangle((int)item.xStart, (int)item.yStart-2, 20, 25), bmp.PixelFormat);
-                    Bitmap color = bmp.Clone(new Rectangle((int)item.xStart, (int)item.yStart + 22, 20, 20), bmp.PixelFormat);
-                    //Bitmap croppedFigure = card.Clone(new Rectangle((int)item.xStart, (int)item.yStart - 2, 20, 35), bmp.PixelFormat);
-                    Bitmap resizedFigure = new Bitmap(figure, new System.Drawing.Size(30,30));
-                    Bitmap resizedColor = new Bitmap(color, new System.Drawing.Size(15, 15));
-                    //card.Save(figureName);
-                    resizedFigure.Save(figureName);
-                    resizedFigure.Save("figure.png");
-                    resizedColor.Save(colorName);
-                    return new Tuple<string, string>(figureName, colorName);
-                }
-            }
-        }
+        //    using (Bitmap bmp = new Bitmap((int)screenWidth,
+        //        (int)screenHeight))
+        //    {
+        //        using (Graphics g = Graphics.FromImage(bmp))
+        //        {
+        //            var guid = new Guid();
+        //            var cardsAreaName = @"C:\Users\Mikolaj\PycharmProjects\pythonProject1\figure.png";
+        //            var figureName = @"C:\Users\Mikolaj\PycharmProjects\pythonProject1\figure.png";
+        //            var colorName = @"C:\Users\Mikolaj\PycharmProjects\pythonProject1\color.png";
+        //            var figureWidth = (int)(item.xEnd - item.xStart) / 2;
+        //            var figureHeight = (int)(item.yEnd - item.yStart) / 2; 
+        //            g.CopyFromScreen((int)screenLeft, (int)screenTop, 0, 0, bmp.Size);
+        //            Bitmap figure = bmp.Clone(new Rectangle((int)item.xStart, (int)item.yStart-2, 20, 25), bmp.PixelFormat);
+        //            Bitmap color = bmp.Clone(new Rectangle((int)item.xStart, (int)item.yStart + 22, 20, 20), bmp.PixelFormat);
+        //            //Bitmap croppedFigure = card.Clone(new Rectangle((int)item.xStart, (int)item.yStart - 2, 20, 35), bmp.PixelFormat);
+        //            Bitmap resizedFigure = new Bitmap(figure, new System.Drawing.Size(30,30));
+        //            Bitmap resizedColor = new Bitmap(color, new System.Drawing.Size(15, 15));
+        //            //card.Save(figureName);
+        //            resizedFigure.Save(figureName);
+        //            resizedFigure.Save("figure.png");
+        //            resizedColor.Save(colorName);
+        //            return new Tuple<string, string>(figureName, colorName);
+        //        }
+        //    }
+        //}
 
         public void TakeScreenShoot()
         {
@@ -685,9 +738,9 @@ namespace WpfClient.ViewModels
             Console.WriteLine();
         }
 
-        private (int xStart, int yStart, int xWidth, int yWidth) GetCaptureArea(System.Windows.Point pointToScreen, System.Windows.Point pointToWindow)
-        {
-            return ((int)pointToScreen.X, (int)pointToScreen.Y, 100, 100);
-        }
+        //private (int xStart, int yStart, int xWidth, int yWidth) GetCaptureArea(System.Windows.Point pointToScreen, System.Windows.Point pointToWindow)
+        //{
+        //    return ((int)pointToScreen.X, (int)pointToScreen.Y, 100, 100);
+        //}
     }
 }

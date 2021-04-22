@@ -63,5 +63,7 @@ C:\Users\Mikolaj\Documents\GitHub\Poker\RunPy\WpfClient\obj\Debug\netcoreapp3.0\
 C:\Users\Mikolaj\Documents\GitHub\Poker\RunPy\WpfClient\obj\Debug\netcoreapp3.0\CardApproveWindow.g.cs
 C:\Users\Mikolaj\Documents\GitHub\Poker\RunPy\WpfClient\obj\Debug\netcoreapp3.0\CardApproveWindow.baml
 C:\Users\Mikolaj\Documents\GitHub\Poker\RunPy\WpfClient\obj\Debug\netcoreapp3.0\GeneratedInternalTypeHelper.g.cs
+C:\Users\Mikolaj\Documents\GitHub\Poker\RunPy\WpfClient\obj\Debug\netcoreapp3.0\AreasView.g.cs
+C:\Users\Mikolaj\Documents\GitHub\Poker\RunPy\WpfClient\obj\Debug\netcoreapp3.0\AreasView.baml
 C:\Users\Mikolaj\Documents\GitHub\Poker\RunPy\WpfClient\obj\Debug\netcoreapp3.0\SettingsView.g.cs
 C:\Users\Mikolaj\Documents\GitHub\Poker\RunPy\WpfClient\obj\Debug\netcoreapp3.0\SettingsView.baml

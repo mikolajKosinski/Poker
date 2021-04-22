@@ -10,17 +10,26 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using WpfClient.Interfaces;
 
 namespace WpfClient
 {
     /// <summary>
     /// Interaction logic for SettingsView.xaml
     /// </summary>
-    public partial class SettingsView : UserControl
+    public partial class AreasView : UserControl
     {
-        public SettingsView()
+        private IAreasWindowViewModel _vm;
+
+        public AreasView()
         {
             InitializeComponent();
+        }
+
+        public AreasView(IAreasWindowViewModel vm)
+        {
+            InitializeComponent();
+            _vm = vm;
         }
     }
 }

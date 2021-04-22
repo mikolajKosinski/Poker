@@ -10,11 +10,11 @@ none
 false
 TRACE;DEBUG;NETCOREAPP;NETCOREAPP3_0;
 C:\Users\Mikolaj\Documents\GitHub\Poker\RunPy\WpfClient\App.xaml
-42113649760
+51367911732
 
-161298517085
+191055264209
 198-2736604
-CardApproveWindow.xaml;MainWindow.xaml;ScreenAnalyzePage.xaml;SettingsView.xaml;
+AreasView.xaml;CardApproveWindow.xaml;MainWindow.xaml;ScreenAnalyzePage.xaml;SettingsView.xaml;
 
 False
 
