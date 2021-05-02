@@ -73,7 +73,7 @@ namespace WpfClient.ViewModels
         public event PropertyChangedEventHandler PropertyChanged;
         public event EventHandler<ICard> CardRecognized;
         private int _singleCardWidth;
-        private int _singleCardHeight;
+        //private int _singleCardHeight;
         private int _deskOffset;
         private int _handOffset;
         private int _deskWidth;
@@ -348,6 +348,7 @@ namespace WpfClient.ViewModels
         {
             //TakeScreenShoot();
             ClearList();
+            var single = GetAreaBitmap(SingleCardArea, AnalyzeType.SingleCard);
             var desk = GetAreaBitmap(DeskArea, AnalyzeType.Desk);
 
             if (desk == null)
@@ -356,11 +357,11 @@ namespace WpfClient.ViewModels
                 return;
             }
 
-            var hand = GetAreaBitmap(HandArea, AnalyzeType.Hand);
-            var single = GetAreaBitmap(SingleCardArea, AnalyzeType.SingleCard);
+            //var hand = GetAreaBitmap(HandArea, AnalyzeType.Hand);
+            
 
-            AnalyzeDesk(desk);
-            AnalyzeHand(hand);
+            AnalyzeDeskV2(desk);
+            //AnalyzeHand(hand);
 
             var matcher = new FigureMatcher();
 
@@ -378,8 +379,41 @@ namespace WpfClient.ViewModels
             Console.WriteLine();
         }
 
+        private void AnalyzeDeskV2(Bitmap desk)
+        {
+            int offset = 0;
+            var figureHeight = Convert.ToInt32(_singleCardWidth * 0.4);
+            int cardsCount = _deskWidth / _singleCardWidth;            
+            if (cardsCount == 5) offset = GetOffset();
+            var cardWithOffset = _singleCardWidth + offset;
+            
+            for (int idx =0; idx<cardsCount; idx++)
+            {
+                var startPoint = (cardWithOffset * idx) + idx;
+                
+                var figure = desk.Clone(new Rectangle(startPoint, 7, _singleCardWidth/3, figureHeight), desk.PixelFormat);
+                var color = desk.Clone(new Rectangle(startPoint, figureHeight + 5, _singleCardWidth / 3, figureHeight), desk.PixelFormat);
+                
+                figure.Save($"deskFigure{idx}.jpg");
+                color.Save($"deskColor{idx}.jpg");                
+                var path = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+                var figurePath = Path.Combine(path, $"deskFigure{idx}.jpg");
+                var colorPath = Path.Combine(path, $"deskColor{idx}.jpg");
+                figurePath = figurePath.Replace("\\", "/");
+                colorPath = colorPath.Replace("\\", "/");
+                Task.Run(() => {PredictCard(idx, figurePath, colorPath, CardTypeEnum.Desk);});
+            }
+        }
+
+        private int GetOffset()
+        {
+            return (_deskWidth - (_singleCardWidth * 5)) / 4;
+        }
+
         private void AnalyzeDesk(Bitmap desk)
         {
+            AnalyzeDeskV2(desk);
+
             double exact = (double)_deskWidth / (double)_singleCardWidth;
             int count = _deskWidth / _singleCardWidth;
 
@@ -396,26 +430,26 @@ namespace WpfClient.ViewModels
 
             for (int idx = 0; idx < count; idx++)
             {
-                _analyzeCards(width, _deskWidth, idx, top, desk, CardTypeEnum.Desk);
-                //if ((width * idx) > _deskWidth) return;
+                //_analyzeCards(width, _deskWidth, idx, top, desk, CardTypeEnum.Desk);
+                if ((width * idx) > _deskWidth) return;
 
-                //var card = top.Clone(new Rectangle(width * idx, 5, 30, 30), top.PixelFormat);
-                //card.Save(@$"C:\Users\Mikolaj\PycharmProjects\pythonProject1\allCards.png");
-                //var points = GetDeskPoints(idx);
-                //var xStart = (width * idx) + points.Item1;
-                //var yStart = 5;
-                //var figureWidth = points.Item2 - 5;
-                //var figureHeight = points.Item4 - points.Item3;
-                //var figure = top.Clone(new Rectangle(xStart, yStart, figureWidth, figureHeight), top.PixelFormat);
-                //var color = desk.Clone(new Rectangle(xStart, figureHeight, figureWidth, figureHeight), desk.PixelFormat);
-                //color.Save($"deskColor{idx}.png");
-                //figure.Save($"deskFigure{idx}.png");
-                //var path = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-                //var figurePath = Path.Combine(path, $"deskFigure{idx}.png");
-                //var colorPath = Path.Combine(path, $"deskColor{idx}.png");
-                //figurePath = figurePath.Replace("\\", "/");
-                //colorPath = colorPath.Replace("\\", "/");
-                //Task.Run(() => { PredictCard(idx, figurePath, colorPath, CardTypeEnum.Desk); });
+                var card = top.Clone(new Rectangle(width * idx, 5, 30, 30), top.PixelFormat);
+                card.Save(@$"C:\Users\Mikolaj\PycharmProjects\pythonProject1\allCards.png");
+                var points = GetDeskPoints(idx);
+                var xStart = (width * idx) + points.Item1;
+                var yStart = 5;
+                var figureWidth = points.Item2 - 5;
+                var figureHeight = points.Item4 - points.Item3;
+                var figure = top.Clone(new Rectangle(xStart, yStart, figureWidth, figureHeight), top.PixelFormat);
+                var color = desk.Clone(new Rectangle(xStart, figureHeight, figureWidth, figureHeight), desk.PixelFormat);
+                color.Save($"deskColor{idx}.png");
+                figure.Save($"deskFigure{idx}.png");
+                var path = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+                var figurePath = Path.Combine(path, $"deskFigure{idx}.png");
+                var colorPath = Path.Combine(path, $"deskColor{idx}.png");
+                figurePath = figurePath.Replace("\\", "/");
+                colorPath = colorPath.Replace("\\", "/");
+                _ = PredictCard(idx, figurePath, colorPath, CardTypeEnum.Desk);
             }
         }
 
@@ -431,26 +465,26 @@ namespace WpfClient.ViewModels
 
             for (int idx = 0; idx < 2; idx++)
             {
-                _analyzeCards(width, _handWidth, idx, top, hand, CardTypeEnum.Hand);
-                //if ((width * idx) > _handWidth) return;
+                //_analyzeCards(width, _handWidth, idx, top, hand, CardTypeEnum.Hand);
+                if ((width * idx) > _handWidth) return;
 
-                //var card = top.Clone(new Rectangle(width * idx, 5, 30, 30), top.PixelFormat);
-                //card.Save(@$"C:\Users\Mikolaj\PycharmProjects\pythonProject1\allCards.png");
-                //var points = GetHandPoints(idx);
-                //var xStart = (width * idx) + points.Item1;
-                //var yStart = 5;
-                //var figureWidth = points.Item2 - 5;
-                //var figureHeight = points.Item4 - points.Item3;
-                //var figure = top.Clone(new Rectangle(xStart, yStart, figureWidth, figureHeight), top.PixelFormat);
-                //var color = hand.Clone(new Rectangle(xStart, figureHeight, figureWidth, figureHeight), hand.PixelFormat);
-                //color.Save($"handColor{idx}.png");
-                //figure.Save($"handFigure{idx}.png");
-                //var path = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-                //var figurePath = Path.Combine(path, $"handFigure{idx}.png");
-                //var colorPath = Path.Combine(path, $"handColor{idx}.png");
-                //figurePath = figurePath.Replace("\\", "/");
-                //colorPath = colorPath.Replace("\\", "/");
-                //Task.Run(() => { PredictCard(idx, figurePath, colorPath, CardTypeEnum.Hand); });
+                var card = top.Clone(new Rectangle(width * idx, 5, 30, 30), top.PixelFormat);
+                card.Save(@$"C:\Users\Mikolaj\PycharmProjects\pythonProject1\allCards.png");
+                var points = GetHandPoints(idx);
+                var xStart = (width * idx) + points.Item1;
+                var yStart = 5;
+                var figureWidth = points.Item2 - 5;
+                var figureHeight = points.Item4 - points.Item3;
+                var figure = top.Clone(new Rectangle(xStart, yStart, figureWidth, figureHeight), top.PixelFormat);
+                var color = hand.Clone(new Rectangle(xStart, figureHeight, figureWidth, figureHeight), hand.PixelFormat);
+                color.Save($"handColor{idx}.png");
+                figure.Save($"handFigure{idx}.png");
+                var path = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+                var figurePath = Path.Combine(path, $"handFigure{idx}.png");
+                var colorPath = Path.Combine(path, $"handColor{idx}.png");
+                figurePath = figurePath.Replace("\\", "/");
+                colorPath = colorPath.Replace("\\", "/");
+                Task.Run(() => { PredictCard(idx, figurePath, colorPath, CardTypeEnum.Hand); });
             }
         }
 
@@ -501,7 +535,7 @@ namespace WpfClient.ViewModels
             return points[idx];
         }
 
-        private async void PredictCard(int idx, string figurePath, string colorPath, CardTypeEnum ct)
+        private async Task PredictCard(int idx, string figurePath, string colorPath, CardTypeEnum ct)
         {
             var card = await GetCard(figurePath, colorPath);
             if (ct == CardTypeEnum.Desk)
@@ -560,6 +594,7 @@ namespace WpfClient.ViewModels
                 {
                     var cardsAreaName = @$"C:\Users\Mikolaj\PycharmProjects\pythonProject1\allCards.png";
                     var cutOffName = @$"C:\Users\Mikolaj\PycharmProjects\pythonProject1\{name}.png";
+                    var cutOffLocalName = @$"{name}.png";
                     g.CopyFromScreen((int)screenLeft, (int)screenTop, 0, 0, bmp.Size);
                     var cardHeight = at == AnalyzeType.Desk ? 150 : 80;
                     Bitmap basicPicture = bmp.Clone(new Rectangle((int)item.xStart, (int)item.yStart, width, cardHeight), bmp.PixelFormat);
@@ -570,11 +605,7 @@ namespace WpfClient.ViewModels
                     cutOffWidth = points.Item2 - points.Item1;
                     cutOffHeight = points.Item4 - points.Item3;
 
-                    if (at == AnalyzeType.SingleCard)
-                    {
-                        _singleCardWidth = cutOffWidth;
-                        _singleCardHeight = cutOffHeight;
-                    }
+                    if (at == AnalyzeType.SingleCard) _singleCardWidth = cutOffWidth;
                     if (at == AnalyzeType.Desk) _deskWidth = cutOffWidth;
                     if (at == AnalyzeType.Hand) _handWidth = cutOffWidth;
 
@@ -593,6 +624,7 @@ namespace WpfClient.ViewModels
                             cutOffWidth,
                             height), basicPicture.PixelFormat);
                         cutOffImg.Save(cutOffName);
+                        cutOffImg.Save(cutOffLocalName);
                         return cutOffImg;
                     }
                     catch(Exception x)
@@ -631,6 +663,23 @@ namespace WpfClient.ViewModels
                 {
                     var c = basicPicture.GetPixel(x, y);
                     if (c.G > 70 && c.B < 90)
+                    {
+                        basicPicture.SetPixel(x, y, color);
+                    }
+                }
+            }
+
+            return basicPicture;
+        }
+
+        private Bitmap GetRepaintedFromBlack(Bitmap basicPicture, Color color)
+        {
+            for (int x = 0; x < basicPicture.Width; x++)
+            {
+                for (int y = 0; y < basicPicture.Height; y++)
+                {
+                    var c = basicPicture.GetPixel(x, y);
+                    if (c.GetBrightness() < 0.02)
                     {
                         basicPicture.SetPixel(x, y, color);
                     }
