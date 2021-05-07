@@ -348,7 +348,7 @@ namespace WpfClient.ViewModels
         {
             //TakeScreenShoot();
             ClearList();
-            var single = GetAreaBitmap(SingleCardArea, AnalyzeType.SingleCard);
+            //var single = GetAreaBitmap(SingleCardArea, AnalyzeType.SingleCard);
             var desk = GetAreaBitmap(DeskArea, AnalyzeType.Desk);
 
             if (desk == null)
@@ -582,7 +582,7 @@ namespace WpfClient.ViewModels
             double screenWidth = SystemParameters.VirtualScreenWidth;
             double screenHeight = SystemParameters.VirtualScreenHeight;
             Tuple<int, int, int, int> points = new Tuple<int, int, int, int>(0,0,0,0);
-            int width = GetWidth(at);
+            int width = Convert.ToInt32(item.xEnd) - Convert.ToInt32(item.xStart);// GetWidth(at);
             int cutOffWidth = 0;
             int cutOffHeight = 0;
             var name = GetCutOffName(at);
@@ -596,24 +596,24 @@ namespace WpfClient.ViewModels
                     var cutOffName = @$"C:\Users\Mikolaj\PycharmProjects\pythonProject1\{name}.png";
                     var cutOffLocalName = @$"{name}.png";
                     g.CopyFromScreen((int)screenLeft, (int)screenTop, 0, 0, bmp.Size);
-                    var cardHeight = at == AnalyzeType.Desk ? 150 : 80;
+                    var cardHeight = Convert.ToInt32(item.yEnd) - Convert.ToInt32(item.yStart);
                     Bitmap basicPicture = bmp.Clone(new Rectangle((int)item.xStart, (int)item.yStart, width, cardHeight), bmp.PixelFormat);
                     basicPicture = GetRepaintedFromGreen(basicPicture, Color.Black);
                     if (at == AnalyzeType.Hand) basicPicture = GetRepaintedHand(basicPicture, Color.Black);
                     basicPicture.Save(cardsAreaName);
                     points = GetPoints(at);
-                    cutOffWidth = points.Item2 - points.Item1;
-                    cutOffHeight = points.Item4 - points.Item3;
+                    cutOffWidth = points.Item2 - points.Item1;// - points.Item1;
+                    cutOffHeight = points.Item4 - points.Item3 - points.Item3;
 
                     if (at == AnalyzeType.SingleCard) _singleCardWidth = cutOffWidth;
                     if (at == AnalyzeType.Desk) _deskWidth = cutOffWidth;
                     if (at == AnalyzeType.Hand) _handWidth = cutOffWidth;
 
-                    var height = points.Item4 - points.Item3;
-                    var xStart = points.Item1;
+                    var height = points.Item4 - points.Item3 - points.Item3;
+                    var xStart = points.Item1 - 2;
                     var yStart = points.Item3;
 
-                    if (at == AnalyzeType.Hand) height = 60;
+                    //if (at == AnalyzeType.Hand) height = 60;
 
                     try
                     {
@@ -622,7 +622,7 @@ namespace WpfClient.ViewModels
                             xStart,
                             yStart,
                             cutOffWidth,
-                            height), basicPicture.PixelFormat);
+                            50), basicPicture.PixelFormat);
                         cutOffImg.Save(cutOffName);
                         cutOffImg.Save(cutOffLocalName);
                         return cutOffImg;
@@ -661,6 +661,11 @@ namespace WpfClient.ViewModels
             {
                 for (int y = 0; y < basicPicture.Height; y++)
                 {
+                    if(y >= 0 && y < 5)
+                    {
+                        basicPicture.SetPixel(x, y, color);
+                    }
+
                     var c = basicPicture.GetPixel(x, y);
                     if (c.G > 70 && c.B < 90)
                     {
