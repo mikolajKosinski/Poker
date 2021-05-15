@@ -73,7 +73,7 @@ namespace WpfClient.ViewModels
         public event PropertyChangedEventHandler PropertyChanged;
         public event EventHandler<ICard> CardRecognized;
         private int _singleCardWidth;
-        //private int _singleCardHeight;
+        private int _singleCardHeight;
         private int _deskOffset;
         private int _handOffset;
         private int _deskWidth;
@@ -348,7 +348,7 @@ namespace WpfClient.ViewModels
         {
             //TakeScreenShoot();
             ClearList();
-            //var single = GetAreaBitmap(SingleCardArea, AnalyzeType.SingleCard);
+            var single = GetAreaBitmap(SingleCardArea, AnalyzeType.SingleCard);
             var desk = GetAreaBitmap(DeskArea, AnalyzeType.Desk);
 
             if (desk == null)
@@ -584,7 +584,7 @@ namespace WpfClient.ViewModels
             Tuple<int, int, int, int> points = new Tuple<int, int, int, int>(0,0,0,0);
             int width = Convert.ToInt32(item.xEnd) - Convert.ToInt32(item.xStart);// GetWidth(at);
             int cutOffWidth = 0;
-            int cutOffHeight = 0;
+            //int cutOffHeight = 0;
             var name = GetCutOffName(at);
 
             using (Bitmap bmp = new Bitmap((int)screenWidth,
@@ -593,25 +593,38 @@ namespace WpfClient.ViewModels
                 using (Graphics g = Graphics.FromImage(bmp))
                 {
                     var cardsAreaName = @$"C:\Users\Mikolaj\PycharmProjects\pythonProject1\allCards.png";
-                    var cutOffName = @$"C:\Users\Mikolaj\PycharmProjects\pythonProject1\{name}.png";
+                    //var cutOffName = @$"C:\Users\Mikolaj\PycharmProjects\pythonProject1\{name}.png";
                     var cutOffLocalName = @$"{name}.png";
                     g.CopyFromScreen((int)screenLeft, (int)screenTop, 0, 0, bmp.Size);
-                    var cardHeight = Convert.ToInt32(item.yEnd) - Convert.ToInt32(item.yStart);
+                    var cardHeight = Convert.ToInt32(item.yEnd) - Convert.ToInt32(item.yStart) + 10;
                     Bitmap basicPicture = bmp.Clone(new Rectangle((int)item.xStart, (int)item.yStart, width, cardHeight), bmp.PixelFormat);
                     basicPicture = GetRepaintedFromGreen(basicPicture, Color.Black);
                     if (at == AnalyzeType.Hand) basicPicture = GetRepaintedHand(basicPicture, Color.Black);
                     basicPicture.Save(cardsAreaName);
+                    //basicPicture.Save("basic.png");
                     points = GetPoints(at);
                     cutOffWidth = points.Item2 - points.Item1;// - points.Item1;
-                    cutOffHeight = points.Item4 - points.Item3 - points.Item3;
+                    //cutOffHeight = points.Item4 - points.Item3 - points.Item3;
 
-                    if (at == AnalyzeType.SingleCard) _singleCardWidth = cutOffWidth;
-                    if (at == AnalyzeType.Desk) _deskWidth = cutOffWidth;
+                    int xStart = 0;
+                    int yStart = 0;
+
+                    if (at == AnalyzeType.SingleCard)
+                    { 
+                        _singleCardWidth = cutOffWidth +2;
+                        _singleCardHeight = points.Item4 - points.Item3;
+                        xStart = points.Item1;
+                        yStart = points.Item3;
+                    }
+                    if (at == AnalyzeType.Desk)
+                    {
+                        _deskWidth = cutOffWidth;
+                        xStart = points.Item1 - 2;
+                        yStart = points.Item3;
+                    }
                     if (at == AnalyzeType.Hand) _handWidth = cutOffWidth;
 
-                    var height = points.Item4 - points.Item3 - points.Item3;
-                    var xStart = points.Item1 - 2;
-                    var yStart = points.Item3;
+                    
 
                     //if (at == AnalyzeType.Hand) height = 60;
 
@@ -622,8 +635,8 @@ namespace WpfClient.ViewModels
                             xStart,
                             yStart,
                             cutOffWidth,
-                            50), basicPicture.PixelFormat);
-                        cutOffImg.Save(cutOffName);
+                            _singleCardHeight), basicPicture.PixelFormat);
+                        //cutOffImg.Save(cutOffName);
                         cutOffImg.Save(cutOffLocalName);
                         return cutOffImg;
                     }
