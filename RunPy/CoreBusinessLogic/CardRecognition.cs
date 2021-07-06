@@ -69,6 +69,11 @@ namespace CoreBusinessLogic
             
         }
 
+        public Tuple<int, int, int, int> GetPosition(string path)
+        {
+            return GetShapePosition(path);
+        }
+
         public Tuple<int,int,int,int> GetSingleCardArea()
         {
             Process process = new Process();
@@ -129,6 +134,51 @@ namespace CoreBusinessLogic
                 Convert.ToInt32(points[1]),
                 Convert.ToInt32(points[2]),
                 Convert.ToInt32(points[3]));
+        }
+
+        private Tuple<int, int, int, int> GetShapePosition(string path)
+        {
+            Process process = new Process();
+            string argument = $@"C:\Users\Mikolaj\PycharmProjects\pythonProject1\Segmentation.py {path}";
+            process.StartInfo = new System.Diagnostics.ProcessStartInfo()
+            {
+                UseShellExecute = false,
+                CreateNoWindow = true,
+                WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden,
+                FileName = @"C:\Users\Mikolaj\AppData\Local\Programs\Python\Python37\python.exe",
+                Arguments = argument,
+                RedirectStandardError = true,
+                RedirectStandardOutput = true
+            };
+
+            process.Start();
+            var result = process.StandardOutput.ReadToEnd().Split('-');
+            if (result.Length == 1) return new Tuple<int, int, int, int>(0,0,0,0);
+            return new Tuple<int, int, int, int>(
+                Convert.ToInt32(result[0]), 
+                Convert.ToInt32(result[1]), 
+                Convert.ToInt32(result[2]), 
+                Convert.ToInt32(result[3]));
+        }
+
+        public string CenterFigure(string path)
+        {
+            Process process = new Process();
+            string argument = $@"C:\Users\Mikolaj\PycharmProjects\pythonProject1\CenterFigure.py {path}";
+            process.StartInfo = new System.Diagnostics.ProcessStartInfo()
+            {
+                UseShellExecute = false,
+                CreateNoWindow = true,
+                WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden,
+                FileName = @"C:\Users\Mikolaj\AppData\Local\Programs\Python\Python37\python.exe",
+                Arguments = argument,
+                RedirectStandardError = true,
+                RedirectStandardOutput = true
+            };
+
+            process.Start();
+            var result = process.StandardOutput.ReadToEnd();
+            return result.Replace("\t", "").Replace("\r", "").Replace("\n", "");
         }
 
         private string RecognizeImage(recoType rc, string imagePath)
