@@ -41,7 +41,14 @@ namespace CoreBusinessLogic
         {
             foreach (var item in PokerHandsDict.Keys)
             {
-                PokerHandsDict[item].Check();
+                try
+                {
+                    PokerHandsDict[item].Check();
+                }
+                catch(Exception x)
+                {
+
+                }
             }
         }
 

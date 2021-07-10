@@ -151,14 +151,14 @@ namespace WpfClient.ViewModels
             }
         }
 
-        private ObservableCollection<IHandDescription> _hands;
-        public ObservableCollection<IHandDescription> Hands
+        private ObservableCollection<string> _hands;
+        public ObservableCollection<string> Hands
         {
             get
             {
                 if (_hands == null)
                 {
-                    _hands = new ObservableCollection<IHandDescription>();
+                    _hands = new ObservableCollection<string>();
                 }
                 return _hands;
             }
@@ -197,7 +197,7 @@ namespace WpfClient.ViewModels
             _deskPointsList = new List<Tuple<int, int, int, int>>();
             _handPointsList = new List<Tuple<int, int, int, int>>();
             //_cardRecognized += MainWindowViewModel__cardRecognized;
-            AnalyzeCommand = new CustomCommand(Analyze, CanSelect);
+            AnalyzeCommand = new CustomCommand(AnalyzeButtonCommand, CanSelect);
             AreasWindowCommand = new CustomCommand(ShowAreas, CanSelect);
             MainWindowCommand = new CustomCommand(ShowMainWindow, CanSelect);
             SettingsWindowCommand = new CustomCommand(ShowSettings, CanSelect);
@@ -242,7 +242,7 @@ namespace WpfClient.ViewModels
                 foreach (var key in matcher.PokerHandsDict.Keys)
                 {
                     var hand = matcher.PokerHandsDict[key];
-                    Hands.Add(new HandDescription(key.ToString(), hand.Probability));
+                    //Hands.Add(new HandDescription(key.ToString(), hand.Probability));
                 }
                 Console.WriteLine();
             }
@@ -344,12 +344,18 @@ namespace WpfClient.ViewModels
             IsMainVisible = false;
         }
 
-        public void Analyze(object sender)
+        private void AnalyzeButtonCommand(object sender)
+        {
+            Analyze();
+        }
+
+        public async Task Analyze()
         {
             //TakeScreenShoot();
             ClearList();
             var single = GetAreaBitmap(SingleCardArea, AnalyzeType.SingleCard);
             var desk = GetAreaBitmap(DeskArea, AnalyzeType.Desk);
+            var hand = GetAreaBitmap(HandArea, AnalyzeType.Hand);
 
             if (desk == null)
             {
@@ -360,8 +366,8 @@ namespace WpfClient.ViewModels
             //var hand = GetAreaBitmap(HandArea, AnalyzeType.Hand);
             
 
-            AnalyzeDeskV2(desk);
-            //AnalyzeHand(hand);
+            await AnalyzeDeskV2(desk);
+            await AnalyzeHandV2(hand);
 
             var matcher = new FigureMatcher();
 
@@ -375,11 +381,16 @@ namespace WpfClient.ViewModels
                 matcher.AddCardToHand(card);
             }
 
-            //matcher.CheckHand();
+            matcher.CheckHand();
+
+            foreach(var item in matcher.PokerHandsDict.Keys)
+            {
+                Hands.Add($"{matcher.PokerHandsDict[item]} : {matcher.PokerHandsDict[item].Probability}");
+            }
             Console.WriteLine();
         }
 
-        private void AnalyzeDeskV2(Bitmap desk)
+        private async Task AnalyzeDeskV2(Bitmap desk)
         {
             float offset = (float)_singleCardWidth / (float)9.5;
             var figureHeight = Convert.ToInt32(_singleCardWidth * 0.4);
@@ -414,7 +425,7 @@ namespace WpfClient.ViewModels
                 colorPath = colorPath.Replace("\\", "/");
                 figureList.Add(figurePath);
                 colorList.Add(colorPath);
-                Task.Run(() => {PredictCard(idx, figurePath, colorPath, CardTypeEnum.Desk);});
+                await PredictCard(idx, figurePath, colorPath, CardTypeEnum.Desk);
             }
         }
 
@@ -425,7 +436,7 @@ namespace WpfClient.ViewModels
 
         private void AnalyzeDesk(Bitmap desk)
         {
-            AnalyzeDeskV2(desk);
+            //AnalyzeDeskV2(desk);
 
             double exact = (double)_deskWidth / (double)_singleCardWidth;
             int count = _deskWidth / _singleCardWidth;
@@ -462,6 +473,33 @@ namespace WpfClient.ViewModels
                 figurePath = figurePath.Replace("\\", "/");
                 colorPath = colorPath.Replace("\\", "/");
                 _ = PredictCard(idx, figurePath, colorPath, CardTypeEnum.Desk);
+            }
+        }
+
+        private async Task AnalyzeHandV2(Bitmap hand)
+        {
+            float offset = (float)_singleCardWidth * (float)0.075;
+            var figureHeight = 25;// Convert.ToInt32(_singleCardWidth * 0.4);
+            int cardsCount = 2;
+
+            float cardWithOffset = (float)_singleCardWidth + offset;
+            float figureWidth = (float)_singleCardWidth / (float)3.26;
+
+            for (int idx = 0; idx < cardsCount; idx++)
+            {
+                var xStartPoint = (float)(_singleCardWidth * idx) + (idx * offset) / (float)2.2;
+
+                var figure = hand.Clone(new RectangleF(xStartPoint, 0, figureWidth, figureHeight), hand.PixelFormat);
+                var color = hand.Clone(new RectangleF(xStartPoint, figureHeight, figureWidth, figureHeight), hand.PixelFormat);
+                var path = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+                color = Resharp(color);
+                figure.Save($"handFigure{idx}.jpg");
+                color.Save($"handColor{idx}.jpg");
+                var figurePath = Path.Combine(path, $"handFigure{idx}.jpg");
+                var colorPath = Path.Combine(path, $"handColor{idx}.jpg");
+                figurePath = figurePath.Replace("\\", "/");
+                colorPath = colorPath.Replace("\\", "/");
+                await PredictCard(idx, figurePath, colorPath, CardTypeEnum.Hand); 
             }
         }
 
@@ -553,11 +591,11 @@ namespace WpfClient.ViewModels
             var card = await GetCard(figurePath, colorPath);
             if (ct == CardTypeEnum.Desk)
             {
-                DispatchToUiThread(() => { DeskCards.Add(card); });
+                await DispatchToUiThread(() => { DeskCards.Add(card); });
             }
             else
             {
-                DispatchToUiThread(() => { HandCards.Add(card); });
+                await DispatchToUiThread(() => { HandCards.Add(card); });
             }
             File.Delete(figurePath);
             File.Delete(colorPath);
@@ -637,10 +675,26 @@ namespace WpfClient.ViewModels
                         xStart = points.Item1 - 2;
                         yStart = points.Item3;
                     }
-                    if (at == AnalyzeType.Hand) _handWidth = cutOffWidth;
-
-                    try
+                    if (at == AnalyzeType.Hand)
                     {
+                        _handWidth = cutOffWidth;
+                        xStart = points.Item1;
+                        yStart = points.Item3;
+                    }
+
+                        try
+                    {
+                        if(at == AnalyzeType.Hand)
+                        {
+                            var cOff = basicPicture.Clone(
+                                new Rectangle(xStart,
+                                yStart,
+                                cutOffWidth,
+                                50), basicPicture.PixelFormat);
+                            cOff.Save("original" + cutOffLocalName);
+                            return cOff;
+                        }
+
                         globalXstart += xStart;
                         globalXlength += cutOffWidth;
                         globalYstart += yStart;
@@ -904,7 +958,7 @@ namespace WpfClient.ViewModels
             foreach (var key in _figureMatcher.PokerHandsDict.Keys)
             {
                 var hand = _figureMatcher.PokerHandsDict[key];
-                Hands.Add(new HandDescription(key.ToString(), hand.Probability));
+                //Hands.Add(new HandDescription(key.ToString(), hand.Probability));
             }
 
             Console.WriteLine();

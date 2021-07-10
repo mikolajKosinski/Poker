@@ -92,8 +92,15 @@ namespace CoreBusinessLogic
 
             foreach (var item in tempHand)
             {
-                var card = deck.First(p => p.Color == item.Color && p.Figure == item.Figure);
-                deck.Remove(card);
+                var card = deck.FirstOrDefault(p => p.Color == item.Color && p.Figure == item.Figure);
+                if (deck.Contains(card))
+                {
+                    deck.Remove(card);
+                }
+                else
+                {
+                    deck.Remove(deck[0]); //TODO fix !!!!!!
+                }
             }
 
             return deck;

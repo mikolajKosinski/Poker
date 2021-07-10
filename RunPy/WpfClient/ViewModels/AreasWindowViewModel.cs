@@ -1,5 +1,7 @@
-﻿using System;
+﻿using CoreBusinessLogic;
+using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Text;
 using System.Windows.Input;
@@ -15,6 +17,22 @@ namespace WpfClient.ViewModels
             if (PropertyChanged != null)
             {
                 PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+            }
+        }
+
+        public ObservableCollection<ICard> HandCards
+        {
+            get
+            {
+                return _mainWindowVM.HandCards;
+            }
+        }
+
+        public ObservableCollection<ICard> DeskCards
+        {
+            get
+            {
+                return _mainWindowVM.DeskCards;
             }
         }
 
@@ -40,6 +58,7 @@ namespace WpfClient.ViewModels
         public ICommand HandSelectCommand { get; set; }
         public ICommand DeskSelectCommand { get; set; }
         public ICommand SingleCardCommand { get; set; }
+        public ICommand AnalyzeCommand { get; set; }
 
         public AreasWindowViewModel(IMainWindoViewModel vm)
         {
@@ -47,7 +66,13 @@ namespace WpfClient.ViewModels
             DeskSelectCommand = new CustomCommand(SelectDesk, CanSelect);
             HandSelectCommand = new CustomCommand(SelectHand, CanSelect);
             SingleCardCommand = new CustomCommand(SelectSingleCard, CanSelect);
+            AnalyzeCommand = new CustomCommand(CallAnalyzeCommand, CanSelect);
             //IsVisible = false;
+        }
+
+        private void CallAnalyzeCommand(object sender)
+        {
+            _mainWindowVM.Analyze();
         }
 
         public bool CanSelect(object parameter)
