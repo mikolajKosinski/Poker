@@ -10,6 +10,8 @@ namespace CoreBusinessLogic.Hands
     {
         public ThreeOfKind(IList<ICard> hand, IList<ICard> desk) : base(hand, desk) { }
 
+        public string Name { get; } = "ThreeOfKind";
+
         public IList<ICard> GetOuts()
         {
             CardsNeeded = GetNeededCardsCount();

@@ -10,6 +10,6 @@ namespace CoreBusinessLogic.Interfaces
         public int Probability { get; set; }
         public List<ICard> CardList { get;set; }
         public void Check();
-
+        public string Name { get; }
     }
 }

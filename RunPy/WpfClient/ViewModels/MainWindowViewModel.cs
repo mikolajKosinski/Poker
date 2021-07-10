@@ -203,8 +203,8 @@ namespace WpfClient.ViewModels
             SettingsWindowCommand = new CustomCommand(ShowSettings, CanSelect);
             //AddCommand = new CustomCommand(Add, CanSelect);
             //RemoveCommand = new CustomCommand(Remove, CanSelect);
-            _deskCards.CollectionChanged += _deskCards_CollectionChanged;
-            _handCards.CollectionChanged += _handCards_CollectionChanged;
+            //_deskCards.CollectionChanged += _deskCards_CollectionChanged;
+            //_handCards.CollectionChanged += _handCards_CollectionChanged;
             IsAreasVisible = false;
         }
 
@@ -383,9 +383,13 @@ namespace WpfClient.ViewModels
 
             matcher.CheckHand();
 
-            foreach(var item in matcher.PokerHandsDict.Keys)
+            var ordered = matcher.PokerHandsDict.OrderByDescending(x => x.Value.Probability).ToDictionary(x => x.Key, x => x.Value);
+
+            foreach (var item in ordered.Keys)
             {
-                Hands.Add($"{matcher.PokerHandsDict[item]} : {matcher.PokerHandsDict[item].Probability}");
+                var cards = "";
+                matcher.PokerHandsDict[item].CardList.ForEach(p => cards += $" [{p.Figure} {p.Color}]");
+                Hands.Add($"{matcher.PokerHandsDict[item].Name} : {matcher.PokerHandsDict[item].Probability} : {cards}");
             }
             Console.WriteLine();
         }
@@ -394,12 +398,17 @@ namespace WpfClient.ViewModels
         {
             float offset = (float)_singleCardWidth / (float)9.5;
             var figureHeight = Convert.ToInt32(_singleCardWidth * 0.4);
-            int cardsCount = _deskWidth / _singleCardWidth;
-          
-            if (((double)_deskWidth / (double)_singleCardWidth) > cardsCount)
-            {
-                if(cardsCount < 5) cardsCount++;
-            }
+            float cardsCount = (float)_deskWidth / (float)_singleCardWidth;
+
+            if (cardsCount > 3 && cardsCount < 3.5) cardsCount = 3;
+            if (cardsCount > 4 && cardsCount < 4.5) cardsCount = 4;
+
+            if (cardsCount > 5) cardsCount = 5;
+
+            //if (((double)_deskWidth / (double)_singleCardWidth) > cardsCount)
+            //{
+            //    if(cardsCount < 5) cardsCount++;
+            //}
 
             //if (cardsCount == 5) offset = GetOffset();
             float cardWithOffset = (float)_singleCardWidth + offset;

@@ -13,6 +13,8 @@ namespace CoreBusinessLogic.Hands
 
         }
 
+        public string Name { get; } = "FourOf";
+
         public void Check()
         {
             if (_gotFour())

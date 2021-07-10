@@ -13,6 +13,7 @@ namespace CoreBusinessLogic.Hands
 
         }
 
+        public string Name { get; } = "Full";
         public void Check()
         {
             var pair = GetGroup(tempHand, 2);

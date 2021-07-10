@@ -13,6 +13,7 @@ namespace CoreBusinessLogic.Hands
 
         }
 
+        public string Name { get; } = "RoyalFlush";
         public void Check()
         {
             var flush = new Flush(hand, desk);

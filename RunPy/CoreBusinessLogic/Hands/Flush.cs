@@ -13,6 +13,8 @@ namespace CoreBusinessLogic.Hands
 
         }
 
+        public string Name { get; } = "Flush";
+
         public void Check()
         {
             var tempHand = hand.Concat(desk).ToList();

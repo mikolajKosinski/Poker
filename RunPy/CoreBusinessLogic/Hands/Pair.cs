@@ -13,6 +13,8 @@ namespace CoreBusinessLogic.Hands
             Probability = 0;
         }
 
+        public string Name { get; } = "Pair";
+
         public IList<ICard> GetOuts()
         {
             var deck = GetDeckExceptTempHand();

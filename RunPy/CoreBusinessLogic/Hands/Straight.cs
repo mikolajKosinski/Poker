@@ -12,6 +12,8 @@ namespace CoreBusinessLogic.Hands
         {
         }
 
+        public string Name { get; } = "Straight";
+
         public IList<ICard> GetOuts()
         {
             if (!tempHand.Any()) return new List<ICard>();

@@ -13,6 +13,7 @@ namespace CoreBusinessLogic.Hands
 
         }
 
+        public string Name { get; } = "StraightFlush";
         public void Check()
         {
             var color = GetDominatingColor();

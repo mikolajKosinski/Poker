@@ -54,7 +54,11 @@
             
                 <Button Content="Analyze" Width="80" Height="30" Command="{Binding AnalyzeCommand}" Grid.Column="0"/>
                 <GroupBox Header="Hands" Grid.Column="1">
-                    <ListBox ItemsSource="{Binding Hands, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Grid.Column="3" Height="150" Width="120">
+                    <ListBox 
+                        ItemsSource="{Binding Hands, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" 
+                        Grid.Column="3" 
+                        VerticalAlignment="Stretch" 
+                        HorizontalAlignment="Stretch">
                         <!--<ListBox.ItemTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal">
