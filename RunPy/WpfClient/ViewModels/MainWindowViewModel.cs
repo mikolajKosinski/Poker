@@ -378,7 +378,7 @@ namespace WpfClient.ViewModels
 
             foreach (var card in HandCards)
             {
-                matcher.AddCardToHand(card);
+                  matcher.AddCardToHand(card);
             }
 
             matcher.CheckHand();

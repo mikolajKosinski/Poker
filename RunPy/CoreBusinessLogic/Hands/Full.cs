@@ -28,7 +28,6 @@ namespace CoreBusinessLogic.Hands
                 CardList.AddRange(secondPair);
             }
 
-
             CardList.AddRange(pair);
             CardList.AddRange(threeOfKind);
 
@@ -73,7 +72,22 @@ namespace CoreBusinessLogic.Hands
                 return outs;
             }
 
-            return new List<ICard>();
+            foreach(var card in tempHand)
+            {
+                var validCards = cards.Where(p => p.Figure == card.Figure).ToList();
+                if(validCards.Any())
+                {
+                    foreach(var item in validCards)
+                    {
+                        if(!outs.Any(p => p.Figure == item.Figure && p.Color == item.Color))
+                        {
+                            outs.Add(item);
+                        }
+                    }
+                }
+            }
+
+            return outs;
         }
 
         private int GetNeededCardsCount()

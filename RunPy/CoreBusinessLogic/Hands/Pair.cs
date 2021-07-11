@@ -37,7 +37,7 @@ namespace CoreBusinessLogic.Hands
             if (pair.Any())
             {
                 Probability = 100;
-                CardList.Add(pair.First());
+                pair.ForEach(p => CardList.Add(p));
             }
         }
     }
