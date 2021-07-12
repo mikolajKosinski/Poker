@@ -45,30 +45,50 @@
             </Grid>
             <Grid Grid.Row="1"
                   Visibility="{Binding IsMainVisible, Converter={StaticResource boolToVisConv}}">
-                <Grid.ColumnDefinitions>
+                <StackPanel Orientation="Horizontal">
+                <!--<Grid.ColumnDefinitions>
                     <ColumnDefinition Width="1*" />
                     <ColumnDefinition Width="6*" />
                     <ColumnDefinition Width="1*" />
                     <ColumnDefinition Width="1*" />
-                </Grid.ColumnDefinitions>
+                </Grid.ColumnDefinitions>-->
             
                 <Button Content="Analyze" Width="80" Height="30" Command="{Binding AnalyzeCommand}" Grid.Column="0"/>
-                <GroupBox Header="Hands" Grid.Column="1">
-                    <ListBox 
-                        ItemsSource="{Binding Hands, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" 
-                        Grid.Column="3" 
-                        VerticalAlignment="Stretch" 
-                        HorizontalAlignment="Stretch">
-                        <!--<ListBox.ItemTemplate>
-                            <DataTemplate>
-                                <StackPanel Orientation="Horizontal">
-                                    <TextBlock Text="{Binding HandName}" />
-                                    <TextBlock Text="{Binding HandProbability}" />
-                                </StackPanel>
-                            </DataTemplate>
-                        </ListBox.ItemTemplate>-->
+                <ListBox Height="30" VerticalAlignment="Top">
+                    <ListBox.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <VirtualizingStackPanel IsItemsHost="True" Orientation="Horizontal"/>
+                        </ItemsPanelTemplate>
+                    </ListBox.ItemsPanel>
+                    <ListBoxItem x:Name="TEst" >
+                            <Button Content="General" />
+                        </ListBoxItem>
+                        <ListBoxItem>
+                            <Button Content="Royal flush [70%]" />
+                        </ListBoxItem>
+                        <ListBoxItem>
+                            <Button Content="Straight flush [40%]" />
+                        </ListBoxItem>
+                        <ListBoxItem>
+                            <Button Content="Four of kind [5%]" />
+                        </ListBoxItem>
+                        <ListBoxItem>
+                            <Button Content="Full [2%]" />
+                        </ListBoxItem>
+                        <ListBoxItem>
+                            <Button Content="Flush [1%]" />
+                        </ListBoxItem>
+                        <ListBoxItem>
+                            <Button Content="Straight [0%]" />
+                        </ListBoxItem>
+                        <ListBoxItem>
+                            <Button Content="Three of kind [0%]" />
+                        </ListBoxItem>
+                        <ListBoxItem>
+                            <Button Content="Pair [0%]" />
+                        </ListBoxItem>
                     </ListBox>
-                </GroupBox>
+               
                 <GroupBox Header="Desk" Grid.Column="2" >
             <ListBox ItemsSource="{Binding DeskCards, Mode=TwoWay}" Grid.Column="2" Height="150" Width="80">
                     <ListBox.ItemTemplate>
@@ -93,7 +113,7 @@
                     </ListBox.ItemTemplate>
                 </ListBox>
             </GroupBox>
-            
+                </StackPanel>
             </Grid>
             <!--<StackPanel Grid.Row="1" Grid.Column="1">
                 <Button Content="GetSingleCard" Width="80" Height="30" Command="{Binding SingleCardCommand}" Grid.Column="1" Grid.Row="0"/>
