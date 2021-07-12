@@ -26,6 +26,160 @@ namespace WpfClient.ViewModels
             Hand = 1
         }
 
+        private bool _isGeneralTabVisible;
+        public bool IsGeneralTabVisible
+        {
+            get
+            {
+                return _isGeneralTabVisible;
+            }
+            set
+            {
+                _isGeneralTabVisible = value;
+                NotifyPropertyChanged(nameof(IsGeneralTabVisible));
+            }
+        }
+
+        private bool _isRoyalTabVisible;
+        public bool IsRoyalTabVisible
+        {
+            get
+            {
+                return _isRoyalTabVisible;
+            }
+            set
+            {
+                _isRoyalTabVisible = value;
+                NotifyPropertyChanged(nameof(IsRoyalTabVisible));
+            }
+        }
+
+        private bool _isStraightFlushTabVisible;
+        public bool IsStraightFLushTabVIsible
+        {
+            get
+            {
+                return _isStraightFlushTabVisible;
+            }
+            set
+            {
+                _isStraightFlushTabVisible = value;
+                NotifyPropertyChanged(nameof(IsStraightFLushTabVIsible));
+            }
+        }
+
+        private string _royalFlushTabName;
+        public string RoyalFlushTabName
+        {
+            get
+            {
+                return _royalFlushTabName; 
+            }
+            set
+            {
+                _royalFlushTabName = value;
+                NotifyPropertyChanged(nameof(RoyalFlushTabName));
+            }
+        }
+
+        private string _straightFlushTabName;
+        public string StraightFlushTabName
+        {
+            get
+            {
+                return _straightFlushTabName;
+            }
+            set
+            {
+                _straightFlushTabName = value;
+                NotifyPropertyChanged(nameof(StraightFlushTabName));
+            }
+        }
+
+        private string _fourOfKindTabName;
+        public string FourOfKindTabName
+        {
+            get
+            {
+                return _fourOfKindTabName;
+            }
+            set
+            {
+                _fourOfKindTabName = value;
+                NotifyPropertyChanged(nameof(FourOfKindTabName));
+            }
+        }
+
+        private string _fullTabName;
+        public string FullTabName
+        {
+            get
+            {
+                return _fullTabName;
+            }
+            set
+            {
+                _fullTabName = value;
+                NotifyPropertyChanged(nameof(FullTabName));
+            }
+        }
+
+        private string _flushTabName;
+        public string FlushTabName
+        {
+            get
+            {
+                return _flushTabName;
+            }
+            set
+            {
+                _flushTabName = value;
+                NotifyPropertyChanged(nameof(FlushTabName));
+            }
+        }
+
+        private string _straightTabName;
+        public string StraightTabName
+        {
+            get
+            {
+                return _straightTabName;
+            }
+            set
+            {
+                _straightTabName = value;
+                NotifyPropertyChanged(nameof(StraightTabName));
+            }
+        }
+
+        private string _threeOfKindTabName;
+        public string ThreeOfKindTabName
+        {
+            get
+            {
+                return _threeOfKindTabName;
+            }
+            set
+            {
+                _threeOfKindTabName = value;
+                NotifyPropertyChanged(nameof(ThreeOfKindTabName));
+            }
+        }
+
+        private string _pairTabName;
+        public string PairTabName
+        {
+            get
+            {
+                return _pairTabName;
+            }
+            set
+            {
+                _pairTabName = value;
+                NotifyPropertyChanged(nameof(PairTabName));
+            }
+        }
+
         private bool _areasVisible;
         public bool IsAreasVisible
         {
@@ -108,6 +262,9 @@ namespace WpfClient.ViewModels
        
         public ICommand AnalyzeCommand { get; set; }
 
+        public ICommand GeneralTabCommand { get; set; }
+        public ICommand RoyalTabCommand { get; set; }
+        public ICommand StraightFlushTabCommand { get; set; }
         public ICommand AreasWindowCommand { get; set; }
         public ICommand MainWindowCommand { get; set; }
 
@@ -198,6 +355,9 @@ namespace WpfClient.ViewModels
             _handPointsList = new List<Tuple<int, int, int, int>>();
             //_cardRecognized += MainWindowViewModel__cardRecognized;
             AnalyzeCommand = new CustomCommand(AnalyzeButtonCommand, CanSelect);
+            GeneralTabCommand = new CustomCommand(ShowGeneralTab, CanSelect);
+            RoyalTabCommand = new CustomCommand(ShowRoyalTab, CanSelect);
+            StraightFlushTabCommand = new CustomCommand(ShowStraightFlushTab, CanSelect);
             AreasWindowCommand = new CustomCommand(ShowAreas, CanSelect);
             MainWindowCommand = new CustomCommand(ShowMainWindow, CanSelect);
             SettingsWindowCommand = new CustomCommand(ShowSettings, CanSelect);
@@ -206,6 +366,16 @@ namespace WpfClient.ViewModels
             //_deskCards.CollectionChanged += _deskCards_CollectionChanged;
             //_handCards.CollectionChanged += _handCards_CollectionChanged;
             IsAreasVisible = false;
+
+            RoyalFlushTabName = $"Royal flush [0%]";
+            StraightFlushTabName = $"Straight flush [0%]";
+            FlushTabName = $"Flush [0%]";
+            FourOfKindTabName = $"Four of kind [0%]";
+            FullTabName = $"Full [0%]";
+            PairTabName = $"Pair [0%]";
+            StraightTabName = $"Straight [0%]";
+            ThreeOfKindTabName = $"Three of kind [0%]";
+            PairTabName = $"Pair [0%]";
         }
 
         private void _handCards_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
@@ -334,6 +504,27 @@ namespace WpfClient.ViewModels
             Analyze();
         }
 
+        private void ShowGeneralTab(object sender)
+        {
+            IsGeneralTabVisible = true;
+            IsRoyalTabVisible = false;
+            IsStraightFLushTabVIsible = false;
+        }
+
+        private void ShowRoyalTab(object sender)
+        {
+            IsGeneralTabVisible = false;
+            IsRoyalTabVisible = true;
+            IsStraightFLushTabVIsible = false;
+        }
+
+        private void ShowStraightFlushTab(object sender)
+        {
+            IsGeneralTabVisible = false;
+            IsRoyalTabVisible = false;
+            IsStraightFLushTabVIsible = true;
+        }
+
         public async Task Analyze()
         {
             //TakeScreenShoot();
@@ -369,6 +560,16 @@ namespace WpfClient.ViewModels
             matcher.CheckHand();
 
             var ordered = matcher.PokerHandsDict.OrderByDescending(x => x.Value.Probability).ToDictionary(x => x.Key, x => x.Value);
+
+            RoyalFlushTabName = $"Royal flush [{ordered[Enums.PokerHands.RoyalFlush].Probability}%]";
+            StraightFlushTabName = $"Straight flush [{ordered[Enums.PokerHands.StraightFlush].Probability}%]";
+            FlushTabName = $"Flush [{ordered[Enums.PokerHands.Flush].Probability}%]";
+            FourOfKindTabName = $"Four of kind [{ordered[Enums.PokerHands.FourOfKind].Probability}%]";
+            FullTabName = $"Full [{ordered[Enums.PokerHands.Full].Probability}%]";
+            PairTabName = $"Pair [{ordered[Enums.PokerHands.Pair].Probability}%]";
+            StraightTabName = $"Straight [{ordered[Enums.PokerHands.Straight].Probability}%]";
+            ThreeOfKindTabName = $"Three of kind [{ordered[Enums.PokerHands.ThreeOfKind].Probability}%]";
+            PairTabName = $"Pair [{ordered[Enums.PokerHands.Pair].Probability}%]";
 
             foreach (var item in ordered.Keys)
             {

@@ -24,6 +24,7 @@
             </VisualStateManager.VisualStateGroups>
             <Grid.RowDefinitions>
                 <RowDefinition Height="1*" />
+                <RowDefinition Height="2*" />
                 <RowDefinition Height="8*" />
             </Grid.RowDefinitions>
             <StackPanel Orientation="Horizontal" Grid.Row="0" HorizontalAlignment="Center">
@@ -61,35 +62,40 @@
                         </ItemsPanelTemplate>
                     </ListBox.ItemsPanel>
                     <ListBoxItem x:Name="TEst" >
-                            <Button Content="General" />
+                            <Button Content="General" Command="{Binding GeneralTabCommand}"/>
                         </ListBoxItem>
                         <ListBoxItem>
-                            <Button Content="Royal flush [70%]" />
+                            <Button Content="{Binding RoyalFlushTabName}" Command="{Binding RoyalTabCommand}" />
                         </ListBoxItem>
                         <ListBoxItem>
-                            <Button Content="Straight flush [40%]" />
+                            <Button Content="{Binding StraightFlushTabName}" Command="{Binding StraightFlushTabCommand}" />
                         </ListBoxItem>
                         <ListBoxItem>
-                            <Button Content="Four of kind [5%]" />
+                            <Button Content="{Binding FourOfKindTabName}" />
                         </ListBoxItem>
                         <ListBoxItem>
-                            <Button Content="Full [2%]" />
+                            <Button Content="{Binding FullTabName}" />
                         </ListBoxItem>
                         <ListBoxItem>
-                            <Button Content="Flush [1%]" />
+                            <Button Content="{Binding FlushTabName}" />
                         </ListBoxItem>
                         <ListBoxItem>
-                            <Button Content="Straight [0%]" />
+                            <Button Content="{Binding StraightTabName}" />
                         </ListBoxItem>
                         <ListBoxItem>
-                            <Button Content="Three of kind [0%]" />
+                            <Button Content="{Binding ThreeOfKindTabName}" />
                         </ListBoxItem>
                         <ListBoxItem>
-                            <Button Content="Pair [0%]" />
+                            <Button Content="{Binding PairTabName}" />
                         </ListBoxItem>
                     </ListBox>
-               
-                <GroupBox Header="Desk" Grid.Column="2" >
+
+                   
+
+
+
+
+                    <GroupBox Header="Desk" Grid.Column="2" >
             <ListBox ItemsSource="{Binding DeskCards, Mode=TwoWay}" Grid.Column="2" Height="150" Width="80">
                     <ListBox.ItemTemplate>
                         <DataTemplate>
@@ -115,6 +121,30 @@
             </GroupBox>
                 </StackPanel>
             </Grid>
+            <Grid Grid.Row="2" Background="Gray" Visibility="{Binding IsGeneralTabVisible, Mode=TwoWay, Converter={StaticResource boolToVisConv}}" 
+                          VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+            </Grid>
+            <Grid Grid.Row="2" Background="Green" Visibility="{Binding IsRoyalTabVisible, Mode=TwoWay, Converter={StaticResource boolToVisConv}}" 
+                          VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+            </Grid>
+            <!--<Grid Grid.Row="2" Background="Red" Visibility="{Binding IsStraightFlushTabVisible, Converter={StaticResource boolToVisConv}}" 
+                          VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+            </Grid>-->
+            <!--<Grid Grid.Row="2" Background="Green" Visibility="{Binding IsRoyalTabVisible, Converter={StaticResource boolToVisConv}}" 
+                          VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+            </Grid>-->
+            <!--<Grid Grid.Row="2" Background="Green" Visibility="{Binding IsRoyalTabVisible, Converter={StaticResource boolToVisConv}}" 
+                          VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+            </Grid>
+            <Grid Grid.Row="2" Background="Green" Visibility="{Binding IsRoyalTabVisible, Converter={StaticResource boolToVisConv}}" 
+                          VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+            </Grid>
+            <Grid Grid.Row="2" Background="Green" Visibility="{Binding IsRoyalTabVisible, Converter={StaticResource boolToVisConv}}" 
+                          VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+            </Grid>
+            <Grid Grid.Row="2" Background="Green" Visibility="{Binding IsRoyalTabVisible, Converter={StaticResource boolToVisConv}}" 
+                          VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+            </Grid>-->
             <!--<StackPanel Grid.Row="1" Grid.Column="1">
                 <Button Content="GetSingleCard" Width="80" Height="30" Command="{Binding SingleCardCommand}" Grid.Column="1" Grid.Row="0"/>
                 <Button Content="GetDeskArea" Width="80" Height="30" Command="{Binding DeskSelectCommand}" Grid.Column="1" Grid.Row="0"/>
