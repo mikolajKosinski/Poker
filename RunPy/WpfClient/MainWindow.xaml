@@ -71,22 +71,22 @@
                             <Button Content="{Binding StraightFlushTabName}" Command="{Binding StraightFlushTabCommand}" />
                         </ListBoxItem>
                         <ListBoxItem>
-                            <Button Content="{Binding FourOfKindTabName}" />
+                            <Button Content="{Binding FourOfKindTabName}" Command="{Binding FourOfKindTabCommand}" />
                         </ListBoxItem>
                         <ListBoxItem>
-                            <Button Content="{Binding FullTabName}" />
+                            <Button Content="{Binding FullTabName}" Command="{Binding FullTabCommand}" />
                         </ListBoxItem>
                         <ListBoxItem>
-                            <Button Content="{Binding FlushTabName}" />
+                            <Button Content="{Binding FlushTabName}" Command="{Binding FlushTabCommand}" />
                         </ListBoxItem>
                         <ListBoxItem>
-                            <Button Content="{Binding StraightTabName}" />
+                            <Button Content="{Binding StraightTabName}" Command="{Binding StraightTabCommand}" />
                         </ListBoxItem>
                         <ListBoxItem>
-                            <Button Content="{Binding ThreeOfKindTabName}" />
+                            <Button Content="{Binding ThreeOfKindTabName}" Command="{Binding ThreeOfKindTabCommand}" />
                         </ListBoxItem>
                         <ListBoxItem>
-                            <Button Content="{Binding PairTabName}" />
+                            <Button Content="{Binding PairTabName}" Command="{Binding PairTabCommand}"  />
                         </ListBoxItem>
                     </ListBox>
 
@@ -127,24 +127,24 @@
             <Grid Grid.Row="2" Background="Green" Visibility="{Binding IsRoyalTabVisible, Mode=TwoWay, Converter={StaticResource boolToVisConv}}" 
                           VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
             </Grid>
-            <!--<Grid Grid.Row="2" Background="Red" Visibility="{Binding IsStraightFlushTabVisible, Converter={StaticResource boolToVisConv}}" 
-                          VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
-            </Grid>-->
-            <!--<Grid Grid.Row="2" Background="Green" Visibility="{Binding IsRoyalTabVisible, Converter={StaticResource boolToVisConv}}" 
-                          VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
-            </Grid>-->
-            <!--<Grid Grid.Row="2" Background="Green" Visibility="{Binding IsRoyalTabVisible, Converter={StaticResource boolToVisConv}}" 
+            <Grid Grid.Row="2" Background="Red" Visibility="{Binding IsFourOfKindTabVisible, Mode=TwoWay, Converter={StaticResource boolToVisConv}}" 
                           VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
             </Grid>
-            <Grid Grid.Row="2" Background="Green" Visibility="{Binding IsRoyalTabVisible, Converter={StaticResource boolToVisConv}}" 
+            <Grid Grid.Row="2" Background="Brown" Visibility="{Binding IsFullTabVisible, Mode=TwoWay, Converter={StaticResource boolToVisConv}}" 
                           VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
             </Grid>
-            <Grid Grid.Row="2" Background="Green" Visibility="{Binding IsRoyalTabVisible, Converter={StaticResource boolToVisConv}}" 
+            <Grid Grid.Row="2" Background="Orange" Visibility="{Binding IsFlushTabVisible, Mode=TwoWay, Converter={StaticResource boolToVisConv}}" 
                           VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
             </Grid>
-            <Grid Grid.Row="2" Background="Green" Visibility="{Binding IsRoyalTabVisible, Converter={StaticResource boolToVisConv}}" 
+            <Grid Grid.Row="2" Background="Pink" Visibility="{Binding IsStraightTabVisible, Mode=TwoWay, Converter={StaticResource boolToVisConv}}" 
                           VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
-            </Grid>-->
+            </Grid>
+            <Grid Grid.Row="2" Background="White" Visibility="{Binding IsThreeOfKindTabVisible, Mode=TwoWay, Converter={StaticResource boolToVisConv}}" 
+                          VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+            </Grid>
+            <Grid Grid.Row="2" Background="Yellow" Visibility="{Binding IsPairTabVisible, Mode=TwoWay, Converter={StaticResource boolToVisConv}}" 
+                          VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+            </Grid>
             <!--<StackPanel Grid.Row="1" Grid.Column="1">
                 <Button Content="GetSingleCard" Width="80" Height="30" Command="{Binding SingleCardCommand}" Grid.Column="1" Grid.Row="0"/>
                 <Button Content="GetDeskArea" Width="80" Height="30" Command="{Binding DeskSelectCommand}" Grid.Column="1" Grid.Row="0"/>

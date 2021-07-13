@@ -68,6 +68,90 @@ namespace WpfClient.ViewModels
             }
         }
 
+        private bool _isFourOfKindTabVisible;
+        public bool IsFourOfKindTabVIsible
+        {
+            get
+            {
+                return _isFourOfKindTabVisible;
+            }
+            set
+            {
+                _isFourOfKindTabVisible = value;
+                NotifyPropertyChanged(nameof(IsFourOfKindTabVIsible));
+            }
+        }
+
+        private bool _isFullTabVisible;
+        public bool IsFullTabVIsible
+        {
+            get
+            {
+                return _isFullTabVisible;
+            }
+            set
+            {
+                _isFullTabVisible = value;
+                NotifyPropertyChanged(nameof(IsFullTabVIsible));
+            }
+        }
+
+        private bool _isFlushTabVisible;
+        public bool IsFlushTabVIsible
+        {
+            get
+            {
+                return _isFlushTabVisible;
+            }
+            set
+            {
+                _isFlushTabVisible = value;
+                NotifyPropertyChanged(nameof(IsFlushTabVIsible));
+            }
+        }
+
+        private bool _isStraightTabVisible;
+        public bool IsStraightTabVIsible
+        {
+            get
+            {
+                return _isStraightTabVisible;
+            }
+            set
+            {
+                _isStraightTabVisible = value;
+                NotifyPropertyChanged(nameof(IsStraightTabVIsible));
+            }
+        }
+
+        private bool _isThreeOfKindTabVisible;
+        public bool IsThreeOfKindTabVIsible
+        {
+            get
+            {
+                return _isThreeOfKindTabVisible;
+            }
+            set
+            {
+                _isThreeOfKindTabVisible = value;
+                NotifyPropertyChanged(nameof(IsThreeOfKindTabVIsible));
+            }
+        }
+
+        private bool _isPairTabVisible;
+        public bool IsPairTabVisible
+        {
+            get
+            {
+                return _isPairTabVisible;
+            }
+            set
+            {
+                _isPairTabVisible = value;
+                NotifyPropertyChanged(nameof(IsPairTabVisible));
+            }
+        }
+
         private string _royalFlushTabName;
         public string RoyalFlushTabName
         {
@@ -261,10 +345,16 @@ namespace WpfClient.ViewModels
         public CardArea SingleCardArea { get; set; }
        
         public ICommand AnalyzeCommand { get; set; }
-
         public ICommand GeneralTabCommand { get; set; }
         public ICommand RoyalTabCommand { get; set; }
         public ICommand StraightFlushTabCommand { get; set; }
+        public ICommand FourOfKindTabCommand { get; set; }
+        public ICommand FullTabCommand { get; set; }
+        public ICommand FlushTabCommand { get; set; }
+        public ICommand StraightTabCommand { get; set; }
+        public ICommand ThreeOfKindTabCommand { get; set; }
+        public ICommand PairTabCommand { get; set; }
+
         public ICommand AreasWindowCommand { get; set; }
         public ICommand MainWindowCommand { get; set; }
 
@@ -358,7 +448,12 @@ namespace WpfClient.ViewModels
             GeneralTabCommand = new CustomCommand(ShowGeneralTab, CanSelect);
             RoyalTabCommand = new CustomCommand(ShowRoyalTab, CanSelect);
             StraightFlushTabCommand = new CustomCommand(ShowStraightFlushTab, CanSelect);
-            AreasWindowCommand = new CustomCommand(ShowAreas, CanSelect);
+            FourOfKindTabCommand = new CustomCommand(ShowFourOfKindTab, CanSelect);
+            FullTabCommand = new CustomCommand(ShowFullTab, CanSelect);
+            FlushTabCommand = new CustomCommand(ShowFlushTab, CanSelect);
+            StraightTabCommand = new CustomCommand(ShowStraightTab, CanSelect);
+            ThreeOfKindTabCommand = new CustomCommand(ShowThreeOfKindTab, CanSelect);
+            PairTabCommand = new CustomCommand(ShowPairTab, CanSelect);
             MainWindowCommand = new CustomCommand(ShowMainWindow, CanSelect);
             SettingsWindowCommand = new CustomCommand(ShowSettings, CanSelect);
             //AddCommand = new CustomCommand(Add, CanSelect);
@@ -376,6 +471,16 @@ namespace WpfClient.ViewModels
             StraightTabName = $"Straight [0%]";
             ThreeOfKindTabName = $"Three of kind [0%]";
             PairTabName = $"Pair [0%]";
+
+            IsGeneralTabVisible = false;
+            IsRoyalTabVisible = false;
+            IsStraightFLushTabVIsible = false;
+            IsFourOfKindTabVIsible = false;
+            IsFullTabVIsible = false;
+            IsFlushTabVIsible = false;
+            IsStraightTabVIsible = false;
+            IsThreeOfKindTabVIsible = false;
+            IsPairTabVisible = false;
         }
 
         private void _handCards_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
@@ -509,6 +614,12 @@ namespace WpfClient.ViewModels
             IsGeneralTabVisible = true;
             IsRoyalTabVisible = false;
             IsStraightFLushTabVIsible = false;
+            IsFourOfKindTabVIsible = false;
+            IsFullTabVIsible = false;
+            IsFlushTabVIsible = false;
+            IsStraightTabVIsible = false;
+            IsThreeOfKindTabVIsible = false;
+            IsPairTabVisible = false;
         }
 
         private void ShowRoyalTab(object sender)
@@ -516,6 +627,12 @@ namespace WpfClient.ViewModels
             IsGeneralTabVisible = false;
             IsRoyalTabVisible = true;
             IsStraightFLushTabVIsible = false;
+            IsFourOfKindTabVIsible = false;
+            IsFullTabVIsible = false;
+            IsFlushTabVIsible = false;
+            IsStraightTabVIsible = false;
+            IsThreeOfKindTabVIsible = false;
+            IsPairTabVisible = false;
         }
 
         private void ShowStraightFlushTab(object sender)
@@ -523,6 +640,90 @@ namespace WpfClient.ViewModels
             IsGeneralTabVisible = false;
             IsRoyalTabVisible = false;
             IsStraightFLushTabVIsible = true;
+            IsFourOfKindTabVIsible = false;
+            IsFullTabVIsible = false;
+            IsFlushTabVIsible = false;
+            IsStraightTabVIsible = false;
+            IsThreeOfKindTabVIsible = false;
+            IsPairTabVisible = false;
+        }
+
+        private void ShowFourOfKindTab(object sender)
+        {
+            IsGeneralTabVisible = false;
+            IsRoyalTabVisible = false;
+            IsStraightFLushTabVIsible = false;
+            IsFourOfKindTabVIsible = true;
+            IsFullTabVIsible = false;
+            IsFlushTabVIsible = false;
+            IsStraightTabVIsible = false;
+            IsThreeOfKindTabVIsible = false;
+            IsPairTabVisible = false;
+        }
+
+        private void ShowFullTab(object sender)
+        {
+            IsGeneralTabVisible = false;
+            IsRoyalTabVisible = false;
+            IsStraightFLushTabVIsible = false;
+            IsFourOfKindTabVIsible = false;
+            IsFullTabVIsible = true;
+            IsFlushTabVIsible = false;
+            IsStraightTabVIsible = false;
+            IsThreeOfKindTabVIsible = false;
+            IsPairTabVisible = false;
+        }
+
+        private void ShowFlushTab(object sender)
+        {
+            IsGeneralTabVisible = false;
+            IsRoyalTabVisible = false;
+            IsStraightFLushTabVIsible = false;
+            IsFourOfKindTabVIsible = false;
+            IsFullTabVIsible = false;
+            IsFlushTabVIsible = true;
+            IsStraightTabVIsible = false;
+            IsThreeOfKindTabVIsible = false;
+            IsPairTabVisible = false;
+        }
+
+        private void ShowStraightTab(object sender)
+        {
+            IsGeneralTabVisible = false;
+            IsRoyalTabVisible = false;
+            IsStraightFLushTabVIsible = false;
+            IsFourOfKindTabVIsible = false;
+            IsFullTabVIsible = false;
+            IsFlushTabVIsible = false;
+            IsStraightTabVIsible = true;
+            IsThreeOfKindTabVIsible = false;
+            IsPairTabVisible = false;
+        }
+
+        private void ShowThreeOfKindTab(object sender)
+        {
+            IsGeneralTabVisible = false;
+            IsRoyalTabVisible = false;
+            IsStraightFLushTabVIsible = false;
+            IsFourOfKindTabVIsible = false;
+            IsFullTabVIsible = false;
+            IsFlushTabVIsible = false;
+            IsStraightTabVIsible = false;
+            IsThreeOfKindTabVIsible = true;
+            IsPairTabVisible = false;
+        }
+
+        private void ShowPairTab(object sender)
+        {
+            IsGeneralTabVisible = false;
+            IsRoyalTabVisible = false;
+            IsStraightFLushTabVIsible = false;
+            IsFourOfKindTabVIsible = false;
+            IsFullTabVIsible = false;
+            IsFlushTabVIsible = false;
+            IsStraightTabVIsible = false;
+            IsThreeOfKindTabVIsible = false;
+            IsPairTabVisible = true;
         }
 
         public async Task Analyze()
