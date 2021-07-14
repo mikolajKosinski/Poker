@@ -55,7 +55,7 @@ namespace WpfClient.ViewModels
         }
 
         private bool _isStraightFlushTabVisible;
-        public bool IsStraightFLushTabVIsible
+        public bool IsStraightFlushTabVisible
         {
             get
             {
@@ -64,12 +64,12 @@ namespace WpfClient.ViewModels
             set
             {
                 _isStraightFlushTabVisible = value;
-                NotifyPropertyChanged(nameof(IsStraightFLushTabVIsible));
+                NotifyPropertyChanged(nameof(IsStraightFlushTabVisible));
             }
         }
 
         private bool _isFourOfKindTabVisible;
-        public bool IsFourOfKindTabVIsible
+        public bool IsFourOfKindTabVisible
         {
             get
             {
@@ -78,12 +78,12 @@ namespace WpfClient.ViewModels
             set
             {
                 _isFourOfKindTabVisible = value;
-                NotifyPropertyChanged(nameof(IsFourOfKindTabVIsible));
+                NotifyPropertyChanged(nameof(IsFourOfKindTabVisible));
             }
         }
 
         private bool _isFullTabVisible;
-        public bool IsFullTabVIsible
+        public bool IsFullTabVisible
         {
             get
             {
@@ -92,12 +92,12 @@ namespace WpfClient.ViewModels
             set
             {
                 _isFullTabVisible = value;
-                NotifyPropertyChanged(nameof(IsFullTabVIsible));
+                NotifyPropertyChanged(nameof(IsFullTabVisible));
             }
         }
 
         private bool _isFlushTabVisible;
-        public bool IsFlushTabVIsible
+        public bool IsFlushTabVisible
         {
             get
             {
@@ -106,12 +106,12 @@ namespace WpfClient.ViewModels
             set
             {
                 _isFlushTabVisible = value;
-                NotifyPropertyChanged(nameof(IsFlushTabVIsible));
+                NotifyPropertyChanged(nameof(IsFlushTabVisible));
             }
         }
 
         private bool _isStraightTabVisible;
-        public bool IsStraightTabVIsible
+        public bool IsStraightTabVisible
         {
             get
             {
@@ -120,12 +120,12 @@ namespace WpfClient.ViewModels
             set
             {
                 _isStraightTabVisible = value;
-                NotifyPropertyChanged(nameof(IsStraightTabVIsible));
+                NotifyPropertyChanged(nameof(IsStraightTabVisible));
             }
         }
 
         private bool _isThreeOfKindTabVisible;
-        public bool IsThreeOfKindTabVIsible
+        public bool IsThreeOfKindTabVisible
         {
             get
             {
@@ -134,7 +134,7 @@ namespace WpfClient.ViewModels
             set
             {
                 _isThreeOfKindTabVisible = value;
-                NotifyPropertyChanged(nameof(IsThreeOfKindTabVIsible));
+                NotifyPropertyChanged(nameof(IsThreeOfKindTabVisible));
             }
         }
 
@@ -474,12 +474,12 @@ namespace WpfClient.ViewModels
 
             IsGeneralTabVisible = false;
             IsRoyalTabVisible = false;
-            IsStraightFLushTabVIsible = false;
-            IsFourOfKindTabVIsible = false;
-            IsFullTabVIsible = false;
-            IsFlushTabVIsible = false;
-            IsStraightTabVIsible = false;
-            IsThreeOfKindTabVIsible = false;
+            IsStraightFlushTabVisible = false;
+            IsFourOfKindTabVisible = false;
+            IsFullTabVisible = false;
+            IsFlushTabVisible = false;
+            IsStraightTabVisible = false;
+            IsThreeOfKindTabVisible = false;
             IsPairTabVisible = false;
         }
 
@@ -613,12 +613,12 @@ namespace WpfClient.ViewModels
         {
             IsGeneralTabVisible = true;
             IsRoyalTabVisible = false;
-            IsStraightFLushTabVIsible = false;
-            IsFourOfKindTabVIsible = false;
-            IsFullTabVIsible = false;
-            IsFlushTabVIsible = false;
-            IsStraightTabVIsible = false;
-            IsThreeOfKindTabVIsible = false;
+            IsStraightFlushTabVisible = false;
+            IsFourOfKindTabVisible = false;
+            IsFullTabVisible = false;
+            IsFlushTabVisible = false;
+            IsStraightTabVisible = false;
+            IsThreeOfKindTabVisible = false;
             IsPairTabVisible = false;
         }
 
@@ -626,12 +626,12 @@ namespace WpfClient.ViewModels
         {
             IsGeneralTabVisible = false;
             IsRoyalTabVisible = true;
-            IsStraightFLushTabVIsible = false;
-            IsFourOfKindTabVIsible = false;
-            IsFullTabVIsible = false;
-            IsFlushTabVIsible = false;
-            IsStraightTabVIsible = false;
-            IsThreeOfKindTabVIsible = false;
+            IsStraightFlushTabVisible = false;
+            IsFourOfKindTabVisible = false;
+            IsFullTabVisible = false;
+            IsFlushTabVisible = false;
+            IsStraightTabVisible = false;
+            IsThreeOfKindTabVisible = false;
             IsPairTabVisible = false;
         }
 
@@ -639,12 +639,12 @@ namespace WpfClient.ViewModels
         {
             IsGeneralTabVisible = false;
             IsRoyalTabVisible = false;
-            IsStraightFLushTabVIsible = true;
-            IsFourOfKindTabVIsible = false;
-            IsFullTabVIsible = false;
-            IsFlushTabVIsible = false;
-            IsStraightTabVIsible = false;
-            IsThreeOfKindTabVIsible = false;
+            IsStraightFlushTabVisible = true;
+            IsFourOfKindTabVisible = false;
+            IsFullTabVisible = false;
+            IsFlushTabVisible = false;
+            IsStraightTabVisible = false;
+            IsThreeOfKindTabVisible = false;
             IsPairTabVisible = false;
         }
 
@@ -652,12 +652,12 @@ namespace WpfClient.ViewModels
         {
             IsGeneralTabVisible = false;
             IsRoyalTabVisible = false;
-            IsStraightFLushTabVIsible = false;
-            IsFourOfKindTabVIsible = true;
-            IsFullTabVIsible = false;
-            IsFlushTabVIsible = false;
-            IsStraightTabVIsible = false;
-            IsThreeOfKindTabVIsible = false;
+            IsStraightFlushTabVisible = false;
+            IsFourOfKindTabVisible = true;
+            IsFullTabVisible = false;
+            IsFlushTabVisible = false;
+            IsStraightTabVisible = false;
+            IsThreeOfKindTabVisible = false;
             IsPairTabVisible = false;
         }
 
@@ -665,12 +665,12 @@ namespace WpfClient.ViewModels
         {
             IsGeneralTabVisible = false;
             IsRoyalTabVisible = false;
-            IsStraightFLushTabVIsible = false;
-            IsFourOfKindTabVIsible = false;
-            IsFullTabVIsible = true;
-            IsFlushTabVIsible = false;
-            IsStraightTabVIsible = false;
-            IsThreeOfKindTabVIsible = false;
+            IsStraightFlushTabVisible = false;
+            IsFourOfKindTabVisible = false;
+            IsFullTabVisible = true;
+            IsFlushTabVisible = false;
+            IsStraightTabVisible = false;
+            IsThreeOfKindTabVisible = false;
             IsPairTabVisible = false;
         }
 
@@ -678,12 +678,12 @@ namespace WpfClient.ViewModels
         {
             IsGeneralTabVisible = false;
             IsRoyalTabVisible = false;
-            IsStraightFLushTabVIsible = false;
-            IsFourOfKindTabVIsible = false;
-            IsFullTabVIsible = false;
-            IsFlushTabVIsible = true;
-            IsStraightTabVIsible = false;
-            IsThreeOfKindTabVIsible = false;
+            IsStraightFlushTabVisible = false;
+            IsFourOfKindTabVisible = false;
+            IsFullTabVisible = false;
+            IsFlushTabVisible = true;
+            IsStraightTabVisible = false;
+            IsThreeOfKindTabVisible = false;
             IsPairTabVisible = false;
         }
 
@@ -691,12 +691,12 @@ namespace WpfClient.ViewModels
         {
             IsGeneralTabVisible = false;
             IsRoyalTabVisible = false;
-            IsStraightFLushTabVIsible = false;
-            IsFourOfKindTabVIsible = false;
-            IsFullTabVIsible = false;
-            IsFlushTabVIsible = false;
-            IsStraightTabVIsible = true;
-            IsThreeOfKindTabVIsible = false;
+            IsStraightFlushTabVisible = false;
+            IsFourOfKindTabVisible = false;
+            IsFullTabVisible = false;
+            IsFlushTabVisible = false;
+            IsStraightTabVisible = true;
+            IsThreeOfKindTabVisible = false;
             IsPairTabVisible = false;
         }
 
@@ -704,12 +704,12 @@ namespace WpfClient.ViewModels
         {
             IsGeneralTabVisible = false;
             IsRoyalTabVisible = false;
-            IsStraightFLushTabVIsible = false;
-            IsFourOfKindTabVIsible = false;
-            IsFullTabVIsible = false;
-            IsFlushTabVIsible = false;
-            IsStraightTabVIsible = false;
-            IsThreeOfKindTabVIsible = true;
+            IsStraightFlushTabVisible = false;
+            IsFourOfKindTabVisible = false;
+            IsFullTabVisible = false;
+            IsFlushTabVisible = false;
+            IsStraightTabVisible = false;
+            IsThreeOfKindTabVisible = true;
             IsPairTabVisible = false;
         }
 
@@ -717,12 +717,12 @@ namespace WpfClient.ViewModels
         {
             IsGeneralTabVisible = false;
             IsRoyalTabVisible = false;
-            IsStraightFLushTabVIsible = false;
-            IsFourOfKindTabVIsible = false;
-            IsFullTabVIsible = false;
-            IsFlushTabVIsible = false;
-            IsStraightTabVIsible = false;
-            IsThreeOfKindTabVIsible = false;
+            IsStraightFlushTabVisible = false;
+            IsFourOfKindTabVisible = false;
+            IsFullTabVisible = false;
+            IsFlushTabVisible = false;
+            IsStraightTabVisible = false;
+            IsThreeOfKindTabVisible = false;
             IsPairTabVisible = true;
         }
 
