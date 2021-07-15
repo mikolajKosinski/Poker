@@ -26,6 +26,10 @@ namespace WpfClient.ViewModels
             Hand = 1
         }
 
+        IFigureMatcher _matcher;
+
+        #region properties
+
         private bool _isGeneralTabVisible;
         public bool IsGeneralTabVisible
         {
@@ -306,6 +310,8 @@ namespace WpfClient.ViewModels
             }
         }
 
+        #endregion
+
         public IAreasWindowViewModel AreasViewModel { get; set; }
         public ISettingsViewModel SettingsViewModel { get; set; }
         public event PropertyChangedEventHandler PropertyChanged;
@@ -361,6 +367,20 @@ namespace WpfClient.ViewModels
         public ICommand SettingsWindowCommand { get; set; }
         //public ICommand AddCommand { get; set; }
         //public ICommand RemoveCommand { get; set; }
+
+        private ObservableCollection<string> _cardList;
+        public ObservableCollection<string> CardList
+        {
+            get
+            {
+                return _cardList;
+            }
+            set
+            {
+                _cardList = value;
+                NotifyPropertyChanged(nameof(CardList));
+            }
+        }
 
         private ObservableCollection<ICard> _handCards;
         public ObservableCollection<ICard> HandCards
@@ -430,9 +450,84 @@ namespace WpfClient.ViewModels
             }
         }
 
+        private int GetIndexByName(string name)
+        {
+            if (name.Contains("RoyalFlush")) return 0;
+            if (name.Contains("StraightFlush")) return 1;
+            if (name.Contains("FourOfKind")) return 2;
+            if (name.Contains("Full")) return 3;
+            if (name.Contains("Flush")) return 4;
+            if (name.Contains("Straight")) return 5;
+            if (name.Contains("ThreeOfKind")) return 6;
+            if (name.Contains("Pair")) return 7;
+
+            return 0;
+        }
+
+        public void SelectTab(string name)
+        {
+            var idx = GetIndexByName(name);
+
+            switch(idx)
+            {
+                case 0:
+                    GetCardListByHand(Enums.PokerHands.RoyalFlush);
+                    ShowRoyalTab(null);
+                    break;
+                case 1:
+                    GetCardListByHand(Enums.PokerHands.StraightFlush);
+                    ShowStraightFlushTab(null);
+                    break;
+                case 2:
+                    GetCardListByHand(Enums.PokerHands.FourOfKind);
+                    ShowFourOfKindTab(null);
+                    break;
+                case 3:
+                    GetCardListByHand(Enums.PokerHands.Full);
+                    ShowFullTab(null);
+                    break;
+                case 4:
+                    GetCardListByHand(Enums.PokerHands.Flush);
+                    ShowFlushTab(null);
+                    break;
+                case 5:
+                    GetCardListByHand(Enums.PokerHands.Straight);
+                    ShowStraightTab(null);
+                    break;
+                case 6:
+                    GetCardListByHand(Enums.PokerHands.ThreeOfKind);
+                    ShowThreeOfKindTab(null);
+                    break;
+                case 7:
+                    GetCardListByHand(Enums.PokerHands.Pair);
+                    ShowPairTab(null);
+                    break;
+            }
+
+            //if (idx == 0) ShowRoyalTab(null);
+            //if (idx == 1) ShowStraightFlushTab(null);
+            //if (idx == 2) ShowFourOfKindTab(null);
+            //if (idx == 3) ShowFullTab(null);
+            //if (idx == 4) ShowFlushTab(null);
+            //if (idx == 5) ShowStraightTab(null);
+            //if (idx == 6) ShowThreeOfKindTab(null);
+            //if (idx == 7) ShowPairTab(null);
+        }
+
+        private void GetCardListByHand(Enums.PokerHands hand)
+        {
+            CardList.Clear();
+            var list = _matcher.PokerHandsDict[hand].CardList;
+            foreach (var item in list)
+            {
+                CardList.Add($"{item.Figure} {item.Color}");
+            }
+        }
 
         public MainWindowViewModel(ICardRecognition cardRecognition, IFigureMatcher figureMatcher, ICardManager cardManager)
-        {            
+        {
+            _matcher = new FigureMatcher();
+            CardList = new ObservableCollection<string>();
             AreasViewModel = new AreasWindowViewModel(this);
             SettingsViewModel = new SettingsViewModel(this);
             RecognizedCardsList = new List<ICard>();
@@ -454,6 +549,8 @@ namespace WpfClient.ViewModels
             StraightTabCommand = new CustomCommand(ShowStraightTab, CanSelect);
             ThreeOfKindTabCommand = new CustomCommand(ShowThreeOfKindTab, CanSelect);
             PairTabCommand = new CustomCommand(ShowPairTab, CanSelect);
+
+            AreasWindowCommand = new CustomCommand(ShowAreas, CanSelect);
             MainWindowCommand = new CustomCommand(ShowMainWindow, CanSelect);
             SettingsWindowCommand = new CustomCommand(ShowSettings, CanSelect);
             //AddCommand = new CustomCommand(Add, CanSelect);
@@ -746,21 +843,19 @@ namespace WpfClient.ViewModels
             await AnalyzeDeskV2(desk);
             await AnalyzeHandV2(hand);
 
-            var matcher = new FigureMatcher();
-
             foreach (var card in DeskCards)
             {
-                matcher.AddCardToFlop(card);
+                _matcher.AddCardToFlop(card);
             }
 
             foreach (var card in HandCards)
             {
-                  matcher.AddCardToHand(card);
+                _matcher.AddCardToHand(card);
             }
 
-            matcher.CheckHand();
+            _matcher.CheckHand();
 
-            var ordered = matcher.PokerHandsDict.OrderByDescending(x => x.Value.Probability).ToDictionary(x => x.Key, x => x.Value);
+            var ordered = _matcher.PokerHandsDict.ToDictionary(x => x.Key, x => x.Value);
 
             RoyalFlushTabName = $"Royal flush [{ordered[Enums.PokerHands.RoyalFlush].Probability}%]";
             StraightFlushTabName = $"Straight flush [{ordered[Enums.PokerHands.StraightFlush].Probability}%]";
@@ -775,8 +870,8 @@ namespace WpfClient.ViewModels
             foreach (var item in ordered.Keys)
             {
                 var cards = "";
-                matcher.PokerHandsDict[item].CardList.ForEach(p => cards += $" [{p.Figure} {p.Color}]");
-                Hands.Add($"{matcher.PokerHandsDict[item].Name} : {matcher.PokerHandsDict[item].Probability}% : {cards}");
+                _matcher.PokerHandsDict[item].CardList.ForEach(p => cards += $" [{p.Figure} {p.Color}]");
+                Hands.Add($"{_matcher.PokerHandsDict[item].Name} : {_matcher.PokerHandsDict[item].Probability}% : {cards}");
             }
             Console.WriteLine();
         }

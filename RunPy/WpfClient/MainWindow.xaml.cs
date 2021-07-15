@@ -28,18 +28,13 @@ namespace WpfClient
 
             var pointToWindow = Mouse.GetPosition(this);
             var pointToScreen = PointToScreen(pointToWindow);
-            System.Console.WriteLine();
-            //((App)Application.Current).Test2();
-            //AllowsTransparency = false;
-            //WindowStyle = WindowStyle.SingleBorderWindow;
-
-            //((App)Application.Current).Test2();
-            //mainWindowViewModel.TakeScreenShoot(pointToWindow, pointToScreen);
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void HandsList_PreviewMouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-
+            var listbox = (ListBox)sender;
+            var name = listbox.SelectedItem.ToString();
+            mainWindowViewModel.SelectTab(name);
         }
     }
 }
