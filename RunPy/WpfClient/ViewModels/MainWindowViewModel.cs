@@ -471,35 +471,27 @@ namespace WpfClient.ViewModels
             switch(idx)
             {
                 case 0:
-                    GetCardListByHand(Enums.PokerHands.RoyalFlush);
                     ShowRoyalTab(null);
                     break;
                 case 1:
-                    GetCardListByHand(Enums.PokerHands.StraightFlush);
                     ShowStraightFlushTab(null);
                     break;
                 case 2:
-                    GetCardListByHand(Enums.PokerHands.FourOfKind);
                     ShowFourOfKindTab(null);
                     break;
                 case 3:
-                    GetCardListByHand(Enums.PokerHands.Full);
                     ShowFullTab(null);
                     break;
                 case 4:
-                    GetCardListByHand(Enums.PokerHands.Flush);
                     ShowFlushTab(null);
                     break;
                 case 5:
-                    GetCardListByHand(Enums.PokerHands.Straight);
                     ShowStraightTab(null);
                     break;
                 case 6:
-                    GetCardListByHand(Enums.PokerHands.ThreeOfKind);
                     ShowThreeOfKindTab(null);
                     break;
                 case 7:
-                    GetCardListByHand(Enums.PokerHands.Pair);
                     ShowPairTab(null);
                     break;
             }
@@ -730,6 +722,7 @@ namespace WpfClient.ViewModels
             IsStraightTabVisible = false;
             IsThreeOfKindTabVisible = false;
             IsPairTabVisible = false;
+            GetCardListByHand(Enums.PokerHands.RoyalFlush);
         }
 
         private void ShowStraightFlushTab(object sender)
@@ -743,6 +736,7 @@ namespace WpfClient.ViewModels
             IsStraightTabVisible = false;
             IsThreeOfKindTabVisible = false;
             IsPairTabVisible = false;
+            GetCardListByHand(Enums.PokerHands.StraightFlush);
         }
 
         private void ShowFourOfKindTab(object sender)
@@ -756,6 +750,7 @@ namespace WpfClient.ViewModels
             IsStraightTabVisible = false;
             IsThreeOfKindTabVisible = false;
             IsPairTabVisible = false;
+            GetCardListByHand(Enums.PokerHands.FourOfKind);
         }
 
         private void ShowFullTab(object sender)
@@ -769,6 +764,7 @@ namespace WpfClient.ViewModels
             IsStraightTabVisible = false;
             IsThreeOfKindTabVisible = false;
             IsPairTabVisible = false;
+            GetCardListByHand(Enums.PokerHands.Full);
         }
 
         private void ShowFlushTab(object sender)
@@ -782,6 +778,7 @@ namespace WpfClient.ViewModels
             IsStraightTabVisible = false;
             IsThreeOfKindTabVisible = false;
             IsPairTabVisible = false;
+            GetCardListByHand(Enums.PokerHands.Flush);
         }
 
         private void ShowStraightTab(object sender)
@@ -795,6 +792,7 @@ namespace WpfClient.ViewModels
             IsStraightTabVisible = true;
             IsThreeOfKindTabVisible = false;
             IsPairTabVisible = false;
+            GetCardListByHand(Enums.PokerHands.Straight);
         }
 
         private void ShowThreeOfKindTab(object sender)
@@ -808,6 +806,7 @@ namespace WpfClient.ViewModels
             IsStraightTabVisible = false;
             IsThreeOfKindTabVisible = true;
             IsPairTabVisible = false;
+            GetCardListByHand(Enums.PokerHands.ThreeOfKind);
         }
 
         private void ShowPairTab(object sender)
@@ -821,6 +820,7 @@ namespace WpfClient.ViewModels
             IsStraightTabVisible = false;
             IsThreeOfKindTabVisible = false;
             IsPairTabVisible = true;
+            GetCardListByHand(Enums.PokerHands.Pair);
         }
 
         public async Task Analyze()
@@ -838,8 +838,8 @@ namespace WpfClient.ViewModels
             }
 
             //var hand = GetAreaBitmap(HandArea, AnalyzeType.Hand);
-            
 
+            _matcher.Clean();
             await AnalyzeDeskV2(desk);
             await AnalyzeHandV2(hand);
 

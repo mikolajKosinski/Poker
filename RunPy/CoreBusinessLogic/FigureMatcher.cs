@@ -37,6 +37,13 @@ namespace CoreBusinessLogic
             };
         }
 
+        public void Clean()
+        {
+            desk.Clear();
+            hand.Clear();
+            PokerHandsDict = getHands();
+        }
+
         public void CheckHand()
         {
             foreach (var item in PokerHandsDict.Keys)
