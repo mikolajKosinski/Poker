@@ -181,65 +181,112 @@
                     </GroupBox>
                 </StackPanel>
             </Grid>
-            <Grid Grid.Row="2" Background="LightGreen" Visibility="{Binding IsStraightFlushTabVisible, Mode=TwoWay, Converter={StaticResource boolToVisConv}}" 
+            <Grid Grid.Row="2" Visibility="{Binding IsStraightFlushTabVisible, Mode=TwoWay, Converter={StaticResource boolToVisConv}}" 
                           VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="1*"/>
+                    <RowDefinition Height="6*"/>
+                </Grid.RowDefinitions>
+                <Label Content="Straight Flush" Grid.Row="0" />
                 <ListBox ItemsSource="{Binding CardList, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                          HorizontalAlignment="Stretch" 
                          VerticalAlignment="Stretch" 
                          Margin="10">
                 </ListBox>
             </Grid>
-            <Grid Grid.Row="2" Background="Green" Visibility="{Binding IsRoyalTabVisible, Mode=TwoWay, Converter={StaticResource boolToVisConv}}" 
+            <Grid Grid.Row="2" Visibility="{Binding IsRoyalTabVisible, Mode=TwoWay, Converter={StaticResource boolToVisConv}}" 
                           VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="1*"/>
+                    <RowDefinition Height="6*"/>
+                </Grid.RowDefinitions>
+                <Label Content="Royal Straight" Grid.Row="0" />
                 <ListBox ItemsSource="{Binding CardList, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                         Grid.Row="1"
                          HorizontalAlignment="Stretch" 
                          VerticalAlignment="Stretch" 
                          Margin="10">
                 </ListBox>
             </Grid>
-            <Grid Grid.Row="2" Background="Red" Visibility="{Binding IsFourOfKindTabVisible, Mode=TwoWay, Converter={StaticResource boolToVisConv}}" 
+            <Grid Grid.Row="2" Visibility="{Binding IsFourOfKindTabVisible, Mode=TwoWay, Converter={StaticResource boolToVisConv}}" 
                           VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="1*"/>
+                    <RowDefinition Height="6*"/>
+                </Grid.RowDefinitions>
+                <Label Content="Four of kind" Grid.Row="0" />
                 <ListBox ItemsSource="{Binding CardList, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                         Grid.Row="1"
                          HorizontalAlignment="Stretch" 
                          VerticalAlignment="Stretch" 
                          Margin="10">
                 </ListBox>
             </Grid>
-            <Grid Grid.Row="2" Background="Brown" Visibility="{Binding IsFullTabVisible, Mode=TwoWay, Converter={StaticResource boolToVisConv}}" 
+            <Grid Grid.Row="2" Visibility="{Binding IsFullTabVisible, Mode=TwoWay, Converter={StaticResource boolToVisConv}}" 
                           VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="1*"/>
+                    <RowDefinition Height="6*"/>
+                </Grid.RowDefinitions>
+                <Label Content="Full" Grid.Row="0" />
                 <ListBox ItemsSource="{Binding CardList, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                         Grid.Row="1"
                          HorizontalAlignment="Stretch" 
                          VerticalAlignment="Stretch" 
                          Margin="10">
                 </ListBox>
             </Grid>
-            <Grid Grid.Row="2" Background="Orange" Visibility="{Binding IsFlushTabVisible, Mode=TwoWay, Converter={StaticResource boolToVisConv}}" 
+            <Grid Grid.Row="2" Visibility="{Binding IsFlushTabVisible, Mode=TwoWay, Converter={StaticResource boolToVisConv}}" 
                           VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="1*"/>
+                    <RowDefinition Height="6*"/>
+                </Grid.RowDefinitions>
+                <Label Content="Flush" Grid.Row="0" />
                 <ListBox ItemsSource="{Binding CardList, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                         Grid.Row="1"
                          HorizontalAlignment="Stretch" 
                          VerticalAlignment="Stretch" 
                          Margin="10">
                 </ListBox>
             </Grid>
-            <Grid Grid.Row="2" Background="Pink" Visibility="{Binding IsStraightTabVisible, Mode=TwoWay, Converter={StaticResource boolToVisConv}}" 
+            <Grid Grid.Row="2" Visibility="{Binding IsStraightTabVisible, Mode=TwoWay, Converter={StaticResource boolToVisConv}}" 
                           VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="1*"/>
+                    <RowDefinition Height="6*"/>
+                </Grid.RowDefinitions>
+                <Label Content="Straight" Grid.Row="0" />
                 <ListBox ItemsSource="{Binding CardList, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                         Grid.Row="1"
                          HorizontalAlignment="Stretch" 
                          VerticalAlignment="Stretch" 
                          Margin="10">
                 </ListBox>
             </Grid>
-            <Grid Grid.Row="2" Background="White" Visibility="{Binding IsThreeOfKindTabVisible, Mode=TwoWay, Converter={StaticResource boolToVisConv}}" 
+            <Grid Grid.Row="2" Visibility="{Binding IsThreeOfKindTabVisible, Mode=TwoWay, Converter={StaticResource boolToVisConv}}" 
                           VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="1*"/>
+                    <RowDefinition Height="6*"/>
+                </Grid.RowDefinitions>
+                <Label Content="Three Of Kind" Grid.Row="0" />
                 <ListBox ItemsSource="{Binding CardList, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                         Grid.Row="1"
                          HorizontalAlignment="Stretch" 
                          VerticalAlignment="Stretch" 
                          Margin="10">
                 </ListBox>
             </Grid>
-            <Grid Grid.Row="2" Background="Yellow" Visibility="{Binding IsPairTabVisible, Mode=TwoWay, Converter={StaticResource boolToVisConv}}" 
+            <Grid Grid.Row="2" Visibility="{Binding IsPairTabVisible, Mode=TwoWay, Converter={StaticResource boolToVisConv}}" 
                           VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="1*"/>
+                    <RowDefinition Height="6*"/>
+                </Grid.RowDefinitions>
+                <Label Content="Pair" Grid.Row="0" />
                 <ListBox ItemsSource="{Binding CardList, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                         Grid.Row="1"
                          HorizontalAlignment="Stretch" 
                          VerticalAlignment="Stretch" 
                          Margin="10">

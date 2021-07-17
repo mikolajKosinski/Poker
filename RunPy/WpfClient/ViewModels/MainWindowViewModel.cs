@@ -856,6 +856,7 @@ namespace WpfClient.ViewModels
             _matcher.CheckHand();
 
             var ordered = _matcher.PokerHandsDict.ToDictionary(x => x.Key, x => x.Value);
+            ordered = _matcher.PokerHandsDict.OrderByDescending(p => p.Value.Probability).ToDictionary(x => x.Key, x => x.Value);
 
             RoyalFlushTabName = $"Royal flush [{ordered[Enums.PokerHands.RoyalFlush].Probability}%]";
             StraightFlushTabName = $"Straight flush [{ordered[Enums.PokerHands.StraightFlush].Probability}%]";
@@ -873,6 +874,7 @@ namespace WpfClient.ViewModels
                 _matcher.PokerHandsDict[item].CardList.ForEach(p => cards += $" [{p.Figure} {p.Color}]");
                 Hands.Add($"{_matcher.PokerHandsDict[item].Name} : {_matcher.PokerHandsDict[item].Probability}% : {cards}");
             }
+            ShowGeneralTab(null);
             Console.WriteLine();
         }
 
