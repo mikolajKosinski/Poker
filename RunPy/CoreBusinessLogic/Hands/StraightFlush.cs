@@ -1,6 +1,7 @@
 ﻿using CoreBusinessLogic.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 
@@ -32,12 +33,13 @@ namespace CoreBusinessLogic.Hands
                 var highestFigure = cardsByColor.Max(p => p.Figure);
                 var lowestFigure = highestFigure - 5;
                 CardList = cardsByColor.Where(p => p.Figure >= lowestFigure).ToList();
+                OutsList = GetOuts().ToList();
+                OutsCount = OutsList.Count();
             }
         }
 
         public IList<ICard> GetOuts()
         {
-            CardsNeeded = GetNeededCardsCount();
             var straight = new Straight(hand, desk);
             var outs = straight.GetOuts();
             var color = GetDominatingColor();
@@ -52,6 +54,16 @@ namespace CoreBusinessLogic.Hands
             var elements = tempHand.Where(p => p.Figure >= lowestCard).OrderByDescending(x => x.Figure).ToList();
 
             return 5 - elements.Count();
+        }
+
+        private List<ICard> GetOutsList()
+        {
+            var highestCardHand = tempHand.OrderByDescending(x => x.Figure).First();
+            var lowestCard = highestCardHand.Figure - 5;
+            var deck = GetDeckExceptTempHand();
+            var elements = deck.Where(p => p.Figure > lowestCard).OrderByDescending(x => x.Figure).ToList();
+            var result = elements.Except(tempHand).ToList();
+            return result;
         }
     }
 }

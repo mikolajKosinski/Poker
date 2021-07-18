@@ -382,6 +382,20 @@ namespace WpfClient.ViewModels
             }
         }
 
+        private ObservableCollection<ICard> _neededCradsList;
+        public ObservableCollection<ICard> NeededCardsList
+        {
+            get
+            {
+                return _neededCradsList;
+            }
+            set
+            {
+                _neededCradsList = value;
+                NotifyPropertyChanged(nameof(NeededCardsList));
+            }
+        }
+
         private ObservableCollection<ICard> _handCards;
         public ObservableCollection<ICard> HandCards
         {
@@ -509,17 +523,27 @@ namespace WpfClient.ViewModels
         private void GetCardListByHand(Enums.PokerHands hand)
         {
             CardList.Clear();
+            NeededCardsList.Clear();
+            
             var list = _matcher.PokerHandsDict[hand].CardList;
             foreach (var item in list)
             {
                 CardList.Add($"{item.Figure} {item.Color}");
             }
+
+            try
+            {
+                NeededCardsList = new ObservableCollection<ICard>(_matcher.PokerHandsDict[hand].OutsList);
+            }
+            catch
+            { }
         }
 
         public MainWindowViewModel(ICardRecognition cardRecognition, IFigureMatcher figureMatcher, ICardManager cardManager)
         {
             _matcher = new FigureMatcher();
             CardList = new ObservableCollection<string>();
+            NeededCardsList = new ObservableCollection<ICard>();
             AreasViewModel = new AreasWindowViewModel(this);
             SettingsViewModel = new SettingsViewModel(this);
             RecognizedCardsList = new List<ICard>();
@@ -875,7 +899,6 @@ namespace WpfClient.ViewModels
                 Hands.Add($"{_matcher.PokerHandsDict[item].Name} : {_matcher.PokerHandsDict[item].Probability}% : {cards}");
             }
             ShowGeneralTab(null);
-            Console.WriteLine();
         }
 
         private async Task AnalyzeDeskV2(Bitmap desk)

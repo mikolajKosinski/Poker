@@ -39,6 +39,9 @@ namespace CoreBusinessLogic.Hands
                 Probability = 100;
                 pair.ForEach(p => CardList.Add(p));
             }
+
+            OutsList = GetOuts().ToList();
+            OutsCount = GetOuts().Count();
         }
     }
 }

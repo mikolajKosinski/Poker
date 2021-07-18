@@ -39,12 +39,14 @@ namespace CoreBusinessLogic.Hands
                 sf.Check();
                 CardList = sf.CardList;
                 Probability = (int)GetOddsPercentage(GetOuts().Count());
+                OutsList = GetOuts().ToList();
+                OutsCount = GetOuts().Count();
             }
         }
 
         public IList<ICard> GetOuts()
         {
-            CardsNeeded = GetNeededCardsCount();
+            OutsCount = GetNeededCardsCount();
             var color = GetDominatingColor();
             var rf = GetRFByColor(color);
 

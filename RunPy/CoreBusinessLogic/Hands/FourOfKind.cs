@@ -25,6 +25,8 @@ namespace CoreBusinessLogic.Hands
             {
                 var outs = GetOuts().Count();
                 Probability = (int)GetOddsPercentage(outs);
+                OutsList = GetOuts().ToList();
+                OutsCount = GetOuts().Count();
             }
 
             var group = GetGroup(tempHand, 4);
@@ -40,7 +42,7 @@ namespace CoreBusinessLogic.Hands
 
         public IList<ICard> GetOuts()
         {
-            CardsNeeded = GetNeededCardsCount();
+            OutsCount = GetNeededCardsCount();
             return GetMatchingCardsFromDeck();
         }
 

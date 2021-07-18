@@ -17,7 +17,8 @@ namespace CoreBusinessLogic
         }
 
         public int Probability { get; set; }
-        public int CardsNeeded { get; set; }
+        public int OutsCount { get; set; }
+        public List<ICard> OutsList { get; set; }
         public List<ICard> CardList { get; set; } 
         protected IList<ICard> hand;
         protected IList<ICard> desk;
@@ -27,7 +28,7 @@ namespace CoreBusinessLogic
         protected decimal GetOddsPercentage(int outs)
         {
             var cardsLeft = 7 - tempHand.Count();
-            if (CardsNeeded > cardsLeft) return 0;
+            if (OutsCount > cardsLeft) return 0;
 
             decimal restOfCards = GetDeckExceptTempHand().Count();
             decimal loose = restOfCards - outs;

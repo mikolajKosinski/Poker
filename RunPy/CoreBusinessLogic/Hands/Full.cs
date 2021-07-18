@@ -34,6 +34,8 @@ namespace CoreBusinessLogic.Hands
             if (!pair.Any() || !threeOfKind.Any())
             {
                 Probability = (int)GetOddsPercentage(GetOuts().Count());
+                OutsList = GetOuts().ToList();
+                OutsCount = GetOuts().Count();
                 return;
             }
 
@@ -42,7 +44,7 @@ namespace CoreBusinessLogic.Hands
 
         public IList<ICard> GetOuts()
         {
-            CardsNeeded = GetNeededCardsCount();
+            OutsCount = GetNeededCardsCount();
             var cards = GetDeckExceptTempHand();
             var outs = new List<ICard>();
 
@@ -72,20 +74,30 @@ namespace CoreBusinessLogic.Hands
                 return outs;
             }
 
-            foreach(var card in tempHand)
+            var deck = GetDeckExceptTempHand();
+            foreach(var card in deck)
             {
-                var validCards = cards.Where(p => p.Figure == card.Figure).ToList();
-                if(validCards.Any())
+                var cardsFromTemp = tempHand.Where(p => p.Figure == card.Figure);
+                if(cardsFromTemp.Count() >= 1)
                 {
-                    foreach(var item in validCards)
-                    {
-                        if(!outs.Any(p => p.Figure == item.Figure && p.Color == item.Color))
-                        {
-                            outs.Add(item);
-                        }
-                    }
+                    outs.Add(card);
                 }
             }
+
+            //foreach(var card in tempHand)
+            //{
+            //    var validCards = cards.Where(p => p.Figure == card.Figure).ToList();
+            //    if(validCards.Any())
+            //    {
+            //        foreach(var item in validCards)
+            //        {
+            //            if(tempHand.Select(p => p.Figure == item.Figure).Count() > 1)
+            //            {
+            //                outs.Add(item);
+            //            }
+            //        }
+            //    }
+            //}
 
             return outs;
         }

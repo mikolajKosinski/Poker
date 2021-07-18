@@ -32,6 +32,8 @@ namespace CoreBusinessLogic.Hands
             {
                 Probability = (int)GetOddsPercentage(GetOuts().Count());
                 color = GetDominatingColor();
+                OutsList = GetOuts().ToList();
+                OutsCount = GetOuts().Count();
             }
 
             CardList = tempHand.Where(x => x.Color == color).ToList();
@@ -47,7 +49,7 @@ namespace CoreBusinessLogic.Hands
 
         public IList<ICard> GetOuts()
         {
-            CardsNeeded = GetNeededCardsCount();
+            OutsCount = GetNeededCardsCount();
             return GetMatchingCardsFromDeck();
         }
 
