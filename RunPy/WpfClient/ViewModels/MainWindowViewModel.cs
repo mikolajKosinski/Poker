@@ -519,6 +519,7 @@ namespace WpfClient.ViewModels
             //if (idx == 6) ShowThreeOfKindTab(null);
             //if (idx == 7) ShowPairTab(null);
         }
+               
 
         private void GetCardListByHand(Enums.PokerHands hand)
         {
@@ -528,7 +529,7 @@ namespace WpfClient.ViewModels
             var list = _matcher.PokerHandsDict[hand].CardList;
             foreach (var item in list)
             {
-                CardList.Add($"{item.Figure} {item.Color}");
+                CardList.Add($"{_figureDict[item.Figure]} {_colorDict[item.Color]}");
             }
 
             try
@@ -538,6 +539,9 @@ namespace WpfClient.ViewModels
             catch
             { }
         }
+
+        private Dictionary<CardFigure, string> _figureDict;
+        private Dictionary<CardColor, string> _colorDict;
 
         public MainWindowViewModel(ICardRecognition cardRecognition, IFigureMatcher figureMatcher, ICardManager cardManager)
         {
@@ -594,6 +598,27 @@ namespace WpfClient.ViewModels
             IsStraightTabVisible = false;
             IsThreeOfKindTabVisible = false;
             IsPairTabVisible = false;
+
+            _figureDict = new Dictionary<CardFigure, string>()
+            { {CardFigure._2, "2" },
+            {CardFigure._3, "3" },
+            {CardFigure._4, "4" },
+            {CardFigure._5, "5" },
+            {CardFigure._6, "6" },
+            {CardFigure._7, "7" },
+            {CardFigure._8, "8" },
+            {CardFigure._9, "9" },
+            {CardFigure._10, "10" },
+            {CardFigure._Jack, "Jack" },
+            {CardFigure._Queen, "Queen" },
+            {CardFigure._King, "King" },
+            {CardFigure._As, "AS" }};
+
+            _colorDict = new Dictionary<CardColor, string>()
+            {   { CardColor.club, "club" },
+                { CardColor.diamond, "diamond" },
+                { CardColor.heart, "heart" },
+                { CardColor.spade, "spade" }};
         }
 
         private void _handCards_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
@@ -678,21 +703,19 @@ namespace WpfClient.ViewModels
 
         async Task DispatchToUiThread(Action action) => await _getDispatcher().InvokeAsync(action);
 
-        private void ClearList()
+        private void ClearDeck()
         {
-            foreach(var item in DeskCards.ToList())
+            foreach (var item in DeskCards.ToList())
             {
                 DeskCards.Remove(DeskCards.First());
             }
+        }
 
+        private void ClearHand()
+        {
             foreach (var item in HandCards.ToList())
             {
                 HandCards.Remove(HandCards.First());
-            }
-
-            foreach (var item in Hands.ToList())
-            {
-                Hands.Remove(Hands.First());
             }
         }
 
@@ -850,7 +873,7 @@ namespace WpfClient.ViewModels
         public async Task Analyze()
         {
             //TakeScreenShoot();
-            ClearList();
+            
             var single = GetAreaBitmap(SingleCardArea, AnalyzeType.SingleCard);
             var desk = GetAreaBitmap(DeskArea, AnalyzeType.Desk);
             var hand = GetAreaBitmap(HandArea, AnalyzeType.Hand);
@@ -895,7 +918,7 @@ namespace WpfClient.ViewModels
             foreach (var item in ordered.Keys)
             {
                 var cards = "";
-                _matcher.PokerHandsDict[item].CardList.ForEach(p => cards += $" [{p.Figure} {p.Color}]");
+                _matcher.PokerHandsDict[item].CardList.ForEach(p => cards += $" [{_figureDict[p.Figure]} {_colorDict[p.Color]}]");
                 Hands.Add($"{_matcher.PokerHandsDict[item].Name} : {_matcher.PokerHandsDict[item].Probability}% : {cards}");
             }
             ShowGeneralTab(null);
@@ -906,11 +929,24 @@ namespace WpfClient.ViewModels
             float offset = (float)_singleCardWidth / (float)9.5;
             var figureHeight = Convert.ToInt32(_singleCardWidth * 0.4);
             float cardsCount = (float)_deskWidth / (float)_singleCardWidth;
+            var startPoint = 0;
 
-            if (cardsCount > 3 && cardsCount < 3.5) cardsCount = 3;
-            if (cardsCount > 4 && cardsCount < 4.5) cardsCount = 4;
+            if (cardsCount > 3 && cardsCount < 3.5)
+            {
+                startPoint = 0;
+                cardsCount = 3;
+            }
+            if (cardsCount > 4 && cardsCount < 4.5)
+            {
+                startPoint = 3;
+                cardsCount = 4;
+            }
 
-            if (cardsCount > 5) cardsCount = 5;
+            if (cardsCount > 5)
+            {
+                startPoint = 4;
+                cardsCount = 5;
+            }
 
             //if (((double)_deskWidth / (double)_singleCardWidth) > cardsCount)
             //{
@@ -922,8 +958,9 @@ namespace WpfClient.ViewModels
             var figureList = new List<string>();
             var colorList = new List<string>();
             float figureWidth = (float)_singleCardWidth / (float)3.26;
+                    
 
-            for (int idx =0; idx<cardsCount; idx++)
+            for (int idx = startPoint; idx<cardsCount; idx++)
             {
                 var xStartPoint = (float)(_singleCardWidth * idx) + (idx * offset)/(float)2.2;
 
@@ -999,14 +1036,33 @@ namespace WpfClient.ViewModels
 
         private async Task PredictCard(int idx, string figurePath, string colorPath, CardTypeEnum ct)
         {
+            foreach (var item in Hands.ToList())
+            {
+                try
+                {
+                    Hands.Remove(Hands.First());
+                }
+                catch(Exception x)
+                {
+
+                }
+            }
+
             var card = await GetCard(figurePath, colorPath);
             if (ct == CardTypeEnum.Desk)
             {
+                if (DeskCards.Count == 5)
+                {
+                    ClearDeck();
+                }
                 await DispatchToUiThread(() => { DeskCards.Add(card); });
             }
             else
             {
-                await DispatchToUiThread(() => { HandCards.Add(card); });
+                if (HandCards.Count() != 2)
+                {
+                    await DispatchToUiThread(() => { HandCards.Add(card); });
+                }
             }
             File.Delete(figurePath);
             File.Delete(colorPath);
