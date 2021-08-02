@@ -6,7 +6,7 @@
       xmlns:local="clr-namespace:WpfClient"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
-        Title="MainWindow" Height="450" Width="900">
+        Title="MainWindow" Height="450" Width="800">
     <Window.Resources>
         <local:BoolToVisConverter x:Key="boolToVisConv" />
     </Window.Resources>
@@ -21,13 +21,18 @@
                         </Storyboard>
                     </VisualState>
                 </VisualStateGroup>
-            </VisualStateManager.VisualStateGroups>
+            </VisualStateManager.VisualStateGroups>           
             <Grid.RowDefinitions>
                 <RowDefinition Height="1*" />
                 <RowDefinition Height="2*" />
                 <RowDefinition Height="8*" />
             </Grid.RowDefinitions>
-            <StackPanel Orientation="Horizontal" Grid.Row="0" HorizontalAlignment="Center">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="2*" />
+                <ColumnDefinition Width="5*" />
+                <ColumnDefinition Width="1*" />
+            </Grid.ColumnDefinitions>
+            <StackPanel Orientation="Horizontal" Grid.Row="0" Grid.Column="1" HorizontalAlignment="Center">
                 <Button Content="MainWindow" Command="{Binding MainWindowCommand}"/>
                 <Button Content="Areas" Command="{Binding AreasWindowCommand}"/>
                 <Button Content="Settings" Command="{Binding SettingsWindowCommand}"/>
@@ -39,22 +44,22 @@
                     DataContext="{Binding SettingsViewModel}" />
             </Grid>
 
-            <Grid Grid.Row="1" Grid.RowSpan="2" 
+            <Grid Grid.Row="1" Grid.RowSpan="2" Grid.Column="1" 
                   Visibility="{Binding IsAreasVisible, Converter={StaticResource boolToVisConv}}">
                 <local:AreasView 
                 DataContext="{Binding AreasViewModel}" />
             </Grid>
-            <Grid Grid.Row="1"
+            <Grid Grid.Row="1" Grid.Column="0" Grid.RowSpan="3" Background="Red"
                   Visibility="{Binding IsMainVisible, Converter={StaticResource boolToVisConv}}">
-                <StackPanel Orientation="Horizontal">            
+                <StackPanel >            
                 <Button Content="Analyze" Width="80" Height="30" Command="{Binding AnalyzeCommand}" Grid.Column="0"/>
-                <ListBox Height="30" VerticalAlignment="Top">
-                    <ListBox.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <VirtualizingStackPanel IsItemsHost="True" Orientation="Horizontal"/>
-                        </ItemsPanelTemplate>
-                    </ListBox.ItemsPanel>
-                    <ListBoxItem x:Name="TEst" >
+                <ListBox VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Grid.Column="0">
+                        <ListBox.ItemContainerStyle>
+                            <Style TargetType="ListBoxItem">
+                                <Setter Property="HorizontalContentAlignment" Value="Stretch"></Setter>
+                            </Style>
+                        </ListBox.ItemContainerStyle>
+                        <ListBoxItem x:Name="TEst" >
                             <Button Content="General" Command="{Binding GeneralTabCommand}"/>
                         </ListBoxItem>
                         <ListBoxItem>
@@ -81,69 +86,13 @@
                         <ListBoxItem>
                             <Button Content="{Binding PairTabName}" Command="{Binding PairTabCommand}"  />
                         </ListBoxItem>
-                    </ListBox>
-
-                   
-
-
-
-
-                    <!--<GroupBox Header="Desk" Grid.Column="2" >
-            <ListBox ItemsSource="{Binding DeskCards, Mode=TwoWay}" Grid.Column="2" Height="150" Width="80">
-                    <ListBox.ItemTemplate>
-                        <DataTemplate>
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="{Binding Figure}" />
-                                <TextBlock Text="{Binding Color}" />
-                            </StackPanel>
-                        </DataTemplate>
-                    </ListBox.ItemTemplate>
-                </ListBox>
-            </GroupBox>
-            <GroupBox Header="Hand" Grid.Column="3">
-            <ListBox ItemsSource="{Binding HandCards, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Grid.Column="2" Height="150" Width="80">
-                    <ListBox.ItemTemplate>
-                        <DataTemplate>
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="{Binding Figure}" />
-                                <TextBlock Text="{Binding Color}" />
-                            </StackPanel>
-                        </DataTemplate>
-                    </ListBox.ItemTemplate>
-                </ListBox>
-            </GroupBox>-->
+                    </ListBox>                   
                 </StackPanel>
             </Grid>                         
-                <!--<StackPanel>
-                    <GroupBox Header="Desk" Width="50" Height="50">
-                        <ListBox ItemsSource="{Binding DeskCards, Mode=TwoWay}" Height="150" Width="80">
-                            <ListBox.ItemTemplate>
-                                <DataTemplate>
-                                    <StackPanel Orientation="Horizontal">
-                                        <TextBlock Text="{Binding Figure}" />
-                                        <TextBlock Text="{Binding Color}" />
-                                    </StackPanel>
-                                </DataTemplate>
-                            </ListBox.ItemTemplate>
-                        </ListBox>
-                    </GroupBox>
-                    <GroupBox Header="Hand" >
-                        <ListBox ItemsSource="{Binding HandCards, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Height="150" Width="80">
-                            <ListBox.ItemTemplate>
-                                <DataTemplate>
-                                    <StackPanel Orientation="Horizontal">
-                                        <TextBlock Text="{Binding Figure}" />
-                                        <TextBlock Text="{Binding Color}" />
-                                    </StackPanel>
-                                </DataTemplate>
-                            </ListBox.ItemTemplate>
-                        </ListBox>
-                    </GroupBox>
-                </StackPanel>-->
-            <Grid Grid.Row="2" Visibility="{Binding IsGeneralTabVisible, Mode=TwoWay, Converter={StaticResource boolToVisConv}}" 
+            <Grid Grid.Row="2" Grid.Column="1" Visibility="{Binding IsGeneralTabVisible, Mode=TwoWay, Converter={StaticResource boolToVisConv}}" 
                           VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="4*" />
+                    <ColumnDefinition Width="2*" />
                     <ColumnDefinition Width="1*" />
                 </Grid.ColumnDefinitions>
                 <ListBox Grid.Column="0" 
@@ -185,7 +134,7 @@
                     </GroupBox>
                 </Grid>
             </Grid>
-            <Grid Grid.Row="2" Visibility="{Binding IsStraightFlushTabVisible, Mode=TwoWay, Converter={StaticResource boolToVisConv}}" 
+            <Grid Grid.Row="2" Grid.Column="1" Visibility="{Binding IsStraightFlushTabVisible, Mode=TwoWay, Converter={StaticResource boolToVisConv}}" 
                           VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="1*"/>
@@ -218,7 +167,7 @@
                     </ListBox.ItemTemplate>
                 </ListBox>
             </Grid>
-            <Grid Grid.Row="2" Visibility="{Binding IsRoyalTabVisible, Mode=TwoWay, Converter={StaticResource boolToVisConv}}" 
+            <Grid Grid.Row="2" Grid.Column="1" Visibility="{Binding IsRoyalTabVisible, Mode=TwoWay, Converter={StaticResource boolToVisConv}}" 
                           VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="1*"/>
@@ -251,7 +200,7 @@
                     </ListBox.ItemTemplate>
                 </ListBox>
             </Grid>
-            <Grid Grid.Row="2" Visibility="{Binding IsFourOfKindTabVisible, Mode=TwoWay, Converter={StaticResource boolToVisConv}}" 
+            <Grid Grid.Row="2" Grid.Column="1" Visibility="{Binding IsFourOfKindTabVisible, Mode=TwoWay, Converter={StaticResource boolToVisConv}}" 
                           VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="1*"/>
@@ -284,7 +233,7 @@
                     </ListBox.ItemTemplate>
                 </ListBox>
             </Grid>
-            <Grid Grid.Row="2" Visibility="{Binding IsFullTabVisible, Mode=TwoWay, Converter={StaticResource boolToVisConv}}" 
+            <Grid Grid.Row="2" Grid.Column="1" Visibility="{Binding IsFullTabVisible, Mode=TwoWay, Converter={StaticResource boolToVisConv}}" 
                           VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="1*"/>
@@ -317,7 +266,7 @@
                     </ListBox.ItemTemplate>
                 </ListBox>
             </Grid>
-            <Grid Grid.Row="2" Visibility="{Binding IsFlushTabVisible, Mode=TwoWay, Converter={StaticResource boolToVisConv}}" 
+            <Grid Grid.Row="2" Grid.Column="1" Visibility="{Binding IsFlushTabVisible, Mode=TwoWay, Converter={StaticResource boolToVisConv}}" 
                           VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="1*"/>
@@ -350,7 +299,7 @@
                     </ListBox.ItemTemplate>
                 </ListBox>
             </Grid>
-            <Grid Grid.Row="2" Visibility="{Binding IsStraightTabVisible, Mode=TwoWay, Converter={StaticResource boolToVisConv}}" 
+            <Grid Grid.Row="2" Grid.Column="1" Visibility="{Binding IsStraightTabVisible, Mode=TwoWay, Converter={StaticResource boolToVisConv}}" 
                           VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="1*"/>
@@ -383,7 +332,7 @@
                     </ListBox.ItemTemplate>
                 </ListBox>
             </Grid>
-            <Grid Grid.Row="2" Visibility="{Binding IsThreeOfKindTabVisible, Mode=TwoWay, Converter={StaticResource boolToVisConv}}" 
+            <Grid Grid.Row="2" Grid.Column="1" Visibility="{Binding IsThreeOfKindTabVisible, Mode=TwoWay, Converter={StaticResource boolToVisConv}}" 
                           VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="1*"/>
@@ -416,7 +365,7 @@
                     </ListBox.ItemTemplate>
                 </ListBox>
             </Grid>
-            <Grid Grid.Row="2" Visibility="{Binding IsPairTabVisible, Mode=TwoWay, Converter={StaticResource boolToVisConv}}" 
+            <Grid Grid.Row="2" Grid.Column="1" Visibility="{Binding IsPairTabVisible, Mode=TwoWay, Converter={StaticResource boolToVisConv}}" 
                           VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="1*"/>
@@ -448,47 +397,7 @@
                         </DataTemplate>
                     </ListBox.ItemTemplate>
                 </ListBox>
-            </Grid>
-            <!--<StackPanel Grid.Row="1" Grid.Column="1">
-                <Button Content="GetSingleCard" Width="80" Height="30" Command="{Binding SingleCardCommand}" Grid.Column="1" Grid.Row="0"/>
-                <Button Content="GetDeskArea" Width="80" Height="30" Command="{Binding DeskSelectCommand}" Grid.Column="1" Grid.Row="0"/>
-                <Button Content="GetHandArea" Width="80" Height="30" Command="{Binding HandSelectCommand}" Grid.Column="1" Grid.Row="0"/>
-                <Button Content="Analyze" Width="80" Height="30" Command="{Binding AnalyzeCommand}" Grid.Column="1" Grid.Row="0"/>
-                <Button Content="Add" Command="{Binding AddCommand}" />
-                <Button Content="Remove" Command="{Binding RemoveCommand}" />
-            </StackPanel>
-            <StackPanel Grid.Row="3" Orientation="Horizontal" Grid.Column="2" Background="Red">
-            <ListBox ItemsSource="{Binding DeskCards, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Grid.Column="2" Height="150" Width="80">
-                <ListBox.ItemTemplate>
-                    <DataTemplate>
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="{Binding Figure}" />
-                            <TextBlock Text="{Binding Color}" />
-                        </StackPanel>
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
-            </ListBox>
-                <ListBox ItemsSource="{Binding HandCards, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Grid.Column="2" Height="150" Width="80">
-                    <ListBox.ItemTemplate>
-                        <DataTemplate>
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="{Binding Figure}" />
-                                <TextBlock Text="{Binding Color}" />
-                            </StackPanel>
-                        </DataTemplate>
-                    </ListBox.ItemTemplate>
-                </ListBox>
-                <ListBox ItemsSource="{Binding Hands, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Grid.Column="3" Height="150" Width="120">
-                    <ListBox.ItemTemplate>
-                        <DataTemplate>
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="{Binding HandName}" />
-                                <TextBlock Text="{Binding HandProbability}" />
-                            </StackPanel>
-                        </DataTemplate>
-                    </ListBox.ItemTemplate>
-                </ListBox>
-            </StackPanel>-->
+            </Grid>            
         </Grid>
     </Border>
 </Window>

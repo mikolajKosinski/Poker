@@ -83,22 +83,6 @@ namespace CoreBusinessLogic.Hands
                     outs.Add(card);
                 }
             }
-
-            //foreach(var card in tempHand)
-            //{
-            //    var validCards = cards.Where(p => p.Figure == card.Figure).ToList();
-            //    if(validCards.Any())
-            //    {
-            //        foreach(var item in validCards)
-            //        {
-            //            if(tempHand.Select(p => p.Figure == item.Figure).Count() > 1)
-            //            {
-            //                outs.Add(item);
-            //            }
-            //        }
-            //    }
-            //}
-
             return outs;
         }
 
