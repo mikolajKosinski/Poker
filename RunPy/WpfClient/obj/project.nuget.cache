@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "NPBocbS5JEdHJo2TveJZ/eQ1YZOaPptA+kICFZUOsmCyPgeR4FHqdQETijqm9RYNMAB/2XbmTfi9iZhVthKS2w==",
+  "dgSpecHash": "UyjPS9pTAotnYqVCmffLk71zODzg6IC0QM61CakS9VHRUyvjajOLYtmFngU0JzF18JcvL1hEODv7zLjASkUw9g==",
   "success": true,
   "projectFilePath": "C:\\Users\\Mikolaj\\Documents\\GitHub\\Poker\\RunPy\\WpfClient\\WpfClient.csproj",
   "expectedPackageFiles": [
@@ -24,10 +24,10 @@
     "C:\\Users\\Mikolaj\\.nuget\\packages\\system.runtime.extensions\\4.3.0\\system.runtime.extensions.4.3.0.nupkg.sha512",
     "C:\\Users\\Mikolaj\\.nuget\\packages\\system.text.encoding\\4.3.0\\system.text.encoding.4.3.0.nupkg.sha512",
     "C:\\Users\\Mikolaj\\.nuget\\packages\\system.threading.tasks\\4.3.0\\system.threading.tasks.4.3.0.nupkg.sha512",
-    "C:\\Users\\Mikolaj\\.nuget\\packages\\microsoft.aspnetcore.app.ref\\3.0.1\\microsoft.aspnetcore.app.ref.3.0.1.nupkg.sha512",
-    "C:\\Users\\Mikolaj\\.nuget\\packages\\microsoft.netcore.app.ref\\3.0.0\\microsoft.netcore.app.ref.3.0.0.nupkg.sha512",
     "C:\\Users\\Mikolaj\\.nuget\\packages\\microsoft.netcore.app.host.win-x64\\3.0.3\\microsoft.netcore.app.host.win-x64.3.0.3.nupkg.sha512",
-    "C:\\Users\\Mikolaj\\.nuget\\packages\\microsoft.windowsdesktop.app.ref\\3.0.0\\microsoft.windowsdesktop.app.ref.3.0.0.nupkg.sha512"
+    "C:\\Users\\Mikolaj\\.nuget\\packages\\microsoft.aspnetcore.app.ref\\3.0.1\\microsoft.aspnetcore.app.ref.3.0.1.nupkg.sha512",
+    "C:\\Users\\Mikolaj\\.nuget\\packages\\microsoft.windowsdesktop.app.ref\\3.0.0\\microsoft.windowsdesktop.app.ref.3.0.0.nupkg.sha512",
+    "C:\\Users\\Mikolaj\\.nuget\\packages\\microsoft.netcore.app.ref\\3.0.0\\microsoft.netcore.app.ref.3.0.0.nupkg.sha512"
   ],
   "logs": []
 }

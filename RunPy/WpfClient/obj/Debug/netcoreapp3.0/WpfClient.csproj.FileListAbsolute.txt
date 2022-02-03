@@ -42,7 +42,6 @@ C:\Users\Mikolaj\Documents\GitHub\Poker\RunPy\WpfClient\bin\Debug\netcoreapp3.0\
 C:\Users\Mikolaj\Documents\GitHub\Poker\RunPy\WpfClient\bin\Debug\netcoreapp3.0\CoreDomain.dll
 C:\Users\Mikolaj\Documents\GitHub\Poker\RunPy\WpfClient\bin\Debug\netcoreapp3.0\CoreBusinessLogic.pdb
 C:\Users\Mikolaj\Documents\GitHub\Poker\RunPy\WpfClient\bin\Debug\netcoreapp3.0\CoreDomain.pdb
-C:\Users\Mikolaj\Documents\GitHub\Poker\RunPy\WpfClient\obj\Debug\netcoreapp3.0\WpfClient.csprojAssemblyReference.cache
 C:\Users\Mikolaj\Documents\GitHub\Poker\RunPy\WpfClient\obj\Debug\netcoreapp3.0\MainWindow.g.cs
 C:\Users\Mikolaj\Documents\GitHub\Poker\RunPy\WpfClient\obj\Debug\netcoreapp3.0\App.g.cs
 C:\Users\Mikolaj\Documents\GitHub\Poker\RunPy\WpfClient\obj\Debug\netcoreapp3.0\WpfClient_MarkupCompile.cache
@@ -67,3 +66,5 @@ C:\Users\Mikolaj\Documents\GitHub\Poker\RunPy\WpfClient\obj\Debug\netcoreapp3.0\
 C:\Users\Mikolaj\Documents\GitHub\Poker\RunPy\WpfClient\obj\Debug\netcoreapp3.0\AreasView.baml
 C:\Users\Mikolaj\Documents\GitHub\Poker\RunPy\WpfClient\obj\Debug\netcoreapp3.0\SettingsView.g.cs
 C:\Users\Mikolaj\Documents\GitHub\Poker\RunPy\WpfClient\obj\Debug\netcoreapp3.0\SettingsView.baml
+C:\Users\Mikolaj\Documents\GitHub\Poker\RunPy\WpfClient\obj\Debug\netcoreapp3.0\WpfClient.csproj.AssemblyReference.cache
+C:\Users\Mikolaj\Documents\GitHub\Poker\RunPy\WpfClient\obj\Debug\netcoreapp3.0\WpfClient.GeneratedMSBuildEditorConfig.editorconfig

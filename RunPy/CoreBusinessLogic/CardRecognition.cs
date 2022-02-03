@@ -74,6 +74,35 @@ namespace CoreBusinessLogic
             return GetShapePosition(path);
         }
 
+        public Tuple<int, int, int, int> GetDesk()
+        {
+            Process process = new Process();
+            string argument = @"C:\Users\Mikolaj\PycharmProjects\pythonProject\GetDeskPoints.py";
+            process.StartInfo = new System.Diagnostics.ProcessStartInfo()
+            {
+                UseShellExecute = false,
+                CreateNoWindow = true,
+                WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden,
+                FileName = @"C:\Users\Mikolaj\PycharmProjects\pythonProject\venv\Scripts\python.exe",
+                Arguments = argument,
+                RedirectStandardError = true,
+                RedirectStandardOutput = true
+            };
+
+            process.EnableRaisingEvents = true;
+            process.Start();
+            var result = process
+                .StandardError
+                .ReadToEnd();
+            var rrr = process.StandardOutput.ReadToEnd();
+            var points = result.Split(',');
+            return new Tuple<int, int, int, int>(
+                Convert.ToInt32(points[0]),
+                Convert.ToInt32(points[1]),
+                Convert.ToInt32(points[2]),
+                Convert.ToInt32(points[3]));
+        }
+
         public Tuple<int,int,int,int> GetSingleCardArea()
         {
             Process process = new Process();
@@ -83,7 +112,7 @@ namespace CoreBusinessLogic
                 UseShellExecute = false,
                 CreateNoWindow = true,
                 WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden,
-                FileName = @"C:\Users\Mikolaj\AppData\Local\Programs\Python\Python37\python.exe",
+                FileName = @"C:\Users\Mikolaj\AppData\Local\Programs\Python\Python39\python.exe",
                 Arguments = argument,
                 RedirectStandardError = true,
                 RedirectStandardOutput = true
@@ -114,7 +143,7 @@ namespace CoreBusinessLogic
                 UseShellExecute = false,
                 CreateNoWindow = true,
                 WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden,
-                FileName = @"C:\Users\Mikolaj\AppData\Local\Programs\Python\Python37\python.exe",
+                FileName = @"C:\Users\Mikolaj\AppData\Local\Programs\Python\Python39\python.exe",
                 Arguments = argument,
                 RedirectStandardError = true,
                 RedirectStandardOutput = true
@@ -145,7 +174,7 @@ namespace CoreBusinessLogic
                 UseShellExecute = false,
                 CreateNoWindow = true,
                 WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden,
-                FileName = @"C:\Users\Mikolaj\AppData\Local\Programs\Python\Python37\python.exe",
+                FileName = @"C:\Users\Mikolaj\AppData\Local\Programs\Python\Python39\python.exe",
                 Arguments = argument,
                 RedirectStandardError = true,
                 RedirectStandardOutput = true
@@ -170,7 +199,7 @@ namespace CoreBusinessLogic
                 UseShellExecute = false,
                 CreateNoWindow = true,
                 WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden,
-                FileName = @"C:\Users\Mikolaj\AppData\Local\Programs\Python\Python37\python.exe",
+                FileName = @"C:\Users\Mikolaj\AppData\Local\Programs\Python\Python39\python.exe",
                 Arguments = argument,
                 RedirectStandardError = true,
                 RedirectStandardOutput = true
@@ -192,7 +221,7 @@ namespace CoreBusinessLogic
                 UseShellExecute = false,
                 CreateNoWindow = true,
                 WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden,
-                FileName = @"C:\Users\Mikolaj\AppData\Local\Programs\Python\Python37\python.exe",
+                FileName = @"C:\Users\Mikolaj\AppData\Local\Programs\Python\Python39\python.exe",
                 Arguments = argument,
                 RedirectStandardError = true,
                 RedirectStandardOutput = true

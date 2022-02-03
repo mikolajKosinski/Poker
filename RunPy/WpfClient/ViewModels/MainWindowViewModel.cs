@@ -873,10 +873,11 @@ namespace WpfClient.ViewModels
         public async Task Analyze()
         {
             //TakeScreenShoot();
-            
-            var single = GetAreaBitmap(SingleCardArea, AnalyzeType.SingleCard);
+            GetDesk(DeskArea);
+            //var single = GetAreaBitmap(SingleCardArea, AnalyzeType.SingleCard);
             var desk = GetAreaBitmap(DeskArea, AnalyzeType.Desk);
-            var hand = GetAreaBitmap(HandArea, AnalyzeType.Hand);
+           
+           // var hand = GetAreaBitmap(HandArea, AnalyzeType.Hand);
 
             if (desk == null)
             {
@@ -887,8 +888,8 @@ namespace WpfClient.ViewModels
             //var hand = GetAreaBitmap(HandArea, AnalyzeType.Hand);
 
             _matcher.Clean();
-            await AnalyzeDeskV2(desk);
-            await AnalyzeHandV2(hand);
+            //await AnalyzeDeskV2(desk);
+            //await AnalyzeHandV2(hand);
 
             foreach (var card in DeskCards)
             {
@@ -1075,6 +1076,32 @@ namespace WpfClient.ViewModels
             return _cardRecognition.GetCard(figurePath, colorPath);
         }
 
+
+        private void GetDesk(CardArea item)
+        {
+            double screenLeft = SystemParameters.VirtualScreenLeft;
+            double screenTop = SystemParameters.VirtualScreenTop;
+            double screenWidth = SystemParameters.VirtualScreenWidth;
+            double screenHeight = SystemParameters.VirtualScreenHeight;
+            int basicWidth = Convert.ToInt32(item.xEnd) - Convert.ToInt32(item.xStart);
+            var basicHeight = Convert.ToInt32(item.yEnd) - Convert.ToInt32(item.yStart) + 10;
+
+            using (Bitmap bmp = new Bitmap((int)screenWidth,
+               (int)screenHeight))
+            {
+                using (Graphics g = Graphics.FromImage(bmp))
+                {
+                    var cardsAreaName = @$"C:\Users\Mikolaj\PycharmProjects\pythonProject1\allCards.png";                    
+                    g.CopyFromScreen((int)screenLeft, (int)screenTop, 0, 0, bmp.Size);
+                    Bitmap basicPicture = bmp.Clone(new Rectangle((int)item.xStart, (int)item.yStart, basicWidth, basicHeight), bmp.PixelFormat);              
+                    basicPicture.Save(cardsAreaName);
+                }
+            }
+
+            var points = _cardRecognition.GetDesk();
+            Console.WriteLine();
+        }
+
         private Bitmap GetAreaBitmap(CardArea item, AnalyzeType at)
         {
             double screenLeft = SystemParameters.VirtualScreenLeft;
@@ -1103,7 +1130,7 @@ namespace WpfClient.ViewModels
                     //globalXlength += basicWidth;
                     globalYstart += (int)item.yStart;
                     //globalYlength += basicHeight;
-                    basicPicture = GetRepaintedFromGreen(basicPicture, Color.Black);
+                    //basicPicture = GetRepaintedFromGreen(basicPicture, Color.Black);
                     if (at == AnalyzeType.Hand) basicPicture = GetRepaintedHand(basicPicture, Color.Black);
                     basicPicture.Save(cardsAreaName);
                     points = GetPoints(at);

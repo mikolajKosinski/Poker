@@ -14,4 +14,5 @@ C:\Users\Mikolaj\Documents\GitHub\Poker\RunPy\CoreDomain\obj\Debug\netcoreapp3.0
 C:\Users\Mikolaj\Documents\GitHub\Poker\RunPy\CoreDomain\obj\Debug\netcoreapp3.0\CoreDomain.csproj.CoreCompileInputs.cache
 C:\Users\Mikolaj\Documents\GitHub\Poker\RunPy\CoreDomain\obj\Debug\netcoreapp3.0\CoreDomain.dll
 C:\Users\Mikolaj\Documents\GitHub\Poker\RunPy\CoreDomain\obj\Debug\netcoreapp3.0\CoreDomain.pdb
-C:\Users\Mikolaj\Documents\GitHub\Poker\RunPy\CoreDomain\obj\Debug\netcoreapp3.0\CoreDomain.csprojAssemblyReference.cache
+C:\Users\Mikolaj\Documents\GitHub\Poker\RunPy\CoreDomain\obj\Debug\netcoreapp3.0\CoreDomain.csproj.AssemblyReference.cache
+C:\Users\Mikolaj\Documents\GitHub\Poker\RunPy\CoreDomain\obj\Debug\netcoreapp3.0\CoreDomain.GeneratedMSBuildEditorConfig.editorconfig
