@@ -1085,7 +1085,10 @@ namespace WpfClient.ViewModels
             double screenHeight = SystemParameters.VirtualScreenHeight;
             int basicWidth = Convert.ToInt32(item.xEnd) - Convert.ToInt32(item.xStart);
             var basicHeight = Convert.ToInt32(item.yEnd) - Convert.ToInt32(item.yStart) + 10;
-            Bitmap basicDesk;
+            double cardWidth = 0;
+            double halfCardWidth = 0;
+            double quarterCard = 0;
+            Bitmap basicDesk;            
 
             using (Bitmap bmp = new Bitmap((int)screenWidth,
                (int)screenHeight))
@@ -1100,28 +1103,29 @@ namespace WpfClient.ViewModels
             }
 
             var points = _cardRecognition.GetDesk();
+            var ratio = (double)basicDesk.Width / (double)416;
 
-            //var cutOff = basicDesk.Clone(new Rectangle(1, 1, 100, 100), basicDesk.PixelFormat);
-            //cutOff.Save("cccutOff.jpg");
-
-            //using (Bitmap bmp = new Bitmap((int)screenWidth,
-            //   (int)screenHeight))
-            //{
-            //    using (Graphics g = Graphics.FromImage(bmp))
-            //    {
-            //        g.CopyFromScreen((int)screenLeft, (int)screenTop, 0, 0, bmp.Size);
-            //        basicDesk = bmp.Clone(new Rectangle((int)item.xStart, (int)item.yStart, basicWidth, basicHeight), bmp.PixelFormat);
-            //        basicDesk.Save("card.jpg");
-            //    }
-            //}
+            if(points.Count == 3)
+            {
+                var c1 = Convert.ToDouble(points[0].Item1);
+                var c2 = Convert.ToDouble(points[1].Item1);
+                var c3 = Convert.ToDouble(points[2].Item1);
+                var middle1 = c1 * (basicDesk.Width * ratio);
+                var middle2 = c2 * (basicDesk.Width * ratio);
+                var middle3 = c3 * (basicDesk.Width * ratio);
+                var twoCardDistance = Convert.ToDouble(middle1) - Convert.ToDouble(middle2);
+                twoCardDistance = twoCardDistance * 0.9;
+                cardWidth = twoCardDistance / 2;
+                halfCardWidth = cardWidth / 2;
+            }
 
             foreach (var point in points)
             {
                 var middle = Convert.ToDouble(point.Item1) * basicDesk.Width;
-                var startX = middle - 30;
-                var endX = middle;
-                var cutOff = basicDesk.Clone(new Rectangle((int)startX, 1, 30, 100), basicDesk.PixelFormat);
+                var startX = middle - (int)cardWidth;
+                var cutOff = basicDesk.Clone(new Rectangle((int)startX, 1, (int)cardWidth, 100), basicDesk.PixelFormat);
                 cutOff.Save("cccutOff.jpg");
+                Console.WriteLine();
             }
         }
 

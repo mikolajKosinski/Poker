@@ -119,13 +119,13 @@ namespace CoreBusinessLogic
         public Tuple<int,int,int,int> GetSingleCardArea()
         {
             Process process = new Process();
-            string argument = @"C:\Users\Mikolaj\PycharmProjects\pythonProject1\externals.py";
+            string argument = @"C:\Users\Mikolaj\PycharmProjects\pythonProject\externals.py";
             process.StartInfo = new System.Diagnostics.ProcessStartInfo()
             {
                 UseShellExecute = false,
                 CreateNoWindow = true,
                 WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden,
-                FileName = @"C:\Users\Mikolaj\AppData\Local\Programs\Python\Python39\python.exe",
+                FileName = @"C:\Users\Mikolaj\PycharmProjects\pythonProject\venv\Scripts\python.exe",
                 Arguments = argument,
                 RedirectStandardError = true,
                 RedirectStandardOutput = true
@@ -133,6 +133,9 @@ namespace CoreBusinessLogic
 
             process.EnableRaisingEvents = true;
             process.Start();
+            var error = process
+              .StandardError
+              .ReadToEnd();
             var result = process
                 .StandardOutput
                 .ReadToEnd()
@@ -156,7 +159,7 @@ namespace CoreBusinessLogic
                 UseShellExecute = false,
                 CreateNoWindow = true,
                 WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden,
-                FileName = @"C:\Users\Mikolaj\AppData\Local\Programs\Python\Python39\python.exe",
+                FileName = @"C:\Users\Mikolaj\PycharmProjects\pythonProject\venv\Scripts\python.exe",
                 Arguments = argument,
                 RedirectStandardError = true,
                 RedirectStandardOutput = true
@@ -164,6 +167,9 @@ namespace CoreBusinessLogic
 
             process.EnableRaisingEvents = true;
             process.Start();
+            var error = process
+               .StandardError
+               .ReadToEnd();
             var result = process
                 .StandardOutput
                 .ReadToEnd()
