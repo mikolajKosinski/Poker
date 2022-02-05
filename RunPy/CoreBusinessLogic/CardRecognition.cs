@@ -74,7 +74,7 @@ namespace CoreBusinessLogic
             return GetShapePosition(path);
         }
 
-        public Tuple<int, int, int, int> GetDesk()
+        public List<Tuple<decimal, decimal, decimal, decimal>> GetDesk()
         {
             Process process = new Process();
             string argument = @"C:\Users\Mikolaj\PycharmProjects\pythonProject\GetDeskPoints.py";
@@ -91,16 +91,29 @@ namespace CoreBusinessLogic
 
             process.EnableRaisingEvents = true;
             process.Start();
-            var result = process
+            var error = process
                 .StandardError
                 .ReadToEnd();
-            var rrr = process.StandardOutput.ReadToEnd();
-            var points = result.Split(',');
-            return new Tuple<int, int, int, int>(
-                Convert.ToInt32(points[0]),
-                Convert.ToInt32(points[1]),
-                Convert.ToInt32(points[2]),
-                Convert.ToInt32(points[3]));
+            var result = process.StandardOutput.ReadToEnd();
+            var cards = result.Split('#');
+            var points = new List<Tuple<decimal, decimal, decimal, decimal>>();
+            foreach (var item in cards)
+            {
+                try
+                {
+                    var card = item.Split('-');
+                    var middleX = card[0].Replace("\r\n", "").Replace(".",",");
+                    var middleY = card[1].Replace("\r\n", "").Replace(".", ",");
+                    var width = card[2].Replace("\r\n", "").Replace(".", ",");
+                    var height = card[3].Replace("\r\n", "").Replace(".", ",");
+                    points.Add(new Tuple<decimal, decimal, decimal, decimal>(Convert.ToDecimal(middleX),Convert.ToDecimal( middleY), Convert.ToDecimal(width), Convert.ToDecimal(height)));
+                }
+                catch (Exception x)
+                {
+
+                }
+            }
+            return points;
         }
 
         public Tuple<int,int,int,int> GetSingleCardArea()

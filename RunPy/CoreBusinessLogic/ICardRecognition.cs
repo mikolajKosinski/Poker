@@ -10,7 +10,7 @@ namespace CoreBusinessLogic
         Tuple<int, int, int, int> GetSingleCardArea();
         Tuple<int, int, int, int> GetArea();
         Tuple<int, int, int, int> GetPosition(string path);
-        Tuple<int, int, int, int> GetDesk();
+        List<Tuple<decimal, decimal, decimal, decimal>> GetDesk();
         ICard GetCard(string figure, string color);
         string CenterFigure(string path);
     }

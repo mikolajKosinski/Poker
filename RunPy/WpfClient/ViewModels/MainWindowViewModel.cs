@@ -1085,21 +1085,44 @@ namespace WpfClient.ViewModels
             double screenHeight = SystemParameters.VirtualScreenHeight;
             int basicWidth = Convert.ToInt32(item.xEnd) - Convert.ToInt32(item.xStart);
             var basicHeight = Convert.ToInt32(item.yEnd) - Convert.ToInt32(item.yStart) + 10;
+            Bitmap basicDesk;
 
             using (Bitmap bmp = new Bitmap((int)screenWidth,
                (int)screenHeight))
             {
                 using (Graphics g = Graphics.FromImage(bmp))
                 {
-                    var cardsAreaName = @$"C:\Users\Mikolaj\PycharmProjects\pythonProject1\allCards.png";                    
+                    var cardsAreaName = @$"C:\Users\Mikolaj\PycharmProjects\pythonProject1\allCards.png";
                     g.CopyFromScreen((int)screenLeft, (int)screenTop, 0, 0, bmp.Size);
-                    Bitmap basicPicture = bmp.Clone(new Rectangle((int)item.xStart, (int)item.yStart, basicWidth, basicHeight), bmp.PixelFormat);              
-                    basicPicture.Save(cardsAreaName);
+                    basicDesk = bmp.Clone(new Rectangle((int)item.xStart, (int)item.yStart, basicWidth, basicHeight), bmp.PixelFormat);
+                    basicDesk.Save(cardsAreaName);
                 }
             }
 
             var points = _cardRecognition.GetDesk();
-            Console.WriteLine();
+
+            //var cutOff = basicDesk.Clone(new Rectangle(1, 1, 100, 100), basicDesk.PixelFormat);
+            //cutOff.Save("cccutOff.jpg");
+
+            //using (Bitmap bmp = new Bitmap((int)screenWidth,
+            //   (int)screenHeight))
+            //{
+            //    using (Graphics g = Graphics.FromImage(bmp))
+            //    {
+            //        g.CopyFromScreen((int)screenLeft, (int)screenTop, 0, 0, bmp.Size);
+            //        basicDesk = bmp.Clone(new Rectangle((int)item.xStart, (int)item.yStart, basicWidth, basicHeight), bmp.PixelFormat);
+            //        basicDesk.Save("card.jpg");
+            //    }
+            //}
+
+            foreach (var point in points)
+            {
+                var middle = Convert.ToDouble(point.Item1) * basicDesk.Width;
+                var startX = middle - 30;
+                var endX = middle;
+                var cutOff = basicDesk.Clone(new Rectangle((int)startX, 1, 30, 100), basicDesk.PixelFormat);
+                cutOff.Save("cccutOff.jpg");
+            }
         }
 
         private Bitmap GetAreaBitmap(CardArea item, AnalyzeType at)
