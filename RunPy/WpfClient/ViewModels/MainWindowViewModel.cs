@@ -1085,8 +1085,8 @@ namespace WpfClient.ViewModels
             double screenHeight = SystemParameters.VirtualScreenHeight;
             int basicWidth = Convert.ToInt32(item.xEnd) - Convert.ToInt32(item.xStart);
             var basicHeight = Convert.ToInt32(item.yEnd) - Convert.ToInt32(item.yStart) + 10;
-            double cardWidth = 0;
-            double halfCardWidth = 0;
+            float cardWidth = 0;
+            float halfCardWidth = 0;
             double quarterCard = 0;
             Bitmap basicDesk;            
 
@@ -1103,30 +1103,69 @@ namespace WpfClient.ViewModels
             }
 
             var points = _cardRecognition.GetDesk();
-            var ratio = (double)basicDesk.Width / (double)416;
+            points.Sort();
+            //points.Reverse();
+            float ratio = (float)basicDesk.Width / (float)416;
 
-            if(points.Count == 3)
+            if (points.Count == 3)
             {
-                var c1 = Convert.ToDouble(points[0].Item1);
-                var c2 = Convert.ToDouble(points[1].Item1);
-                var c3 = Convert.ToDouble(points[2].Item1);
-                var middle1 = c1 * (basicDesk.Width * ratio);
-                var middle2 = c2 * (basicDesk.Width * ratio);
-                var middle3 = c3 * (basicDesk.Width * ratio);
-                var twoCardDistance = Convert.ToDouble(middle1) - Convert.ToDouble(middle2);
-                twoCardDistance = twoCardDistance * 0.9;
-                cardWidth = twoCardDistance / 2;
-                halfCardWidth = cardWidth / 2;
+                cardWidth = getCardWIdth(points, basicDesk, ratio);
+                halfCardWidth = (float)cardWidth;
             }
 
             foreach (var point in points)
             {
                 var middle = Convert.ToDouble(point.Item1) * basicDesk.Width;
-                var startX = middle - (int)cardWidth;
-                var cutOff = basicDesk.Clone(new Rectangle((int)startX, 1, (int)cardWidth, 100), basicDesk.PixelFormat);
-                cutOff.Save("cccutOff.jpg");
+                float middleX = (float)points[0].Item2;
+                float height = (float)basicDesk.Height * ratio * middleX;
+                float startX = (float)middle - 30;
+                var card = basicDesk.Clone(new RectangleF(startX, height * (float)0.1, cardWidth, height), basicDesk.PixelFormat);
+                //cutOff = GetRepaintedFromGreen(cutOff, Color.White);
+                card = GetColorFigureArea(card);
+                card.Save("ccutOff.jpg");
+                var figure = card.Clone(new RectangleF(0, 0, card.Width, card.Height/2), basicDesk.PixelFormat);
+                var color = card.Clone(new RectangleF(0, card.Height / 2, card.Width, card.Height / 2), basicDesk.PixelFormat);
+                figure.Save("figure.jpg");
+                color.Save("color.jpg");
+                //float figureStartY = cardWidth * (float)0.2;
+                //var card = basicDesk.Clone(new RectangleF(startX, figureStartY, cardWidth, height/2), basicDesk.PixelFormat);
+
+                //card.Save("figure.jpg");
+                //var cFigure = GetCenterPoint(card);
+                //cFigure.Save("cFigure.jpg");
                 Console.WriteLine();
             }
+        }
+
+        private Bitmap GetColorFigureArea(Bitmap card)
+        {
+            float height = card.Height * (float)0.80;
+            float heightCutOff = card.Height * (float)0.20;
+            float leftWidth = card.Width * (float)0.02;
+            float width = card.Width * (float)0.28;
+            return card.Clone(new RectangleF(leftWidth, heightCutOff, width, height), card.PixelFormat);
+        }
+
+        private Bitmap GetCenterPoint(Bitmap bmp)
+        {
+            float startX = bmp.Width * (float)0.1;
+            float width = bmp.Width * (float)0.6;
+            float height = bmp.Height * (float)0.9;
+
+            return bmp.Clone(new RectangleF(startX, 1, width, height), bmp.PixelFormat);
+        }
+
+        private float getCardWIdth(List<Tuple<decimal, decimal, decimal, decimal>> points, Bitmap basicDesk, float ratio)
+        {
+            var c1 = (float)points[0].Item1;
+            var c2 = (float)points[1].Item1;
+            var c3 = (float)points[2].Item1;
+            var middle1 = c1 * (basicDesk.Width * ratio);
+            var middle2 = c2 * (basicDesk.Width * ratio);
+            var middle3 = c3 * (basicDesk.Width * ratio);
+            float twoCardDistance = (float)middle2 - (float)middle1;
+            twoCardDistance = twoCardDistance * (float)0.9;
+            return twoCardDistance;
         }
 
         private Bitmap GetAreaBitmap(CardArea item, AnalyzeType at)
@@ -1305,10 +1344,22 @@ namespace WpfClient.ViewModels
                     }
 
                     var c = basicPicture.GetPixel(x, y);
-                    if (c.G > 70 && c.B < 90)
+                    var argb = c.ToArgb();
+                    var hue = c.GetHue();
+
+                    if(hue > 100 && hue < 120)
                     {
                         basicPicture.SetPixel(x, y, color);
                     }
+
+                    //if(c.R < 100)
+                    //{
+                    //    basicPicture.SetPixel(x, y, color);
+                    //}
+                    //if (c.G > 70 && c.B < 90)
+                    //{
+                    //    basicPicture.SetPixel(x, y, color);
+                    //}
                 }
             }
 
