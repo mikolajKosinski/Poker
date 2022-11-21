@@ -1,24 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Mikolaj\\Documents\\GitHub\\Poker\\RunPy\\ConsoleEndpoint\\ConsoleEndpoint.csproj": {}
+    "C:\\Users\\mkosi\\Documents\\GitHub\\Poker\\RunPy\\ConsoleEndpoint\\ConsoleEndpoint.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Mikolaj\\Documents\\GitHub\\Poker\\RunPy\\ConsoleEndpoint\\ConsoleEndpoint.csproj": {
+    "C:\\Users\\mkosi\\Documents\\GitHub\\Poker\\RunPy\\ConsoleEndpoint\\ConsoleEndpoint.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Mikolaj\\Documents\\GitHub\\Poker\\RunPy\\ConsoleEndpoint\\ConsoleEndpoint.csproj",
+        "projectUniqueName": "C:\\Users\\mkosi\\Documents\\GitHub\\Poker\\RunPy\\ConsoleEndpoint\\ConsoleEndpoint.csproj",
         "projectName": "ConsoleEndpoint",
-        "projectPath": "C:\\Users\\Mikolaj\\Documents\\GitHub\\Poker\\RunPy\\ConsoleEndpoint\\ConsoleEndpoint.csproj",
-        "packagesPath": "C:\\Users\\Mikolaj\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Mikolaj\\Documents\\GitHub\\Poker\\RunPy\\ConsoleEndpoint\\obj\\",
+        "projectPath": "C:\\Users\\mkosi\\Documents\\GitHub\\Poker\\RunPy\\ConsoleEndpoint\\ConsoleEndpoint.csproj",
+        "packagesPath": "C:\\Users\\mkosi\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\mkosi\\Documents\\GitHub\\Poker\\RunPy\\ConsoleEndpoint\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-        ],
         "configFilePaths": [
-          "C:\\Users\\Mikolaj\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Users\\mkosi\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -32,8 +28,8 @@
           "netcoreapp3.0": {
             "targetAlias": "netcoreapp3.0",
             "projectReferences": {
-              "C:\\Users\\Mikolaj\\Documents\\GitHub\\Poker\\RunPy\\CoreBusinessLogic\\CoreBusinessLogic.csproj": {
-                "projectPath": "C:\\Users\\Mikolaj\\Documents\\GitHub\\Poker\\RunPy\\CoreBusinessLogic\\CoreBusinessLogic.csproj"
+              "C:\\Users\\mkosi\\Documents\\GitHub\\Poker\\RunPy\\CoreBusinessLogic\\CoreBusinessLogic.csproj": {
+                "projectPath": "C:\\Users\\mkosi\\Documents\\GitHub\\Poker\\RunPy\\CoreBusinessLogic\\CoreBusinessLogic.csproj"
               }
             }
           }
@@ -53,7 +49,8 @@
             "net47",
             "net471",
             "net472",
-            "net48"
+            "net48",
+            "net481"
           ],
           "assetTargetFallback": true,
           "warn": true,
@@ -80,25 +77,21 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.404\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.100\\RuntimeIdentifierGraph.json"
         }
       }
     },
-    "C:\\Users\\Mikolaj\\Documents\\GitHub\\Poker\\RunPy\\CoreBusinessLogic\\CoreBusinessLogic.csproj": {
+    "C:\\Users\\mkosi\\Documents\\GitHub\\Poker\\RunPy\\CoreBusinessLogic\\CoreBusinessLogic.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Mikolaj\\Documents\\GitHub\\Poker\\RunPy\\CoreBusinessLogic\\CoreBusinessLogic.csproj",
+        "projectUniqueName": "C:\\Users\\mkosi\\Documents\\GitHub\\Poker\\RunPy\\CoreBusinessLogic\\CoreBusinessLogic.csproj",
         "projectName": "CoreBusinessLogic",
-        "projectPath": "C:\\Users\\Mikolaj\\Documents\\GitHub\\Poker\\RunPy\\CoreBusinessLogic\\CoreBusinessLogic.csproj",
-        "packagesPath": "C:\\Users\\Mikolaj\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Mikolaj\\Documents\\GitHub\\Poker\\RunPy\\CoreBusinessLogic\\obj\\",
+        "projectPath": "C:\\Users\\mkosi\\Documents\\GitHub\\Poker\\RunPy\\CoreBusinessLogic\\CoreBusinessLogic.csproj",
+        "packagesPath": "C:\\Users\\mkosi\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\mkosi\\Documents\\GitHub\\Poker\\RunPy\\CoreBusinessLogic\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-        ],
         "configFilePaths": [
-          "C:\\Users\\Mikolaj\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Users\\mkosi\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -112,8 +105,8 @@
           "netcoreapp3.0": {
             "targetAlias": "netcoreapp3.0",
             "projectReferences": {
-              "C:\\Users\\Mikolaj\\Documents\\GitHub\\Poker\\RunPy\\CoreDomain\\CoreDomain.csproj": {
-                "projectPath": "C:\\Users\\Mikolaj\\Documents\\GitHub\\Poker\\RunPy\\CoreDomain\\CoreDomain.csproj"
+              "C:\\Users\\mkosi\\Documents\\GitHub\\Poker\\RunPy\\CoreDomain\\CoreDomain.csproj": {
+                "projectPath": "C:\\Users\\mkosi\\Documents\\GitHub\\Poker\\RunPy\\CoreDomain\\CoreDomain.csproj"
               }
             }
           }
@@ -147,7 +140,8 @@
             "net47",
             "net471",
             "net472",
-            "net48"
+            "net48",
+            "net481"
           ],
           "assetTargetFallback": true,
           "warn": true,
@@ -170,25 +164,21 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.404\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.100\\RuntimeIdentifierGraph.json"
         }
       }
     },
-    "C:\\Users\\Mikolaj\\Documents\\GitHub\\Poker\\RunPy\\CoreDomain\\CoreDomain.csproj": {
+    "C:\\Users\\mkosi\\Documents\\GitHub\\Poker\\RunPy\\CoreDomain\\CoreDomain.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Mikolaj\\Documents\\GitHub\\Poker\\RunPy\\CoreDomain\\CoreDomain.csproj",
+        "projectUniqueName": "C:\\Users\\mkosi\\Documents\\GitHub\\Poker\\RunPy\\CoreDomain\\CoreDomain.csproj",
         "projectName": "CoreDomain",
-        "projectPath": "C:\\Users\\Mikolaj\\Documents\\GitHub\\Poker\\RunPy\\CoreDomain\\CoreDomain.csproj",
-        "packagesPath": "C:\\Users\\Mikolaj\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Mikolaj\\Documents\\GitHub\\Poker\\RunPy\\CoreDomain\\obj\\",
+        "projectPath": "C:\\Users\\mkosi\\Documents\\GitHub\\Poker\\RunPy\\CoreDomain\\CoreDomain.csproj",
+        "packagesPath": "C:\\Users\\mkosi\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\mkosi\\Documents\\GitHub\\Poker\\RunPy\\CoreDomain\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-        ],
         "configFilePaths": [
-          "C:\\Users\\Mikolaj\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Users\\mkosi\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -219,7 +209,8 @@
             "net47",
             "net471",
             "net472",
-            "net48"
+            "net48",
+            "net481"
           ],
           "assetTargetFallback": true,
           "warn": true,
@@ -242,7 +233,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.404\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.100\\RuntimeIdentifierGraph.json"
         }
       }
     }

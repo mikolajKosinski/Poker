@@ -1,12 +1,12 @@
 {
   "version": 2,
-  "dgSpecHash": "RXaDlrcH59veK+3cxbxPayIVrTCGjVOfcIC9N9PyW2ljGboUBk4bitE61vba8IMqp46EvQIpsxvgIr534F8M2Q==",
+  "dgSpecHash": "fCrkegVTnPuUP87sjhjSwJz2R/Rrn+952a+knyRJHNjftaGFzk1vf6/OL/4Vvtjk02TBzRfg3R0Q/ICL2GjE8Q==",
   "success": true,
-  "projectFilePath": "C:\\Users\\Mikolaj\\Documents\\GitHub\\Poker\\RunPy\\CoreDomain\\CoreDomain.csproj",
+  "projectFilePath": "C:\\Users\\mkosi\\Documents\\GitHub\\Poker\\RunPy\\CoreDomain\\CoreDomain.csproj",
   "expectedPackageFiles": [
-    "C:\\Users\\Mikolaj\\.nuget\\packages\\microsoft.aspnetcore.app.ref\\3.0.1\\microsoft.aspnetcore.app.ref.3.0.1.nupkg.sha512",
-    "C:\\Users\\Mikolaj\\.nuget\\packages\\microsoft.windowsdesktop.app.ref\\3.0.0\\microsoft.windowsdesktop.app.ref.3.0.0.nupkg.sha512",
-    "C:\\Users\\Mikolaj\\.nuget\\packages\\microsoft.netcore.app.ref\\3.0.0\\microsoft.netcore.app.ref.3.0.0.nupkg.sha512"
+    "C:\\Users\\mkosi\\.nuget\\packages\\microsoft.windowsdesktop.app.ref\\3.0.0\\microsoft.windowsdesktop.app.ref.3.0.0.nupkg.sha512",
+    "C:\\Users\\mkosi\\.nuget\\packages\\microsoft.netcore.app.ref\\3.0.0\\microsoft.netcore.app.ref.3.0.0.nupkg.sha512",
+    "C:\\Users\\mkosi\\.nuget\\packages\\microsoft.aspnetcore.app.ref\\3.0.1\\microsoft.aspnetcore.app.ref.3.0.1.nupkg.sha512"
   ],
   "logs": []
 }

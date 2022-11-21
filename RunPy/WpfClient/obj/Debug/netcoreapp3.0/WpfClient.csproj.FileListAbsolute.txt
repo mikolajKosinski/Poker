@@ -1,4 +1,3 @@
-C:\Users\mkosi\Documents\GitHub\Poker\RunPy\WpfClient\obj\Debug\netcoreapp3.0\WpfClient.csprojAssemblyReference.cache
 C:\Users\mkosi\Documents\GitHub\Poker\RunPy\WpfClient\obj\Debug\netcoreapp3.0\MainWindow.g.cs
 C:\Users\mkosi\Documents\GitHub\Poker\RunPy\WpfClient\obj\Debug\netcoreapp3.0\App.g.cs
 C:\Users\mkosi\Documents\GitHub\Poker\RunPy\WpfClient\obj\Debug\netcoreapp3.0\WpfClient_MarkupCompile.cache
@@ -68,3 +67,18 @@ C:\Users\Mikolaj\Documents\GitHub\Poker\RunPy\WpfClient\obj\Debug\netcoreapp3.0\
 C:\Users\Mikolaj\Documents\GitHub\Poker\RunPy\WpfClient\obj\Debug\netcoreapp3.0\SettingsView.baml
 C:\Users\Mikolaj\Documents\GitHub\Poker\RunPy\WpfClient\obj\Debug\netcoreapp3.0\WpfClient.csproj.AssemblyReference.cache
 C:\Users\Mikolaj\Documents\GitHub\Poker\RunPy\WpfClient\obj\Debug\netcoreapp3.0\WpfClient.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\mkosi\Documents\GitHub\Poker\RunPy\WpfClient\bin\Debug\netcoreapp3.0\Autofac.dll
+C:\Users\mkosi\Documents\GitHub\Poker\RunPy\WpfClient\bin\Debug\netcoreapp3.0\System.Diagnostics.DiagnosticSource.dll
+C:\Users\mkosi\Documents\GitHub\Poker\RunPy\WpfClient\obj\Debug\netcoreapp3.0\WpfClient.csproj.AssemblyReference.cache
+C:\Users\mkosi\Documents\GitHub\Poker\RunPy\WpfClient\obj\Debug\netcoreapp3.0\AreasView.g.cs
+C:\Users\mkosi\Documents\GitHub\Poker\RunPy\WpfClient\obj\Debug\netcoreapp3.0\CardApproveWindow.g.cs
+C:\Users\mkosi\Documents\GitHub\Poker\RunPy\WpfClient\obj\Debug\netcoreapp3.0\ScreenAnalyzePage.g.cs
+C:\Users\mkosi\Documents\GitHub\Poker\RunPy\WpfClient\obj\Debug\netcoreapp3.0\SettingsView.g.cs
+C:\Users\mkosi\Documents\GitHub\Poker\RunPy\WpfClient\obj\Debug\netcoreapp3.0\GeneratedInternalTypeHelper.g.cs
+C:\Users\mkosi\Documents\GitHub\Poker\RunPy\WpfClient\obj\Debug\netcoreapp3.0\AreasView.baml
+C:\Users\mkosi\Documents\GitHub\Poker\RunPy\WpfClient\obj\Debug\netcoreapp3.0\CardApproveWindow.baml
+C:\Users\mkosi\Documents\GitHub\Poker\RunPy\WpfClient\obj\Debug\netcoreapp3.0\ScreenAnalyzePage.baml
+C:\Users\mkosi\Documents\GitHub\Poker\RunPy\WpfClient\obj\Debug\netcoreapp3.0\SettingsView.baml
+C:\Users\mkosi\Documents\GitHub\Poker\RunPy\WpfClient\obj\Debug\netcoreapp3.0\WpfClient.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\mkosi\Documents\GitHub\Poker\RunPy\WpfClient\obj\Debug\netcoreapp3.0\WpfClient.csproj.CoreCompileInputs.cache
+C:\Users\mkosi\Documents\GitHub\Poker\RunPy\WpfClient\obj\Debug\netcoreapp3.0\WpfClient.genruntimeconfig.cache

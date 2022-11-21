@@ -1,5 +1,6 @@
 ﻿
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
@@ -42,10 +43,10 @@ namespace CoreBusinessLogic
         {
             return new Dictionary<string, CardColor>
             {
-                {"c", CardColor.club },
-                {"d", CardColor.diamond },
-                {"h", CardColor.heart },
-                {"s", CardColor.spade }
+                {"C", CardColor.club },
+                {"D", CardColor.diamond },
+                {"H", CardColor.heart },
+                {"S", CardColor.spade }
             };
         }
 
@@ -65,8 +66,7 @@ namespace CoreBusinessLogic
         private CardColor RecognizeColor(string imagePath)
         {
             var result = RecognizeImage(recoType.color, imagePath);
-            return _colorDict[result];
-            
+            return _colorDict[result];            
         }
 
         public Tuple<int, int, int, int> GetPosition(string path)
@@ -153,7 +153,7 @@ namespace CoreBusinessLogic
         public Tuple<int, int, int, int> GetArea()
         {
             Process process = new Process();
-            string argument = @"C:\Users\Mikolaj\PycharmProjects\pythonProject1\GetArea.py";
+            string argument = @"C:\Users\mkosi\PycharmProjects\pythonProject\GetArea.py";
             process.StartInfo = new System.Diagnostics.ProcessStartInfo()
             {
                 UseShellExecute = false,
@@ -182,6 +182,59 @@ namespace CoreBusinessLogic
                 Convert.ToInt32(points[1]),
                 Convert.ToInt32(points[2]),
                 Convert.ToInt32(points[3]));
+
+        }
+
+        public string GetAllCards()
+        {
+            Process process = new Process();
+            string argument = @"C:\Users\mkosi\PycharmProjects\pythonProject\cardScreen.py";
+            process.StartInfo = new System.Diagnostics.ProcessStartInfo()
+            {
+                UseShellExecute = false,
+                CreateNoWindow = true,
+                WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden,
+                FileName = @"C:\Users\mkosi\PycharmProjects\pythonProject\venv\Scripts\python.exe",
+                Arguments = argument,
+                RedirectStandardError = true,
+                RedirectStandardOutput = true
+            };
+
+            process.EnableRaisingEvents = true;
+            process.Start();
+            var error = process
+               .StandardError
+               .ReadToEnd();
+            var result = process
+                .StandardOutput
+                .ReadToEnd();
+            return result;
+        }
+
+        public string GetColorFigure(int cardsCount)
+        {
+            Process process = new Process();
+            string argument = @$"C:\Users\mkosi\PycharmProjects\pythonProject\FC.py";
+            process.StartInfo = new System.Diagnostics.ProcessStartInfo()
+            {
+                UseShellExecute = false,
+                CreateNoWindow = true,
+                WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden,
+                FileName = @"C:\Users\mkosi\PycharmProjects\pythonProject\venv\Scripts\python.exe",
+                Arguments = string.Format("{0} {1}", argument, cardsCount),
+                RedirectStandardError = true,
+                RedirectStandardOutput = true
+            };
+
+            process.EnableRaisingEvents = true;
+            process.Start();
+            var error = process
+               .StandardError
+               .ReadToEnd();
+            var result = process
+                .StandardOutput
+                .ReadToEnd();
+            return result;
         }
 
         private Tuple<int, int, int, int> GetShapePosition(string path)
@@ -233,22 +286,26 @@ namespace CoreBusinessLogic
         {
             Process process = new Process();
             string argument = rc == recoType.figure ?
-                $@"C:\Users\Mikolaj\PycharmProjects\pythonProject1\PredictFigure.py {imagePath}" :
-                $@"C:\Users\Mikolaj\PycharmProjects\pythonProject1\PredictColor.py {imagePath}";
+                $@"C:\Users\mkosi\PycharmProjects\pythonProject\predictFigure.py {imagePath.Replace(" ", "")}" :
+                $@"C:\Users\mkosi\PycharmProjects\pythonProject\predictColor.py {imagePath.Replace(" ", "")}";
             process.StartInfo = new System.Diagnostics.ProcessStartInfo()
             {
                 UseShellExecute = false,
                 CreateNoWindow = true,
                 WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden,
-                FileName = @"C:\Users\Mikolaj\AppData\Local\Programs\Python\Python39\python.exe",
+                FileName = @"C:\Users\mkosi\PycharmProjects\pythonProject\venv\Scripts\python.exe",
                 Arguments = argument,
                 RedirectStandardError = true,
                 RedirectStandardOutput = true
             };
                         
             process.Start();
+            var error = process
+               .StandardError
+               .ReadToEnd();
             var result = process.StandardOutput.ReadToEnd();
-            return result.Replace("\t", "").Replace("\r", "").Replace("\n", "");
+            var list = result.Split("\n");
+            return list[3].Replace("\r", "");
         }
 
         public string RecogniseByPath(string path)

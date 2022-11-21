@@ -8,7 +8,6 @@ C:\Users\mkosi\Documents\GitHub\Poker\RunPy\ConsoleEndpoint\bin\Debug\netcoreapp
 C:\Users\mkosi\Documents\GitHub\Poker\RunPy\ConsoleEndpoint\bin\Debug\netcoreapp3.0\CoreDomain.dll
 C:\Users\mkosi\Documents\GitHub\Poker\RunPy\ConsoleEndpoint\bin\Debug\netcoreapp3.0\CoreBusinessLogic.pdb
 C:\Users\mkosi\Documents\GitHub\Poker\RunPy\ConsoleEndpoint\bin\Debug\netcoreapp3.0\CoreDomain.pdb
-C:\Users\mkosi\Documents\GitHub\Poker\RunPy\ConsoleEndpoint\obj\Debug\netcoreapp3.0\ConsoleEndpoint.csprojAssemblyReference.cache
 C:\Users\mkosi\Documents\GitHub\Poker\RunPy\ConsoleEndpoint\obj\Debug\netcoreapp3.0\ConsoleEndpoint.AssemblyInfoInputs.cache
 C:\Users\mkosi\Documents\GitHub\Poker\RunPy\ConsoleEndpoint\obj\Debug\netcoreapp3.0\ConsoleEndpoint.AssemblyInfo.cs
 C:\Users\mkosi\Documents\GitHub\Poker\RunPy\ConsoleEndpoint\obj\Debug\netcoreapp3.0\ConsoleEndpoint.csproj.CopyComplete
@@ -34,3 +33,9 @@ C:\Users\Mikolaj\Documents\GitHub\Poker\RunPy\ConsoleEndpoint\obj\Debug\netcorea
 C:\Users\Mikolaj\Documents\GitHub\Poker\RunPy\ConsoleEndpoint\obj\Debug\netcoreapp3.0\ConsoleEndpoint.genruntimeconfig.cache
 C:\Users\Mikolaj\Documents\GitHub\Poker\RunPy\ConsoleEndpoint\bin\Debug\netcoreapp3.0\Autofac.dll
 C:\Users\Mikolaj\Documents\GitHub\Poker\RunPy\ConsoleEndpoint\bin\Debug\netcoreapp3.0\System.Diagnostics.DiagnosticSource.dll
+C:\Users\mkosi\Documents\GitHub\Poker\RunPy\ConsoleEndpoint\bin\Debug\netcoreapp3.0\Autofac.dll
+C:\Users\mkosi\Documents\GitHub\Poker\RunPy\ConsoleEndpoint\bin\Debug\netcoreapp3.0\System.Diagnostics.DiagnosticSource.dll
+C:\Users\mkosi\Documents\GitHub\Poker\RunPy\ConsoleEndpoint\obj\Debug\netcoreapp3.0\ConsoleEndpoint.csproj.AssemblyReference.cache
+C:\Users\mkosi\Documents\GitHub\Poker\RunPy\ConsoleEndpoint\obj\Debug\netcoreapp3.0\ConsoleEndpoint.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\mkosi\Documents\GitHub\Poker\RunPy\ConsoleEndpoint\obj\Debug\netcoreapp3.0\ConsoleEndpoint.csproj.CoreCompileInputs.cache
+C:\Users\mkosi\Documents\GitHub\Poker\RunPy\ConsoleEndpoint\obj\Debug\netcoreapp3.0\ConsoleEndpoint.genruntimeconfig.cache

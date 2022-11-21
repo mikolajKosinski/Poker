@@ -4,7 +4,9 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
@@ -12,6 +14,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Threading;
 using WpfClient.Interfaces;
@@ -874,6 +877,17 @@ namespace WpfClient.ViewModels
         {
             //TakeScreenShoot();
             GetDesk(DeskArea);
+            var cardsCount = Convert.ToInt32(_cardRecognition.GetAllCards().Replace("\r\n", ""));
+            _cardRecognition.GetColorFigure(cardsCount);
+
+            for (int c = 0; c < cardsCount; c++)
+            {
+                var colorPath = @$"C:\Users\mkosi\Documents\GitHub\Poker\RunPy\WpfClient\obj\Debug\\net5.0-windows\Card{c}_Color.PNG";
+                var figurePath = @$"C:\Users\mkosi\Documents\GitHub\Poker\RunPy\WpfClient\obj\Debug\\net5.0-windows\Card{c}_Figure.PNG";
+                var card = _cardRecognition.GetCard(figurePath, colorPath);
+                _matcher.AddCardToHand(card);
+            }
+
             //var single = GetAreaBitmap(SingleCardArea, AnalyzeType.SingleCard);
             var desk = GetAreaBitmap(DeskArea, AnalyzeType.Desk);
            
@@ -1081,13 +1095,10 @@ namespace WpfClient.ViewModels
         {
             double screenLeft = SystemParameters.VirtualScreenLeft;
             double screenTop = SystemParameters.VirtualScreenTop;
-            double screenWidth = SystemParameters.VirtualScreenWidth;
-            double screenHeight = SystemParameters.VirtualScreenHeight;
+            double screenWidth = SystemParameters.VirtualScreenHeight;
+            double screenHeight = SystemParameters.VirtualScreenWidth;
             int basicWidth = Convert.ToInt32(item.xEnd) - Convert.ToInt32(item.xStart);
             var basicHeight = Convert.ToInt32(item.yEnd) - Convert.ToInt32(item.yStart) + 10;
-            float cardWidth = 0;
-            float halfCardWidth = 0;
-            double quarterCard = 0;
             Bitmap basicDesk;            
 
             using (Bitmap bmp = new Bitmap((int)screenWidth,
@@ -1095,46 +1106,53 @@ namespace WpfClient.ViewModels
             {
                 using (Graphics g = Graphics.FromImage(bmp))
                 {
-                    var cardsAreaName = @$"C:\Users\Mikolaj\PycharmProjects\pythonProject1\allCards.png";
-                    g.CopyFromScreen((int)screenLeft, (int)screenTop, 0, 0, bmp.Size);
-                    basicDesk = bmp.Clone(new Rectangle((int)item.xStart, (int)item.yStart, basicWidth, basicHeight), bmp.PixelFormat);
-                    basicDesk.Save(cardsAreaName);
+                    try
+                    {
+                        var cardsAreaName = @$"C:\Users\mkosi\Documents\GitHub\Poker\RunPy\WpfClient\obj\Debug\net5.0-windows\allCards.png";
+                        g.CopyFromScreen((int)screenLeft, (int)screenTop, 0, 0, bmp.Size);
+                        basicDesk = bmp.Clone(new Rectangle((int)item.xStart, (int)item.yStart, basicWidth, basicHeight), bmp.PixelFormat);
+                        basicDesk.Save(cardsAreaName);
+                    }
+                    catch(Exception x)
+                    {
+
+                    }
                 }
             }
 
-            var points = _cardRecognition.GetDesk();
-            points.Sort();
-            //points.Reverse();
-            float ratio = (float)basicDesk.Width / (float)416;
+            //var points = _cardRecognition.GetDesk();
+            //points.Sort();
+            ////points.Reverse();
+            ////float ratio = (float)basicDesk.Width / (float)416;
 
-            if (points.Count == 3)
-            {
-                cardWidth = getCardWIdth(points, basicDesk, ratio);
-                halfCardWidth = (float)cardWidth;
-            }
+            //if (points.Count == 3)
+            //{
+            //    cardWidth = getCardWIdth(points, basicDesk, ratio);
+            //    halfCardWidth = (float)cardWidth;
+            //}
 
-            foreach (var point in points)
-            {
-                var middle = Convert.ToDouble(point.Item1) * basicDesk.Width;
-                float middleX = (float)points[0].Item2;
-                float height = (float)basicDesk.Height * ratio * middleX;
-                float startX = (float)middle - 30;
-                var card = basicDesk.Clone(new RectangleF(startX, height * (float)0.1, cardWidth, height), basicDesk.PixelFormat);
-                //cutOff = GetRepaintedFromGreen(cutOff, Color.White);
-                card = GetColorFigureArea(card);
-                card.Save("ccutOff.jpg");
-                var figure = card.Clone(new RectangleF(0, 0, card.Width, card.Height/2), basicDesk.PixelFormat);
-                var color = card.Clone(new RectangleF(0, card.Height / 2, card.Width, card.Height / 2), basicDesk.PixelFormat);
-                figure.Save("figure.jpg");
-                color.Save("color.jpg");
-                //float figureStartY = cardWidth * (float)0.2;
-                //var card = basicDesk.Clone(new RectangleF(startX, figureStartY, cardWidth, height/2), basicDesk.PixelFormat);
+            //foreach (var point in points)
+            //{
+            //    var middle = Convert.ToDouble(point.Item1) * basicDesk.Width;
+            //    float middleX = (float)points[0].Item2;
+            //    float height = (float)basicDesk.Height * ratio * middleX;
+            //    float startX = (float)middle - 30;
+            //    var card = basicDesk.Clone(new RectangleF(startX, height * (float)0.1, cardWidth, height), basicDesk.PixelFormat);
+            //    //cutOff = GetRepaintedFromGreen(cutOff, Color.White);
+            //    card = GetColorFigureArea(card);
+            //    card.Save("ccutOff.jpg");
+            //    var figure = card.Clone(new RectangleF(0, 0, card.Width, card.Height/2), basicDesk.PixelFormat);
+            //    var color = card.Clone(new RectangleF(0, card.Height / 2, card.Width, card.Height / 2), basicDesk.PixelFormat);
+            //    figure.Save("figure.jpg");
+            //    color.Save("color.jpg");
+            //    //float figureStartY = cardWidth * (float)0.2;
+            //    //var card = basicDesk.Clone(new RectangleF(startX, figureStartY, cardWidth, height/2), basicDesk.PixelFormat);
 
-                //card.Save("figure.jpg");
-                //var cFigure = GetCenterPoint(card);
-                //cFigure.Save("cFigure.jpg");
-                Console.WriteLine();
-            }
+            //    //card.Save("figure.jpg");
+            //    //var cFigure = GetCenterPoint(card);
+            //    //cFigure.Save("cFigure.jpg");
+            //    Console.WriteLine();
+            //}
         }
 
         private Bitmap GetColorFigureArea(Bitmap card)

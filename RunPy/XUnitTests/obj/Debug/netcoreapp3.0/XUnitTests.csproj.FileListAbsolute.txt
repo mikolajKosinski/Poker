@@ -90,7 +90,6 @@ C:\Users\mkosi\Documents\GitHub\Poker\RunPy\XUnitTests\bin\Debug\netcoreapp3.0\C
 C:\Users\mkosi\Documents\GitHub\Poker\RunPy\XUnitTests\bin\Debug\netcoreapp3.0\CoreDomain.dll
 C:\Users\mkosi\Documents\GitHub\Poker\RunPy\XUnitTests\bin\Debug\netcoreapp3.0\CoreBusinessLogic.pdb
 C:\Users\mkosi\Documents\GitHub\Poker\RunPy\XUnitTests\bin\Debug\netcoreapp3.0\CoreDomain.pdb
-C:\Users\mkosi\Documents\GitHub\Poker\RunPy\XUnitTests\obj\Debug\netcoreapp3.0\XUnitTests.csprojAssemblyReference.cache
 C:\Users\mkosi\Documents\GitHub\Poker\RunPy\XUnitTests\obj\Debug\netcoreapp3.0\XUnitTests.AssemblyInfoInputs.cache
 C:\Users\mkosi\Documents\GitHub\Poker\RunPy\XUnitTests\obj\Debug\netcoreapp3.0\XUnitTests.AssemblyInfo.cs
 C:\Users\mkosi\Documents\GitHub\Poker\RunPy\XUnitTests\obj\Debug\netcoreapp3.0\XUnitTests.csproj.CopyComplete
@@ -198,3 +197,9 @@ C:\Users\Mikolaj\Documents\GitHub\Poker\RunPy\XUnitTests\obj\Debug\netcoreapp3.0
 C:\Users\Mikolaj\Documents\GitHub\Poker\RunPy\XUnitTests\obj\Debug\netcoreapp3.0\XUnitTests.genruntimeconfig.cache
 C:\Users\Mikolaj\Documents\GitHub\Poker\RunPy\XUnitTests\bin\Debug\netcoreapp3.0\Autofac.dll
 C:\Users\Mikolaj\Documents\GitHub\Poker\RunPy\XUnitTests\bin\Debug\netcoreapp3.0\System.Diagnostics.DiagnosticSource.dll
+C:\Users\mkosi\Documents\GitHub\Poker\RunPy\XUnitTests\bin\Debug\netcoreapp3.0\Autofac.dll
+C:\Users\mkosi\Documents\GitHub\Poker\RunPy\XUnitTests\bin\Debug\netcoreapp3.0\System.Diagnostics.DiagnosticSource.dll
+C:\Users\mkosi\Documents\GitHub\Poker\RunPy\XUnitTests\obj\Debug\netcoreapp3.0\XUnitTests.csproj.AssemblyReference.cache
+C:\Users\mkosi\Documents\GitHub\Poker\RunPy\XUnitTests\obj\Debug\netcoreapp3.0\XUnitTests.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\mkosi\Documents\GitHub\Poker\RunPy\XUnitTests\obj\Debug\netcoreapp3.0\XUnitTests.csproj.CoreCompileInputs.cache
+C:\Users\mkosi\Documents\GitHub\Poker\RunPy\XUnitTests\obj\Debug\netcoreapp3.0\XUnitTests.genruntimeconfig.cache
