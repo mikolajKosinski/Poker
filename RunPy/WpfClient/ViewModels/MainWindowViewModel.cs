@@ -875,50 +875,66 @@ namespace WpfClient.ViewModels
 
         public async Task Analyze()
         {
-            //TakeScreenShoot();
-            GetDesk(DeskArea);
-            var cardsCount = Convert.ToInt32(_cardRecognition.GetAllCards().Replace("\r\n", ""));
-            _cardRecognition.GetColorFigure(cardsCount);
+            GetCards(DeskArea, "allCards");
+            var flopCount = Convert.ToInt32(_cardRecognition.GetHand());
 
-            for (int c = 0; c < cardsCount; c++)
+            for (int c = 0; c < flopCount; c++)
             {
-                var colorPath = @$"C:\Users\mkosi\Documents\GitHub\Poker\RunPy\WpfClient\obj\Debug\\net5.0-windows\Card{c}_Color.PNG";
-                var figurePath = @$"C:\Users\mkosi\Documents\GitHub\Poker\RunPy\WpfClient\obj\Debug\\net5.0-windows\Card{c}_Figure.PNG";
+                var colorPath = @$"C:\Users\mkosi\Documents\GitHub\Poker\RunPy\WpfClient\obj\Debug\\net5.0-windows\C{c}.PNG";
+                var figurePath = @$"C:\Users\mkosi\Documents\GitHub\Poker\RunPy\WpfClient\obj\Debug\\net5.0-windows\F{c}.PNG";
                 var card = _cardRecognition.GetCard(figurePath, colorPath);
-                _matcher.AddCardToHand(card);
+                _matcher.AddCardToFlop(card);
+                DeskCards.Add(card);
+                File.Delete(colorPath);
+                File.Delete(figurePath);
             }
 
+            //GetCards(HandArea, "allCards");
+            //flopCount = Convert.ToInt32(_cardRecognition.GetHand());
+
+            //for (int c = 0; c < flopCount; c++)
+            //{
+            //    var colorPath = @$"C:\Users\mkosi\Documents\GitHub\Poker\RunPy\WpfClient\obj\Debug\\net5.0-windows\C{c}.PNG";
+            //    var figurePath = @$"C:\Users\mkosi\Documents\GitHub\Poker\RunPy\WpfClient\obj\Debug\\net5.0-windows\F{c}.PNG";
+            //    var card = _cardRecognition.GetCard(figurePath, colorPath);
+            //    _matcher.AddCardToHand(card);
+            //    HandCards.Add(card);
+            //    File.Delete(colorPath);
+            //    File.Delete(figurePath);
+            //}
+            /////////////////////////////////////
             //var single = GetAreaBitmap(SingleCardArea, AnalyzeType.SingleCard);
-            var desk = GetAreaBitmap(DeskArea, AnalyzeType.Desk);
-           
-           // var hand = GetAreaBitmap(HandArea, AnalyzeType.Hand);
-
-            if (desk == null)
-            {
-                MessageBox.Show("Try again");
-                return;
-            }
+            //var desk = GetAreaBitmap(DeskArea, AnalyzeType.Desk);
 
             //var hand = GetAreaBitmap(HandArea, AnalyzeType.Hand);
 
-            _matcher.Clean();
-            //await AnalyzeDeskV2(desk);
-            //await AnalyzeHandV2(hand);
+            //if (desk == null)
+            //{
+            //    MessageBox.Show("Try again");
+            //    return;
+            //}
 
-            foreach (var card in DeskCards)
-            {
-                _matcher.AddCardToFlop(card);
-            }
+            //var hand = GetAreaBitmap(HandArea, AnalyzeType.Hand);
 
-            foreach (var card in HandCards)
-            {
-                _matcher.AddCardToHand(card);
-            }
+            //_matcher.Clean();
+            ////await AnalyzeDeskV2(desk);
+            ////await AnalyzeHandV2(hand);
 
-            _matcher.CheckHand();
+            //foreach (var card in DeskCards)
+            //{
+            //    _matcher.AddCardToFlop(card);
+            //}
+
+            //foreach (var card in HandCards)
+            //{
+            //    _matcher.AddCardToHand(card);
+            //}
+
+            //_matcher.CheckHand();
 
             var ordered = _matcher.PokerHandsDict.ToDictionary(x => x.Key, x => x.Value);
             ordered = _matcher.PokerHandsDict.OrderByDescending(p => p.Value.Probability).ToDictionary(x => x.Key, x => x.Value);
+            _matcher.CheckHand();
 
             RoyalFlushTabName = $"Royal flush [{ordered[Enums.PokerHands.RoyalFlush].Probability}%]";
             StraightFlushTabName = $"Straight flush [{ordered[Enums.PokerHands.StraightFlush].Probability}%]";
@@ -1091,7 +1107,7 @@ namespace WpfClient.ViewModels
         }
 
 
-        private void GetDesk(CardArea item)
+        private void GetCards(CardArea item, string path)
         {
             double screenLeft = SystemParameters.VirtualScreenLeft;
             double screenTop = SystemParameters.VirtualScreenTop;
@@ -1108,7 +1124,7 @@ namespace WpfClient.ViewModels
                 {
                     try
                     {
-                        var cardsAreaName = @$"C:\Users\mkosi\Documents\GitHub\Poker\RunPy\WpfClient\obj\Debug\net5.0-windows\allCards.png";
+                        var cardsAreaName = @$"C:\Users\mkosi\Documents\GitHub\Poker\RunPy\WpfClient\obj\Debug\net5.0-windows\{path}.png";
                         g.CopyFromScreen((int)screenLeft, (int)screenTop, 0, 0, bmp.Size);
                         basicDesk = bmp.Clone(new Rectangle((int)item.xStart, (int)item.yStart, basicWidth, basicHeight), bmp.PixelFormat);
                         basicDesk.Save(cardsAreaName);

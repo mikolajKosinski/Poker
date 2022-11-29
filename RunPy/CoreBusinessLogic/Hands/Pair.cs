@@ -1,6 +1,7 @@
 ﻿using CoreBusinessLogic.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 
@@ -32,16 +33,19 @@ namespace CoreBusinessLogic.Hands
         public void Check()
         {
             var tempHand = hand.Concat(desk).ToList();
-            if (!CheckGroupCount(tempHand, 2)) return;
+            //if (!CheckGroupCount(tempHand, 2)) return;
             var pair = GetGroup(tempHand, 2);
             if (pair.Any())
             {
                 Probability = 100;
                 pair.ForEach(p => CardList.Add(p));
             }
-
-            OutsList = GetOuts().ToList();
-            OutsCount = GetOuts().Count();
+            else
+            {
+                Probability = (int)GetOddsPercentage(GetOuts().Count());
+                OutsList = GetOuts().ToList();
+                OutsCount = GetOuts().Count();
+            }
         }
     }
 }

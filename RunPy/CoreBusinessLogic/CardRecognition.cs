@@ -185,17 +185,17 @@ namespace CoreBusinessLogic
 
         }
 
-        public string GetAllCards()
+        public string GetAllCards(string fileName)
         {
             Process process = new Process();
-            string argument = @"C:\Users\mkosi\PycharmProjects\pythonProject\cardScreen.py";
+            string script = @"C:\Users\mkosi\PycharmProjects\pythonProject\cardScreen.py";
             process.StartInfo = new System.Diagnostics.ProcessStartInfo()
             {
                 UseShellExecute = false,
                 CreateNoWindow = true,
                 WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden,
                 FileName = @"C:\Users\mkosi\PycharmProjects\pythonProject\venv\Scripts\python.exe",
-                Arguments = argument,
+                Arguments = $"{script} {fileName}",
                 RedirectStandardError = true,
                 RedirectStandardOutput = true
             };
@@ -211,7 +211,7 @@ namespace CoreBusinessLogic
             return result;
         }
 
-        public string GetColorFigure(int cardsCount)
+        public string GetColorFigure(int cardsCount, string cardName)
         {
             Process process = new Process();
             string argument = @$"C:\Users\mkosi\PycharmProjects\pythonProject\FC.py";
@@ -221,7 +221,7 @@ namespace CoreBusinessLogic
                 CreateNoWindow = true,
                 WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden,
                 FileName = @"C:\Users\mkosi\PycharmProjects\pythonProject\venv\Scripts\python.exe",
-                Arguments = string.Format("{0} {1}", argument, cardsCount),
+                Arguments = string.Format("{0} {1} {2}", argument, cardsCount, cardName),
                 RedirectStandardError = true,
                 RedirectStandardOutput = true
             };
@@ -235,6 +235,32 @@ namespace CoreBusinessLogic
                 .StandardOutput
                 .ReadToEnd();
             return result;
+        }
+
+        public string GetHand()
+        {
+            Process process = new Process();
+            string argument = @$"C:\Users\mkosi\PycharmProjects\pythonProject\predictFigures.py";
+            process.StartInfo = new System.Diagnostics.ProcessStartInfo()
+            {
+                UseShellExecute = false,
+                CreateNoWindow = true,
+                WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden,
+                FileName = @"C:\Users\mkosi\PycharmProjects\pythonProject\venv\Scripts\python.exe",
+                Arguments = string.Format("{0}", argument),
+                RedirectStandardError = true,
+                RedirectStandardOutput = true
+            };
+
+            process.EnableRaisingEvents = true;
+            process.Start();
+            var error = process
+               .StandardError
+               .ReadToEnd();
+            var result = process
+                .StandardOutput
+                .ReadToEnd();
+            return result.Replace("\r\n","");
         }
 
         private Tuple<int, int, int, int> GetShapePosition(string path)
