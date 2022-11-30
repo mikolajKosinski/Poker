@@ -1,7 +1,7 @@
 {
   "version": 3,
   "targets": {
-    "net5.0-windows7.0": {
+    "net7.0-windows7.0": {
       "Autofac/6.1.0": {
         "type": "package",
         "dependencies": {
@@ -1374,7 +1374,7 @@
     }
   },
   "projectFileDependencyGroups": {
-    "net5.0-windows7.0": [
+    "net7.0-windows7.0": [
       "CoreBusinessLogic >= 1.0.0",
       "Microsoft.Extensions.DependencyInjection >= 3.1.5",
       "System.Drawing.Common >= 4.7.0"
@@ -1397,15 +1397,15 @@
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
-        "net5.0-windows"
+        "net7.0-windows"
       ],
       "sources": {
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
-        "net5.0-windows7.0": {
-          "targetAlias": "net5.0-windows",
+        "net7.0-windows7.0": {
+          "targetAlias": "net7.0-windows",
           "projectReferences": {
             "C:\\Users\\mkosi\\Documents\\GitHub\\Poker\\RunPy\\CoreBusinessLogic\\CoreBusinessLogic.csproj": {
               "projectPath": "C:\\Users\\mkosi\\Documents\\GitHub\\Poker\\RunPy\\CoreBusinessLogic\\CoreBusinessLogic.csproj"
@@ -1420,8 +1420,8 @@
       }
     },
     "frameworks": {
-      "net5.0-windows7.0": {
-        "targetAlias": "net5.0-windows",
+      "net7.0-windows7.0": {
+        "targetAlias": "net7.0-windows",
         "dependencies": {
           "Microsoft.Extensions.DependencyInjection": {
             "target": "Package",

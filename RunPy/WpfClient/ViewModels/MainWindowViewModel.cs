@@ -430,7 +430,8 @@ namespace WpfClient.ViewModels
             }
             set
             {
-                _deskCards = value;
+                //_deskCards = value;
+                Application.Current.Dispatcher.Invoke(() => _deskCards = value);
                 NotifyPropertyChanged(nameof(DeskCards));
             }
         }
@@ -745,7 +746,8 @@ namespace WpfClient.ViewModels
 
         private void AnalyzeButtonCommand(object sender)
         {
-            Analyze();
+            Task.Run(async () => await Analyze());
+            //Analyze();
         }
 
         private void ShowGeneralTab(object sender)
@@ -884,24 +886,28 @@ namespace WpfClient.ViewModels
                 var figurePath = @$"C:\Users\mkosi\Documents\GitHub\Poker\RunPy\WpfClient\obj\Debug\\net5.0-windows\F{c}.PNG";
                 var card = _cardRecognition.GetCard(figurePath, colorPath);
                 _matcher.AddCardToFlop(card);
-                DeskCards.Add(card);
-                File.Delete(colorPath);
-                File.Delete(figurePath);
+
+                await Application.Current.Dispatcher.BeginInvoke(new Action(() => DeskCards.Add(card)));
+                //DeskCards.Add(card);
+                //File.Delete(colorPath);
+                //File.Delete(figurePath);
             }
 
-            //GetCards(HandArea, "allCards");
-            //flopCount = Convert.ToInt32(_cardRecognition.GetHand());
+            GetCards(HandArea, "allCards");
+            flopCount = Convert.ToInt32(_cardRecognition.GetHand());
 
-            //for (int c = 0; c < flopCount; c++)
-            //{
-            //    var colorPath = @$"C:\Users\mkosi\Documents\GitHub\Poker\RunPy\WpfClient\obj\Debug\\net5.0-windows\C{c}.PNG";
-            //    var figurePath = @$"C:\Users\mkosi\Documents\GitHub\Poker\RunPy\WpfClient\obj\Debug\\net5.0-windows\F{c}.PNG";
-            //    var card = _cardRecognition.GetCard(figurePath, colorPath);
-            //    _matcher.AddCardToHand(card);
-            //    HandCards.Add(card);
-            //    File.Delete(colorPath);
-            //    File.Delete(figurePath);
-            //}
+            for (int c = 0; c < flopCount; c++)
+            {
+                var colorPath = @$"C:\Users\mkosi\Documents\GitHub\Poker\RunPy\WpfClient\obj\Debug\\net5.0-windows\C{c}.PNG";
+                var figurePath = @$"C:\Users\mkosi\Documents\GitHub\Poker\RunPy\WpfClient\obj\Debug\\net5.0-windows\F{c}.PNG";
+                var card = _cardRecognition.GetCard(figurePath, colorPath);
+                _matcher.AddCardToHand(card);
+
+                await Application.Current.Dispatcher.BeginInvoke(new Action(() => HandCards.Add(card)));
+                //HandCards.Add(card);
+                //File.Delete(colorPath);
+                //File.Delete(figurePath);
+            }
             /////////////////////////////////////
             //var single = GetAreaBitmap(SingleCardArea, AnalyzeType.SingleCard);
             //var desk = GetAreaBitmap(DeskArea, AnalyzeType.Desk);
@@ -950,7 +956,8 @@ namespace WpfClient.ViewModels
             {
                 var cards = "";
                 _matcher.PokerHandsDict[item].CardList.ForEach(p => cards += $" [{_figureDict[p.Figure]} {_colorDict[p.Color]}]");
-                Hands.Add($"{_matcher.PokerHandsDict[item].Name} : {_matcher.PokerHandsDict[item].Probability}% : {cards}");
+                await Application.Current.Dispatcher.BeginInvoke(new Action(() => Hands.Add($"{_matcher.PokerHandsDict[item].Name} : {_matcher.PokerHandsDict[item].Probability}% : {cards}")));
+                //Hands.Add($"{_matcher.PokerHandsDict[item].Name} : {_matcher.PokerHandsDict[item].Probability}% : {cards}");
             }
             ShowGeneralTab(null);
         }

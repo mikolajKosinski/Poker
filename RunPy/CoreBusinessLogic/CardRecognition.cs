@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
+using System.Threading.Tasks;
 
 namespace CoreBusinessLogic
 {
@@ -261,6 +262,44 @@ namespace CoreBusinessLogic
                 .StandardOutput
                 .ReadToEnd();
             return result.Replace("\r\n","");
+        }
+
+        public Task<string> GetHandAsync()
+        {
+            var t = new TaskCompletionSource<string>(); //Using bool, because TaskCompletionSource needs at least one generic param
+            string result = "";
+            Process process = new Process();
+            string argument = @$"C:\Users\mkosi\PycharmProjects\pythonProject\predictFigures.py";
+            process.StartInfo = new System.Diagnostics.ProcessStartInfo()
+            {
+                UseShellExecute = false,
+                CreateNoWindow = true,
+                WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden,
+                FileName = @"C:\Users\mkosi\PycharmProjects\pythonProject\venv\Scripts\python.exe",
+                Arguments = string.Format("{0}", argument),
+                RedirectStandardError = true,
+                RedirectStandardOutput = true
+            };
+
+            process.EnableRaisingEvents = true;
+            process.Exited += (object sender, EventArgs e) =>
+            {
+                ////TODO: Exceptions will go first, followed by `return;`
+                //t.SetException();
+
+                //TODO: Finally, if there are no problems, return successfully
+
+                t.SetResult(process.StandardOutput.ReadToEnd().Replace("\r\n", ""));
+                result = process.StandardOutput.ReadToEnd().Replace("\r\n", "");
+            };
+            process.Start();
+            var error = process
+               .StandardError
+               .ReadToEnd();
+            //var result = process
+            //    .StandardOutput
+            //    .ReadToEnd();
+            return t.Task;
         }
 
         private Tuple<int, int, int, int> GetShapePosition(string path)

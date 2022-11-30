@@ -13,51 +13,96 @@ namespace CoreBusinessLogic.Hands
         }
 
         public string Name { get; } = "Straight";
+        private IList<int> _allFigures = new List<int>() { 2,3,4,5,6,7,8,9,10,11,12,13,14 };
 
         public IList<ICard> GetOuts()
         {
             if (!tempHand.Any()) return new List<ICard>();
             var cardsLeft = 7 - tempHand.Count();
-
-            OutsCount = GetNeededCardsCount();
-            if (OutsCount > cardsLeft) return new List<ICard>();
-
-            var highestCardHand = tempHand.OrderByDescending(x => x.Figure).First();
-            var highestPossibleFigure = highestCardHand.Figure + 2;
-
-            if ((int)highestPossibleFigure > 14) highestPossibleFigure = CardFigure._As;
-
-            var lowestPossible = highestPossibleFigure - 5;
-            var lowestByHand = highestCardHand.Figure - 5;
-            var restFromDeck = GetDeckExceptTempHand();
+            var possibleSets = new List<List<int>>();
             var outs = new List<ICard>();
+            var allCards = GetDeck();
 
-            var availableByHighest = tempHand.Where(p => p.Figure > lowestPossible && p.Figure < highestPossibleFigure)
-                .GroupBy(p => p.Figure)
-                .ToList();
-                        
-            var cardsNeededByHighest = 5 - availableByHighest.Count();
-
-            if (cardsNeededByHighest < cardsLeft)
+            for (int q = 0; q < 9; q++)
             {
-                for (var figure = highestPossibleFigure; figure >= lowestPossible; figure--)
+                var set = new List<int>();
+                for(int w = 0; w < 5; w++)
                 {
-                    if (!tempHand.Any(x => x.Figure == figure))
+                    set.Add(_allFigures[q+w]);
+                }
+                possibleSets.Add(set);
+            }
+
+            foreach (var set in possibleSets)
+            {
+                var temp = tempHand.Select(p => Convert.ToInt32(p.Figure)).ToList();
+                var neededFigures = set.Except(temp);
+                if (neededFigures.Count() > cardsLeft)
+                    continue;
+
+                foreach(var figure in neededFigures)
+                {
+                    var possibleOuts = allCards.Select(p => p).Where(p => Convert.ToInt32(p.Figure) == figure);
+                    
+                    foreach(var card in possibleOuts)
                     {
-                        outs.AddRange(restFromDeck.Where(p => p.Figure == figure).ToList());
+                        if(!tempHand.Any(p =>p.Figure == card.Figure) && !outs.Contains(card))
+                        {
+                            outs.Add(card);
+                        }
                     }
                 }
             }
 
-            for (var figure = highestCardHand.Figure; figure > lowestByHand; figure--)
-            {
-                if (!tempHand.Any(x => x.Figure == figure))
-                {
-                    outs.AddRange(restFromDeck.Where(p => p.Figure == figure && !outs.Any(o => o.Color == p.Color && o.Figure == p.Figure)).ToList());
-                }
-            }
 
-            return outs;
+                //foreach(var card in tempHand)
+                //{
+                //    foreach(var set in possibleSets) 
+                //    {
+                //        var cardFigure = Convert.ToInt32(card.Figure.ToString());
+                //        var neededFigures = set.Except(new List<int>() { car });
+                //    }
+                //}
+
+                //OutsCount = GetNeededCardsCount();
+                //if (OutsCount > cardsLeft) return new List<ICard>();
+
+                //var highestCardHand = tempHand.OrderByDescending(x => x.Figure).First();
+                //var highestPossibleFigure = highestCardHand.Figure + 2;
+
+                //if ((int)highestPossibleFigure > 14) highestPossibleFigure = CardFigure._As;
+
+                //var lowestPossible = highestPossibleFigure - 5;
+                //var lowestByHand = highestCardHand.Figure - 5;
+                //var restFromDeck = GetDeckExceptTempHand();
+                //var outs = new List<ICard>();
+
+                //var availableByHighest = tempHand.Where(p => p.Figure > lowestPossible && p.Figure < highestPossibleFigure)
+                //    .GroupBy(p => p.Figure)
+                //    .ToList();
+
+                //var cardsNeededByHighest = 5 - availableByHighest.Count();
+
+                //if (cardsNeededByHighest < cardsLeft)
+                //{
+                //    for (var figure = highestPossibleFigure; figure >= lowestPossible; figure--)
+                //    {
+                //        if (!tempHand.Any(x => x.Figure == figure))
+                //        {
+                //            outs.AddRange(restFromDeck.Where(p => p.Figure == figure).ToList());
+                //        }
+                //    }
+                //}
+
+                //for (var figure = highestCardHand.Figure; figure > lowestByHand; figure--)
+                //{
+                //    if (!tempHand.Any(x => x.Figure == figure))
+                //    {
+                //        outs.AddRange(restFromDeck.Where(p => p.Figure == figure && !outs.Any(o => o.Color == p.Color && o.Figure == p.Figure)).ToList());
+                //    }
+                //}
+
+                return outs;
         }
 
         private int GetNeededCardsCount()
@@ -75,10 +120,10 @@ namespace CoreBusinessLogic.Hands
         {
             if (NotInOrder(tempHand))
             {
-                Probability = (int)GetOddsPercentage(GetOuts().Count());
-                var highestCardHand = tempHand.OrderByDescending(x => x.Figure).First();
-                var lowestCard = highestCardHand.Figure - 5;
-                var elements = tempHand.Where(p => p.Figure >= lowestCard).OrderByDescending(x => x.Figure).Take(5).ToList();
+                //Probability = (int)GetOddsPercentage(GetOuts().Count());
+                var highestCard = tempHand.OrderByDescending(x => x.Figure).First();
+                var lowestCard = tempHand.OrderByDescending(x => x.Figure).Last();
+                var elements = tempHand.Where(p => p.Figure >= lowestCard.Figure).OrderByDescending(x => x.Figure).Take(5).ToList();
                 CardList = GetWithNoRept(elements);
                 Probability = (int)GetOddsPercentage(GetOuts().Count());
                 OutsList = GetOuts().ToList();
