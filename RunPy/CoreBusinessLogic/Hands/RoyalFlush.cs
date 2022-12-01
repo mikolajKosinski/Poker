@@ -8,10 +8,14 @@ namespace CoreBusinessLogic.Hands
 {
     public class RoyalFlush : BaseHandManager, IFigureManager
     {
-        public RoyalFlush(IList<ICard> hand, IList<ICard> desk) : base(hand, desk)
-        {
+        Straight straight { get; set; }
 
+        public RoyalFlush(IList<ICard> hand, IList<ICard> desk, Straight straight) : base(hand, desk)
+        {
+            this.straight = straight;
         }
+
+        public IList<ICard> GetCards() => new List<ICard>();
 
         public string Name { get; } = "RoyalFlush";
         public void Check()
@@ -35,7 +39,7 @@ namespace CoreBusinessLogic.Hands
             }
             else
             {
-                var sf = new StraightFlush(hand, desk);
+                var sf = new StraightFlush(hand, desk, straight);
                 sf.Check();
                 CardList = sf.CardList;
                 Probability = (int)GetOddsPercentage(GetOuts().Count());

@@ -13,6 +13,8 @@ namespace CoreBusinessLogic.Hands
 
         }
 
+        public IList<ICard> GetCards() => new List<ICard>();
+
         public string Name { get; } = "Flush";
 
         public void Check()

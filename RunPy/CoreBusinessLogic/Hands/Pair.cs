@@ -14,6 +14,8 @@ namespace CoreBusinessLogic.Hands
             Probability = 0;
         }
 
+        public IList<ICard> GetCards() => new List<ICard>();
+
         public string Name { get; } = "Pair";
 
         public IList<ICard> GetOuts()

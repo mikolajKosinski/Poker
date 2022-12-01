@@ -789,6 +789,12 @@ namespace WpfClient.ViewModels
             IsThreeOfKindTabVisible = false;
             IsPairTabVisible = false;
             GetCardListByHand(Enums.PokerHands.StraightFlush);
+            CardList.Clear();
+            var availableCards = _matcher.GetHand(Enums.PokerHands.StraightFlush);
+            foreach (var card in availableCards)
+            {
+                CardList.Add($"{card.Figure} {card.Color}");
+            }
         }
 
         private void ShowFourOfKindTab(object sender)
@@ -845,6 +851,12 @@ namespace WpfClient.ViewModels
             IsThreeOfKindTabVisible = false;
             IsPairTabVisible = false;
             GetCardListByHand(Enums.PokerHands.Straight);
+            CardList.Clear();
+            var availableCards = _matcher.GetHand(Enums.PokerHands.Straight);
+            foreach (var card in availableCards)
+            {
+                CardList.Add($"{card.Figure} {card.Color}");
+            }
         }
 
         private void ShowThreeOfKindTab(object sender)

@@ -12,6 +12,7 @@ namespace CoreBusinessLogic
     {
         private List<ICard> desk;
         private List<ICard> hand;
+        private IDictionary<PokerHands, IFigureManager> handsDict;
         public IDictionary<PokerHands, IFigureManager> PokerHandsDict { get; set; }
 
 
@@ -22,18 +23,32 @@ namespace CoreBusinessLogic
             PokerHandsDict = getHands();
         }
 
+        public IList<ICard> GetHand(PokerHands hand)
+        {
+            return getHands()[hand].GetCards();
+        }
+
         private IDictionary<PokerHands, IFigureManager> getHands()
         {
+            if (handsDict == null)
+                handsDict = getNewHandsDictionary();
+
+            return handsDict;
+        }
+
+        private IDictionary<PokerHands, IFigureManager> getNewHandsDictionary()
+        {
+            var straight = new Straight(hand, desk);
             return new Dictionary<PokerHands, IFigureManager>
             {
                 { PokerHands.Pair, new Pair(hand, desk) },
                 { PokerHands.ThreeOfKind, new ThreeOfKind(hand, desk) },
-                { PokerHands.Straight, new Straight(hand, desk) },
+                { PokerHands.Straight, straight },
                 { PokerHands.Flush, new Flush(hand, desk) },
                 { PokerHands.FourOfKind, new FourOfKind(hand, desk) },
                 { PokerHands.Full, new Full(hand, desk) },
-                { PokerHands.RoyalFlush, new RoyalFlush(hand, desk) },
-                { PokerHands.StraightFlush, new StraightFlush(hand, desk) }
+                { PokerHands.RoyalFlush, new RoyalFlush(hand, desk, straight) },
+                { PokerHands.StraightFlush, new StraightFlush(hand, desk, straight) }
             };
         }
 

@@ -27,6 +27,8 @@ namespace CoreBusinessLogic.Hands
             return outs;
         }
 
+        public IList<ICard> GetCards() => new List<ICard>();
+
         public void Check()
         {
             var tempHand = hand.Concat(desk).ToList();
@@ -41,10 +43,14 @@ namespace CoreBusinessLogic.Hands
             }
             else
             {
-                if (CheckGroupCount(tempHand, 2)) CardList = GetGroup(tempHand, 2);
-                Probability = (int)GetOddsPercentage(GetOuts().Count());
-                OutsList = GetOuts().ToList();
-                OutsCount = GetOuts().Count();
+                decimal outs = GetOuts().Count();
+                decimal cardsLeft = 52 - tempHand.Count();
+                Probability = decimal.Round((outs / cardsLeft) * 100, 2);
+
+                //if (CheckGroupCount(tempHand, 2)) CardList = GetGroup(tempHand, 2);
+                //Probability = (int)GetOddsPercentage(GetOuts().Count());
+                //OutsList = GetOuts().ToList();
+                //OutsCount = GetOuts().Count();
             }
         }
 

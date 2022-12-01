@@ -14,6 +14,9 @@ namespace CoreBusinessLogic.Hands
 
         public string Name { get; } = "Straight";
         private IList<int> _allFigures = new List<int>() { 2,3,4,5,6,7,8,9,10,11,12,13,14 };
+        private List<ICard> _availableCards = new List<ICard>();
+
+        public IList<ICard> GetCards() => _availableCards;
 
         public IList<ICard> GetOuts()
         {
@@ -40,7 +43,10 @@ namespace CoreBusinessLogic.Hands
                 if (neededFigures.Count() > cardsLeft)
                     continue;
 
-                foreach(var figure in neededFigures)
+                var cardForHand = tempHand.Where(p => set.Contains(Convert.ToInt32(p.Figure))).Select(p => p).ToList();
+                _availableCards.AddRange(cardForHand.Where(p => !_availableCards.Contains(p)));
+
+                foreach (var figure in neededFigures)
                 {
                     var possibleOuts = allCards.Select(p => p).Where(p => Convert.ToInt32(p.Figure) == figure);
                     
@@ -121,11 +127,15 @@ namespace CoreBusinessLogic.Hands
             if (NotInOrder(tempHand))
             {
                 //Probability = (int)GetOddsPercentage(GetOuts().Count());
-                var highestCard = tempHand.OrderByDescending(x => x.Figure).First();
-                var lowestCard = tempHand.OrderByDescending(x => x.Figure).Last();
-                var elements = tempHand.Where(p => p.Figure >= lowestCard.Figure).OrderByDescending(x => x.Figure).Take(5).ToList();
-                CardList = GetWithNoRept(elements);
-                Probability = (int)GetOddsPercentage(GetOuts().Count());
+                //var highestCard = tempHand.OrderByDescending(x => x.Figure).First();
+                //var lowestCard = tempHand.OrderByDescending(x => x.Figure).Last();
+                //var elements = tempHand.Where(p => p.Figure >= lowestCard.Figure).OrderByDescending(x => x.Figure).Take(5).ToList();
+                //CardList = GetWithNoRept(elements);
+                decimal outs = GetOuts().Count();
+                decimal cardsLeft = 52 - tempHand.Count();
+                Probability = decimal.Round((outs / cardsLeft)*100, 2);
+                //Probability = (int)GetOddsPercentage(GetOuts().Count());
+                //Probability = GetOuts().Count() * 4;
                 OutsList = GetOuts().ToList();
                 OutsCount = GetOuts().Count();
                 return;

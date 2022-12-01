@@ -16,7 +16,7 @@ namespace CoreBusinessLogic
             Probability = 0;
         }
 
-        public int Probability { get; set; }
+        public decimal Probability { get; set; }
         public int OutsCount { get; set; }
         public List<ICard> OutsList { get; set; }
         public List<ICard> CardList { get; set; } 
