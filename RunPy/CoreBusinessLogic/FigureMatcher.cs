@@ -25,7 +25,7 @@ namespace CoreBusinessLogic
 
         public IList<ICard> GetHand(PokerHands hand)
         {
-            return getHands()[hand].GetCards();
+            return getHands()[hand].GetOuts();
         }
 
         private IDictionary<PokerHands, IFigureManager> getHands()

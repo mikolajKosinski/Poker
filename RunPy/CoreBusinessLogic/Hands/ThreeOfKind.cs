@@ -9,7 +9,7 @@ namespace CoreBusinessLogic.Hands
     public class ThreeOfKind : BaseHandManager, IFigureManager
     {
         public ThreeOfKind(IList<ICard> hand, IList<ICard> desk) : base(hand, desk) { }
-
+        private IList<ICard> _cardsOnHand = new List<ICard>();
         public string Name { get; } = "ThreeOfKind";
 
         public IList<ICard> GetOuts()
@@ -19,7 +19,14 @@ namespace CoreBusinessLogic.Hands
             var groups = GetAllGroupsByFigure(tempHand);
             var outs = new List<ICard>();
 
-            foreach(var list in groups)
+            if (tempHand.Count < 7)
+            {
+                var pair = _cardsOnHand = GetGroup(tempHand, 2);
+                var threeOf = _cardsOnHand = GetGroup(tempHand, 3);
+                _cardsOnHand = threeOf.Any() ? threeOf : pair;
+            }
+
+            foreach (var list in groups)
             {
                 outs.AddRange(rest.Where(p => p.Figure == list[0].Figure));
             }
@@ -27,10 +34,11 @@ namespace CoreBusinessLogic.Hands
             return outs;
         }
 
-        public IList<ICard> GetCards() => new List<ICard>();
+        public IList<ICard> GetCards() => _cardsOnHand;
 
         public void Check()
         {
+            var outs = GetOuts();
             var tempHand = hand.Concat(desk).ToList();
             if (CheckGroupCount(tempHand, 3))
             {
@@ -43,10 +51,9 @@ namespace CoreBusinessLogic.Hands
             }
             else
             {
-                decimal outs = GetOuts().Count();
                 decimal cardsLeft = 52 - tempHand.Count();
-                Probability = decimal.Round((outs / cardsLeft) * 100, 2);
-
+                Probability = decimal.Round((outs.Count / cardsLeft) * 100, 2);
+                OutsList = GetOuts().ToList();
                 //if (CheckGroupCount(tempHand, 2)) CardList = GetGroup(tempHand, 2);
                 //Probability = (int)GetOddsPercentage(GetOuts().Count());
                 //OutsList = GetOuts().ToList();

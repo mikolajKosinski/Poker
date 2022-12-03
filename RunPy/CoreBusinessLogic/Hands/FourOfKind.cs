@@ -14,7 +14,7 @@ namespace CoreBusinessLogic.Hands
         }
 
         public IList<ICard> GetCards() => new List<ICard>();
-
+        private IList<ICard> _cardsOnHand = new List<ICard>();
         public string Name { get; } = "FourOf";
 
         public void Check()
@@ -25,15 +25,15 @@ namespace CoreBusinessLogic.Hands
             }
             else
             {
-                var outs = GetOuts().Count();
-                Probability = (int)GetOddsPercentage(outs);
-                OutsList = GetOuts().ToList();
-                OutsCount = GetOuts().Count();
+                decimal outs = GetOuts().Count();
+                decimal cardsLeft = 52 - tempHand.Count();
+                Probability = decimal.Round((outs / cardsLeft) * 100, 2);
             }
 
             var group = GetGroup(tempHand, 4);
             if (!group.Any()) group = GetGroup(tempHand, 3);
             if (!group.Any()) group = GetGroup(tempHand, 2);
+            OutsList = GetOuts().ToList();
             CardList = group;
         }
 
@@ -45,7 +45,28 @@ namespace CoreBusinessLogic.Hands
         public IList<ICard> GetOuts()
         {
             OutsCount = GetNeededCardsCount();
-            return GetMatchingCardsFromDeck();
+            var rest = GetDeckExceptTempHand();
+            var groups = GetAllGroupsByFigure(tempHand);
+            var outs = new List<ICard>();
+
+            if (tempHand.Count == 5)
+            {
+                var pair = _cardsOnHand = GetGroup(tempHand, 2);
+                var threeOf = _cardsOnHand = GetGroup(tempHand, 3);
+                _cardsOnHand = threeOf.Any() ? threeOf : pair;
+            }
+
+            if (tempHand.Count == 6)
+                _cardsOnHand = GetGroup(tempHand, 3);
+
+            foreach (var list in groups)
+            {
+                outs.AddRange(rest.Where(p => p.Figure == list[0].Figure));
+            }
+
+            return outs;
+            //OutsCount = GetNeededCardsCount();
+            //return GetMatchingCardsFromDeck();
         }
 
         private int GetNeededCardsCount()

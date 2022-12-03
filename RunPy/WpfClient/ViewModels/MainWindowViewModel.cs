@@ -538,6 +538,7 @@ namespace WpfClient.ViewModels
 
             try
             {
+                var test = _matcher.PokerHandsDict[hand].OutsList;
                 NeededCardsList = new ObservableCollection<ICard>(_matcher.PokerHandsDict[hand].OutsList);
             }
             catch
@@ -871,6 +872,12 @@ namespace WpfClient.ViewModels
             IsThreeOfKindTabVisible = true;
             IsPairTabVisible = false;
             GetCardListByHand(Enums.PokerHands.ThreeOfKind);
+            CardList.Clear();
+            var availableCards = _matcher.PokerHandsDict[Enums.PokerHands.ThreeOfKind].GetCards();
+            foreach (var card in availableCards)
+            {
+                CardList.Add($"{card.Figure} {card.Color}");
+            }
         }
 
         private void ShowPairTab(object sender)
