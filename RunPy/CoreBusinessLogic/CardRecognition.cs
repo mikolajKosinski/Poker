@@ -44,10 +44,10 @@ namespace CoreBusinessLogic
         {
             return new Dictionary<string, CardColor>
             {
-                {"C", CardColor.club },
-                {"D", CardColor.diamond },
-                {"H", CardColor.heart },
-                {"S", CardColor.spade }
+                {"c", CardColor.club },
+                {"d", CardColor.diamond },
+                {"h", CardColor.heart },
+                {"s", CardColor.spade }
             };
         }
 
@@ -370,7 +370,8 @@ namespace CoreBusinessLogic
                .ReadToEnd();
             var result = process.StandardOutput.ReadToEnd();
             var list = result.Split("\n");
-            return list[3].Replace("\r", "");
+            var ress = rc == recoType.figure ? list[3].Replace("\r", "") : list[0].Replace("\r", "");
+            return ress;
         }
 
         public string RecogniseByPath(string path)

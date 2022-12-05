@@ -313,75 +313,17 @@ namespace WpfClient.ViewModels
             }
         }
 
-        #endregion
-
-        public IAreasWindowViewModel AreasViewModel { get; set; }
-        public ISettingsViewModel SettingsViewModel { get; set; }
-        public event PropertyChangedEventHandler PropertyChanged;
-        public event EventHandler<ICard> CardRecognized;
-        private int _singleCardWidth;
-        private int _singleCardHeight;
-        private int _deskOffset;
-        private int _handOffset;
-        private int _deskWidth;
-        private int _handWidth;
-        private bool _handRecognized;
-        private bool _deskRecognized;
-        private int _deskCardsCount;
-        private List<Tuple<int, int, int, int>> _deskPointsList;
-        private List<Tuple<int, int, int, int>> _handPointsList;
-        private CardArea _deskCardsArea;
-        //private event EventHandler<CardRecognitionEventArgs> _cardRecognized;
-        public bool ElementAdded { get; set; }
-        private void NotifyPropertyChanged(string propertyName = "")
-        {
-            if (PropertyChanged != null)
-            {
-                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-            }
-        }
-
-        //private void OnCardRecognized(CardRecognitionEventArgs e)
-        //{
-        //    _cardRecognized?.Invoke(this, e);
-        //}
-
-        ICardRecognition _cardRecognition;
-        IFigureMatcher _figureMatcher;
-        ICardManager _cardManager;
-        public CardArea HandArea { get; set; }
-        public CardArea DeskArea { get; set; }
-        public CardArea SingleCardArea { get; set; }
-       
-        public ICommand AnalyzeCommand { get; set; }
-        public ICommand GeneralTabCommand { get; set; }
-        public ICommand RoyalTabCommand { get; set; }
-        public ICommand StraightFlushTabCommand { get; set; }
-        public ICommand FourOfKindTabCommand { get; set; }
-        public ICommand FullTabCommand { get; set; }
-        public ICommand FlushTabCommand { get; set; }
-        public ICommand StraightTabCommand { get; set; }
-        public ICommand ThreeOfKindTabCommand { get; set; }
-        public ICommand PairTabCommand { get; set; }
-
-        public ICommand AreasWindowCommand { get; set; }
-        public ICommand MainWindowCommand { get; set; }
-
-        public ICommand SettingsWindowCommand { get; set; }
-        //public ICommand AddCommand { get; set; }
-        //public ICommand RemoveCommand { get; set; }
-
-        private ObservableCollection<string> _cardList;
-        public ObservableCollection<string> CardList
+        private ObservableCollection<string> _cardsOnHand;
+        public ObservableCollection<string> CardsOnHand
         {
             get
             {
-                return _cardList;
+                return _cardsOnHand;
             }
             set
             {
-                _cardList = value;
-                NotifyPropertyChanged(nameof(CardList));
+                _cardsOnHand = value;
+                NotifyPropertyChanged(nameof(CardsOnHand));
             }
         }
 
@@ -467,6 +409,66 @@ namespace WpfClient.ViewModels
                 NotifyPropertyChanged("RecognizedCardsList");
             }
         }
+        #endregion
+
+        public IAreasWindowViewModel AreasViewModel { get; set; }
+        public ISettingsViewModel SettingsViewModel { get; set; }
+        public event PropertyChangedEventHandler PropertyChanged;
+        public event EventHandler<ICard> CardRecognized;
+        //private int _singleCardWidth;
+        //private int _singleCardHeight;
+        //private int _deskOffset;
+        //private int _handOffset;
+        //private int _deskWidth;
+        //private int _handWidth;
+        //private bool _handRecognized;
+        //private bool _deskRecognized;
+        //private int _deskCardsCount;
+        //private List<Tuple<int, int, int, int>> _deskPointsList;
+        //private List<Tuple<int, int, int, int>> _handPointsList;
+        private CardArea _deskCardsArea;
+        //private event EventHandler<CardRecognitionEventArgs> _cardRecognized;
+        public bool ElementAdded { get; set; }
+        private void NotifyPropertyChanged(string propertyName = "")
+        {
+            if (PropertyChanged != null)
+            {
+                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+            }
+        }
+
+        //private void OnCardRecognized(CardRecognitionEventArgs e)
+        //{
+        //    _cardRecognized?.Invoke(this, e);
+        //}
+
+        ICardRecognition _cardRecognition;
+        //IFigureMatcher _figureMatcher;
+        //ICardManager _cardManager;
+        public CardArea HandArea { get; set; }
+        public CardArea DeskArea { get; set; }
+        public CardArea SingleCardArea { get; set; }
+
+        #region commands
+        public ICommand AnalyzeCommand { get; set; }
+        public ICommand GeneralTabCommand { get; set; }
+        public ICommand RoyalTabCommand { get; set; }
+        public ICommand StraightFlushTabCommand { get; set; }
+        public ICommand FourOfKindTabCommand { get; set; }
+        public ICommand FullTabCommand { get; set; }
+        public ICommand FlushTabCommand { get; set; }
+        public ICommand StraightTabCommand { get; set; }
+        public ICommand ThreeOfKindTabCommand { get; set; }
+        public ICommand PairTabCommand { get; set; }
+        public ICommand AreasWindowCommand { get; set; }
+        public ICommand MainWindowCommand { get; set; }
+        public ICommand SettingsWindowCommand { get; set; }
+        //public ICommand AddCommand { get; set; }
+        //public ICommand RemoveCommand { get; set; }
+
+        #endregion
+
+        
 
         private int GetIndexByName(string name)
         {
@@ -525,20 +527,19 @@ namespace WpfClient.ViewModels
         }
                
 
-        private void GetCardListByHand(Enums.PokerHands hand)
+        private void GetOutsList(Enums.PokerHands hand)
         {
-            CardList.Clear();
+            //CardList.Clear();
             NeededCardsList.Clear();
-            
-            var list = _matcher.PokerHandsDict[hand].CardList;
-            foreach (var item in list)
-            {
-                CardList.Add($"{_figureDict[item.Figure]} {_colorDict[item.Color]}");
-            }
+
+            //var list = _matcher.PokerHandsDict[hand].CardList;
+            //foreach (var item in list)
+            //{
+            //    CardList.Add($"{_figureDict[item.Figure]} {_colorDict[item.Color]}");
+            //}
 
             try
             {
-                var test = _matcher.PokerHandsDict[hand].OutsList;
                 NeededCardsList = new ObservableCollection<ICard>(_matcher.PokerHandsDict[hand].OutsList);
             }
             catch
@@ -551,18 +552,18 @@ namespace WpfClient.ViewModels
         public MainWindowViewModel(ICardRecognition cardRecognition, IFigureMatcher figureMatcher, ICardManager cardManager)
         {
             _matcher = new FigureMatcher();
-            CardList = new ObservableCollection<string>();
+            CardsOnHand = new ObservableCollection<string>();
             NeededCardsList = new ObservableCollection<ICard>();
             AreasViewModel = new AreasWindowViewModel(this);
             SettingsViewModel = new SettingsViewModel(this);
             RecognizedCardsList = new List<ICard>();
             DeskCards = new ObservableCollection<ICard>();
             HandCards = new ObservableCollection<ICard>();
-            _cardManager = cardManager;
+            //_cardManager = cardManager;
             _cardRecognition = cardRecognition;
-            _figureMatcher = figureMatcher;
-            _deskPointsList = new List<Tuple<int, int, int, int>>();
-            _handPointsList = new List<Tuple<int, int, int, int>>();
+            //_figureMatcher = figureMatcher;
+            //_deskPointsList = new List<Tuple<int, int, int, int>>();
+            //_handPointsList = new List<Tuple<int, int, int, int>>();
             //_cardRecognized += MainWindowViewModel__cardRecognized;
             AnalyzeCommand = new CustomCommand(AnalyzeButtonCommand, CanSelect);
             GeneralTabCommand = new CustomCommand(ShowGeneralTab, CanSelect);
@@ -626,45 +627,45 @@ namespace WpfClient.ViewModels
                 { CardColor.spade, "spade" }};
         }
 
-        private void _handCards_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
-        {
-            _deskRecognized = DeskCards.Count == _deskCardsCount;
-            _handRecognized = HandCards.Count == 2;
-            _analyze();
-        }
+        //private void _handCards_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        //{
+        //    _deskRecognized = DeskCards.Count == _deskCardsCount;
+        //    _handRecognized = HandCards.Count == 2;
+        //    _analyze();
+        //}
 
-        private void _deskCards_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
-        {
-            _deskRecognized = DeskCards.Count == _deskCardsCount;
-            _handRecognized = HandCards.Count == 2;
-            _analyze();
-        }
+        //private void _deskCards_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        //{
+        //    _deskRecognized = DeskCards.Count == _deskCardsCount;
+        //    _handRecognized = HandCards.Count == 2;
+        //    _analyze();
+        //}
 
-        private void _analyze()
-        {
-            if(_handRecognized && _deskRecognized)
-            {
-                var matcher = new FigureMatcher();
+        //private void _analyze()
+        //{
+        //    if(_handRecognized && _deskRecognized)
+        //    {
+        //        var matcher = new FigureMatcher();
                 
-                foreach(var card in DeskCards)
-                {
-                    matcher.AddCardToFlop(card);
-                }
+        //        foreach(var card in DeskCards)
+        //        {
+        //            matcher.AddCardToFlop(card);
+        //        }
 
-                foreach(var card in HandCards)
-                {
-                    matcher.AddCardToHand(card);
-                }
+        //        foreach(var card in HandCards)
+        //        {
+        //            matcher.AddCardToHand(card);
+        //        }
 
-                matcher.CheckHand();
-                foreach (var key in matcher.PokerHandsDict.Keys)
-                {
-                    var hand = matcher.PokerHandsDict[key];
-                    //Hands.Add(new HandDescription(key.ToString(), hand.Probability));
-                }
-                Console.WriteLine();
-            }
-        }
+        //        matcher.CheckHand();
+        //        foreach (var key in matcher.PokerHandsDict.Keys)
+        //        {
+        //            var hand = matcher.PokerHandsDict[key];
+        //            //Hands.Add(new HandDescription(key.ToString(), hand.Probability));
+        //        }
+        //        Console.WriteLine();
+        //    }
+        //}
 
         public bool CanSelect(object parameter)
         {
@@ -775,7 +776,13 @@ namespace WpfClient.ViewModels
             IsStraightTabVisible = false;
             IsThreeOfKindTabVisible = false;
             IsPairTabVisible = false;
-            GetCardListByHand(Enums.PokerHands.RoyalFlush);
+            GetOutsList(Enums.PokerHands.RoyalFlush);
+            CardsOnHand.Clear();
+            var availableCards = _matcher.PokerHandsDict[Enums.PokerHands.RoyalFlush].GetCards();
+            foreach (var card in availableCards)
+            {
+                CardsOnHand.Add($"{card.Figure} {card.Color}");
+            }
         }
 
         private void ShowStraightFlushTab(object sender)
@@ -789,12 +796,12 @@ namespace WpfClient.ViewModels
             IsStraightTabVisible = false;
             IsThreeOfKindTabVisible = false;
             IsPairTabVisible = false;
-            GetCardListByHand(Enums.PokerHands.StraightFlush);
-            CardList.Clear();
-            var availableCards = _matcher.GetHand(Enums.PokerHands.StraightFlush);
+            GetOutsList(Enums.PokerHands.StraightFlush);
+            CardsOnHand.Clear();
+            var availableCards = _matcher.PokerHandsDict[Enums.PokerHands.StraightFlush].GetCards();
             foreach (var card in availableCards)
             {
-                CardList.Add($"{card.Figure} {card.Color}");
+                CardsOnHand.Add($"{card.Figure} {card.Color}");
             }
         }
 
@@ -809,7 +816,13 @@ namespace WpfClient.ViewModels
             IsStraightTabVisible = false;
             IsThreeOfKindTabVisible = false;
             IsPairTabVisible = false;
-            GetCardListByHand(Enums.PokerHands.FourOfKind);
+            GetOutsList(Enums.PokerHands.FourOfKind);
+            CardsOnHand.Clear();
+            var availableCards = _matcher.PokerHandsDict[Enums.PokerHands.FourOfKind].GetCards();
+            foreach (var card in availableCards)
+            {
+                CardsOnHand.Add($"{card.Figure} {card.Color}");
+            }
         }
 
         private void ShowFullTab(object sender)
@@ -823,7 +836,13 @@ namespace WpfClient.ViewModels
             IsStraightTabVisible = false;
             IsThreeOfKindTabVisible = false;
             IsPairTabVisible = false;
-            GetCardListByHand(Enums.PokerHands.Full);
+            GetOutsList(Enums.PokerHands.Full);
+            CardsOnHand.Clear();
+            var availableCards = _matcher.PokerHandsDict[Enums.PokerHands.Full].GetCards();
+            foreach (var card in availableCards)
+            {
+                CardsOnHand.Add($"{card.Figure} {card.Color}");
+            }
         }
 
         private void ShowFlushTab(object sender)
@@ -837,7 +856,13 @@ namespace WpfClient.ViewModels
             IsStraightTabVisible = false;
             IsThreeOfKindTabVisible = false;
             IsPairTabVisible = false;
-            GetCardListByHand(Enums.PokerHands.Flush);
+            GetOutsList(Enums.PokerHands.Flush);
+            CardsOnHand.Clear();
+            var availableCards = _matcher.PokerHandsDict[Enums.PokerHands.Flush].GetCards();
+            foreach (var card in availableCards)
+            {
+                CardsOnHand.Add($"{card.Figure} {card.Color}");
+            }
         }
 
         private void ShowStraightTab(object sender)
@@ -851,12 +876,12 @@ namespace WpfClient.ViewModels
             IsStraightTabVisible = true;
             IsThreeOfKindTabVisible = false;
             IsPairTabVisible = false;
-            GetCardListByHand(Enums.PokerHands.Straight);
-            CardList.Clear();
-            var availableCards = _matcher.GetHand(Enums.PokerHands.Straight);
+            GetOutsList(Enums.PokerHands.Straight);
+            CardsOnHand.Clear();
+            var availableCards = _matcher.PokerHandsDict[Enums.PokerHands.Straight].GetCards();
             foreach (var card in availableCards)
             {
-                CardList.Add($"{card.Figure} {card.Color}");
+                CardsOnHand.Add($"{card.Figure} {card.Color}");
             }
         }
 
@@ -871,12 +896,12 @@ namespace WpfClient.ViewModels
             IsStraightTabVisible = false;
             IsThreeOfKindTabVisible = true;
             IsPairTabVisible = false;
-            GetCardListByHand(Enums.PokerHands.ThreeOfKind);
-            CardList.Clear();
-            var availableCards = _matcher.PokerHandsDict[Enums.PokerHands.ThreeOfKind].GetCards();
-            foreach (var card in availableCards)
+            GetOutsList(Enums.PokerHands.ThreeOfKind);
+            CardsOnHand.Clear();
+            var cardsOnHand = _matcher.PokerHandsDict[Enums.PokerHands.ThreeOfKind].GetCards();
+            foreach (var card in cardsOnHand)
             {
-                CardList.Add($"{card.Figure} {card.Color}");
+                CardsOnHand.Add($"{card.Figure} {card.Color}");
             }
         }
 
@@ -891,7 +916,13 @@ namespace WpfClient.ViewModels
             IsStraightTabVisible = false;
             IsThreeOfKindTabVisible = false;
             IsPairTabVisible = true;
-            GetCardListByHand(Enums.PokerHands.Pair);
+            GetOutsList(Enums.PokerHands.Pair);
+            CardsOnHand.Clear();
+            var cardsOnHand = _matcher.PokerHandsDict[Enums.PokerHands.Pair].GetCards();
+            foreach (var card in cardsOnHand)
+            {
+                CardsOnHand.Add($"{card.Figure} {card.Color}");
+            }
         }
 
         public async Task Analyze()
@@ -908,8 +939,8 @@ namespace WpfClient.ViewModels
 
                 await Application.Current.Dispatcher.BeginInvoke(new Action(() => DeskCards.Add(card)));
                 //DeskCards.Add(card);
-                //File.Delete(colorPath);
-                //File.Delete(figurePath);
+                File.Delete(colorPath);
+                File.Delete(figurePath);
             }
 
             GetCards(HandArea, "allCards");
@@ -924,8 +955,8 @@ namespace WpfClient.ViewModels
 
                 await Application.Current.Dispatcher.BeginInvoke(new Action(() => HandCards.Add(card)));
                 //HandCards.Add(card);
-                //File.Delete(colorPath);
-                //File.Delete(figurePath);
+                File.Delete(colorPath);
+                File.Delete(figurePath);
             }
             /////////////////////////////////////
             //var single = GetAreaBitmap(SingleCardArea, AnalyzeType.SingleCard);
@@ -981,149 +1012,149 @@ namespace WpfClient.ViewModels
             ShowGeneralTab(null);
         }
 
-        private async Task AnalyzeDeskV2(Bitmap desk)
-        {
-            float offset = (float)_singleCardWidth / (float)9.5;
-            var figureHeight = Convert.ToInt32(_singleCardWidth * 0.4);
-            float cardsCount = (float)_deskWidth / (float)_singleCardWidth;
-            var startPoint = 0;
+        //private async Task AnalyzeDeskV2(Bitmap desk)
+        //{
+        //    float offset = (float)_singleCardWidth / (float)9.5;
+        //    var figureHeight = Convert.ToInt32(_singleCardWidth * 0.4);
+        //    float cardsCount = (float)_deskWidth / (float)_singleCardWidth;
+        //    var startPoint = 0;
 
-            if (cardsCount > 3 && cardsCount < 3.5)
-            {
-                startPoint = 0;
-                cardsCount = 3;
-            }
-            if (cardsCount > 4 && cardsCount < 4.5)
-            {
-                startPoint = 3;
-                cardsCount = 4;
-            }
+        //    if (cardsCount > 3 && cardsCount < 3.5)
+        //    {
+        //        startPoint = 0;
+        //        cardsCount = 3;
+        //    }
+        //    if (cardsCount > 4 && cardsCount < 4.5)
+        //    {
+        //        startPoint = 3;
+        //        cardsCount = 4;
+        //    }
 
-            if (cardsCount > 5)
-            {
-                startPoint = 4;
-                cardsCount = 5;
-            }
+        //    if (cardsCount > 5)
+        //    {
+        //        startPoint = 4;
+        //        cardsCount = 5;
+        //    }
 
-            //if (((double)_deskWidth / (double)_singleCardWidth) > cardsCount)
-            //{
-            //    if(cardsCount < 5) cardsCount++;
-            //}
+        //    //if (((double)_deskWidth / (double)_singleCardWidth) > cardsCount)
+        //    //{
+        //    //    if(cardsCount < 5) cardsCount++;
+        //    //}
 
-            //if (cardsCount == 5) offset = GetOffset();
-            float cardWithOffset = (float)_singleCardWidth + offset;
-            var figureList = new List<string>();
-            var colorList = new List<string>();
-            float figureWidth = (float)_singleCardWidth / (float)3.26;
+        //    //if (cardsCount == 5) offset = GetOffset();
+        //    float cardWithOffset = (float)_singleCardWidth + offset;
+        //    var figureList = new List<string>();
+        //    var colorList = new List<string>();
+        //    float figureWidth = (float)_singleCardWidth / (float)3.26;
                     
 
-            for (int idx = startPoint; idx<cardsCount; idx++)
-            {
-                var xStartPoint = (float)(_singleCardWidth * idx) + (idx * offset)/(float)2.2;
+        //    for (int idx = startPoint; idx<cardsCount; idx++)
+        //    {
+        //        var xStartPoint = (float)(_singleCardWidth * idx) + (idx * offset)/(float)2.2;
 
-                var figure = desk.Clone(new RectangleF(xStartPoint, 0, figureWidth, figureHeight), desk.PixelFormat);
-                var color = desk.Clone(new RectangleF(xStartPoint, figureHeight, figureWidth, figureHeight), desk.PixelFormat);
-                var path = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-                //color = CutOff(color);
-                //figure = CutOff(figure);
-                color = Resharp(color);
-                figure.Save($"deskFigure{idx}.jpg");
-                color.Save($"deskColor{idx}.jpg");                
-                var figurePath = Path.Combine(path, $"deskFigure{idx}.jpg");
-                var colorPath = Path.Combine(path, $"deskColor{idx}.jpg");
-                figurePath = figurePath.Replace("\\", "/");
-                colorPath = colorPath.Replace("\\", "/");
-                figureList.Add(figurePath);
-                colorList.Add(colorPath);
-                await PredictCard(idx, figurePath, colorPath, CardTypeEnum.Desk);
-            }
-        }
-
-
-        private async Task AnalyzeHandV2(Bitmap hand)
-        {
-            float offset = (float)_singleCardWidth * (float)0.075;
-            var figureHeight = 25;// Convert.ToInt32(_singleCardWidth * 0.4);
-            int cardsCount = 2;
-
-            float cardWithOffset = (float)_singleCardWidth + offset;
-            float figureWidth = (float)_singleCardWidth / (float)3.26;
-
-            for (int idx = 0; idx < cardsCount; idx++)
-            {
-                var xStartPoint = (float)(_singleCardWidth * idx) + (idx * offset) / (float)2.2;
-
-                var figure = hand.Clone(new RectangleF(xStartPoint, 0, figureWidth, figureHeight), hand.PixelFormat);
-                var color = hand.Clone(new RectangleF(xStartPoint, figureHeight, figureWidth * (float)0.65, figureHeight * (float)0.65), hand.PixelFormat);
-                var path = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-                //color = Resharp(color);
-                figure.Save($"handFigure{idx}.jpg");
-                color.Save($"handColor{idx}.jpg");
-                var figurePath = Path.Combine(path, $"handFigure{idx}.jpg");
-                var colorPath = Path.Combine(path, $"handColor{idx}.jpg");
-                figurePath = figurePath.Replace("\\", "/");
-                colorPath = colorPath.Replace("\\", "/");
-                await PredictCard(idx, figurePath, colorPath, CardTypeEnum.Hand); 
-            }
-        }
+        //        var figure = desk.Clone(new RectangleF(xStartPoint, 0, figureWidth, figureHeight), desk.PixelFormat);
+        //        var color = desk.Clone(new RectangleF(xStartPoint, figureHeight, figureWidth, figureHeight), desk.PixelFormat);
+        //        var path = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+        //        //color = CutOff(color);
+        //        //figure = CutOff(figure);
+        //        color = Resharp(color);
+        //        figure.Save($"deskFigure{idx}.jpg");
+        //        color.Save($"deskColor{idx}.jpg");                
+        //        var figurePath = Path.Combine(path, $"deskFigure{idx}.jpg");
+        //        var colorPath = Path.Combine(path, $"deskColor{idx}.jpg");
+        //        figurePath = figurePath.Replace("\\", "/");
+        //        colorPath = colorPath.Replace("\\", "/");
+        //        figureList.Add(figurePath);
+        //        colorList.Add(colorPath);
+        //        await PredictCard(idx, figurePath, colorPath, CardTypeEnum.Desk);
+        //    }
+        //}
 
 
-        private Tuple<int,int,int,int> GetDeskPoints (int idx)
-        {
-            //if (_deskPointsList.Count() > idx) return _deskPointsList[idx];
-            //_deskPointsList.Add(_cardRecognition.GetSingleCardArea());
-            //return _deskPointsList[idx];
-            return GetPoints(CardTypeEnum.Desk, idx);
-        }
+        //private async Task AnalyzeHandV2(Bitmap hand)
+        //{
+        //    float offset = (float)_singleCardWidth * (float)0.075;
+        //    var figureHeight = 25;// Convert.ToInt32(_singleCardWidth * 0.4);
+        //    int cardsCount = 2;
 
-        private Tuple<int, int, int, int> GetHandPoints(int idx)
-        {
-            //if (_handPointsList.Count() > idx) return _handPointsList[idx];
-            //_handPointsList.Add(_cardRecognition.GetSingleCardArea());
-            return GetPoints(CardTypeEnum.Hand, idx);
-        }
+        //    float cardWithOffset = (float)_singleCardWidth + offset;
+        //    float figureWidth = (float)_singleCardWidth / (float)3.26;
 
-        private Tuple<int, int, int, int> GetPoints(CardTypeEnum ct, int idx)
-        {
-            var points = ct == CardTypeEnum.Desk ? _deskPointsList : _handPointsList;
-            if (points.Count() > idx) return points[idx];
-            points.Add(_cardRecognition.GetSingleCardArea());
-            return points[idx];
-        }
+        //    for (int idx = 0; idx < cardsCount; idx++)
+        //    {
+        //        var xStartPoint = (float)(_singleCardWidth * idx) + (idx * offset) / (float)2.2;
 
-        private async Task PredictCard(int idx, string figurePath, string colorPath, CardTypeEnum ct)
-        {
-            foreach (var item in Hands.ToList())
-            {
-                try
-                {
-                    Hands.Remove(Hands.First());
-                }
-                catch(Exception x)
-                {
+        //        var figure = hand.Clone(new RectangleF(xStartPoint, 0, figureWidth, figureHeight), hand.PixelFormat);
+        //        var color = hand.Clone(new RectangleF(xStartPoint, figureHeight, figureWidth * (float)0.65, figureHeight * (float)0.65), hand.PixelFormat);
+        //        var path = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+        //        //color = Resharp(color);
+        //        figure.Save($"handFigure{idx}.jpg");
+        //        color.Save($"handColor{idx}.jpg");
+        //        var figurePath = Path.Combine(path, $"handFigure{idx}.jpg");
+        //        var colorPath = Path.Combine(path, $"handColor{idx}.jpg");
+        //        figurePath = figurePath.Replace("\\", "/");
+        //        colorPath = colorPath.Replace("\\", "/");
+        //        await PredictCard(idx, figurePath, colorPath, CardTypeEnum.Hand); 
+        //    }
+        //}
 
-                }
-            }
 
-            var card = await GetCard(figurePath, colorPath);
-            if (ct == CardTypeEnum.Desk)
-            {
-                if (DeskCards.Count == 5)
-                {
-                    ClearDeck();
-                }
-                await DispatchToUiThread(() => { DeskCards.Add(card); });
-            }
-            else
-            {
-                if (HandCards.Count() != 2)
-                {
-                    await DispatchToUiThread(() => { HandCards.Add(card); });
-                }
-            }
-            File.Delete(figurePath);
-            File.Delete(colorPath);
-        }
+        //private Tuple<int,int,int,int> GetDeskPoints (int idx)
+        //{
+        //    //if (_deskPointsList.Count() > idx) return _deskPointsList[idx];
+        //    //_deskPointsList.Add(_cardRecognition.GetSingleCardArea());
+        //    //return _deskPointsList[idx];
+        //    return GetPoints(CardTypeEnum.Desk, idx);
+        //}
+
+        //private Tuple<int, int, int, int> GetHandPoints(int idx)
+        //{
+        //    //if (_handPointsList.Count() > idx) return _handPointsList[idx];
+        //    //_handPointsList.Add(_cardRecognition.GetSingleCardArea());
+        //    return GetPoints(CardTypeEnum.Hand, idx);
+        //}
+
+        //private Tuple<int, int, int, int> GetPoints(CardTypeEnum ct, int idx)
+        //{
+        //    var points = ct == CardTypeEnum.Desk ? _deskPointsList : _handPointsList;
+        //    if (points.Count() > idx) return points[idx];
+        //    points.Add(_cardRecognition.GetSingleCardArea());
+        //    return points[idx];
+        //}
+
+        //private async Task PredictCard(int idx, string figurePath, string colorPath, CardTypeEnum ct)
+        //{
+        //    foreach (var item in Hands.ToList())
+        //    {
+        //        try
+        //        {
+        //            Hands.Remove(Hands.First());
+        //        }
+        //        catch(Exception x)
+        //        {
+
+        //        }
+        //    }
+
+        //    var card = await GetCard(figurePath, colorPath);
+        //    if (ct == CardTypeEnum.Desk)
+        //    {
+        //        if (DeskCards.Count == 5)
+        //        {
+        //            ClearDeck();
+        //        }
+        //        await DispatchToUiThread(() => { DeskCards.Add(card); });
+        //    }
+        //    else
+        //    {
+        //        if (HandCards.Count() != 2)
+        //        {
+        //            await DispatchToUiThread(() => { HandCards.Add(card); });
+        //        }
+        //    }
+        //    File.Delete(figurePath);
+        //    File.Delete(colorPath);
+        //}
 
        
 
@@ -1197,281 +1228,281 @@ namespace WpfClient.ViewModels
             //}
         }
 
-        private Bitmap GetColorFigureArea(Bitmap card)
-        {
-            float height = card.Height * (float)0.80;
-            float heightCutOff = card.Height * (float)0.20;
-            float leftWidth = card.Width * (float)0.02;
-            float width = card.Width * (float)0.28;
-            return card.Clone(new RectangleF(leftWidth, heightCutOff, width, height), card.PixelFormat);
-        }
+        //private Bitmap GetColorFigureArea(Bitmap card)
+        //{
+        //    float height = card.Height * (float)0.80;
+        //    float heightCutOff = card.Height * (float)0.20;
+        //    float leftWidth = card.Width * (float)0.02;
+        //    float width = card.Width * (float)0.28;
+        //    return card.Clone(new RectangleF(leftWidth, heightCutOff, width, height), card.PixelFormat);
+        //}
 
-        private Bitmap GetCenterPoint(Bitmap bmp)
-        {
-            float startX = bmp.Width * (float)0.1;
-            float width = bmp.Width * (float)0.6;
-            float height = bmp.Height * (float)0.9;
+        //private Bitmap GetCenterPoint(Bitmap bmp)
+        //{
+        //    float startX = bmp.Width * (float)0.1;
+        //    float width = bmp.Width * (float)0.6;
+        //    float height = bmp.Height * (float)0.9;
 
-            return bmp.Clone(new RectangleF(startX, 1, width, height), bmp.PixelFormat);
-        }
+        //    return bmp.Clone(new RectangleF(startX, 1, width, height), bmp.PixelFormat);
+        //}
 
-        private float getCardWIdth(List<Tuple<decimal, decimal, decimal, decimal>> points, Bitmap basicDesk, float ratio)
-        {
-            var c1 = (float)points[0].Item1;
-            var c2 = (float)points[1].Item1;
-            var c3 = (float)points[2].Item1;
-            var middle1 = c1 * (basicDesk.Width * ratio);
-            var middle2 = c2 * (basicDesk.Width * ratio);
-            var middle3 = c3 * (basicDesk.Width * ratio);
-            float twoCardDistance = (float)middle2 - (float)middle1;
-            twoCardDistance = twoCardDistance * (float)0.9;
-            return twoCardDistance;
-        }
+        //private float getCardWIdth(List<Tuple<decimal, decimal, decimal, decimal>> points, Bitmap basicDesk, float ratio)
+        //{
+        //    var c1 = (float)points[0].Item1;
+        //    var c2 = (float)points[1].Item1;
+        //    var c3 = (float)points[2].Item1;
+        //    var middle1 = c1 * (basicDesk.Width * ratio);
+        //    var middle2 = c2 * (basicDesk.Width * ratio);
+        //    var middle3 = c3 * (basicDesk.Width * ratio);
+        //    float twoCardDistance = (float)middle2 - (float)middle1;
+        //    twoCardDistance = twoCardDistance * (float)0.9;
+        //    return twoCardDistance;
+        //}
 
-        private Bitmap GetAreaBitmap(CardArea item, AnalyzeType at)
-        {
-            double screenLeft = SystemParameters.VirtualScreenLeft;
-            double screenTop = SystemParameters.VirtualScreenTop;
-            double screenWidth = SystemParameters.VirtualScreenWidth;
-            double screenHeight = SystemParameters.VirtualScreenHeight;
-            Tuple<int, int, int, int> points = new Tuple<int, int, int, int>(0,0,0,0);
-            int basicWidth = Convert.ToInt32(item.xEnd) - Convert.ToInt32(item.xStart);
-            var basicHeight = Convert.ToInt32(item.yEnd) - Convert.ToInt32(item.yStart) + 10;            
-            var name = GetCutOffName(at);
-            var globalXstart = 0;
-            var globalXlength = 0;
-            var globalYstart = 0;
-            var globalYlength = 0;
+        //private Bitmap GetAreaBitmap(CardArea item, AnalyzeType at)
+        //{
+        //    double screenLeft = SystemParameters.VirtualScreenLeft;
+        //    double screenTop = SystemParameters.VirtualScreenTop;
+        //    double screenWidth = SystemParameters.VirtualScreenWidth;
+        //    double screenHeight = SystemParameters.VirtualScreenHeight;
+        //    Tuple<int, int, int, int> points = new Tuple<int, int, int, int>(0,0,0,0);
+        //    int basicWidth = Convert.ToInt32(item.xEnd) - Convert.ToInt32(item.xStart);
+        //    var basicHeight = Convert.ToInt32(item.yEnd) - Convert.ToInt32(item.yStart) + 10;            
+        //    var name = GetCutOffName(at);
+        //    var globalXstart = 0;
+        //    var globalXlength = 0;
+        //    var globalYstart = 0;
+        //    var globalYlength = 0;
 
-            using (Bitmap bmp = new Bitmap((int)screenWidth,
-                (int)screenHeight))
-            {
-                using (Graphics g = Graphics.FromImage(bmp))
-                {
-                    var cardsAreaName = @$"C:\Users\Mikolaj\PycharmProjects\pythonProject1\allCards.png";
-                    var cutOffLocalName = @$"{name}.png";
-                    g.CopyFromScreen((int)screenLeft, (int)screenTop, 0, 0, bmp.Size);                    
-                    Bitmap basicPicture = bmp.Clone(new Rectangle((int)item.xStart, (int)item.yStart, basicWidth, basicHeight), bmp.PixelFormat);
-                    globalXstart += (int)item.xStart;
-                    //globalXlength += basicWidth;
-                    globalYstart += (int)item.yStart;
-                    //globalYlength += basicHeight;
-                    //basicPicture = GetRepaintedFromGreen(basicPicture, Color.Black);
-                    if (at == AnalyzeType.Hand) basicPicture = GetRepaintedHand(basicPicture, Color.Black);
-                    basicPicture.Save(cardsAreaName);
-                    points = GetPoints(at);
-                    var cutOffWidth = points.Item2 - points.Item1;
-                    int xStart = 0;
-                    int yStart = 0;
+        //    using (Bitmap bmp = new Bitmap((int)screenWidth,
+        //        (int)screenHeight))
+        //    {
+        //        using (Graphics g = Graphics.FromImage(bmp))
+        //        {
+        //            var cardsAreaName = @$"C:\Users\Mikolaj\PycharmProjects\pythonProject1\allCards.png";
+        //            var cutOffLocalName = @$"{name}.png";
+        //            g.CopyFromScreen((int)screenLeft, (int)screenTop, 0, 0, bmp.Size);                    
+        //            Bitmap basicPicture = bmp.Clone(new Rectangle((int)item.xStart, (int)item.yStart, basicWidth, basicHeight), bmp.PixelFormat);
+        //            globalXstart += (int)item.xStart;
+        //            //globalXlength += basicWidth;
+        //            globalYstart += (int)item.yStart;
+        //            //globalYlength += basicHeight;
+        //            //basicPicture = GetRepaintedFromGreen(basicPicture, Color.Black);
+        //            if (at == AnalyzeType.Hand) basicPicture = GetRepaintedHand(basicPicture, Color.Black);
+        //            basicPicture.Save(cardsAreaName);
+        //            points = GetPoints(at);
+        //            var cutOffWidth = points.Item2 - points.Item1;
+        //            int xStart = 0;
+        //            int yStart = 0;
 
-                    if (at == AnalyzeType.SingleCard)
-                    { 
-                        _singleCardWidth = cutOffWidth +2;
-                        _singleCardHeight = points.Item4 - points.Item3;
-                        xStart = points.Item1;
-                        yStart = points.Item3;
-                    }
-                    if (at == AnalyzeType.Desk)
-                    {
-                        _deskWidth = cutOffWidth;
-                        xStart = points.Item1 - 2;
-                        yStart = points.Item3;
-                    }
-                    if (at == AnalyzeType.Hand)
-                    {
-                        _handWidth = cutOffWidth;
-                        xStart = points.Item1;
-                        yStart = points.Item3;
-                    }
+        //            if (at == AnalyzeType.SingleCard)
+        //            { 
+        //                _singleCardWidth = cutOffWidth +2;
+        //                _singleCardHeight = points.Item4 - points.Item3;
+        //                xStart = points.Item1;
+        //                yStart = points.Item3;
+        //            }
+        //            if (at == AnalyzeType.Desk)
+        //            {
+        //                _deskWidth = cutOffWidth;
+        //                xStart = points.Item1 - 2;
+        //                yStart = points.Item3;
+        //            }
+        //            if (at == AnalyzeType.Hand)
+        //            {
+        //                _handWidth = cutOffWidth;
+        //                xStart = points.Item1;
+        //                yStart = points.Item3;
+        //            }
 
-                        try
-                    {
-                        globalXstart += xStart;
-                        globalXlength += cutOffWidth;
-                        globalYstart += yStart;
-                        globalYlength += _singleCardHeight;
+        //                try
+        //            {
+        //                globalXstart += xStart;
+        //                globalXlength += cutOffWidth;
+        //                globalYstart += yStart;
+        //                globalYlength += _singleCardHeight;
 
-                        if (at == AnalyzeType.Hand)
-                        {
-                            var cOff = bmp.Clone(
-                                new Rectangle(
-                                globalXstart,
-                                globalYstart,
-                                globalXlength,
-                                50), basicPicture.PixelFormat);
-                            cOff.Save("original" + cutOffLocalName);
-                            return cOff;
-                        }
+        //                if (at == AnalyzeType.Hand)
+        //                {
+        //                    var cOff = bmp.Clone(
+        //                        new Rectangle(
+        //                        globalXstart,
+        //                        globalYstart,
+        //                        globalXlength,
+        //                        50), basicPicture.PixelFormat);
+        //                    cOff.Save("original" + cutOffLocalName);
+        //                    return cOff;
+        //                }
 
                        
-                        Bitmap cutOffImg = basicPicture.Clone(
-                            new Rectangle(
-                            xStart,
-                            yStart,
-                            cutOffWidth,
-                            _singleCardHeight), basicPicture.PixelFormat);
-                        Bitmap originalCutOff = bmp.Clone(
-                            new Rectangle(
-                                globalXstart,
-                                globalYstart,
-                                globalXlength,
-                                globalYlength), bmp.PixelFormat);
-                        originalCutOff.Save("original" + cutOffLocalName);
-                        cutOffImg.Save(cutOffLocalName);
-                        return originalCutOff;
-                    }
-                    catch(Exception x)
-                    {
-                        return null;
-                    }
-                }
-            }
-        }
+        //                Bitmap cutOffImg = basicPicture.Clone(
+        //                    new Rectangle(
+        //                    xStart,
+        //                    yStart,
+        //                    cutOffWidth,
+        //                    _singleCardHeight), basicPicture.PixelFormat);
+        //                Bitmap originalCutOff = bmp.Clone(
+        //                    new Rectangle(
+        //                        globalXstart,
+        //                        globalYstart,
+        //                        globalXlength,
+        //                        globalYlength), bmp.PixelFormat);
+        //                originalCutOff.Save("original" + cutOffLocalName);
+        //                cutOffImg.Save(cutOffLocalName);
+        //                return originalCutOff;
+        //            }
+        //            catch(Exception x)
+        //            {
+        //                return null;
+        //            }
+        //        }
+        //    }
+        //}
 
-        private Tuple<int, int, int, int> GetPoints(AnalyzeType at)
-        {
-            if (at == AnalyzeType.SingleCard) return _cardRecognition.GetSingleCardArea();
-            return _cardRecognition.GetArea();
-        }
+        //private Tuple<int, int, int, int> GetPoints(AnalyzeType at)
+        //{
+        //    if (at == AnalyzeType.SingleCard) return _cardRecognition.GetSingleCardArea();
+        //    return _cardRecognition.GetArea();
+        //}
 
-        private string GetCutOffName(AnalyzeType at)
-        {
-            if (at == AnalyzeType.SingleCard) return "singleCutOff";
-            if (at == AnalyzeType.Hand) return "HandCutOff";
-            return "DeskCutOff";
-        }
+        //private string GetCutOffName(AnalyzeType at)
+        //{
+        //    if (at == AnalyzeType.SingleCard) return "singleCutOff";
+        //    if (at == AnalyzeType.Hand) return "HandCutOff";
+        //    return "DeskCutOff";
+        //}
 
-        private int GetWidth(AnalyzeType at)
-        {
-            if (at == AnalyzeType.SingleCard) return 120;
-            if (at == AnalyzeType.Hand) return 250;
-            return 450;
-        }
+        //private int GetWidth(AnalyzeType at)
+        //{
+        //    if (at == AnalyzeType.SingleCard) return 120;
+        //    if (at == AnalyzeType.Hand) return 250;
+        //    return 450;
+        //}
 
-        private Bitmap CutOff(Bitmap basicPicture)
-        {
-            var firstColumns = new List<Color>();
-            for (int x = 0; x < 5; x++)
-            {
-                for (int y = 0; y < basicPicture.Height; y++)
-                {
-                    //var c = basicPicture.GetPixel(x, y);
-                    //firstColumns.Add(c);
-                }
-            }
+        //private Bitmap CutOff(Bitmap basicPicture)
+        //{
+        //    var firstColumns = new List<Color>();
+        //    for (int x = 0; x < 5; x++)
+        //    {
+        //        for (int y = 0; y < basicPicture.Height; y++)
+        //        {
+        //            //var c = basicPicture.GetPixel(x, y);
+        //            //firstColumns.Add(c);
+        //        }
+        //    }
             
-            for(int q = basicPicture.Width; q> basicPicture.Width - 5; q--)
-            {
-                var column = new List<Color>();
-                for (int y = 0; y < basicPicture.Height; y++)
-                {
-                    //var c = basicPicture.GetPixel(q, y);
-                    //basicPicture.SetPixel(q, y, Color.White);
-                    //column.Add(c);
-                }
-            }
-            var cut = basicPicture.Clone(new RectangleF(3, 0, basicPicture.Width - 3, basicPicture.Height), basicPicture.PixelFormat);
-            return cut;
-        }
+        //    for(int q = basicPicture.Width; q> basicPicture.Width - 5; q--)
+        //    {
+        //        var column = new List<Color>();
+        //        for (int y = 0; y < basicPicture.Height; y++)
+        //        {
+        //            //var c = basicPicture.GetPixel(q, y);
+        //            //basicPicture.SetPixel(q, y, Color.White);
+        //            //column.Add(c);
+        //        }
+        //    }
+        //    var cut = basicPicture.Clone(new RectangleF(3, 0, basicPicture.Width - 3, basicPicture.Height), basicPicture.PixelFormat);
+        //    return cut;
+        //}
 
-        private Bitmap Resharp(Bitmap basicPicture)
-        {
-            for (int x = 0; x < basicPicture.Width; x++)
-            {
-                for (int y = 0; y < basicPicture.Height; y++)
-                {
-                    var c = basicPicture.GetPixel(x, y);
-                    if (c.R < 200 && c.G < 200 && c.B < 200)
-                    {
-                        basicPicture.SetPixel(x, y, Color.Black);
-                    }
-                }
-            }
+        //private Bitmap Resharp(Bitmap basicPicture)
+        //{
+        //    for (int x = 0; x < basicPicture.Width; x++)
+        //    {
+        //        for (int y = 0; y < basicPicture.Height; y++)
+        //        {
+        //            var c = basicPicture.GetPixel(x, y);
+        //            if (c.R < 200 && c.G < 200 && c.B < 200)
+        //            {
+        //                basicPicture.SetPixel(x, y, Color.Black);
+        //            }
+        //        }
+        //    }
 
-            return basicPicture;
-        }
-
-
-        private Bitmap GetRepaintedFromGreen(Bitmap basicPicture, Color color)
-        {
-            for (int x = 0; x < basicPicture.Width; x++)
-            {
-                for (int y = 0; y < basicPicture.Height; y++)
-                {
-                    if(y >= 0 && y < 5)
-                    {
-                        basicPicture.SetPixel(x, y, color);
-                    }
-
-                    var c = basicPicture.GetPixel(x, y);
-                    var argb = c.ToArgb();
-                    var hue = c.GetHue();
-
-                    if(hue > 100 && hue < 120)
-                    {
-                        basicPicture.SetPixel(x, y, color);
-                    }
-
-                    //if(c.R < 100)
-                    //{
-                    //    basicPicture.SetPixel(x, y, color);
-                    //}
-                    //if (c.G > 70 && c.B < 90)
-                    //{
-                    //    basicPicture.SetPixel(x, y, color);
-                    //}
-                }
-            }
-
-            return basicPicture;
-        }
-
-        private Bitmap GetRepaintedHand(Bitmap basicPicture, Color color)
-        {
-            for (int x = 0; x < basicPicture.Width; x++)
-            {
-                for (int y = 70; y < basicPicture.Height; y++)
-                {
-                    basicPicture.SetPixel(x, y, color);
-                }
-            }
-
-            return basicPicture;
-        }
-
-        public void TakeScreenShoot()
-        {
-            //var (xStart, yStart, xWidth, yWidth) = GetCaptureArea(pointToScreen, pointToWindow);
-            //Rectangle rect = new Rectangle(xStart, yStart, xWidth, yWidth);
-            //Bitmap bmp = new Bitmap(150, 110);
-            //Graphics g = Graphics.FromImage(bmp);
-            //g.CopyFromScreen(rect.Left, rect.Top, 0, 0, bmp.Size, CopyPixelOperation.SourceCopy);
-            //bmp.Save("image.jpg", ImageFormat.Jpeg);
-
-            _figureMatcher.AddCardToFlop(CardFigure._King, CardColor.club);
-            _figureMatcher.AddCardToFlop(CardFigure._5, CardColor.club);
-            _figureMatcher.AddCardToFlop(CardFigure._2, CardColor.heart);
-            _figureMatcher.AddCardToFlop(CardFigure._2, CardColor.diamond);
-            //_figureMatcher.AddCardToFlop(CardFigure._7, CardColor.spade);
-
-            _figureMatcher.AddCardToHand(CardFigure._King, CardColor.heart);
-            _figureMatcher.AddCardToHand(CardFigure._9, CardColor.club);
-            var path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "image.jpg");
-           // var card = manager.GetCardByImage(path);// C:\\Users\\mkosi\\PycharmProjects\\tensorEnv\\dataset\\2C\\test.jpg");
-
-            _figureMatcher.CheckHand();
-
-            var cr = new CardRecognition();
-            //var res = cr.GetCard();
+        //    return basicPicture;
+        //}
 
 
-            foreach (var key in _figureMatcher.PokerHandsDict.Keys)
-            {
-                var hand = _figureMatcher.PokerHandsDict[key];
-                //Hands.Add(new HandDescription(key.ToString(), hand.Probability));
-            }
+        //private Bitmap GetRepaintedFromGreen(Bitmap basicPicture, Color color)
+        //{
+        //    for (int x = 0; x < basicPicture.Width; x++)
+        //    {
+        //        for (int y = 0; y < basicPicture.Height; y++)
+        //        {
+        //            if(y >= 0 && y < 5)
+        //            {
+        //                basicPicture.SetPixel(x, y, color);
+        //            }
 
-            Console.WriteLine();
-        }
+        //            var c = basicPicture.GetPixel(x, y);
+        //            var argb = c.ToArgb();
+        //            var hue = c.GetHue();
+
+        //            if(hue > 100 && hue < 120)
+        //            {
+        //                basicPicture.SetPixel(x, y, color);
+        //            }
+
+        //            //if(c.R < 100)
+        //            //{
+        //            //    basicPicture.SetPixel(x, y, color);
+        //            //}
+        //            //if (c.G > 70 && c.B < 90)
+        //            //{
+        //            //    basicPicture.SetPixel(x, y, color);
+        //            //}
+        //        }
+        //    }
+
+        //    return basicPicture;
+        //}
+
+        //private Bitmap GetRepaintedHand(Bitmap basicPicture, Color color)
+        //{
+        //    for (int x = 0; x < basicPicture.Width; x++)
+        //    {
+        //        for (int y = 70; y < basicPicture.Height; y++)
+        //        {
+        //            basicPicture.SetPixel(x, y, color);
+        //        }
+        //    }
+
+        //    return basicPicture;
+        //}
+
+        //public void TakeScreenShoot()
+        //{
+        //    //var (xStart, yStart, xWidth, yWidth) = GetCaptureArea(pointToScreen, pointToWindow);
+        //    //Rectangle rect = new Rectangle(xStart, yStart, xWidth, yWidth);
+        //    //Bitmap bmp = new Bitmap(150, 110);
+        //    //Graphics g = Graphics.FromImage(bmp);
+        //    //g.CopyFromScreen(rect.Left, rect.Top, 0, 0, bmp.Size, CopyPixelOperation.SourceCopy);
+        //    //bmp.Save("image.jpg", ImageFormat.Jpeg);
+
+        //    _figureMatcher.AddCardToFlop(CardFigure._King, CardColor.club);
+        //    _figureMatcher.AddCardToFlop(CardFigure._5, CardColor.club);
+        //    _figureMatcher.AddCardToFlop(CardFigure._2, CardColor.heart);
+        //    _figureMatcher.AddCardToFlop(CardFigure._2, CardColor.diamond);
+        //    //_figureMatcher.AddCardToFlop(CardFigure._7, CardColor.spade);
+
+        //    _figureMatcher.AddCardToHand(CardFigure._King, CardColor.heart);
+        //    _figureMatcher.AddCardToHand(CardFigure._9, CardColor.club);
+        //    var path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "image.jpg");
+        //   // var card = manager.GetCardByImage(path);// C:\\Users\\mkosi\\PycharmProjects\\tensorEnv\\dataset\\2C\\test.jpg");
+
+        //    _figureMatcher.CheckHand();
+
+        //    var cr = new CardRecognition();
+        //    //var res = cr.GetCard();
+
+
+        //    foreach (var key in _figureMatcher.PokerHandsDict.Keys)
+        //    {
+        //        var hand = _figureMatcher.PokerHandsDict[key];
+        //        //Hands.Add(new HandDescription(key.ToString(), hand.Probability));
+        //    }
+
+        //    Console.WriteLine();
+        //}
     }
 }

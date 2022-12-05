@@ -25,31 +25,10 @@ namespace CoreBusinessLogic.Hands
             decimal outs = GetOuts().Count();
             decimal cardsLeft = 52 - tempHand.Count();
             Probability = decimal.Round((outs / cardsLeft) * 100, 2);
-            //Probability = (int)GetOddsPercentage(GetOuts().Count());
-            //Probability = GetOuts().Count() * 4;
             OutsList = GetOuts().ToList();
             OutsCount = GetOuts().Count();
-            //OutsCount = GetOuts().Count();
-            //var color = GetDominatingColor();
-            //var straight = new Straight(hand, desk);
-            //var gotSF = straight.Probability == 100 && straight.CardList.All(p => p.Color == color);
-
-            //if (gotSF)
-            //{
-            //    Probability = 100;
-            //    CardList = tempHand.OrderBy(p => p.Figure).Take(5).ToList();
-            //}
-            //else
-            //{
-            //    Probability = (int)GetOddsPercentage(GetOuts().Count());
-            //    var cardsByColor = straight.CardList.Where(p => p.Color == color).ToList();
-            //    var highestFigure = cardsByColor.Max(p => p.Figure);
-            //    var lowestFigure = highestFigure - 5;
-            //    CardList = cardsByColor.Where(p => p.Figure >= lowestFigure).ToList();
-            //    OutsList = GetOuts().ToList();
-            //    OutsCount = OutsList.Count();
-            //}
         }
+
         private IList<int> _allFigures = new List<int>() { 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14 };
         private List<ICard> _availableCards = new List<ICard>();
         public IList<ICard> GetOuts()
@@ -99,23 +78,23 @@ namespace CoreBusinessLogic.Hands
             return outs;
         }
 
-        private int GetNeededCardsCount()
-        {
-            var highestCardHand = tempHand.OrderByDescending(x => x.Figure).First();
-            var lowestCard = highestCardHand.Figure - 5;
-            var elements = tempHand.Where(p => p.Figure >= lowestCard).OrderByDescending(x => x.Figure).ToList();
+        //private int GetNeededCardsCount()
+        //{
+        //    var highestCardHand = tempHand.OrderByDescending(x => x.Figure).First();
+        //    var lowestCard = highestCardHand.Figure - 5;
+        //    var elements = tempHand.Where(p => p.Figure >= lowestCard).OrderByDescending(x => x.Figure).ToList();
 
-            return 5 - elements.Count();
-        }
+        //    return 5 - elements.Count();
+        //}
 
-        private List<ICard> GetOutsList()
-        {
-            var highestCardHand = tempHand.OrderByDescending(x => x.Figure).First();
-            var lowestCard = highestCardHand.Figure - 5;
-            var deck = GetDeckExceptTempHand();
-            var elements = deck.Where(p => p.Figure > lowestCard).OrderByDescending(x => x.Figure).ToList();
-            var result = elements.Except(tempHand).ToList();
-            return result;
-        }
+        //private List<ICard> GetOutsList()
+        //{
+        //    var highestCardHand = tempHand.OrderByDescending(x => x.Figure).First();
+        //    var lowestCard = highestCardHand.Figure - 5;
+        //    var deck = GetDeckExceptTempHand();
+        //    var elements = deck.Where(p => p.Figure > lowestCard).OrderByDescending(x => x.Figure).ToList();
+        //    var result = elements.Except(tempHand).ToList();
+        //    return result;
+        //}
     }
 }

@@ -111,16 +111,16 @@ namespace CoreBusinessLogic.Hands
                 return outs;
         }
 
-        private int GetNeededCardsCount()
-        {
-            var highestCardHand = tempHand.OrderByDescending(x => x.Figure).First();
-            var lowestCard = highestCardHand.Figure - 4;
-            var elements = GetDeckExceptTempHand()
-                .Where(p => p.Figure > lowestCard && p.Figure < highestCardHand.Figure)
-                .GroupBy(p => p.Figure)
-                .ToList();
-            return elements.Count();
-        }
+        //private int GetNeededCardsCount()
+        //{
+        //    var highestCardHand = tempHand.OrderByDescending(x => x.Figure).First();
+        //    var lowestCard = highestCardHand.Figure - 4;
+        //    var elements = GetDeckExceptTempHand()
+        //        .Where(p => p.Figure > lowestCard && p.Figure < highestCardHand.Figure)
+        //        .GroupBy(p => p.Figure)
+        //        .ToList();
+        //    return elements.Count();
+        //}
 
         public void Check()
         {
@@ -141,24 +141,24 @@ namespace CoreBusinessLogic.Hands
                 return;
             }
 
-            var res = tempHand.OrderByDescending(x => x.Figure).Take(5).ToList();
-            CardList = GetWithNoRept(res);
+            CardList = tempHand.OrderByDescending(x => x.Figure).Take(5).ToList();
+            //CardList = GetWithNoRept(res);
             Probability = 100;
         }
 
-        private List<ICard> GetWithNoRept(List<ICard> list)
-        {
-            var result = new List<ICard>();
+        //private List<ICard> GetWithNoRept(List<ICard> list)
+        //{
+        //    var result = new List<ICard>();
 
-            foreach(var item in list)
-            {
-                if(!result.Any(p => p.Figure == item.Figure))
-                {
-                    result.Add(item);
-                }
-            }
+        //    foreach(var item in list)
+        //    {
+        //        if(!result.Any(p => p.Figure == item.Figure))
+        //        {
+        //            result.Add(item);
+        //        }
+        //    }
 
-            return result;
-        }
+        //    return result;
+        //}
     }
 }

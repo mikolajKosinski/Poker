@@ -15,91 +15,95 @@ namespace CoreBusinessLogic.Hands
             this.straight = straight;
         }
 
-        public IList<ICard> GetCards() => new List<ICard>();
+        public IList<ICard> GetCards() => _availableCards;
+        private IList<int> _allFigures = new List<int>() { 10, 11, 12, 13, 14 };
+        private List<ICard> _availableCards = new List<ICard>();
 
         public string Name { get; } = "RoyalFlush";
         public void Check()
         {
-            var flush = new Flush(hand, desk);
-            flush.Check();
-            
-            if (flush.Probability != 100 || NotInOrder(flush.CardList))
-            {
-                Probability = (int)GetOddsPercentage(GetOuts().Count());
-                var color = GetDominatingColor();
-                CardList = tempHand.Where(p => p.Color == color && p.Figure >= CardFigure._10).ToList();
-                return;
-            }
-
-            if (flush.CardList.Any(x => x.Figure == CardFigure._As))
-            {
-                Probability = 100;
-                var color = GetDominatingColor();
-                CardList = GetRFByColor(color);
-            }
-            else
-            {
-                var sf = new StraightFlush(hand, desk, straight);
-                sf.Check();
-                CardList = sf.CardList;
-                Probability = (int)GetOddsPercentage(GetOuts().Count());
-                OutsList = GetOuts().ToList();
-                OutsCount = GetOuts().Count();
-            }
+            decimal outs = GetOuts().Count();
+            decimal cardsLeft = 52 - tempHand.Count();
+            Probability = decimal.Round((outs / cardsLeft) * 100, 2);
+            OutsList = GetOuts().ToList();
+            OutsCount = GetOuts().Count();
         }
 
         public IList<ICard> GetOuts()
         {
-            OutsCount = GetNeededCardsCount();
             var color = GetDominatingColor();
-            var rf = GetRFByColor(color);
+            var local = tempHand.Where(x => x.Color == color).ToList();
 
-            foreach(var item in tempHand)
+            if (!local.Any()) return new List<ICard>();
+            var cardsLeft = 7 - tempHand.Count();
+            var possibleSets = new List<List<int>>();
+            var outs = new List<ICard>();
+            var allCards = GetDeck();
+            var figures = _allFigures.ToList();
+            possibleSets.Add(figures);
+
+            foreach (var set in possibleSets)
             {
-                var rfItem = rf.FirstOrDefault(p => p.Color == item.Color && p.Figure == item.Figure);
+                var temp = local.Select(p => Convert.ToInt32(p.Figure)).ToList();
+                var neededFigures = set.Except(temp);
+                if (neededFigures.Count() > cardsLeft)
+                    continue;
 
-                if (rfItem != null) rf.Remove(rfItem);
-            }
+                var cardForHand = local.Where(p => set.Contains(Convert.ToInt32(p.Figure))).Select(p => p).ToList();
+                _availableCards.AddRange(cardForHand.Where(p => !_availableCards.Contains(p)));
 
-            return rf;
-        }
-
-        private int GetNeededCardsCount()
-        {
-            var highestCardHand = tempHand.Any(c => c.Figure == CardFigure._As) ? 
-                tempHand.First(c => c.Figure == CardFigure._As) :
-                new Card(CardFigure._As, CardColor.club);
-            var lowestCard = highestCardHand.Figure - 4;
-            var elements = GetWithNoRept(tempHand).Where(p => p.Figure >= lowestCard).OrderByDescending(x => x.Figure).ToList();
-
-            return 5 - elements.Count();
-        }
-
-        private List<ICard> GetWithNoRept(List<ICard> list)
-        {
-            var result = new List<ICard>();
-
-            foreach (var item in list)
-            {
-                if (!result.Any(p => p.Figure == item.Figure))
+                foreach (var figure in neededFigures)
                 {
-                    result.Add(item);
+                    var possibleOuts = allCards.Select(p => p).Where(p => Convert.ToInt32(p.Figure) == figure);
+
+                    foreach (var card in possibleOuts)
+                    {
+                        if (!local.Any(p => p.Figure == card.Figure) && !outs.Contains(card) && card.Color == color)
+                        {
+                            outs.Add(card);
+                        }
+                    }
                 }
             }
-
-            return result;
+            return outs;
         }
 
-        private List<ICard> GetRFByColor(CardColor color)
-        {
-            return new List<ICard>
-            {
-                new Card(CardFigure._As, color),
-                new Card(CardFigure._King, color),
-                new Card(CardFigure._Queen, color),
-                new Card(CardFigure._Jack, color),
-                new Card(CardFigure._10, color)
-            };
-        }
+        //private int GetNeededCardsCount()
+        //{
+        //    var highestCardHand = tempHand.Any(c => c.Figure == CardFigure._As) ? 
+        //        tempHand.First(c => c.Figure == CardFigure._As) :
+        //        new Card(CardFigure._As, CardColor.club);
+        //    var lowestCard = highestCardHand.Figure - 4;
+        //    var elements = GetWithNoRept(tempHand).Where(p => p.Figure >= lowestCard).OrderByDescending(x => x.Figure).ToList();
+
+        //    return 5 - elements.Count();
+        //}
+
+        //private List<ICard> GetWithNoRept(List<ICard> list)
+        //{
+        //    var result = new List<ICard>();
+
+        //    foreach (var item in list)
+        //    {
+        //        if (!result.Any(p => p.Figure == item.Figure))
+        //        {
+        //            result.Add(item);
+        //        }
+        //    }
+
+        //    return result;
+        //}
+
+        //private List<ICard> GetRFByColor(CardColor color)
+        //{
+        //    return new List<ICard>
+        //    {
+        //        new Card(CardFigure._As, color),
+        //        new Card(CardFigure._King, color),
+        //        new Card(CardFigure._Queen, color),
+        //        new Card(CardFigure._Jack, color),
+        //        new Card(CardFigure._10, color)
+        //    };
+        //}
     }
 }

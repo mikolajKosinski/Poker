@@ -13,7 +13,8 @@ namespace CoreBusinessLogic.Hands
 
         }
 
-        public IList<ICard> GetCards() => new List<ICard>();
+        private List<ICard> _availableCards = new List<ICard>();
+        public IList<ICard> GetCards() => _availableCards;
 
         public string Name { get; } = "Flush";
 
@@ -34,11 +35,12 @@ namespace CoreBusinessLogic.Hands
             {
                 Probability = (int)GetOddsPercentage(GetOuts().Count());
                 color = GetDominatingColor();
-                OutsList = GetOuts().ToList();
-                OutsCount = GetOuts().Count();
             }
 
-            CardList = tempHand.Where(x => x.Color == color).ToList();
+            if (Probability == 0) return;
+
+            _availableCards = tempHand.Where(x => x.Color == color).ToList();
+            OutsList = GetOuts().ToList();
         }
 
         private bool _gotFlush()

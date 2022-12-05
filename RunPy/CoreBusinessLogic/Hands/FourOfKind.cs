@@ -13,8 +13,8 @@ namespace CoreBusinessLogic.Hands
 
         }
 
-        public IList<ICard> GetCards() => new List<ICard>();
-        private IList<ICard> _cardsOnHand = new List<ICard>();
+        public IList<ICard> GetCards() => _availableCards;
+        private IList<ICard> _availableCards = new List<ICard>();
         public string Name { get; } = "FourOf";
 
         public void Check()
@@ -23,18 +23,20 @@ namespace CoreBusinessLogic.Hands
             {               
                 Probability = 100;
             }
-            else
+
+            decimal cardsLeft = 52 - tempHand.Count();
+            if (GetNeededCardsCount() > cardsLeft)
             {
-                decimal outs = GetOuts().Count();
-                decimal cardsLeft = 52 - tempHand.Count();
-                Probability = decimal.Round((outs / cardsLeft) * 100, 2);
+                Probability = 0;
+                return;
             }
 
+            var outs = GetOuts();
             var group = GetGroup(tempHand, 4);
             if (!group.Any()) group = GetGroup(tempHand, 3);
             if (!group.Any()) group = GetGroup(tempHand, 2);
-            OutsList = GetOuts().ToList();
-            CardList = group;
+            Probability = decimal.Round((outs.Count / cardsLeft) * 100, 2);
+            OutsList = outs.ToList();
         }
 
         private bool _gotFour()
@@ -44,20 +46,20 @@ namespace CoreBusinessLogic.Hands
 
         public IList<ICard> GetOuts()
         {
-            OutsCount = GetNeededCardsCount();
+            //OutsCount = GetNeededCardsCount();
             var rest = GetDeckExceptTempHand();
             var groups = GetAllGroupsByFigure(tempHand);
             var outs = new List<ICard>();
 
             if (tempHand.Count == 5)
             {
-                var pair = _cardsOnHand = GetGroup(tempHand, 2);
-                var threeOf = _cardsOnHand = GetGroup(tempHand, 3);
-                _cardsOnHand = threeOf.Any() ? threeOf : pair;
+                var pair = _availableCards = GetGroup(tempHand, 2);
+                var threeOf = _availableCards = GetGroup(tempHand, 3);
+                _availableCards = threeOf.Any() ? threeOf : pair;
             }
 
             if (tempHand.Count == 6)
-                _cardsOnHand = GetGroup(tempHand, 3);
+                _availableCards = GetGroup(tempHand, 3);
 
             foreach (var list in groups)
             {
@@ -65,8 +67,6 @@ namespace CoreBusinessLogic.Hands
             }
 
             return outs;
-            //OutsCount = GetNeededCardsCount();
-            //return GetMatchingCardsFromDeck();
         }
 
         private int GetNeededCardsCount()
@@ -83,24 +83,24 @@ namespace CoreBusinessLogic.Hands
             return cardNeeded;
         }
 
-        private IList<ICard> GetMatchingCardsFromDeck()
-        {
-            var groups = GetAllGroupsByFigure(tempHand);
-            var matchingCards = new List<ICard>();
+        //private IList<ICard> GetMatchingCardsFromDeck()
+        //{
+        //    var groups = GetAllGroupsByFigure(tempHand);
+        //    var matchingCards = new List<ICard>();
 
-            foreach(var group in groups)
-            {
-                var figure = group[0].Figure;
-                var cards = GetMatchingCardsFromDeckByFigure(group, figure);
-                matchingCards.AddRange(cards);
-            }
+        //    foreach(var group in groups)
+        //    {
+        //        var figure = group[0].Figure;
+        //        var cards = GetMatchingCardsFromDeckByFigure(group, figure);
+        //        matchingCards.AddRange(cards);
+        //    }
 
-            return matchingCards;
-        }
+        //    return matchingCards;
+        //}
 
-        private IList<ICard> GetMatchingCardsFromDeckByFigure(List<ICard> group, CardFigure figure)
-        {
-            return GetDeckExceptTempHand().Where(p => p.Figure == figure && !group.Any(c => c.Color == p.Color)).ToList();
-        }
+        //private IList<ICard> GetMatchingCardsFromDeckByFigure(List<ICard> group, CardFigure figure)
+        //{
+        //    return GetDeckExceptTempHand().Where(p => p.Figure == figure && !group.Any(c => c.Color == p.Color)).ToList();
+        //}
     }
 }

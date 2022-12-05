@@ -145,7 +145,7 @@
                 </Grid.RowDefinitions>
                 <Label Content="Straight Flush" HorizontalAlignment="Center" Grid.Row="0" />
                 <Label Content="Hand" HorizontalAlignment="Left" Grid.Row="1" />
-                <ListBox ItemsSource="{Binding CardList, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                <ListBox ItemsSource="{Binding CardsOnHand, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                          Grid.Row="2"
                          HorizontalAlignment="Stretch" 
                          VerticalAlignment="Stretch" 
@@ -178,7 +178,7 @@
                 </Grid.RowDefinitions>
                 <Label Content="Royal Straight" HorizontalAlignment="Center" Grid.Row="0" />
                 <Label Content="Hand" HorizontalAlignment="Left" Grid.Row="1" />
-                <ListBox ItemsSource="{Binding CardList, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                <ListBox ItemsSource="{Binding CardsOnHand, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                          Grid.Row="2"
                          HorizontalAlignment="Stretch" 
                          VerticalAlignment="Stretch" 
@@ -211,7 +211,7 @@
                 </Grid.RowDefinitions>
                 <Label Content="Four of kind" HorizontalAlignment="Center" Grid.Row="0" />
                 <Label Content="Hand" HorizontalAlignment="Left" Grid.Row="1" />
-                <ListBox ItemsSource="{Binding CardList, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                <ListBox ItemsSource="{Binding CardsOnHand, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                          Grid.Row="2"
                          HorizontalAlignment="Stretch" 
                          VerticalAlignment="Stretch" 
@@ -244,7 +244,7 @@
                 </Grid.RowDefinitions>
                 <Label Content="Full" HorizontalAlignment="Center" Grid.Row="0" Margin="10" />
                 <Label Content="Full" HorizontalAlignment="Left" Grid.Row="1" Margin="10" />
-                <ListBox ItemsSource="{Binding CardList, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                <ListBox ItemsSource="{Binding CardsOnHand, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                          Grid.Row="2"
                          HorizontalAlignment="Stretch" 
                          VerticalAlignment="Stretch" 
@@ -277,7 +277,7 @@
                 </Grid.RowDefinitions>
                 <Label Content="Flush" HorizontalAlignment="Center" Grid.Row="0" />
                 <Label Content="Hand" HorizontalAlignment="Left" Grid.Row="1" />
-                <ListBox ItemsSource="{Binding CardList, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                <ListBox ItemsSource="{Binding CardsOnHand, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                          Grid.Row="2"
                          HorizontalAlignment="Stretch" 
                          VerticalAlignment="Stretch" 
@@ -310,7 +310,7 @@
                 </Grid.RowDefinitions>
                 <Label Content="Straight" HorizontalAlignment="Center" Grid.Row="0" />
                 <Label Content="Hand" HorizontalAlignment="Left" Grid.Row="1" />
-                <ListBox ItemsSource="{Binding CardList, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                <ListBox ItemsSource="{Binding CardsOnHand, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                          Grid.Row="2"
                          HorizontalAlignment="Stretch" 
                          VerticalAlignment="Stretch" 
@@ -343,7 +343,7 @@
                 </Grid.RowDefinitions>
                 <Label Content="Three Of Kind" HorizontalAlignment="Center" Grid.Row="0" />
                 <Label Content="Hand" HorizontalAlignment="Left" Grid.Row="1" />
-                <ListBox ItemsSource="{Binding CardList, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                <ListBox ItemsSource="{Binding CardsOnHand, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                          Grid.Row="2"
                          HorizontalAlignment="Stretch" 
                          VerticalAlignment="Stretch" 
@@ -376,7 +376,7 @@
                 </Grid.RowDefinitions>
                 <Label Content="Pair" HorizontalAlignment="Center" Grid.Row="0" />
                 <Label Content="Hand" HorizontalAlignment="Left" Grid.Row="1" />
-                <ListBox ItemsSource="{Binding CardList, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                <ListBox ItemsSource="{Binding CardsOnHand, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                          Grid.Row="2"
                          HorizontalAlignment="Stretch" 
                          VerticalAlignment="Stretch" 
