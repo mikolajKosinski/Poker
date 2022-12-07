@@ -33,6 +33,118 @@ namespace WpfClient.ViewModels
 
         #region properties
 
+        private bool _isFlushEnable;
+        public bool IsFlushEnable
+        {
+            get
+            {
+                return _isFlushEnable;
+            }
+            set
+            {
+                _isFlushEnable = value;
+                NotifyPropertyChanged(nameof(IsFlushEnable));
+            }
+        }
+
+        private bool _isFourEnable;
+        public bool IsFourEnable
+        {
+            get
+            {
+                return _isFourEnable;
+            }
+            set
+            {
+                _isFourEnable = value;
+                NotifyPropertyChanged(nameof(IsFourEnable));
+            }
+        }
+
+        private bool _isFullEnable;
+        public bool IsFullEnable
+        {
+            get
+            {
+                return _isFullEnable;
+            }
+            set
+            {
+                _isFullEnable = value;
+                NotifyPropertyChanged(nameof(IsFullEnable));
+            }
+        }
+
+        private bool _isPairEnable;
+        public bool IsPairEnable
+        {
+            get
+            {
+                return _isPairEnable;
+            }
+            set
+            {
+                _isPairEnable = value;
+                NotifyPropertyChanged(nameof(IsPairEnable));
+            }
+        }
+
+        private bool _isRoyalFlushEnable;
+        public bool IsRoyalFlushEnable
+        {
+            get
+            {
+                return _isRoyalFlushEnable;
+            }
+            set
+            {
+                _isRoyalFlushEnable = value;
+                NotifyPropertyChanged(nameof(IsRoyalFlushEnable));
+            }
+        }
+
+        private bool _isStraightEnable;
+        public bool IsStraightEnable
+        {
+            get
+            {
+                return _isStraightEnable;
+            }
+            set
+            {
+                _isStraightEnable = value;
+                NotifyPropertyChanged(nameof(IsStraightEnable));
+            }
+        }
+
+        private bool _isStraightFlushEnable;
+        public bool IsStraightFlushEnable
+        {
+            get
+            {
+                return _isStraightFlushEnable;
+            }
+            set
+            {
+                _isStraightFlushEnable = value;
+                NotifyPropertyChanged(nameof(IsStraightFlushEnable));
+            }
+        }
+
+        private bool _isThreeEnable;
+        public bool IsThreeEnable
+        {
+            get
+            {
+                return _isThreeEnable;
+            }
+            set
+            {
+                _isThreeEnable = value;
+                NotifyPropertyChanged(nameof(IsThreeEnable));
+            }
+        }
+
         private bool _isGeneralTabVisible;
         public bool IsGeneralTabVisible
         {
@@ -604,6 +716,7 @@ namespace WpfClient.ViewModels
             IsStraightTabVisible = false;
             IsThreeOfKindTabVisible = false;
             IsPairTabVisible = false;
+            IsFlushEnable = true;
 
             _figureDict = new Dictionary<CardFigure, string>()
             { {CardFigure._2, "2" },
@@ -927,66 +1040,48 @@ namespace WpfClient.ViewModels
 
         public async Task Analyze()
         {
+            ShowGeneralTab(null);
             GetCards(DeskArea, "allCards");
             var flopCount = Convert.ToInt32(_cardRecognition.GetHand());
 
-            for (int c = 0; c < flopCount; c++)
+            Parallel.For(0, flopCount, (i, state) =>
             {
-                var colorPath = @$"C:\Users\mkosi\Documents\GitHub\Poker\RunPy\WpfClient\obj\Debug\\net5.0-windows\C{c}.PNG";
-                var figurePath = @$"C:\Users\mkosi\Documents\GitHub\Poker\RunPy\WpfClient\obj\Debug\\net5.0-windows\F{c}.PNG";
+                var colorPath = @$"C:\Users\mkosi\Documents\GitHub\Poker\RunPy\WpfClient\obj\Debug\\net5.0-windows\C{i}.PNG";
+                var figurePath = @$"C:\Users\mkosi\Documents\GitHub\Poker\RunPy\WpfClient\obj\Debug\\net5.0-windows\F{i}.PNG";
                 var card = _cardRecognition.GetCard(figurePath, colorPath);
                 _matcher.AddCardToFlop(card);
 
-                await Application.Current.Dispatcher.BeginInvoke(new Action(() => DeskCards.Add(card)));
-                //DeskCards.Add(card);
+                Application.Current.Dispatcher.BeginInvoke(new Action(() => DeskCards.Add(card)));
                 File.Delete(colorPath);
                 File.Delete(figurePath);
-            }
+            });
+
+            //for (int c = 0; c < flopCount; c++)
+            //{
+            //    var colorPath = @$"C:\Users\mkosi\Documents\GitHub\Poker\RunPy\WpfClient\obj\Debug\\net5.0-windows\C{c}.PNG";
+            //    var figurePath = @$"C:\Users\mkosi\Documents\GitHub\Poker\RunPy\WpfClient\obj\Debug\\net5.0-windows\F{c}.PNG";
+            //    var card = _cardRecognition.GetCard(figurePath, colorPath);
+            //    _matcher.AddCardToFlop(card);
+
+            //    await Application.Current.Dispatcher.BeginInvoke(new Action(() => DeskCards.Add(card)));
+            //    File.Delete(colorPath);
+            //    File.Delete(figurePath);
+            //}
 
             GetCards(HandArea, "allCards");
             flopCount = Convert.ToInt32(_cardRecognition.GetHand());
 
-            for (int c = 0; c < flopCount; c++)
+            Parallel.For(0, flopCount, (i, state) =>
             {
-                var colorPath = @$"C:\Users\mkosi\Documents\GitHub\Poker\RunPy\WpfClient\obj\Debug\\net5.0-windows\C{c}.PNG";
-                var figurePath = @$"C:\Users\mkosi\Documents\GitHub\Poker\RunPy\WpfClient\obj\Debug\\net5.0-windows\F{c}.PNG";
+                var colorPath = @$"C:\Users\mkosi\Documents\GitHub\Poker\RunPy\WpfClient\obj\Debug\\net5.0-windows\C{i}.PNG";
+                var figurePath = @$"C:\Users\mkosi\Documents\GitHub\Poker\RunPy\WpfClient\obj\Debug\\net5.0-windows\F{i}.PNG";
                 var card = _cardRecognition.GetCard(figurePath, colorPath);
                 _matcher.AddCardToHand(card);
 
-                await Application.Current.Dispatcher.BeginInvoke(new Action(() => HandCards.Add(card)));
-                //HandCards.Add(card);
+                Application.Current.Dispatcher.BeginInvoke(new Action(() => HandCards.Add(card)));
                 File.Delete(colorPath);
                 File.Delete(figurePath);
-            }
-            /////////////////////////////////////
-            //var single = GetAreaBitmap(SingleCardArea, AnalyzeType.SingleCard);
-            //var desk = GetAreaBitmap(DeskArea, AnalyzeType.Desk);
-
-            //var hand = GetAreaBitmap(HandArea, AnalyzeType.Hand);
-
-            //if (desk == null)
-            //{
-            //    MessageBox.Show("Try again");
-            //    return;
-            //}
-
-            //var hand = GetAreaBitmap(HandArea, AnalyzeType.Hand);
-
-            //_matcher.Clean();
-            ////await AnalyzeDeskV2(desk);
-            ////await AnalyzeHandV2(hand);
-
-            //foreach (var card in DeskCards)
-            //{
-            //    _matcher.AddCardToFlop(card);
-            //}
-
-            //foreach (var card in HandCards)
-            //{
-            //    _matcher.AddCardToHand(card);
-            //}
-
-            //_matcher.CheckHand();
+            });
 
             var ordered = _matcher.PokerHandsDict.ToDictionary(x => x.Key, x => x.Value);
             ordered = _matcher.PokerHandsDict.OrderByDescending(p => p.Value.Probability).ToDictionary(x => x.Key, x => x.Value);
@@ -1001,6 +1096,15 @@ namespace WpfClient.ViewModels
             StraightTabName = $"Straight [{ordered[Enums.PokerHands.Straight].Probability}%]";
             ThreeOfKindTabName = $"Three of kind [{ordered[Enums.PokerHands.ThreeOfKind].Probability}%]";
             PairTabName = $"Pair [{ordered[Enums.PokerHands.Pair].Probability}%]";
+
+            IsFlushEnable = ordered[Enums.PokerHands.Flush].Probability > 0;
+            IsFourEnable = ordered[Enums.PokerHands.FourOfKind].Probability > 0;
+            IsFullEnable = ordered[Enums.PokerHands.Full].Probability > 0;
+            IsPairEnable = ordered[Enums.PokerHands.Pair].Probability > 0;
+            IsRoyalFlushEnable = ordered[Enums.PokerHands.RoyalFlush].Probability > 0;
+            IsStraightEnable = ordered[Enums.PokerHands.Straight].Probability > 0;
+            IsStraightFlushEnable = ordered[Enums.PokerHands.StraightFlush].Probability > 0;
+            IsThreeEnable = ordered[Enums.PokerHands.ThreeOfKind].Probability > 0;
 
             foreach (var item in ordered.Keys)
             {

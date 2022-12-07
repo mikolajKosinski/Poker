@@ -63,28 +63,28 @@
                             <Button Content="General" Command="{Binding GeneralTabCommand}"/>
                         </ListBoxItem>
                         <ListBoxItem>
-                            <Button Content="{Binding RoyalFlushTabName}" Command="{Binding RoyalTabCommand}" />
+                            <Button Content="{Binding RoyalFlushTabName}" Command="{Binding RoyalTabCommand}" IsEnabled="{Binding IsRoyalFlushEnable}" />
                         </ListBoxItem>
                         <ListBoxItem>
-                            <Button Content="{Binding StraightFlushTabName}" Command="{Binding StraightFlushTabCommand}" />
+                            <Button Content="{Binding StraightFlushTabName}" Command="{Binding StraightFlushTabCommand}" IsEnabled="{Binding IsStraightFlushEnable}" />
                         </ListBoxItem>
                         <ListBoxItem>
-                            <Button Content="{Binding FourOfKindTabName}" Command="{Binding FourOfKindTabCommand}" />
+                            <Button Content="{Binding FourOfKindTabName}" Command="{Binding FourOfKindTabCommand}" IsEnabled="{Binding IsFourEnable}" />
                         </ListBoxItem>
                         <ListBoxItem>
-                            <Button Content="{Binding FullTabName}" Command="{Binding FullTabCommand}" />
+                            <Button Content="{Binding FullTabName}" Command="{Binding FullTabCommand}" IsEnabled="{Binding IsFullEnable}" />
                         </ListBoxItem>
                         <ListBoxItem>
-                            <Button Content="{Binding FlushTabName}" Command="{Binding FlushTabCommand}" />
+                            <Button Content="{Binding FlushTabName}" Command="{Binding FlushTabCommand}" IsEnabled="{Binding IsFlushEnable}" />
                         </ListBoxItem>
                         <ListBoxItem>
-                            <Button Content="{Binding StraightTabName}" Command="{Binding StraightTabCommand}" />
+                            <Button Content="{Binding StraightTabName}" Command="{Binding StraightTabCommand}" IsEnabled="{Binding IsStraightEnable}" />
                         </ListBoxItem>
                         <ListBoxItem>
-                            <Button Content="{Binding ThreeOfKindTabName}" Command="{Binding ThreeOfKindTabCommand}" />
+                            <Button Content="{Binding ThreeOfKindTabName}" Command="{Binding ThreeOfKindTabCommand}" IsEnabled="{Binding IsThreeEnable}" />
                         </ListBoxItem>
                         <ListBoxItem>
-                            <Button Content="{Binding PairTabName}" Command="{Binding PairTabCommand}"  />
+                            <Button Content="{Binding PairTabName}" Command="{Binding PairTabCommand}" IsEnabled="{Binding IsPairEnable}"  />
                         </ListBoxItem>
                     </ListBox>                   
                 </StackPanel>

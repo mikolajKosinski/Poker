@@ -32,9 +32,11 @@ namespace CoreBusinessLogic.Hands
             }
 
             var outs = GetOuts();
-            var group = GetGroup(tempHand, 4);
-            if (!group.Any()) group = GetGroup(tempHand, 3);
-            if (!group.Any()) group = GetGroup(tempHand, 2);
+            //var group = GetGroup(tempHand, 4);
+            //if (!group.Any()) group = GetGroup(tempHand, 3);
+            //if (!group.Any()) group = GetGroup(tempHand, 2);
+            if (Probability == 0 || tempHand.Count() == 7) return;
+
             Probability = decimal.Round((outs.Count / cardsLeft) * 100, 2);
             OutsList = outs.ToList();
         }

@@ -1,0 +1,5 @@
+C:\Users\mkosi\Documents\GitHub\Poker\RunPy\CoreBusinessLogic\obj\Debug\net7.0\CoreBusinessLogic.csproj.AssemblyReference.cache
+C:\Users\mkosi\Documents\GitHub\Poker\RunPy\CoreBusinessLogic\obj\Debug\net7.0\CoreBusinessLogic.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\mkosi\Documents\GitHub\Poker\RunPy\CoreBusinessLogic\obj\Debug\net7.0\CoreBusinessLogic.AssemblyInfoInputs.cache
+C:\Users\mkosi\Documents\GitHub\Poker\RunPy\CoreBusinessLogic\obj\Debug\net7.0\CoreBusinessLogic.AssemblyInfo.cs
+C:\Users\mkosi\Documents\GitHub\Poker\RunPy\CoreBusinessLogic\obj\Debug\net7.0\CoreBusinessLogic.csproj.CoreCompileInputs.cache

@@ -53,6 +53,12 @@ namespace CoreBusinessLogic.Hands
             {
                 decimal cardsLeft = 52 - tempHand.Count();
                 Probability = decimal.Round((outs.Count / cardsLeft) * 100, 2);
+
+                if (Probability < 100 && tempHand.Count() == 7)
+                    Probability = 0;
+
+                if (Probability == 0) return;
+
                 OutsList = GetOuts().ToList();
                 //if (CheckGroupCount(tempHand, 2)) CardList = GetGroup(tempHand, 2);
                 //Probability = (int)GetOddsPercentage(GetOuts().Count());

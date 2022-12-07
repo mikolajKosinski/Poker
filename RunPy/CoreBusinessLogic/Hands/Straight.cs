@@ -134,6 +134,8 @@ namespace CoreBusinessLogic.Hands
                 decimal outs = GetOuts().Count();
                 decimal cardsLeft = 52 - tempHand.Count();
                 Probability = decimal.Round((outs / cardsLeft)*100, 2);
+
+                if (Probability == 0 || tempHand.Count() == 7) return;
                 //Probability = (int)GetOddsPercentage(GetOuts().Count());
                 //Probability = GetOuts().Count() * 4;
                 OutsList = GetOuts().ToList();

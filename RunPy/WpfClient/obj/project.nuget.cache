@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "5rBLXRCnf00jxB/tL/S5xx2P07d2HWq1MFCvgfnON8buDr42FbrZs5jaH5F7JQJD8PWv3OKAcPIdVPwWUyhDvg==",
+  "dgSpecHash": "oDhO8CsJ/p5gsF0zihaGjjKsipdcFS+bcFqoSM/ljIHrZT3zCrPEcocsV2G5PlYBYAq9HFy3WLgukJ3CUG4iBQ==",
   "success": true,
   "projectFilePath": "C:\\Users\\mkosi\\Documents\\GitHub\\Poker\\RunPy\\WpfClient\\WpfClient.csproj",
   "expectedPackageFiles": [
@@ -10,6 +10,8 @@
     "C:\\Users\\mkosi\\.nuget\\packages\\microsoft.netcore.platforms\\3.1.0\\microsoft.netcore.platforms.3.1.0.nupkg.sha512",
     "C:\\Users\\mkosi\\.nuget\\packages\\microsoft.netcore.targets\\1.1.0\\microsoft.netcore.targets.1.1.0.nupkg.sha512",
     "C:\\Users\\mkosi\\.nuget\\packages\\microsoft.win32.systemevents\\4.7.0\\microsoft.win32.systemevents.4.7.0.nupkg.sha512",
+    "C:\\Users\\mkosi\\.nuget\\packages\\newtonsoft.json\\12.0.1\\newtonsoft.json.12.0.1.nupkg.sha512",
+    "C:\\Users\\mkosi\\.nuget\\packages\\newtonsoft.json.bson\\1.0.2\\newtonsoft.json.bson.1.0.2.nupkg.sha512",
     "C:\\Users\\mkosi\\.nuget\\packages\\system.collections\\4.3.0\\system.collections.4.3.0.nupkg.sha512",
     "C:\\Users\\mkosi\\.nuget\\packages\\system.diagnostics.debug\\4.3.0\\system.diagnostics.debug.4.3.0.nupkg.sha512",
     "C:\\Users\\mkosi\\.nuget\\packages\\system.diagnostics.diagnosticsource\\4.7.1\\system.diagnostics.diagnosticsource.4.7.1.nupkg.sha512",

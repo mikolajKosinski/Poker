@@ -26,7 +26,7 @@ namespace CoreBusinessLogic.Hands
 
             foreach(var item in tempHand)
             {
-                var cards = deck.Where(p => p.Figure == item.Figure).ToList();
+                var cards = GetDeckExceptTempHand().Where(p => p.Figure == item.Figure).ToList();
 
                 foreach (var card in cards)
                 {

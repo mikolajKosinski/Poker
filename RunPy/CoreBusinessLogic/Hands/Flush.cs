@@ -37,7 +37,7 @@ namespace CoreBusinessLogic.Hands
                 color = GetDominatingColor();
             }
 
-            if (Probability == 0) return;
+            if (Probability == 0 || tempHand.Count() == 7) return;
 
             _availableCards = tempHand.Where(x => x.Color == color).ToList();
             OutsList = GetOuts().ToList();

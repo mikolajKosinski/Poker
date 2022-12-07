@@ -1,10 +1,15 @@
 ﻿
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.IO;
+using System.Runtime.Serialization.Formatters.Binary;
+using System.Runtime.Serialization;
 using System.Threading.Tasks;
 
 namespace CoreBusinessLogic
@@ -54,7 +59,7 @@ namespace CoreBusinessLogic
         public ICard GetCard(string figurePath, string colorPath)
         {
             var figure = RecognizeFigure(figurePath);
-            var color = RecognizeColor(colorPath);            
+            var color = RecognizeColor(colorPath);
             return new Card(figure, color);
         }
 
@@ -67,7 +72,7 @@ namespace CoreBusinessLogic
         private CardColor RecognizeColor(string imagePath)
         {
             var result = RecognizeImage(recoType.color, imagePath);
-            return _colorDict[result];            
+            return _colorDict[result];
         }
 
         public Tuple<int, int, int, int> GetPosition(string path)
@@ -103,11 +108,11 @@ namespace CoreBusinessLogic
                 try
                 {
                     var card = item.Split('-');
-                    var middleX = card[0].Replace("\r\n", "").Replace(".",",");
+                    var middleX = card[0].Replace("\r\n", "").Replace(".", ",");
                     var middleY = card[1].Replace("\r\n", "").Replace(".", ",");
                     var width = card[2].Replace("\r\n", "").Replace(".", ",");
                     var height = card[3].Replace("\r\n", "").Replace(".", ",");
-                    points.Add(new Tuple<decimal, decimal, decimal, decimal>(Convert.ToDecimal(middleX),Convert.ToDecimal( middleY), Convert.ToDecimal(width), Convert.ToDecimal(height)));
+                    points.Add(new Tuple<decimal, decimal, decimal, decimal>(Convert.ToDecimal(middleX), Convert.ToDecimal(middleY), Convert.ToDecimal(width), Convert.ToDecimal(height)));
                 }
                 catch (Exception x)
                 {
@@ -117,7 +122,7 @@ namespace CoreBusinessLogic
             return points;
         }
 
-        public Tuple<int,int,int,int> GetSingleCardArea()
+        public Tuple<int, int, int, int> GetSingleCardArea()
         {
             Process process = new Process();
             string argument = @"C:\Users\Mikolaj\PycharmProjects\pythonProject\externals.py";
@@ -145,9 +150,9 @@ namespace CoreBusinessLogic
                 .Replace("\n", "");
             var points = result.Split(',');
             return new Tuple<int, int, int, int>(
-                Convert.ToInt32(points[0]), 
-                Convert.ToInt32(points[1]), 
-                Convert.ToInt32(points[2]), 
+                Convert.ToInt32(points[0]),
+                Convert.ToInt32(points[1]),
+                Convert.ToInt32(points[2]),
                 Convert.ToInt32(points[3]));
         }
 
@@ -261,7 +266,7 @@ namespace CoreBusinessLogic
             var result = process
                 .StandardOutput
                 .ReadToEnd();
-            return result.Replace("\r\n","");
+            return result.Replace("\r\n", "");
         }
 
         public Task<string> GetHandAsync()
@@ -319,11 +324,11 @@ namespace CoreBusinessLogic
 
             process.Start();
             var result = process.StandardOutput.ReadToEnd().Split('-');
-            if (result.Length == 1) return new Tuple<int, int, int, int>(0,0,0,0);
+            if (result.Length == 1) return new Tuple<int, int, int, int>(0, 0, 0, 0);
             return new Tuple<int, int, int, int>(
-                Convert.ToInt32(result[0]), 
-                Convert.ToInt32(result[1]), 
-                Convert.ToInt32(result[2]), 
+                Convert.ToInt32(result[0]),
+                Convert.ToInt32(result[1]),
+                Convert.ToInt32(result[2]),
                 Convert.ToInt32(result[3]));
         }
 
@@ -347,12 +352,34 @@ namespace CoreBusinessLogic
             return result.Replace("\t", "").Replace("\r", "").Replace("\n", "");
         }
 
+       
+        public Stream ToStream(Image image)
+        {
+            var stream = new MemoryStream();
+
+            image.Save(stream, image.RawFormat);
+            stream.Position = 0;
+
+            return stream;
+        }
+
         private string RecognizeImage(recoType rc, string imagePath)
         {
+            string img = string.Empty;
+            using (var image = Bitmap.FromFile(imagePath))
+            {
+                using (MemoryStream ms = new MemoryStream())
+                {
+                    image.Save(ms, image.RawFormat);
+                    byte[] array = ms.ToArray();
+                    img = Convert.ToBase64String(array);
+                }
+            }
+
             Process process = new Process();
             string argument = rc == recoType.figure ?
-                $@"C:\Users\mkosi\PycharmProjects\pythonProject\predictFigure.py {imagePath.Replace(" ", "")}" :
-                $@"C:\Users\mkosi\PycharmProjects\pythonProject\predictColor.py {imagePath.Replace(" ", "")}";
+                $@"C:\Users\mkosi\PycharmProjects\pythonProject\predictFigure.py {img}"://{imagePath.Replace(" ", "")}" :
+                $@"C:\Users\mkosi\PycharmProjects\pythonProject\predictColor.py {img}"; 
             process.StartInfo = new System.Diagnostics.ProcessStartInfo()
             {
                 UseShellExecute = false,
@@ -363,7 +390,7 @@ namespace CoreBusinessLogic
                 RedirectStandardError = true,
                 RedirectStandardOutput = true
             };
-                        
+
             process.Start();
             var error = process
                .StandardError
@@ -372,6 +399,14 @@ namespace CoreBusinessLogic
             var list = result.Split("\n");
             var ress = rc == recoType.figure ? list[3].Replace("\r", "") : list[0].Replace("\r", "");
             return ress;
+        }
+
+        public MemoryStream SerializeToStream(object o)
+        {
+            MemoryStream stream = new MemoryStream();
+            IFormatter formatter = new BinaryFormatter();
+            formatter.Serialize(stream, o);
+            return stream;
         }
 
         public string RecogniseByPath(string path)
@@ -384,5 +419,5 @@ namespace CoreBusinessLogic
             figure,
             color
         }
-    }
+    }    
 }

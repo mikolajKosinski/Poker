@@ -65,10 +65,12 @@ namespace CoreBusinessLogic.Hands
             //if (!group.Any()) group = GetGroup(tempHand, 2);
             var outs = GetOuts();
             decimal cardsLeft = 52 - tempHand.Count();
+
             Probability = decimal.Round((outs.Count() / cardsLeft) * 100, 2);
 
-            if (Probability > 0)
-                OutsList = outs.ToList();
+            if (Probability == 0 || tempHand.Count() == 7) return;
+            
+            OutsList = outs.ToList();
             //CardList = group;
             //var pair = GetGroup(tempHand, 2);
             //var threeOfKind = GetGroup(tempHand, 3);
