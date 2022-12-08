@@ -1,6 +1,5 @@
 ﻿using Autofac;
 using CoreBusinessLogic;
-using CoreBusinessLogic.IoC;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -11,6 +10,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
 using WpfClient.Interfaces;
+using WpfClient.IoC;
 using WpfClient.ViewModels;
 
 namespace WpfClient
@@ -25,7 +25,7 @@ namespace WpfClient
         private IContainer _container;
 
         public App()
-        {
+        {            
             var factory = new Factory();
             _container = factory.Builder;
             var serviceCollection = new ServiceCollection();
@@ -35,11 +35,17 @@ namespace WpfClient
 
         private void ConfigureServices(IServiceCollection services)
         {
+            //services.AddSingleton<IFigureMatcher>(new FigureMatcher(_container));
+            //services.AddSingleton<ISettingsViewModel>(new SettingsViewModel(_container));
+            var fMatcher = _container.Resolve<IFigureMatcher>();
+            Console.WriteLine();
+            // fMatcher.Container = _container;
             services.AddSingleton<IMainWindoViewModel>(new MainWindowViewModel(
                 _container.Resolve<ICardRecognition>(),
-                _container.Resolve<IFigureMatcher>(),
-                _container.Resolve<ICardManager>()));
-            services.AddScoped<IScreenAnalyser, ScreenAnalyser>();
+                fMatcher,
+                _container.Resolve<ICardManager>(),
+                _container));
+            //services.AddScoped<IScreenAnalyser, ScreenAnalyser>();
         }
 
         public bool IsScreenCaptureMode() => _mainWindow.WindowStyle == WindowStyle.None;
@@ -75,7 +81,7 @@ namespace WpfClient
             var mainWindowVM = ServiceProvider.GetService<IMainWindoViewModel>();
             _mainWindow = new MainWindow(mainWindowVM);
 
-            Current.MainWindow = _mainWindow;
+                Current.MainWindow = _mainWindow;
             Current.MainWindow.Show();
         }
     }

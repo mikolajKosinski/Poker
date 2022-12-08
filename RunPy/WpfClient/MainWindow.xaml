@@ -38,7 +38,7 @@
                 <Button Content="Settings" Command="{Binding SettingsWindowCommand}"/>
             </StackPanel>
 
-            <Grid Grid.Row="1"
+            <Grid Grid.Row="2" Grid.Column="1"
                   Visibility="{Binding IsSettingsVisible, Converter={StaticResource boolToVisConv}}">
                 <local:SettingsView
                     DataContext="{Binding SettingsViewModel}" />

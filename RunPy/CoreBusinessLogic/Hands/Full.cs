@@ -1,4 +1,5 @@
-﻿using CoreBusinessLogic.Interfaces;
+﻿using Autofac;
+using CoreBusinessLogic.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,9 +9,11 @@ namespace CoreBusinessLogic.Hands
 {
     public class Full : BaseHandManager, IFigureManager
     {
-        public Full(IList<ICard> hand, IList<ICard> desk) : base(hand, desk)
-        {
+        IContainer container;
 
+        public Full(IList<ICard> hand, IList<ICard> desk, IContainer container) : base(hand, desk, container)
+        {
+            this.container = container;
         }
 
         public IList<ICard> GetCards() => _availableCards;
@@ -100,7 +103,7 @@ namespace CoreBusinessLogic.Hands
 
         public IList<ICard> GetOuts()
         {
-            OutsCount = GetNeededCardsCount();
+            //OutsCount = GetNeededCardsCount();
             var cards = GetDeckExceptTempHand();
             var outs = new List<ICard>();
 
@@ -251,7 +254,7 @@ namespace CoreBusinessLogic.Hands
 
         private bool AreThreeOfKindAvailable()
         {
-            var threeOf = new ThreeOfKind(hand, desk);
+            var threeOf = new ThreeOfKind(hand, desk, container);
             threeOf.Check();
 
             return threeOf.Probability == 100;

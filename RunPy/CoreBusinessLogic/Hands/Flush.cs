@@ -1,14 +1,16 @@
-﻿using CoreBusinessLogic.Interfaces;
+﻿using Autofac;
+using CoreBusinessLogic.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using static CoreBusinessLogic.Enums;
 
 namespace CoreBusinessLogic.Hands
 {
     public class Flush : BaseHandManager, IFigureManager
     {
-        public Flush(IList<ICard> hand, IList<ICard> desk) : base(hand, desk)
+        public Flush(IList<ICard> hand, IList<ICard> desk, IContainer container) : base(hand, desk, container)
         {
 
         }
@@ -33,7 +35,7 @@ namespace CoreBusinessLogic.Hands
             }
             else
             {
-                Probability = (int)GetOddsPercentage(GetOuts().Count());
+                Probability = GetProbability();
                 color = GetDominatingColor();
             }
 

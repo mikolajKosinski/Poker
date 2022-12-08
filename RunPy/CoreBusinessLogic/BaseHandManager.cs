@@ -1,19 +1,24 @@
-﻿using CoreBusinessLogic.Interfaces;
+﻿using Autofac;
+using CoreBusinessLogic.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using static CoreBusinessLogic.Enums;
 
 namespace CoreBusinessLogic
 {
     public class BaseHandManager
     {
-        public BaseHandManager(IList<ICard> hand, IList<ICard> desk)
+        ISettings settings;
+
+        public BaseHandManager(IList<ICard> hand, IList<ICard> desk, IContainer container)
         {
             this.hand = hand;
             this.desk = desk;
             CardList = tempHand;
             Probability = 0;
+            this.settings = container.Resolve<ISettings>();
         }
 
         public decimal Probability { get; set; }
@@ -24,6 +29,24 @@ namespace CoreBusinessLogic
         protected IList<ICard> desk;
 
         protected List<ICard> tempHand { get { return hand.Concat(desk).ToList(); } }
+
+        protected decimal GetProbability()
+        {
+            var formula = settings.SelectedFormula.ToString();
+            var cardsLeft = 7 - tempHand.Count;
+
+            switch(formula) 
+            {
+                case "algebraic":
+                    return decimal.Round((OutsList.Count / cardsLeft) * 100, 2);
+
+                case "2-4":
+                    var multiplier = cardsLeft * 2;
+                    return OutsList.Count * multiplier;
+                default:
+                    return 0;
+            }
+        }
 
         protected decimal GetOddsPercentage(int outs)
         {

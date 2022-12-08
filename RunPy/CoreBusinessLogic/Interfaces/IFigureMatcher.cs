@@ -1,4 +1,5 @@
-﻿using CoreBusinessLogic.Interfaces;
+﻿using Autofac;
+using CoreBusinessLogic.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -16,5 +17,7 @@ namespace CoreBusinessLogic
         void AddCardToFlop(ICard card);
         void AddCardToHand(ICard card);
         IList<ICard> GetHand(PokerHands hand);
+        IContainer Container { get; set; }
+        void SetPokerHandsDict();
     }
 }

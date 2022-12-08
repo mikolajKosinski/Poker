@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "oDhO8CsJ/p5gsF0zihaGjjKsipdcFS+bcFqoSM/ljIHrZT3zCrPEcocsV2G5PlYBYAq9HFy3WLgukJ3CUG4iBQ==",
+  "dgSpecHash": "5lW0avzV1SRj6i6iWPfKDojUP51q2gjtBU3TQ6GaWB5LmqkN2ukAq8uKWrZcD1y4kW3HFGk6UMVoQrbX2pduCA==",
   "success": true,
   "projectFilePath": "C:\\Users\\mkosi\\Documents\\GitHub\\Poker\\RunPy\\WpfClient\\WpfClient.csproj",
   "expectedPackageFiles": [
@@ -25,7 +25,11 @@
     "C:\\Users\\mkosi\\.nuget\\packages\\system.runtime\\4.3.0\\system.runtime.4.3.0.nupkg.sha512",
     "C:\\Users\\mkosi\\.nuget\\packages\\system.runtime.extensions\\4.3.0\\system.runtime.extensions.4.3.0.nupkg.sha512",
     "C:\\Users\\mkosi\\.nuget\\packages\\system.text.encoding\\4.3.0\\system.text.encoding.4.3.0.nupkg.sha512",
-    "C:\\Users\\mkosi\\.nuget\\packages\\system.threading.tasks\\4.3.0\\system.threading.tasks.4.3.0.nupkg.sha512"
+    "C:\\Users\\mkosi\\.nuget\\packages\\system.threading.tasks\\4.3.0\\system.threading.tasks.4.3.0.nupkg.sha512",
+    "C:\\Users\\mkosi\\.nuget\\packages\\microsoft.windowsdesktop.app.ref\\3.0.0\\microsoft.windowsdesktop.app.ref.3.0.0.nupkg.sha512",
+    "C:\\Users\\mkosi\\.nuget\\packages\\microsoft.netcore.app.ref\\3.0.0\\microsoft.netcore.app.ref.3.0.0.nupkg.sha512",
+    "C:\\Users\\mkosi\\.nuget\\packages\\microsoft.aspnetcore.app.ref\\3.0.1\\microsoft.aspnetcore.app.ref.3.0.1.nupkg.sha512",
+    "C:\\Users\\mkosi\\.nuget\\packages\\microsoft.netcore.app.host.win-x64\\3.0.3\\microsoft.netcore.app.host.win-x64.3.0.3.nupkg.sha512"
   ],
   "logs": []
 }

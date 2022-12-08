@@ -1,4 +1,5 @@
-﻿using CoreBusinessLogic.Interfaces;
+﻿using Autofac;
+using CoreBusinessLogic.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -12,7 +13,7 @@ namespace CoreBusinessLogic.Hands
     {
         Straight straight;
 
-        public StraightFlush(IList<ICard> hand, IList<ICard> desk, Straight straight) : base(hand, desk)
+        public StraightFlush(IList<ICard> hand, IList<ICard> desk, Straight straight, IContainer container) : base(hand, desk, container)
         {
             this.straight = straight;
         }

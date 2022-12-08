@@ -1,4 +1,5 @@
-﻿using CoreBusinessLogic.Interfaces;
+﻿using Autofac;
+using CoreBusinessLogic.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +9,7 @@ namespace CoreBusinessLogic.Hands
 {
     public class ThreeOfKind : BaseHandManager, IFigureManager
     {
-        public ThreeOfKind(IList<ICard> hand, IList<ICard> desk) : base(hand, desk) { }
+        public ThreeOfKind(IList<ICard> hand, IList<ICard> desk, IContainer container) : base(hand, desk, container) { }
         private IList<ICard> _cardsOnHand = new List<ICard>();
         public string Name { get; } = "ThreeOfKind";
 

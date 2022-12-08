@@ -1,4 +1,5 @@
-﻿using CoreBusinessLogic.Interfaces;
+﻿using Autofac;
+using CoreBusinessLogic.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +9,7 @@ namespace CoreBusinessLogic.Hands
 {
     public class FourOfKind : BaseHandManager, IFigureManager
     {
-        public FourOfKind(IList<ICard> hand, IList<ICard> desk) : base(hand, desk)
+        public FourOfKind(IList<ICard> hand, IList<ICard> desk, IContainer container) : base(hand, desk, container)
         {
 
         }

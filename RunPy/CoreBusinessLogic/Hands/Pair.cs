@@ -1,4 +1,5 @@
-﻿using CoreBusinessLogic.Interfaces;
+﻿using Autofac;
+using CoreBusinessLogic.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -9,7 +10,7 @@ namespace CoreBusinessLogic.Hands
 {
     public class Pair : BaseHandManager, IFigureManager
     {
-        public Pair(IList<ICard> hand, IList<ICard> desk) : base (hand, desk)
+        public Pair(IList<ICard> hand, IList<ICard> desk, IContainer container) : base (hand, desk, container)
         {
             Probability = 0;
         }

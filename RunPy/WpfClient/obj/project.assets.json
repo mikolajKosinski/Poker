@@ -1,19 +1,19 @@
 {
   "version": 3,
   "targets": {
-    "net7.0-windows7.0": {
+    ".NETCoreApp,Version=v3.0": {
       "Autofac/6.1.0": {
         "type": "package",
         "dependencies": {
           "System.Diagnostics.DiagnosticSource": "4.7.1"
         },
         "compile": {
-          "lib/net5.0/Autofac.dll": {
+          "lib/netstandard2.1/Autofac.dll": {
             "related": ".pdb;.xml"
           }
         },
         "runtime": {
-          "lib/net5.0/Autofac.dll": {
+          "lib/netstandard2.1/Autofac.dll": {
             "related": ".pdb;.xml"
           }
         }
@@ -24,12 +24,12 @@
           "Microsoft.Extensions.DependencyInjection.Abstractions": "3.1.5"
         },
         "compile": {
-          "lib/netcoreapp3.1/Microsoft.Extensions.DependencyInjection.dll": {
+          "lib/netstandard2.1/Microsoft.Extensions.DependencyInjection.dll": {
             "related": ".xml"
           }
         },
         "runtime": {
-          "lib/netcoreapp3.1/Microsoft.Extensions.DependencyInjection.dll": {
+          "lib/netstandard2.1/Microsoft.Extensions.DependencyInjection.dll": {
             "related": ".xml"
           }
         }
@@ -1465,7 +1465,7 @@
     }
   },
   "projectFileDependencyGroups": {
-    "net7.0-windows7.0": [
+    ".NETCoreApp,Version=v3.0": [
       "CoreBusinessLogic >= 1.0.0",
       "Microsoft.Extensions.DependencyInjection >= 3.1.5",
       "System.Drawing.Common >= 4.7.0"
@@ -1488,15 +1488,15 @@
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
-        "net7.0-windows"
+        "netcoreapp3.0"
       ],
       "sources": {
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
-        "net7.0-windows7.0": {
-          "targetAlias": "net7.0-windows",
+        "netcoreapp3.0": {
+          "targetAlias": "netcoreapp3.0",
           "projectReferences": {
             "C:\\Users\\mkosi\\Documents\\GitHub\\Poker\\RunPy\\CoreBusinessLogic\\CoreBusinessLogic.csproj": {
               "projectPath": "C:\\Users\\mkosi\\Documents\\GitHub\\Poker\\RunPy\\CoreBusinessLogic\\CoreBusinessLogic.csproj"
@@ -1511,8 +1511,8 @@
       }
     },
     "frameworks": {
-      "net7.0-windows7.0": {
-        "targetAlias": "net7.0-windows",
+      "netcoreapp3.0": {
+        "targetAlias": "netcoreapp3.0",
         "dependencies": {
           "Microsoft.Extensions.DependencyInjection": {
             "target": "Package",
@@ -1534,6 +1534,24 @@
         ],
         "assetTargetFallback": true,
         "warn": true,
+        "downloadDependencies": [
+          {
+            "name": "Microsoft.AspNetCore.App.Ref",
+            "version": "[3.0.1, 3.0.1]"
+          },
+          {
+            "name": "Microsoft.NETCore.App.Host.win-x64",
+            "version": "[3.0.3, 3.0.3]"
+          },
+          {
+            "name": "Microsoft.NETCore.App.Ref",
+            "version": "[3.0.0, 3.0.0]"
+          },
+          {
+            "name": "Microsoft.WindowsDesktop.App.Ref",
+            "version": "[3.0.0, 3.0.0]"
+          }
+        ],
         "frameworkReferences": {
           "Microsoft.NETCore.App": {
             "privateAssets": "all"

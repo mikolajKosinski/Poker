@@ -26,5 +26,12 @@ namespace CoreBusinessLogic
             StraightFlush,
             RoyalFlush
         }
+
+        public enum ProbabilityCountingFormula
+        {
+            first,
+            second,
+            third
+        }
     }
 }

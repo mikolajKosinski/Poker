@@ -1,4 +1,5 @@
-﻿using CoreBusinessLogic.Interfaces;
+﻿using Autofac;
+using CoreBusinessLogic.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +11,7 @@ namespace CoreBusinessLogic.Hands
     {
         Straight straight { get; set; }
 
-        public RoyalFlush(IList<ICard> hand, IList<ICard> desk, Straight straight) : base(hand, desk)
+        public RoyalFlush(IList<ICard> hand, IList<ICard> desk, Straight straight, IContainer container) : base(hand, desk, container)
         {
             this.straight = straight;
         }

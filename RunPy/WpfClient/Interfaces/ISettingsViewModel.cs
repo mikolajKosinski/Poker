@@ -6,5 +6,6 @@ namespace WpfClient.Interfaces
 {
     public interface ISettingsViewModel
     {
+        public string SliderValue { get; set; }
     }
 }
