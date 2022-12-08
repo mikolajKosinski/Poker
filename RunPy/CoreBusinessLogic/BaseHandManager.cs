@@ -12,13 +12,13 @@ namespace CoreBusinessLogic
     {
         ISettings settings;
 
-        public BaseHandManager(IList<ICard> hand, IList<ICard> desk, IContainer container)
+        public BaseHandManager(IList<ICard> hand, IList<ICard> desk, ISettings settings)
         {
             this.hand = hand;
             this.desk = desk;
             CardList = tempHand;
             Probability = 0;
-            this.settings = container.Resolve<ISettings>();
+            this.settings= settings;
         }
 
         public decimal Probability { get; set; }

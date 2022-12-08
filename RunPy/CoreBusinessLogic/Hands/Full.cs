@@ -9,9 +9,9 @@ namespace CoreBusinessLogic.Hands
 {
     public class Full : BaseHandManager, IFigureManager
     {
-        IContainer container;
+        ISettings container;
 
-        public Full(IList<ICard> hand, IList<ICard> desk, IContainer container) : base(hand, desk, container)
+        public Full(IList<ICard> hand, IList<ICard> desk, ISettings container) : base(hand, desk, container)
         {
             this.container = container;
         }

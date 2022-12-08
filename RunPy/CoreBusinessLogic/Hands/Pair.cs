@@ -10,7 +10,7 @@ namespace CoreBusinessLogic.Hands
 {
     public class Pair : BaseHandManager, IFigureManager
     {
-        public Pair(IList<ICard> hand, IList<ICard> desk, IContainer container) : base (hand, desk, container)
+        public Pair(IList<ICard> hand, IList<ICard> desk, ISettings container) : base (hand, desk, container)
         {
             Probability = 0;
         }

@@ -13,13 +13,13 @@ namespace WpfClient.IoC
     public class Factory
     {
         private ContainerBuilder _builder;
-        public IContainer Builder;
+        public IContainer Container;
 
         public Factory()
         {
-            _builder = new ContainerBuilder();            
+            _builder = new ContainerBuilder();
             RegisterServices();
-            Builder = _builder.Build();
+            Container = _builder.Build();
         }
 
         private void RegisterServices()

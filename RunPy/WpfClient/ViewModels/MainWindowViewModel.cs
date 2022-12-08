@@ -32,7 +32,7 @@ namespace WpfClient.ViewModels
         }
 
         IFigureMatcher _matcher;
-        ISettingsViewModel _settings;
+        //ISettingsViewModel _settings;
 
         #region properties
 
@@ -664,9 +664,9 @@ namespace WpfClient.ViewModels
         private Dictionary<CardFigure, string> _figureDict;
         private Dictionary<CardColor, string> _colorDict;
 
-        public MainWindowViewModel(ICardRecognition cardRecognition, IFigureMatcher figureMatcher, ICardManager cardManager, Autofac.IContainer container)
+        public MainWindowViewModel(ICardRecognition cardRecognition, IFigureMatcher figureMatcher, ICardManager cardManager, ISettingsViewModel settingsViewModel, Autofac.IContainer container)
         {
-            _settings = container.Resolve<ISettingsViewModel>();
+            this.SettingsViewModel = settingsViewModel;
             _matcher = figureMatcher;
             _matcher.SetPokerHandsDict();
             CardsOnHand = new ObservableCollection<string>();
@@ -1098,14 +1098,14 @@ namespace WpfClient.ViewModels
             ThreeOfKindTabName = $"Three of kind [{ordered[Enums.PokerHands.ThreeOfKind].Probability}%]";
             PairTabName = $"Pair [{ordered[Enums.PokerHands.Pair].Probability}%]";
 
-            IsFlushEnable = ordered[Enums.PokerHands.Flush].Probability >= Convert.ToInt32(_settings.SliderValue);
-            IsFourEnable = ordered[Enums.PokerHands.FourOfKind].Probability > Convert.ToInt32(_settings.SliderValue);
-            IsFullEnable = ordered[Enums.PokerHands.Full].Probability > Convert.ToInt32(_settings.SliderValue);
-            IsPairEnable = ordered[Enums.PokerHands.Pair].Probability > Convert.ToInt32(_settings.SliderValue);
-            IsRoyalFlushEnable = ordered[Enums.PokerHands.RoyalFlush].Probability > Convert.ToInt32(_settings.SliderValue);
-            IsStraightEnable = ordered[Enums.PokerHands.Straight].Probability > Convert.ToInt32(_settings.SliderValue);
-            IsStraightFlushEnable = ordered[Enums.PokerHands.StraightFlush].Probability > Convert.ToInt32(_settings.SliderValue);
-            IsThreeEnable = ordered[Enums.PokerHands.ThreeOfKind].Probability > Convert.ToInt32(_settings.SliderValue);
+            IsFlushEnable = ordered[Enums.PokerHands.Flush].Probability >= Convert.ToInt32(SettingsViewModel.SliderValue);
+            IsFourEnable = ordered[Enums.PokerHands.FourOfKind].Probability > Convert.ToInt32(SettingsViewModel.SliderValue);
+            IsFullEnable = ordered[Enums.PokerHands.Full].Probability > Convert.ToInt32(SettingsViewModel.SliderValue);
+            IsPairEnable = ordered[Enums.PokerHands.Pair].Probability > Convert.ToInt32(SettingsViewModel.SliderValue);
+            IsRoyalFlushEnable = ordered[Enums.PokerHands.RoyalFlush].Probability > Convert.ToInt32(SettingsViewModel.SliderValue);
+            IsStraightEnable = ordered[Enums.PokerHands.Straight].Probability > Convert.ToInt32(SettingsViewModel.SliderValue);
+            IsStraightFlushEnable = ordered[Enums.PokerHands.StraightFlush].Probability > Convert.ToInt32(SettingsViewModel.SliderValue);
+            IsThreeEnable = ordered[Enums.PokerHands.ThreeOfKind].Probability > Convert.ToInt32(SettingsViewModel.SliderValue);
 
             foreach (var item in ordered.Keys)
             {

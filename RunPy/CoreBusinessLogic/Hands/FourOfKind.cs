@@ -9,7 +9,7 @@ namespace CoreBusinessLogic.Hands
 {
     public class FourOfKind : BaseHandManager, IFigureManager
     {
-        public FourOfKind(IList<ICard> hand, IList<ICard> desk, IContainer container) : base(hand, desk, container)
+        public FourOfKind(IList<ICard> hand, IList<ICard> desk, ISettings container) : base(hand, desk, container)
         {
 
         }

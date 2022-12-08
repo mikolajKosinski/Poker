@@ -17,7 +17,6 @@ namespace CoreBusinessLogic
         void AddCardToFlop(ICard card);
         void AddCardToHand(ICard card);
         IList<ICard> GetHand(PokerHands hand);
-        IContainer Container { get; set; }
         void SetPokerHandsDict();
     }
 }

@@ -27,7 +27,7 @@ namespace WpfClient
         public App()
         {            
             var factory = new Factory();
-            _container = factory.Builder;
+            _container = factory.Container;
             var serviceCollection = new ServiceCollection();
             ConfigureServices(serviceCollection);
             ServiceProvider = serviceCollection.BuildServiceProvider();
@@ -35,15 +35,14 @@ namespace WpfClient
 
         private void ConfigureServices(IServiceCollection services)
         {
-            //services.AddSingleton<IFigureMatcher>(new FigureMatcher(_container));
-            //services.AddSingleton<ISettingsViewModel>(new SettingsViewModel(_container));
-            var fMatcher = _container.Resolve<IFigureMatcher>();
-            Console.WriteLine();
-            // fMatcher.Container = _container;
+            var settings = _container.Resolve<ISettings>();
+            var settingsViewModel = _container.Resolve<ISettingsViewModel>(new NamedParameter("settings", settings));
+            var fMatcher = _container.Resolve<IFigureMatcher>(new NamedParameter("settings", settings));
             services.AddSingleton<IMainWindoViewModel>(new MainWindowViewModel(
                 _container.Resolve<ICardRecognition>(),
                 fMatcher,
                 _container.Resolve<ICardManager>(),
+                settingsViewModel,
                 _container));
             //services.AddScoped<IScreenAnalyser, ScreenAnalyser>();
         }

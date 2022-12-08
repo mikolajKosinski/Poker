@@ -9,7 +9,7 @@ namespace CoreBusinessLogic.Hands
 {
     public class ThreeOfKind : BaseHandManager, IFigureManager
     {
-        public ThreeOfKind(IList<ICard> hand, IList<ICard> desk, IContainer container) : base(hand, desk, container) { }
+        public ThreeOfKind(IList<ICard> hand, IList<ICard> desk, ISettings container) : base(hand, desk, container) { }
         private IList<ICard> _cardsOnHand = new List<ICard>();
         public string Name { get; } = "ThreeOfKind";
 

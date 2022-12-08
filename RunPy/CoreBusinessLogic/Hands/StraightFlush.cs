@@ -13,7 +13,7 @@ namespace CoreBusinessLogic.Hands
     {
         Straight straight;
 
-        public StraightFlush(IList<ICard> hand, IList<ICard> desk, Straight straight, IContainer container) : base(hand, desk, container)
+        public StraightFlush(IList<ICard> hand, IList<ICard> desk, Straight straight, ISettings container) : base(hand, desk, container)
         {
             this.straight = straight;
         }

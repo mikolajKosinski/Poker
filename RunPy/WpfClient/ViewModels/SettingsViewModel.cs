@@ -16,14 +16,9 @@ namespace WpfClient.ViewModels
         private ISettings settings;
         private string sliderValue;
 
-        public SettingsViewModel()
+        public SettingsViewModel(ISettings settings)
         {
-            
-        }
-
-        public void Initiate(IContainer container)
-        {
-            this.settings = container.Resolve<ISettings>();
+            this.settings = settings;
             settings.CountingSystemsList = new List<string>() { "algebraic", "table", "2-4" };
         }
 

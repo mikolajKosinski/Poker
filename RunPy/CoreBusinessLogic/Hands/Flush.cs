@@ -10,7 +10,7 @@ namespace CoreBusinessLogic.Hands
 {
     public class Flush : BaseHandManager, IFigureManager
     {
-        public Flush(IList<ICard> hand, IList<ICard> desk, IContainer container) : base(hand, desk, container)
+        public Flush(IList<ICard> hand, IList<ICard> desk, ISettings settings) : base(hand, desk, settings)
         {
 
         }
