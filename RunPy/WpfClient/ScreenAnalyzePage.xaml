@@ -33,7 +33,7 @@
         <StackPanel Grid.Column="1" HorizontalAlignment="Stretch">
             <ListBox 
                 ItemsSource="{Binding RecoList}" 
-                Background="Red" Foreground="White" HorizontalAlignment="Stretch" Height="150">
+                Foreground="White" HorizontalAlignment="Stretch" Height="150">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <StackPanel Orientation="Horizontal">

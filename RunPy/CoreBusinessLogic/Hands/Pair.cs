@@ -41,6 +41,38 @@ namespace CoreBusinessLogic.Hands
             return matches;
         }
 
+        public Suggestion GetSuggestion()
+        {
+            var pairs = GetGroup(tempHand, 2);
+            var premium = new List<CardFigure> { CardFigure._As, CardFigure._King, CardFigure._Queen, CardFigure._Jack };
+            var middle = new List<CardFigure> { CardFigure._10, CardFigure._9, CardFigure._8, CardFigure._7, CardFigure._6 };
+            if (tempHand.Count == 2 )
+            {
+                if (Probability == 100 && pairs.Any(p => premium.Contains(p.Figure)))
+                {
+                    return new Suggestion { Bet = 2, Probability = 100 };
+                }
+                if (Probability == 100 && pairs.Any(p => middle.Contains(p.Figure)))
+                {
+                    return new Suggestion { Bet = 2, Probability = 50 };
+                }
+            }
+
+            if (tempHand.Count == 5)
+            {
+                if (Probability == 100 && pairs.Any(p => premium.Contains(p.Figure)))
+                {
+                    return new Suggestion { Bet = 2, Probability = 80 };
+                }
+                if (Probability == 100 && pairs.Any(p => middle.Contains(p.Figure)))
+                {
+                    return new Suggestion { Bet = 2, Probability = 50 };
+                }
+            }
+
+            return new Suggestion { Bet = 0, Probability = 0 };
+        }
+
         public void Check()
         {
             var tempHand = hand.Concat(desk).ToList();

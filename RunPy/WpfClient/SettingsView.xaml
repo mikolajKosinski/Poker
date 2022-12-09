@@ -40,9 +40,23 @@
                         </DockPanel>
                     </Grid>
                 </GroupBox>
-                <GroupBox Header="Displaying" Grid.Row="2" Grid.Column="1">
-
-                </GroupBox>
+                <!--<GroupBox Header="Displaying" Grid.Row="2" Grid.Column="1">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="1*" />
+                            <ColumnDefinition Width="1*" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="1*" />
+                            <RowDefinition Height="1*" />
+                            <RowDefinition Height="1*" />
+                        </Grid.RowDefinitions>
+                        <Label Grid.Row="1" Grid.Column="0">Display general suggestion</Label>
+                        <Label Grid.Row="2" Grid.Column="0">Display hands suggestions</Label>
+                        <CheckBox Grid.Row="1" Grid.Column="1" IsChecked="{Binding GeneralSuggestions}" />
+                        <CheckBox Grid.Row="2" Grid.Column="1" IsChecked="{Binding HandSuggestions}" />
+                    </Grid>
+                </GroupBox>-->
             </Grid>
         </Grid>
     </Grid>

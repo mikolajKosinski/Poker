@@ -6,12 +6,13 @@ using System.ComponentModel;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using static CoreBusinessLogic.Enums;
 
 namespace WpfClient.Interfaces
 {
     public interface IMainWindoViewModel
     {
-        Task Analyze();
+        Task Analyze(AnalyzeArea aera);
         //void TakeScreenShoot();
         List<ICard> RecognizedCardsList { get; set; }
         ObservableCollection<ICard> HandCards { get; set; }

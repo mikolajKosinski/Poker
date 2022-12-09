@@ -19,7 +19,8 @@ namespace WpfClient.ViewModels
         public SettingsViewModel(ISettings settings)
         {
             this.settings = settings;
-            settings.CountingSystemsList = new List<string>() { "algebraic", "table", "2-4" };
+            settings.CountingSystemsList = new List<string>() { "algebraic", "2-4" };
+            SelectedFormula = CountingSystemsList[0];
         }
 
         public string SelectedFormula
@@ -53,5 +54,8 @@ namespace WpfClient.ViewModels
                 sliderValue = value;
             }
         }
+
+        public bool GeneralSuggestions { get; set; }
+        public bool HandSuggestions { get; set; }
     }
 }

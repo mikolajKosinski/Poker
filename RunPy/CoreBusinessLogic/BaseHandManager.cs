@@ -38,7 +38,7 @@ namespace CoreBusinessLogic
             switch(formula) 
             {
                 case "algebraic":
-                    return decimal.Round((OutsList.Count / cardsLeft) * 100, 2);
+                    return decimal.Round((OutsList.Count / GetDeckExceptTempHand().Count()) * 100, 2);
 
                 case "2-4":
                     var multiplier = cardsLeft * 2;

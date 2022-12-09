@@ -17,6 +17,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Documents;
 using System.Windows.Input;
+using System.Windows.Media;
 using System.Windows.Threading;
 using WpfClient.Interfaces;
 using static CoreBusinessLogic.Enums;
@@ -35,6 +36,48 @@ namespace WpfClient.ViewModels
         //ISettingsViewModel _settings;
 
         #region properties
+
+        private string _progressInfo;
+        public string ProgressInfo
+        {
+            get
+            {
+                return _progressInfo;
+            }
+            set
+            {
+                _progressInfo = value;
+                NotifyPropertyChanged(nameof(ProgressInfo));
+            }
+        }
+
+        private Visibility _progressBarVisibility;
+        public Visibility ProgressBarVisibility
+        {
+            get
+            {
+                return _progressBarVisibility;
+            }
+            set
+            {
+                _progressBarVisibility = value;
+                NotifyPropertyChanged(nameof(ProgressBarVisibility));
+            }
+        }
+
+        private decimal _progressBarValue;
+        public decimal ProgressBarValue
+        {
+            get
+            {
+                return _progressBarValue;
+            }
+            set
+            {
+                _progressBarValue = value;
+                NotifyPropertyChanged(nameof(ProgressBarValue));
+            }
+        }
 
         private bool _isFlushEnable;
         public bool IsFlushEnable
@@ -565,7 +608,10 @@ namespace WpfClient.ViewModels
         public CardArea SingleCardArea { get; set; }
 
         #region commands
+        public ICommand CleanCommand { get; set; }
         public ICommand AnalyzeCommand { get; set; }
+        public ICommand AnalyzeHandCommand { get; set; }
+        public ICommand AnalyzeDeskCommand { get; set; }
         public ICommand GeneralTabCommand { get; set; }
         public ICommand RoyalTabCommand { get; set; }
         public ICommand StraightFlushTabCommand { get; set; }
@@ -666,12 +712,13 @@ namespace WpfClient.ViewModels
 
         public MainWindowViewModel(ICardRecognition cardRecognition, IFigureMatcher figureMatcher, ICardManager cardManager, ISettingsViewModel settingsViewModel, Autofac.IContainer container)
         {
+            ProgressBarVisibility = Visibility.Collapsed;
             this.SettingsViewModel = settingsViewModel;
             _matcher = figureMatcher;
             _matcher.SetPokerHandsDict();
             CardsOnHand = new ObservableCollection<string>();
             NeededCardsList = new ObservableCollection<ICard>();
-            AreasViewModel = new AreasWindowViewModel(this);
+            AreasViewModel = new AreasWindowViewModel(this, figureMatcher);
             //SettingsViewModel = new SettingsViewModel(container);
             RecognizedCardsList = new List<ICard>();
             DeskCards = new ObservableCollection<ICard>();
@@ -682,7 +729,10 @@ namespace WpfClient.ViewModels
             //_deskPointsList = new List<Tuple<int, int, int, int>>();
             //_handPointsList = new List<Tuple<int, int, int, int>>();
             //_cardRecognized += MainWindowViewModel__cardRecognized;
+            CleanCommand = new CustomCommand(CleanButtonCommand, CanSelect);
             AnalyzeCommand = new CustomCommand(AnalyzeButtonCommand, CanSelect);
+            AnalyzeHandCommand = new CustomCommand(AnalyzeHandButtonCommand, CanSelect);
+            AnalyzeDeskCommand = new CustomCommand(AnalyzeDeskButtonCommand, CanSelect);
             GeneralTabCommand = new CustomCommand(ShowGeneralTab, CanSelect);
             RoyalTabCommand = new CustomCommand(ShowRoyalTab, CanSelect);
             StraightFlushTabCommand = new CustomCommand(ShowStraightFlushTab, CanSelect);
@@ -848,6 +898,15 @@ namespace WpfClient.ViewModels
             IsAreasVisible = false;
             IsMainVisible = false;
             IsSettingsVisible = true;
+            IsGeneralTabVisible = false;
+            IsRoyalTabVisible = false;
+            IsStraightFlushTabVisible = false;
+            IsFourOfKindTabVisible = false;
+            IsFullTabVisible = false;
+            IsFlushTabVisible = false;
+            IsStraightTabVisible = false;
+            IsThreeOfKindTabVisible = false;
+            IsPairTabVisible = false;
         }
 
         public void ShowMainWindow(object sender)
@@ -862,12 +921,53 @@ namespace WpfClient.ViewModels
             IsSettingsVisible = false;
             IsAreasVisible = true;
             IsMainVisible = false;
+            IsGeneralTabVisible = false;
+            IsRoyalTabVisible = false;
+            IsStraightFlushTabVisible = false;
+            IsFourOfKindTabVisible = false;
+            IsFullTabVisible = false;
+            IsFlushTabVisible = false;
+            IsStraightTabVisible = false;
+            IsThreeOfKindTabVisible = false;
+            IsPairTabVisible = false;
         }
 
         private void AnalyzeButtonCommand(object sender)
         {
-            Task.Run(async () => await Analyze());
+            Task.Run(async () => await Analyze(AnalyzeArea.All));
             //Analyze();
+        }
+
+        private void AnalyzeHandButtonCommand(object sender)
+        {
+            Task.Run(async () => await Analyze(AnalyzeArea.Hand));
+            Clean();
+            //Analyze();
+        }
+
+        private void AnalyzeDeskButtonCommand(object sender)
+        {
+            Task.Run(async () => await Analyze(AnalyzeArea.Desk));
+            Clean();
+            //Analyze();
+        }
+
+        private void CleanButtonCommand(object sender)
+        {
+            _matcher.Clean();
+            ProgressBarValue= 0;
+            Hands.Clear();
+            DeskCards.Clear();
+            HandCards.Clear();
+        }
+
+        void Clean()
+        {
+            _matcher.Clean();
+            ProgressBarValue = 0;
+            Hands.Clear();
+            DeskCards.Clear();
+            HandCards.Clear();
         }
 
         private void ShowGeneralTab(object sender)
@@ -1043,51 +1143,76 @@ namespace WpfClient.ViewModels
             }
         }
 
-        public async Task Analyze()
+        public async Task Analyze(AnalyzeArea at)
         {
-            ShowGeneralTab(null);
-            GetCards(DeskArea, "allCards");
-            var flopCount = Convert.ToInt32(_cardRecognition.GetHand());
+            ProgressBarVisibility = Visibility.Visible;
+            int flopCount;
 
-            Parallel.For(0, flopCount, (i, state) =>
+            if (at == AnalyzeArea.Desk || at == AnalyzeArea.All)
             {
-                var colorPath = @$"C:\Users\mkosi\Documents\GitHub\Poker\RunPy\WpfClient\obj\Debug\\net5.0-windows\C{i}.PNG";
-                var figurePath = @$"C:\Users\mkosi\Documents\GitHub\Poker\RunPy\WpfClient\obj\Debug\\net5.0-windows\F{i}.PNG";
-                var card = _cardRecognition.GetCard(figurePath, colorPath);
-                _matcher.AddCardToFlop(card);
+                ProgressInfo = "Scanning Desk area";
+                GetCards(DeskArea, "allCards");
+                ProgressBarValue += 10;
+                flopCount = Convert.ToInt32(_cardRecognition.GetHand());
+                ProgressInfo = "Scanning Flop cards";
+                Parallel.For(0, flopCount, (i, state) =>
+                {
+                    var colorPath = @$"C:\Users\mkosi\Documents\GitHub\Poker\RunPy\WpfClient\obj\Debug\\net5.0-windows\C{i}.PNG";
+                    var figurePath = @$"C:\Users\mkosi\Documents\GitHub\Poker\RunPy\WpfClient\obj\Debug\\net5.0-windows\F{i}.PNG";
+                    var card = _cardRecognition.GetCard(figurePath, colorPath);
+                    _matcher.AddCardToFlop(card);
 
-                Application.Current.Dispatcher.BeginInvoke(new Action(() => DeskCards.Add(card)));
-                File.Delete(colorPath);
-                File.Delete(figurePath);
-            });
+                    Application.Current.Dispatcher.BeginInvoke(new Action(() => DeskCards.Add(card)));
+                    Application.Current.Dispatcher.BeginInvoke(new Action(() => ProgressInfo = $"Working {i} of {flopCount} flop cards "));
+                    Application.Current.Dispatcher.BeginInvoke(new Action(() => { ProgressBarValue += 10; }));
+                    File.Delete(colorPath);
+                    File.Delete(figurePath);
+                });
+            }
 
-            GetCards(HandArea, "allCards");
-            flopCount = Convert.ToInt32(_cardRecognition.GetHand());
-
-            Parallel.For(0, flopCount, (i, state) =>
+            if (at == AnalyzeArea.Hand || at == AnalyzeArea.All)
             {
-                var colorPath = @$"C:\Users\mkosi\Documents\GitHub\Poker\RunPy\WpfClient\obj\Debug\\net5.0-windows\C{i}.PNG";
-                var figurePath = @$"C:\Users\mkosi\Documents\GitHub\Poker\RunPy\WpfClient\obj\Debug\\net5.0-windows\F{i}.PNG";
-                var card = _cardRecognition.GetCard(figurePath, colorPath);
-                _matcher.AddCardToHand(card);
+                GetCards(HandArea, "allCards");
+                ProgressInfo = "Scanning Hand area";
+                flopCount = Convert.ToInt32(_cardRecognition.GetHand());
 
-                Application.Current.Dispatcher.BeginInvoke(new Action(() => HandCards.Add(card)));
-                File.Delete(colorPath);
-                File.Delete(figurePath);
-            });
+                Parallel.For(0, flopCount, (i, state) =>
+                {
+                    var colorPath = @$"C:\Users\mkosi\Documents\GitHub\Poker\RunPy\WpfClient\obj\Debug\\net5.0-windows\C{i}.PNG";
+                    var figurePath = @$"C:\Users\mkosi\Documents\GitHub\Poker\RunPy\WpfClient\obj\Debug\\net5.0-windows\F{i}.PNG";
+                    var card = _cardRecognition.GetCard(figurePath, colorPath);
+                    _matcher.AddCardToHand(card);
+
+                    Application.Current.Dispatcher.BeginInvoke(new Action(() => HandCards.Add(card)));
+                    Application.Current.Dispatcher.BeginInvoke(new Action(() => ProgressInfo = $"Working {i} of {flopCount} hand cards "));
+                    Application.Current.Dispatcher.BeginInvoke(new Action(() => { ProgressBarValue += 10; }));
+                    File.Delete(colorPath);
+                    File.Delete(figurePath);
+                });
+            }
 
             //_matcher.AddCardToHand(new Card(CardFigure._As, CardColor.heart));
+            //await Task.Delay(1000);
+            //ProgressBarValue = 10;
             //_matcher.AddCardToHand(new Card(CardFigure._3, CardColor.heart));
-
+            //await Task.Delay(1000);
+            //ProgressBarValue = 20;
             //_matcher.AddCardToFlop(new Card(CardFigure._2, CardColor.heart));
+            //await Task.Delay(1000);
+            //ProgressBarValue = 30;
             //_matcher.AddCardToFlop(new Card(CardFigure._Queen, CardColor.heart));
+            //await Task.Delay(1000);
+            //ProgressBarValue = 40;
             //_matcher.AddCardToFlop(new Card(CardFigure._10, CardColor.club));
+            //await Task.Delay(1000);
+            //ProgressBarValue = 50;
+            
 
             var ordered = _matcher.PokerHandsDict.ToDictionary(x => x.Key, x => x.Value);
             ordered = _matcher.PokerHandsDict.OrderByDescending(p => p.Value.Probability).ToDictionary(x => x.Key, x => x.Value);
             
             _matcher.CheckHand();
-
+            ProgressInfo = "Counting cards";
             RoyalFlushTabName = $"Royal flush [{ordered[Enums.PokerHands.RoyalFlush].Probability}%]";
             StraightFlushTabName = $"Straight flush [{ordered[Enums.PokerHands.StraightFlush].Probability}%]";
             FlushTabName = $"Flush [{ordered[Enums.PokerHands.Flush].Probability}%]";
@@ -1106,6 +1231,8 @@ namespace WpfClient.ViewModels
             IsStraightEnable = ordered[Enums.PokerHands.Straight].Probability > Convert.ToInt32(SettingsViewModel.SliderValue);
             IsStraightFlushEnable = ordered[Enums.PokerHands.StraightFlush].Probability > Convert.ToInt32(SettingsViewModel.SliderValue);
             IsThreeEnable = ordered[Enums.PokerHands.ThreeOfKind].Probability > Convert.ToInt32(SettingsViewModel.SliderValue);
+            ProgressBarVisibility = Visibility.Collapsed;
+            ShowGeneralTab(null);
 
             foreach (var item in ordered.Keys)
             {

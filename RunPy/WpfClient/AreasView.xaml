@@ -25,7 +25,7 @@
             <!--<Button Content="Analyze" Width="80" Height="30" Command="{Binding AnalyzeCommand}" Grid.Column="1" Grid.Row="0"/>
             <Button Content="Add" Command="{Binding AddCommand}" />
             <Button Content="Remove" Command="{Binding RemoveCommand}" />-->
-            <GroupBox Header="Desk" Grid.Column="2" >
+            <!--<GroupBox Header="Desk" Grid.Column="2" >
                 <ListBox ItemsSource="{Binding DeskCards, Mode=OneWay}" Grid.Column="2" Height="150" Width="80">
                     <ListBox.ItemTemplate>
                         <DataTemplate>
@@ -36,8 +36,8 @@
                         </DataTemplate>
                     </ListBox.ItemTemplate>
                 </ListBox>
-            </GroupBox>
-            <GroupBox Header="Hand" Grid.Column="3">
+            </GroupBox>-->
+            <!--<GroupBox Header="Hand" Grid.Column="3">
                 <ListBox ItemsSource="{Binding HandCards, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" Grid.Column="2" Height="150" Width="80">
                     <ListBox.ItemTemplate>
                         <DataTemplate>
@@ -48,9 +48,9 @@
                         </DataTemplate>
                     </ListBox.ItemTemplate>
                 </ListBox>
-            </GroupBox>
+            </GroupBox>-->
         </StackPanel>
-        <StackPanel Grid.Row="3" Orientation="Horizontal" Grid.Column="2">
+        <!--<StackPanel Grid.Row="3" Orientation="Horizontal" Grid.Column="2">
             <ListBox ItemsSource="{Binding DeskCards, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" Grid.Column="2" Height="150" Width="80">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
@@ -81,6 +81,6 @@
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
-        </StackPanel>
+        </StackPanel>-->
     </Grid>
 </UserControl>

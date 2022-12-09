@@ -33,5 +33,12 @@ namespace CoreBusinessLogic
             second,
             third
         }
+
+        public enum AnalyzeArea
+        {
+            Hand,
+            Desk,
+            All
+        }
     }
 }

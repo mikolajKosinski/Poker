@@ -24,6 +24,7 @@ namespace CoreBusinessLogic.Hands
         {
             var tempHand = hand.Concat(desk).ToList();
             CardColor color;
+            OutsList = GetOuts().ToList();
 
             if (_gotFlush())
             {               
@@ -41,8 +42,7 @@ namespace CoreBusinessLogic.Hands
 
             if (Probability == 0 || tempHand.Count() == 7) return;
 
-            _availableCards = tempHand.Where(x => x.Color == color).ToList();
-            OutsList = GetOuts().ToList();
+            _availableCards = tempHand.Where(x => x.Color == color).ToList();           
         }
 
         private bool _gotFlush()

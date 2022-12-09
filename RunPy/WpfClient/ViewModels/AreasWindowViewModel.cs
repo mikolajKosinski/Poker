@@ -6,11 +6,14 @@ using System.ComponentModel;
 using System.Text;
 using System.Windows.Input;
 using WpfClient.Interfaces;
+using static CoreBusinessLogic.Enums;
 
 namespace WpfClient.ViewModels
 {
     public class AreasWindowViewModel : IAreasWindowViewModel
     {
+        IFigureMatcher figureMatcher;
+
         public event PropertyChangedEventHandler PropertyChanged;
         private void NotifyPropertyChanged(string propertyName = "")
         {
@@ -59,23 +62,42 @@ namespace WpfClient.ViewModels
         public ICommand DeskSelectCommand { get; set; }
         public ICommand SingleCardCommand { get; set; }
         public ICommand AnalyzeCommand { get; set; }
+        public ICommand AnalyzeHandCommand { get; set; }
+        public ICommand AnalyzeDeskCommand { get; set; }
+        public ICommand NewGameCommand { get; set; }
 
-        public AreasWindowViewModel(IMainWindoViewModel vm)
+        public AreasWindowViewModel(IMainWindoViewModel vm, IFigureMatcher figureMatcher)
         {
             _mainWindowVM = vm;
             DeskSelectCommand = new CustomCommand(SelectDesk, CanSelect);
             HandSelectCommand = new CustomCommand(SelectHand, CanSelect);
             SingleCardCommand = new CustomCommand(SelectSingleCard, CanSelect);
             AnalyzeCommand = new CustomCommand(CallAnalyzeCommand, CanSelect);
+            this.figureMatcher = figureMatcher;
             //IsVisible = false;
         }
 
         private void CallAnalyzeCommand(object sender)
         {
-            _mainWindowVM.Analyze();
+            _mainWindowVM.Analyze(AnalyzeArea.All);            
+        }
+
+        private void CallAnalyzeHandCommand(object sender)
+        {
+            _mainWindowVM.Analyze(AnalyzeArea.All);
+        }
+
+        private void CallAnalyzeDeskCommand(object sender)
+        {
+            _mainWindowVM.Analyze(AnalyzeArea.Desk);
         }
 
         public bool CanSelect(object parameter)
+        {
+            return true;
+        }
+
+        public bool CanClean(object parameter)
         {
             return true;
         }
