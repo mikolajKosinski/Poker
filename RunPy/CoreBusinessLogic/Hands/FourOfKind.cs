@@ -32,8 +32,9 @@ namespace CoreBusinessLogic.Hands
                 return;
             }
 
-            Probability = GetProbability();
             OutsList = GetOuts().ToList();
+            Probability = GetProbability();
+            
             //var group = GetGroup(tempHand, 4);
             //if (!group.Any()) group = GetGroup(tempHand, 3);
             //if (!group.Any()) group = GetGroup(tempHand, 2);

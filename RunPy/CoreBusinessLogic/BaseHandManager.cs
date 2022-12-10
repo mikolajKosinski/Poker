@@ -34,11 +34,12 @@ namespace CoreBusinessLogic
         {
             var formula = settings.SelectedFormula.ToString();
             var cardsLeft = 7 - tempHand.Count;
+            decimal chance = (decimal)OutsList.Count / (decimal)GetDeckExceptTempHand().Count();
 
-            switch(formula) 
+            switch (formula) 
             {
                 case "algebraic":
-                    return decimal.Round((OutsList.Count / GetDeckExceptTempHand().Count()) * 100, 2);
+                    return decimal.Round(chance * 100, 2);
 
                 case "2-4":
                     var multiplier = cardsLeft * 2;
