@@ -734,8 +734,9 @@ namespace WpfClient.ViewModels
             NeededCardsList = new ObservableCollection<ICard>();
             AreasViewModel = new AreasWindowViewModel(this, figureMatcher);
             CheckList = new ObservableCollection<string>();
-
-            
+            this.SettingsViewModel.ThresholdChanged += SettingsViewModel_ThresholdChanged;
+            this.SettingsViewModel.FormulaChanged += SettingsViewModel_FormulaChanged;
+            if (!string.IsNullOrWhiteSpace(settingsViewModel.SelectedFormula)) CheckList.Add($"Formula");
             //SettingsViewModel = new SettingsViewModel(container);
             RecognizedCardsList = new List<ICard>();
             DeskCards = new ObservableCollection<ICard>();
@@ -812,6 +813,16 @@ namespace WpfClient.ViewModels
                 { CardColor.spade, "spade" }};
         }
 
+        private void SettingsViewModel_FormulaChanged()
+        {
+            
+        }
+
+        private void SettingsViewModel_ThresholdChanged()
+        {
+            AddToCheckList("Threshold");
+        }
+
         //private void _handCards_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         //{
         //    _deskRecognized = DeskCards.Count == _deskCardsCount;
@@ -831,7 +842,7 @@ namespace WpfClient.ViewModels
         //    if(_handRecognized && _deskRecognized)
         //    {
         //        var matcher = new FigureMatcher();
-                
+
         //        foreach(var card in DeskCards)
         //        {
         //            matcher.AddCardToFlop(card);
@@ -1405,7 +1416,11 @@ namespace WpfClient.ViewModels
         //    File.Delete(colorPath);
         //}
 
-       
+        public void AddToCheckList(string check)
+        {
+            if (CheckList.Contains(check)) return;
+            CheckList.Add(check);
+        }
 
         private async Task<ICard> GetCard(string figurePath, string colorPath)
         {

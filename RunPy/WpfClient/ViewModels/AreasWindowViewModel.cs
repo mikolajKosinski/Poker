@@ -122,6 +122,9 @@ namespace WpfClient.ViewModels
             var pageAnalyze = new ScreenAnalyzePage(_mainWindowVM, this, at);
             pageAnalyze.Closed += PageAnalyze_Closed;
             _mainWindowVM.HideWindow();
+
+            var check = at == AnalyzeType.Desk ? "Desk Area" : "Hand Area";
+            _mainWindowVM.AddToCheckList(check);
             pageAnalyze.Show();
         }
 

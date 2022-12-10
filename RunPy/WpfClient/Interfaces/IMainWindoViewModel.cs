@@ -25,7 +25,7 @@ namespace WpfClient.Interfaces
         CardArea DeskArea { get; set; }
         CardArea HandArea { get; set; }
         CardArea SingleCardArea { get; set; }
-
+        void AddToCheckList(string check);
         void SelectTab(string name);
     }
 }

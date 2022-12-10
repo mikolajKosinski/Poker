@@ -32,6 +32,7 @@ namespace WpfClient.ViewModels
             set
             {
                 settings.SelectedFormula = value;
+                OnFormulaChanged();
             }
         }
 
@@ -52,7 +53,24 @@ namespace WpfClient.ViewModels
             set
             {
                 sliderValue = value;
+                OnThresholdChanged();
             }
+        }
+
+        public delegate void FormulaChangedHandler();
+        public event FormulaChangedHandler FormulaChanged;
+        private void OnFormulaChanged()
+        {
+            if (FormulaChanged != null)
+                FormulaChanged();
+        }
+
+        public delegate void ThresholdHandler();
+        public event ThresholdHandler ThresholdChanged;
+        private void OnThresholdChanged()
+        {
+            if (ThresholdChanged != null)
+                ThresholdChanged();
         }
 
         public bool GeneralSuggestions { get; set; }
