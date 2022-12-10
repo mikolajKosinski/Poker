@@ -106,7 +106,7 @@ namespace CoreBusinessLogic.Hands
             }
             else
             {
-                Probability = decimal.Round((outs / cardsLeft) * 100, 2);
+                Probability = GetProbability();
             }
         }
     }

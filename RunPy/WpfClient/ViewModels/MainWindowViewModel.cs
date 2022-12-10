@@ -471,6 +471,20 @@ namespace WpfClient.ViewModels
             }
         }
 
+        private ObservableCollection<string> _checkList;
+        public ObservableCollection<string> CheckList
+        {
+            get
+            {
+                return _checkList;
+            }
+            set
+            {
+                _checkList = value;
+                NotifyPropertyChanged(nameof(CheckList));
+            }
+        }
+
         private ObservableCollection<string> _cardsOnHand;
         public ObservableCollection<string> CardsOnHand
         {
@@ -719,6 +733,9 @@ namespace WpfClient.ViewModels
             CardsOnHand = new ObservableCollection<string>();
             NeededCardsList = new ObservableCollection<ICard>();
             AreasViewModel = new AreasWindowViewModel(this, figureMatcher);
+            CheckList = new ObservableCollection<string>();
+
+            
             //SettingsViewModel = new SettingsViewModel(container);
             RecognizedCardsList = new List<ICard>();
             DeskCards = new ObservableCollection<ICard>();

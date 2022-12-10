@@ -39,8 +39,7 @@ namespace CoreBusinessLogic.Hands
 
         public void Check()
         {
-            var outs = GetOuts();
-            var tempHand = hand.Concat(desk).ToList();
+            OutsList = GetOuts().ToList();
             if (CheckGroupCount(tempHand, 3))
             {
                 var threeOf = GetGroup(tempHand, 3);
@@ -52,15 +51,14 @@ namespace CoreBusinessLogic.Hands
             }
             else
             {
-                decimal cardsLeft = 52 - tempHand.Count();
-                Probability = decimal.Round((outs.Count / cardsLeft) * 100, 2);
+                //decimal cardsLeft = 52 - tempHand.Count();
+                Probability = GetProbability();
 
                 if (Probability < 100 && tempHand.Count() == 7)
                     Probability = 0;
 
-                if (Probability == 0) return;
 
-                OutsList = GetOuts().ToList();
+                
                 //if (CheckGroupCount(tempHand, 2)) CardList = GetGroup(tempHand, 2);
                 //Probability = (int)GetOddsPercentage(GetOuts().Count());
                 //OutsList = GetOuts().ToList();

@@ -132,15 +132,14 @@ namespace CoreBusinessLogic.Hands
                 //var lowestCard = tempHand.OrderByDescending(x => x.Figure).Last();
                 //var elements = tempHand.Where(p => p.Figure >= lowestCard.Figure).OrderByDescending(x => x.Figure).Take(5).ToList();
                 //CardList = GetWithNoRept(elements);
-                decimal outs = GetOuts().Count();
-                decimal cardsLeft = 52 - tempHand.Count();
-                Probability = decimal.Round((outs / cardsLeft)*100, 2);
+                OutsList = GetOuts().ToList();
+                Probability = GetProbability();
 
                 if (Probability == 0 || tempHand.Count() == 7) return;
                 //Probability = (int)GetOddsPercentage(GetOuts().Count());
                 //Probability = GetOuts().Count() * 4;
-                OutsList = GetOuts().ToList();
-                OutsCount = GetOuts().Count();
+                //OutsList = GetOuts().ToList();
+                //OutsCount = GetOuts().Count();
                 return;
             }
 

@@ -23,14 +23,13 @@ namespace CoreBusinessLogic.Hands
         public string Name { get; } = "RoyalFlush";
         public void Check()
         {
-            decimal outs = GetOuts().Count();
-            decimal cardsLeft = 52 - tempHand.Count();
-            Probability = decimal.Round((outs / cardsLeft) * 100, 2);
+            OutsList = GetOuts().ToList();
+            Probability = GetProbability();
 
             if (Probability == 0 || tempHand.Count() == 7) return;
 
-            OutsList = GetOuts().ToList();
-            OutsCount = GetOuts().Count();
+         
+            //OutsCount = GetOuts().Count();
         }
 
         public IList<ICard> GetOuts()

@@ -23,14 +23,13 @@ namespace CoreBusinessLogic.Hands
         public string Name { get; } = "StraightFlush";
         public void Check()
         {
-            var outs = GetOuts();
-            decimal cardsLeft = 52 - tempHand.Count();
-            Probability = decimal.Round((outs.Count() / cardsLeft) * 100, 2);
+            OutsList = GetOuts().ToList();
+            Probability = GetProbability();
 
             if (Probability == 0 || tempHand.Count() == 7) return;
 
-            OutsList = outs.ToList();
-            OutsCount = GetOuts().Count();
+            //OutsList = outs.ToList();
+            //OutsCount = GetOuts().Count();
         }
 
         private IList<int> _allFigures = new List<int>() { 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14 };

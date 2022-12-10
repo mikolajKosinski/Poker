@@ -25,55 +25,14 @@ namespace CoreBusinessLogic.Hands
             {
                 Probability = 100;
             }
-            //else if(AreTwoPairsAvailable() && !AreThreeOfKindAvailable())
-            //{
-            //    //decimal outs = GetOuts().Count();
-            //    //decimal cardsLeft = 52 - tempHand.Count();
-            //    //Probability = decimal.Round((outs / cardsLeft) * 100, 2);
 
-            //    var pairs = GetAllPairs(tempHand);
-            //    var first = pairs.Item1;
-            //    var second = pairs.Item2;
-            //    foreach (var card in first) 
-            //    {
-            //        _cardsOnHand.Add(card);
-            //    }
-            //    foreach (var card in second)
-            //    {
-            //        _cardsOnHand.Add(card);
-            //    }
-            //}
-            //else if(AreThreeOfKindAvailable())
-            //{
-            //    var group = GetGroup(tempHand, 3);
-            //    foreach (var card in group)
-            //    {
-            //        _cardsOnHand.Add(card);
-            //    }
-            //}
-            //else
-            //{
-            //    if (GetGroup(tempHand, 2).Any())
-            //    {
-            //        var group = GetGroup(tempHand, 2);
-            //        foreach(var card in group)
-            //        {
-            //            _cardsOnHand.Add(card);
-            //        }
-            //    }
-            //}
+            OutsList = GetOuts().ToList();
 
-            //var group = GetGroup(tempHand, 4);
-            //if (!group.Any()) group = GetGroup(tempHand, 3);
-            //if (!group.Any()) group = GetGroup(tempHand, 2);
-            var outs = GetOuts();
-            decimal cardsLeft = 52 - tempHand.Count();
-
-            Probability = decimal.Round((outs.Count() / cardsLeft) * 100, 2);
+            Probability = GetProbability();
 
             if (Probability == 0 || tempHand.Count() == 7) return;
             
-            OutsList = outs.ToList();
+            
             //CardList = group;
             //var pair = GetGroup(tempHand, 2);
             //var threeOfKind = GetGroup(tempHand, 3);
