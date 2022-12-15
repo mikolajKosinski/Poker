@@ -14,8 +14,8 @@ namespace CoreBusinessLogic.Hands
 
         }
 
-        public IList<ICard> GetCards() => _availableCards;
-        private IList<ICard> _availableCards = new List<ICard>();
+        public void UpdateHand(ICard card) => hand.Add(card);
+        public void UpdateDesk(ICard card) => desk.Add(card);
         public string Name { get; } = "FourOf";
 
         public void Check()

@@ -15,9 +15,9 @@ namespace CoreBusinessLogic.Hands
 
         public string Name { get; } = "Straight";
         private IList<int> _allFigures = new List<int>() { 2,3,4,5,6,7,8,9,10,11,12,13,14 };
-        private List<ICard> _availableCards = new List<ICard>();
 
-        public IList<ICard> GetCards() => _availableCards;
+        public void UpdateHand(ICard card) => hand.Add(card);
+        public void UpdateDesk(ICard card) => desk.Add(card);
 
         public IList<ICard> GetOuts()
         {

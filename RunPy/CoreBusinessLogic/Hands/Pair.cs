@@ -15,8 +15,8 @@ namespace CoreBusinessLogic.Hands
             Probability = 0;
         }
 
-        public IList<ICard> GetCards() => _cardsOnHand;
-        private IList<ICard> _cardsOnHand = new List<ICard>();
+        public void UpdateHand(ICard card) => hand.Add(card);
+        public void UpdateDesk(ICard card) => desk.Add(card);
 
         public string Name { get; } = "Pair";
 
@@ -91,17 +91,17 @@ namespace CoreBusinessLogic.Hands
                 if (pair.Any())
                 {
                     pair.ForEach(p => CardList.Add(p));
-                    _cardsOnHand = pair;
+                    _availableCards = pair;
                 }
                 if (threeOf.Any())
                 {
                     threeOf.ForEach(p => CardList.Add(p));
-                    _cardsOnHand = threeOf;
+                    _availableCards = threeOf;
                 }
                 if (fourOf.Any())
                 {
                     fourOf.ForEach(p => CardList.Add(p));
-                    _cardsOnHand = fourOf;
+                    _availableCards = fourOf;
                 }
             }
             else

@@ -21,6 +21,9 @@ namespace CoreBusinessLogic
             this.settings= settings;
         }
 
+        protected List<ICard> _availableCards = new List<ICard>();
+        public IList<ICard> GetCards() => _availableCards;
+
         public decimal Probability { get; set; }
         public int OutsCount { get; set; }
         public List<ICard> OutsList { get; set; }

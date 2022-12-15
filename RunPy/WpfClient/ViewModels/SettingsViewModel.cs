@@ -7,6 +7,8 @@ using System.Windows.Media;
 using System.Windows;
 using WpfClient.Interfaces;
 using System.Windows.Controls;
+using System.Windows.Input;
+using System.Reflection.Metadata;
 
 namespace WpfClient.ViewModels
 {
@@ -14,14 +16,35 @@ namespace WpfClient.ViewModels
     {
         private IContainer _container;
         private ISettings settings;
-        private string sliderValue;
+        private string threshold;
 
         public SettingsViewModel(ISettings settings)
         {
             this.settings = settings;
             settings.CountingSystemsList = new List<string>() { "algebraic", "2-4" };
-            SelectedFormula = CountingSystemsList[0];
+            SelectedFormula = settings.SelectedFormula;
+            ThresholdValue = settings.SelectedThreshold;
+            CountInfoCommand = new CustomCommand(ThresholdInfoButtonCommand, CanSelect);
+            ThresholdInfoCommand = new CustomCommand(CountInfoButtonCommand, CanSelect);
         }
+
+        private void ThresholdInfoButtonCommand(object sender)
+        {
+            MessageBox.Show("Threshold");
+        }
+
+        private void CountInfoButtonCommand(object sender)
+        {
+            MessageBox.Show("Count");
+        }
+
+        public bool CanSelect(object parameter)
+        {
+            return true;
+        }
+
+        public ICommand CountInfoCommand { get; set; }
+        public ICommand ThresholdInfoCommand { get; set; }
 
         public string SelectedFormula
         {
@@ -44,15 +67,15 @@ namespace WpfClient.ViewModels
             }
         }
 
-        public string SliderValue
+        public string ThresholdValue
         {
             get
             {
-                return sliderValue;
+                return threshold;
             }
             set
             {
-                sliderValue = value;
+                threshold = value;
                 OnThresholdChanged();
             }
         }

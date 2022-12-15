@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+using static CoreBusinessLogic.CardRecognition;
 
 namespace CoreBusinessLogic
 {
@@ -14,9 +15,14 @@ namespace CoreBusinessLogic
         List<Tuple<decimal, decimal, decimal, decimal>> GetDesk();
         string GetAllCards(string fileName);
         string GetColorFigure(int cardsCount, string cardName);
-        string GetHand();
+        string GetCardsCountOnDesk();
         Task<string> GetHandAsync();
-        ICard GetCard(string figure, string color);
+        ICard GetCard(string figure, string color, int number, string area);
         string CenterFigure(string path);
+        CardFigure RecognizeFigure(string imagePath, int number);
+        CardColor RecognizeColor(string imagePath, int number);
+        event CardHandler CardRecognised;
+        Dictionary<string, CardFigure> FigureDict { get; set; }
+        Dictionary<string, CardColor> ColorDict { get; set; }
     }
 }

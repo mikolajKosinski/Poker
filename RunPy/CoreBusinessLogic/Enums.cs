@@ -24,7 +24,8 @@ namespace CoreBusinessLogic
             Full,
             FourOfKind,
             StraightFlush,
-            RoyalFlush
+            RoyalFlush,
+            none
         }
 
         public enum ProbabilityCountingFormula

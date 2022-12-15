@@ -10,7 +10,8 @@ namespace CoreBusinessLogic.Hands
     public class ThreeOfKind : BaseHandManager, IFigureManager
     {
         public ThreeOfKind(IList<ICard> hand, IList<ICard> desk, ISettings container) : base(hand, desk, container) { }
-        private IList<ICard> _cardsOnHand = new List<ICard>();
+        public void UpdateHand(ICard card) => hand.Add(card);
+        public void UpdateDesk(ICard card) => desk.Add(card);
         public string Name { get; } = "ThreeOfKind";
 
         public IList<ICard> GetOuts()
@@ -22,9 +23,9 @@ namespace CoreBusinessLogic.Hands
 
             if (tempHand.Count < 7)
             {
-                var pair = _cardsOnHand = GetGroup(tempHand, 2);
-                var threeOf = _cardsOnHand = GetGroup(tempHand, 3);
-                _cardsOnHand = threeOf.Any() ? threeOf : pair;
+                var pair = _availableCards = GetGroup(tempHand, 2);
+                var threeOf = _availableCards = GetGroup(tempHand, 3);
+                _availableCards = threeOf.Any() ? threeOf : pair;
             }
 
             foreach (var list in groups)
@@ -35,7 +36,7 @@ namespace CoreBusinessLogic.Hands
             return outs;
         }
 
-        public IList<ICard> GetCards() => _cardsOnHand;
+        //public IList<ICard> GetCards() => _availableCards;
 
         public void Check()
         {

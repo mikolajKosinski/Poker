@@ -11,26 +11,26 @@
         WindowState="Maximized"
         Title="ScreenAnalyzePage" Height="450" Width="800">
     <Grid>
-        <Grid.ColumnDefinitions>
+        <!--<Grid.ColumnDefinitions>
             <ColumnDefinition Width="9*" />
             <ColumnDefinition Width="1*" />
-        </Grid.ColumnDefinitions>
+        </Grid.ColumnDefinitions>-->
         <Canvas MouseMove="ScreenAnalyzePage_MouseMove" x:Name="DeskCanv" Grid.Column="0"                
           Background="Blue" Opacity="0.5">
             <Rectangle Name="DeskAreaRect" Fill="Yellow" Visibility="{Binding DeskAreaVisibiity}"
-             Width="450" Height="150"/>            
+             Width="auto" Height="auto"/>            
         </Canvas>
-        <Canvas MouseMove="ScreenAnalyzePage_MouseMove" x:Name="SingleCardCanv" Grid.Column="0"                
+        <!--<Canvas MouseMove="ScreenAnalyzePage_MouseMove" x:Name="SingleCardCanv" Grid.Column="0"                
           Background="Blue" Opacity="0.5">
             <Rectangle Name="SingleCardAreaRect" Fill="Yellow" Visibility="{Binding SingleCardAreaVisibility}"
              Width="80" Height="100" />
-        </Canvas>
+        </Canvas>-->
         <Canvas MouseMove="ScreenAnalyzePage_MouseMove" x:Name="HandCanv" Grid.Column="0"                
           Background="Blue" Opacity="0.5">
             <Rectangle Name="HandAreaRect" Fill="Yellow" Visibility="{Binding HandAreaCanv}"
-             Width="160" Height="120"/>
+             Width="auto" Height="auto"/>
         </Canvas>
-        <StackPanel Grid.Column="1" HorizontalAlignment="Stretch">
+        <!--<StackPanel Grid.Column="1" HorizontalAlignment="Stretch">
             <ListBox 
                 ItemsSource="{Binding RecoList}" 
                 Foreground="White" HorizontalAlignment="Stretch" Height="150">
@@ -46,6 +46,6 @@
             <StackPanel Orientation="Horizontal">
                 <Button Content="Appluy Cards" Click="Button_Click_2" />
             </StackPanel>
-        </StackPanel>
+        </StackPanel>-->
     </Grid>
 </Window>

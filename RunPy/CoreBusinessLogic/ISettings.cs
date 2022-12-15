@@ -8,5 +8,6 @@ namespace CoreBusinessLogic
     {
         IList<string> CountingSystemsList { get; set; }
         string SelectedFormula { get; set; }
+        string SelectedThreshold { get; set; }
     }
 }

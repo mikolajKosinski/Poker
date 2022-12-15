@@ -15,14 +15,16 @@ namespace CoreBusinessLogic.Hands
 
         }
 
-        private List<ICard> _availableCards = new List<ICard>();
-        public IList<ICard> GetCards() => _availableCards;
+        public void UpdateHand(ICard card) => hand.Add(card);
+        public void UpdateDesk(ICard card) => desk.Add(card);
+
+        //private List<ICard> _availableCards = new List<ICard>();
+        //public IList<ICard> GetCards() => _availableCards;
 
         public string Name { get; } = "Flush";
 
         public void Check()
         {
-            var tempHand = hand.Concat(desk).ToList();
             CardColor color;
             OutsList = GetOuts().ToList();
 
@@ -40,6 +42,13 @@ namespace CoreBusinessLogic.Hands
                 color = GetDominatingColor();
             }
 
+            var cardsLeft = 7 - tempHand.Count();
+            if (GetNeededCardsCount() > cardsLeft)
+            {
+                Probability = 0;
+                return;
+            }
+            
             if (Probability == 0 || tempHand.Count() == 7) return;
 
             _availableCards = tempHand.Where(x => x.Color == color).ToList();           

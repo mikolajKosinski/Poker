@@ -24,6 +24,7 @@ namespace WpfClient.IoC
 
         private void RegisterServices()
         {
+            _builder.RegisterType<LoggerWrapper>().As<ILoggerWrapper>();
             _builder.RegisterType<FigureMatcher>().As<IFigureMatcher>();
             _builder.RegisterType<CardManager>().As<ICardManager>();
             _builder.RegisterType<CardRecognition>().As<ICardRecognition>();

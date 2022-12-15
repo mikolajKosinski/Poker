@@ -84,3 +84,6 @@ C:\Users\mkosi\Documents\GitHub\Poker\RunPy\WpfClient\obj\Debug\netcoreapp3.0\Wp
 C:\Users\mkosi\Documents\GitHub\Poker\RunPy\WpfClient\obj\Debug\netcoreapp3.0\WpfClient.genruntimeconfig.cache
 C:\Users\mkosi\Documents\GitHub\Poker\RunPy\WpfClient\bin\Debug\netcoreapp3.0\Newtonsoft.Json.dll
 C:\Users\mkosi\Documents\GitHub\Poker\RunPy\WpfClient\bin\Debug\netcoreapp3.0\Newtonsoft.Json.Bson.dll
+C:\Users\mkosi\Documents\GitHub\Poker\RunPy\WpfClient\bin\Debug\netcoreapp3.0\Microsoft.Extensions.Logging.Abstractions.dll
+C:\Users\mkosi\Documents\GitHub\Poker\RunPy\WpfClient\bin\Debug\netcoreapp3.0\Serilog.dll
+C:\Users\mkosi\Documents\GitHub\Poker\RunPy\WpfClient\bin\Debug\netcoreapp3.0\Serilog.Sinks.File.dll

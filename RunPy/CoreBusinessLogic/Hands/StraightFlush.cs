@@ -18,7 +18,8 @@ namespace CoreBusinessLogic.Hands
             this.straight = straight;
         }
 
-        public IList<ICard> GetCards() => _availableCards;
+        public void UpdateHand(ICard card) => hand.Add(card);
+        public void UpdateDesk(ICard card) => desk.Add(card);
 
         public string Name { get; } = "StraightFlush";
         public void Check()

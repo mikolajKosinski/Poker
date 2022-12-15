@@ -100,14 +100,14 @@ namespace WpfClient
         private Rectangle GetRectangle()
         {
             if (AT == AnalyzeType.Desk) return DeskAreaRect;
-            if (AT == AnalyzeType.SingleCard) return SingleCardAreaRect;
+            //if (AT == AnalyzeType.SingleCard) return SingleCardAreaRect;
             return HandAreaRect;
         }
 
         private Canvas GetCanv()
         {
             if (AT == AnalyzeType.Desk) return DeskCanv;
-            if (AT == AnalyzeType.SingleCard) return SingleCardCanv;
+            //if (AT == AnalyzeType.SingleCard) return SingleCardCanv;
             return HandCanv;
         }
 

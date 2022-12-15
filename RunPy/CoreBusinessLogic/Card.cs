@@ -30,8 +30,8 @@ namespace CoreBusinessLogic
             return card.Color == Color && card.Figure == Figure;
         }
 
-        public CardFigure Figure { get; private set; }
-        public CardColor Color { get; private set; }
+        public CardFigure Figure { get; set; }
+        public CardColor Color { get; set; }
         public Guid ID { get; private set; }
     }
 }

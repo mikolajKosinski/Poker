@@ -7,7 +7,7 @@ namespace WpfClient.Interfaces
 {
     public interface ISettingsViewModel
     {
-        public string SliderValue { get; set; }
+        public string ThresholdValue { get; set; }
         public string SelectedFormula { get; set; }
         public event FormulaChangedHandler FormulaChanged;
         public event ThresholdHandler ThresholdChanged;

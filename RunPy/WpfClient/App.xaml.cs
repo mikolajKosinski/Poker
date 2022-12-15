@@ -1,6 +1,7 @@
 ﻿using Autofac;
 using CoreBusinessLogic;
 using Microsoft.Extensions.DependencyInjection;
+using Serilog;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -35,6 +36,7 @@ namespace WpfClient
 
         private void ConfigureServices(IServiceCollection services)
         {
+            var logger = _container.Resolve<ILoggerWrapper>();
             var settings = _container.Resolve<ISettings>();
             var settingsViewModel = _container.Resolve<ISettingsViewModel>(new NamedParameter("settings", settings));
             var fMatcher = _container.Resolve<IFigureMatcher>(new NamedParameter("settings", settings));
@@ -43,7 +45,7 @@ namespace WpfClient
                 fMatcher,
                 _container.Resolve<ICardManager>(),
                 settingsViewModel,
-                _container));
+                logger));
             //services.AddScoped<IScreenAnalyser, ScreenAnalyser>();
         }
 

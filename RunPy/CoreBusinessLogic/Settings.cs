@@ -1,6 +1,8 @@
-﻿using System;
+﻿using Microsoft.VisualBasic.FileIO;
+using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Xml.Linq;
 
@@ -10,20 +12,43 @@ namespace CoreBusinessLogic
     {
         public IList<string> CountingSystemsList { get; set; }
         public string SelectedFormula { get; set; }
+        public string SelectedThreshold { get; set; }
 
         public Settings()
         {
-            //if (!File.Exists("settings.xml"))
-            //    File.Create("settings.xml");
+            if (!File.Exists("settings.xml"))
+                CreateSettingsFile();
 
-            //XDocument doc = XDocument.Load("settings.xml");
+            LoadSettings();
+        }
 
-            //foreach (var img in doc.Descendants("Settings"))
-            //{
-            //    // src will be null if the attribute is missing
-            //    string src = (string)img.Attribute("src");
-            //    img.SetAttributeValue("src", src + "with-changes");
-            //}
+        private void CreateSettingsFile()
+        {
+            XDocument doc =
+                 new XDocument(
+                     new XElement("Settings",
+                     new XElement("Formula", "algebraic"),
+                     new XElement("Threshold", "10")
+                     ));
+            doc.Save("settings.xml");
+        }
+
+        private void LoadSettings()
+        {
+            XDocument xDoc = XDocument.Load("settings.xml");
+            foreach (var node in xDoc.DescendantNodes().OfType<XText>())
+            {
+                var value = node.Value.Trim();
+
+                if (!string.IsNullOrEmpty(value))
+                {
+                    if (node.Parent.Name == "Formula")
+                        SelectedFormula = value;
+
+                    if (node.Parent.Name == "Threshold")
+                        SelectedThreshold = value;
+                }
+            }
         }
     }
 }

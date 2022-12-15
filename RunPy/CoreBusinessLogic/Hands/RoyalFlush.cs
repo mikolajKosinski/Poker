@@ -16,9 +16,10 @@ namespace CoreBusinessLogic.Hands
             this.straight = straight;
         }
 
-        public IList<ICard> GetCards() => _availableCards;
+        //public IList<ICard> GetCards() => _availableCards;
         private IList<int> _allFigures = new List<int>() { 10, 11, 12, 13, 14 };
-        private List<ICard> _availableCards = new List<ICard>();
+        public void UpdateHand(ICard card) => hand.Add(card);
+        public void UpdateDesk(ICard card) => desk.Add(card);
 
         public string Name { get; } = "RoyalFlush";
         public void Check()

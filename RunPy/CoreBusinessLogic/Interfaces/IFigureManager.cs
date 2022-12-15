@@ -14,5 +14,7 @@ namespace CoreBusinessLogic.Interfaces
         public void Check();
         public string Name { get; }
         public IList<ICard> GetCards();
+        public void UpdateHand(ICard card);
+        public void UpdateDesk(ICard card);
     }
 }

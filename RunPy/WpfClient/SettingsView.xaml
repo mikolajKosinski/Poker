@@ -10,7 +10,7 @@
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="1*" />
-                <ColumnDefinition Width="10*" />
+                <ColumnDefinition Width="12*" />
                 <ColumnDefinition Width="1*" />
             </Grid.ColumnDefinitions>
             <Grid Grid.Column="1">
@@ -24,6 +24,7 @@
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="1*" />
+                            <ColumnDefinition Width="3*" />
                             <ColumnDefinition Width="1*" />
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
@@ -33,11 +34,13 @@
                         </Grid.RowDefinitions>
                         <Label Grid.Row="0" Grid.Column="0">Select counting system</Label>
                         <ComboBox ItemsSource="{Binding CountingSystemsList}" SelectedItem="{Binding SelectedFormula}" Grid.Row="0" Grid.Column="1" />
+                        <Button Content="Info" Grid.Row="0" Grid.Column="2" Command="{Binding ThresholdInfoCommand}"/>
                         <Label Grid.Row="1" Grid.Column="0">Select Threshold</Label>
                         <DockPanel VerticalAlignment="Center" Margin="10" Grid.Row="1" Grid.Column="1">
                             <TextBox Text="{Binding ElementName=slValue, Path=Value, UpdateSourceTrigger=PropertyChanged}" DockPanel.Dock="Right" TextAlignment="Right" Width="40" IsEnabled="False" />
                             <Slider Minimum="10" Maximum="100" TickPlacement="BottomRight" TickFrequency="5" IsSnapToTickEnabled="True" Name="slValue" Value="{Binding SliderValue}"/>
                         </DockPanel>
+                        <Button Content="Info" Grid.Row="1" Grid.Column="2" Command="{Binding CountInfoCommand}" />
                     </Grid>
                 </GroupBox>
                 <!--<GroupBox Header="Displaying" Grid.Row="2" Grid.Column="1">
