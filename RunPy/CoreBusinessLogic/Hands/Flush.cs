@@ -51,7 +51,7 @@ namespace CoreBusinessLogic.Hands
             
             if (Probability == 0 || tempHand.Count() == 7) return;
 
-            _availableCards = tempHand.Where(x => x.Color == color).ToList();           
+            _availableCards = tempHand.Where(x => x.Color == color).ToList();            
         }
 
         private bool _gotFlush()

@@ -473,7 +473,7 @@ namespace CoreBusinessLogic
                     await Task.Delay(1000);
 
                 process.Start();
-                Debug.WriteLine($"process {process.Id} started");
+                Debug.WriteLine($"process CARD {process.Id} started");
                 //var error = process
                 //   .StandardError
                 //   .ReadToEnd();

@@ -79,6 +79,7 @@ namespace CoreBusinessLogic.Hands
                     }
                 }
             }
+            ClearDesk();
             return outs;
         }
 

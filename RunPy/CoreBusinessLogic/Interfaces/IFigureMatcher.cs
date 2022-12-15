@@ -12,6 +12,7 @@ namespace CoreBusinessLogic
         IDictionary<PokerHands, IFigureManager> PokerHandsDict { get; set; }
         void CheckHand();
         void Clean();
+        void CleanDesk();
         void AddCardToFlop(CardFigure figure, CardColor color);
         void AddCardToHand(CardFigure figure, CardColor color);
         void AddCardToFlop(ICard card);

@@ -32,7 +32,7 @@ namespace CoreBusinessLogic
         protected IList<ICard> desk;
 
         protected List<ICard> tempHand { get { return hand.Concat(desk).ToList(); } }
-
+        protected void ClearDesk() => desk.Clear();
         protected decimal GetProbability()
         {
             var formula = settings.SelectedFormula.ToString();

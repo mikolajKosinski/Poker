@@ -1017,14 +1017,18 @@ namespace WpfClient.ViewModels
         private void AnalyzeHandButtonCommand(object sender)
         {
             Task.Run(async () => await Analyze(AnalyzeArea.Hand));
-            Clean();
+            
             //Analyze();
         }
 
         private void AnalyzeDeskButtonCommand(object sender)
         {
+            if (cardDeskList.Any())
+            {                
+                DeskCards.Clear();
+            }
             Task.Run(async () => await Analyze(AnalyzeArea.Desk));
-            Clean();
+           
             //Analyze();
         }
 
@@ -1267,8 +1271,8 @@ namespace WpfClient.ViewModels
                     //Application.Current.Dispatcher.BeginInvoke(new Action(() => DeskCards.Add(card)));
                     //Application.Current.Dispatcher.BeginInvoke(new Action(() => ProgressInfo = $"Working {i} of {flopCount} flop cards "));
                     //Application.Current.Dispatcher.BeginInvoke(new Action(() => { ProgressBarValue += 10; }));
-                    //File.Delete(colorPath);
-                    //File.Delete(figurePath);
+                    File.Delete(colorPath);
+                    File.Delete(figurePath);
                 }
 
                 if (at == AnalyzeArea.Hand || at == AnalyzeArea.All)
@@ -1289,8 +1293,8 @@ namespace WpfClient.ViewModels
                         //Application.Current.Dispatcher.BeginInvoke(new Action(() => HandCards.Add(card)));
                         //Application.Current.Dispatcher.BeginInvoke(new Action(() => ProgressInfo = $"Working {i} of {flopCount} hand cards "));
                         //Application.Current.Dispatcher.BeginInvoke(new Action(() => { ProgressBarValue += 10; }));
-                        //File.Delete(colorPath);
-                        //File.Delete(figurePath);
+                        File.Delete(colorPath);
+                        File.Delete(figurePath);
                     }
                 }
 

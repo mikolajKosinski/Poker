@@ -66,6 +66,12 @@ namespace CoreBusinessLogic
             PokerHandsDict = getHands();
         }
 
+        public void CleanDesk()
+        {
+            desk.Clear();
+            PokerHandsDict = getHands();
+        }
+
         public void CheckHand()
         {
             foreach (var item in PokerHandsDict.Keys)
@@ -79,6 +85,7 @@ namespace CoreBusinessLogic
 
                 }
             }
+            
         }
 
         public void AddCardToFlop(CardFigure figure, CardColor color)
