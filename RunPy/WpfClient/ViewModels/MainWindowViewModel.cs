@@ -473,6 +473,20 @@ namespace WpfClient.ViewModels
             }
         }
 
+        private ObservableCollection<string> _messageBoard;
+        public ObservableCollection<string> MessageBoard
+        {
+            get
+            {
+                return _messageBoard;
+            }
+            set
+            {
+                _messageBoard = value;
+                NotifyPropertyChanged(nameof(MessageBoard));
+            }
+        }
+
         private ObservableCollection<string> _checkList;
         public ObservableCollection<string> CheckList
         {
@@ -732,6 +746,7 @@ namespace WpfClient.ViewModels
             NeededCardsList = new ObservableCollection<ICard>();
             AreasViewModel = new AreasWindowViewModel(this, figureMatcher);
             CheckList = new ObservableCollection<string> { "Formula", "Threshold", "Desk Area", "Hand Area" };
+            MessageBoard = new ObservableCollection<string>();
             this.SettingsViewModel.ThresholdChanged += SettingsViewModel_ThresholdChanged;
             this.SettingsViewModel.FormulaChanged += SettingsViewModel_FormulaChanged;
             if (!string.IsNullOrWhiteSpace(settingsViewModel.SelectedFormula)) AddToCheckList("Formula");
@@ -1015,7 +1030,7 @@ namespace WpfClient.ViewModels
         }
 
         private void AnalyzeHandButtonCommand(object sender)
-        {
+        {            
             Task.Run(async () => await Analyze(AnalyzeArea.Hand));
             
             //Analyze();
@@ -1026,7 +1041,9 @@ namespace WpfClient.ViewModels
             if (cardDeskList.Any())
             {                
                 DeskCards.Clear();
+                ProgressBarValue= 0;
             }
+         
             Task.Run(async () => await Analyze(AnalyzeArea.Desk));
            
             //Analyze();
@@ -1238,6 +1255,8 @@ namespace WpfClient.ViewModels
             }
         }
 
+        
+
         public async Task Analyze(AnalyzeArea at)
         {
             cardDeskList = new List<ICard>();
@@ -1249,17 +1268,18 @@ namespace WpfClient.ViewModels
             }
 
             logger.Info("Analyze started");
-            ProgressBarVisibility = Visibility.Visible;
+            Application.Current.Dispatcher.BeginInvoke(new Action(() => { ProgressBarVisibility = Visibility.Visible; }));
             int flopCount;
 
             if (at == AnalyzeArea.Desk || at == AnalyzeArea.All)
             {
-                ProgressInfo = "Scanning Desk area";
                 GetCards(DeskArea, "allCards");
                 ProgressBarValue += 10;
                 flopCount = Convert.ToInt32(_cardRecognition.GetCardsCountOnDesk());
                 currentTotal += flopCount;
-                ProgressInfo = "Scanning Flop cards";
+                Application.Current.Dispatcher.BeginInvoke(new Action(() => {
+                    MessageBoard.Add("Scanning Flop cards");
+                }));
                 var tasks = new List<Task<ICard>>();
                 for(int i=0; i< flopCount; i++) 
                 //Parallel.For(0, flopCount, (i, state) =>
@@ -1268,6 +1288,8 @@ namespace WpfClient.ViewModels
                     var figurePath = @$"C:\Users\mkosi\Documents\GitHub\Poker\RunPy\WpfClient\obj\Debug\\net5.0-windows\F{i}.PNG";
                     _cardRecognition.GetCard(figurePath, colorPath, i, "desk");
                     cardDeskList.Add(new Card(new CardFigure(), new CardColor()));
+                    Application.Current.Dispatcher.BeginInvoke(new Action(() => { ProgressBarValue += 10; }));
+                    Application.Current.Dispatcher.BeginInvoke(new Action(() => {MessageBoard.Add($"Working {i} of {flopCount} flop cards ");}));
                     //Application.Current.Dispatcher.BeginInvoke(new Action(() => DeskCards.Add(card)));
                     //Application.Current.Dispatcher.BeginInvoke(new Action(() => ProgressInfo = $"Working {i} of {flopCount} flop cards "));
                     //Application.Current.Dispatcher.BeginInvoke(new Action(() => { ProgressBarValue += 10; }));
@@ -1289,7 +1311,8 @@ namespace WpfClient.ViewModels
                         var figurePath = @$"C:\Users\mkosi\Documents\GitHub\Poker\RunPy\WpfClient\obj\Debug\\net5.0-windows\F{i}.PNG";
                         _cardRecognition.GetCard(figurePath, colorPath, i, "hand");
                         cardHandList.Add(new Card(new CardFigure(), new CardColor()));
-
+                        Application.Current.Dispatcher.BeginInvoke(new Action(() => { ProgressBarValue += 10; }));
+                        Application.Current.Dispatcher.BeginInvoke(new Action(() => { MessageBoard.Add($"Working {i} of {flopCount} hand cards "); }));
                         //Application.Current.Dispatcher.BeginInvoke(new Action(() => HandCards.Add(card)));
                         //Application.Current.Dispatcher.BeginInvoke(new Action(() => ProgressInfo = $"Working {i} of {flopCount} hand cards "));
                         //Application.Current.Dispatcher.BeginInvoke(new Action(() => { ProgressBarValue += 10; }));

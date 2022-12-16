@@ -11,115 +11,173 @@
         <local:BoolToVisConverter x:Key="boolToVisConv" />
     </Window.Resources>
     <Border BorderThickness="1" BorderBrush="Black">
-    <Grid>
-            <Grid>
-            <VisualStateManager.VisualStateGroups>
-                <VisualStateGroup x:Name="CommonStates">                    
-                    <VisualState x:Name="ScreenAnalyzer">
-                        <Storyboard>
-                            <DoubleAnimation Storyboard.TargetName="button1" 
+            <Grid Margin="5">
+                <Grid>
+                    <VisualStateManager.VisualStateGroups>
+                        <VisualStateGroup x:Name="CommonStates">
+                            <VisualState x:Name="ScreenAnalyzer">
+                                <Storyboard>
+                                    <DoubleAnimation Storyboard.TargetName="button1" 
                             Storyboard.TargetProperty="Width" To="50" />
-                        </Storyboard>
-                    </VisualState>
-                </VisualStateGroup>
-            </VisualStateManager.VisualStateGroups>           
-            <Grid.RowDefinitions>
-                <RowDefinition Height="1*" />
-                <RowDefinition Height="2*" />
-                <RowDefinition Height="8*" />
-            </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="2*" />
-                <ColumnDefinition Width="5*" />
-                <ColumnDefinition Width="1*" />
-                <ColumnDefinition Width="1*" />
-            </Grid.ColumnDefinitions>
-            <StackPanel Orientation="Horizontal" Grid.Row="0" Grid.Column="1" HorizontalAlignment="Center">
-                <Button Content="MainWindow" Command="{Binding MainWindowCommand}"/>
-                <Button Content="Areas" Command="{Binding AreasWindowCommand}"/>
-                <Button Content="Settings" Command="{Binding SettingsWindowCommand}"/>
-            </StackPanel>
-
-            <Grid Grid.Row="2" Grid.Column="1"
-                  Visibility="{Binding IsSettingsVisible, Converter={StaticResource boolToVisConv}}">
-                <local:SettingsView
-                    DataContext="{Binding SettingsViewModel}" />
-            </Grid>
-
-            <Grid Grid.Row="1" Grid.RowSpan="2" Grid.Column="1" 
-                  Visibility="{Binding IsAreasVisible, Converter={StaticResource boolToVisConv}}">
-                <local:AreasView 
-                DataContext="{Binding AreasViewModel}" />
-            </Grid>
-            <Grid Grid.Row="1" Grid.Column="0" Grid.RowSpan="3" 
-                  Visibility="{Binding IsMainVisible, Converter={StaticResource boolToVisConv}}">                
-                <StackPanel >
+                                </Storyboard>
+                            </VisualState>
+                        </VisualStateGroup>
+                    </VisualStateManager.VisualStateGroups>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="1*" />
+                        <RowDefinition Height="2*" />
+                        <RowDefinition Height="8*" />
+                        <RowDefinition Height="2*" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="2*" />
+                        <ColumnDefinition Width="5*" />
+                        <ColumnDefinition Width="1*" />
+                        <ColumnDefinition Width="1*" />
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Orientation="Horizontal" Grid.Row="0" Grid.Column="1" HorizontalAlignment="Center">
+                        <Button Content="MainWindow" Command="{Binding MainWindowCommand}"/>
+                        <Button Content="Areas" Command="{Binding AreasWindowCommand}"/>
+                        <Button Content="Settings" Command="{Binding SettingsWindowCommand}"/>
                         <Button Content="New game" Width="80" Height="30" Command="{Binding CleanCommand}" Grid.Column="0"/>
-                        <Button Content="Analyze All" Width="80" Height="30" Command="{Binding AnalyzeCommand}" />
-                        <StackPanel Orientation="Horizontal">
-                            <Button Content="Analyze Hand" Width="80" Height="30" Command="{Binding AnalyzeHandCommand}" />
-                            <Button Content="Analyze Desk" Width="80" Height="30" Command="{Binding AnalyzeDeskCommand}" />
-                        </StackPanel>
+                    </StackPanel>
 
-                        <ListBox VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Grid.Column="0">
-                        <ListBox.ItemContainerStyle>
-                            <Style TargetType="ListBoxItem">
-                                <Setter Property="HorizontalContentAlignment" Value="Stretch"></Setter>
-                            </Style>
-                        </ListBox.ItemContainerStyle>
-                        <ListBoxItem x:Name="TEst" >
-                            <Button Content="General" Command="{Binding GeneralTabCommand}"/>
-                        </ListBoxItem>
-                        <ListBoxItem>
-                            <Button Content="{Binding RoyalFlushTabName}" Command="{Binding RoyalTabCommand}" IsEnabled="{Binding IsRoyalFlushEnable}" Background="{Binding RoyalFlushBckrd}" />
-                        </ListBoxItem>
-                        <ListBoxItem>
-                            <Button Content="{Binding StraightFlushTabName}" Command="{Binding StraightFlushTabCommand}" IsEnabled="{Binding IsStraightFlushEnable}" />
-                        </ListBoxItem>
-                        <ListBoxItem>
-                            <Button Content="{Binding FourOfKindTabName}" Command="{Binding FourOfKindTabCommand}" IsEnabled="{Binding IsFourEnable}" />
-                        </ListBoxItem>
-                        <ListBoxItem>
-                            <Button Content="{Binding FullTabName}" Command="{Binding FullTabCommand}" IsEnabled="{Binding IsFullEnable}" />
-                        </ListBoxItem>
-                        <ListBoxItem>
-                            <Button Content="{Binding FlushTabName}" Command="{Binding FlushTabCommand}" IsEnabled="{Binding IsFlushEnable}" />
-                        </ListBoxItem>
-                        <ListBoxItem>
-                            <Button Content="{Binding StraightTabName}" Command="{Binding StraightTabCommand}" IsEnabled="{Binding IsStraightEnable}" />
-                        </ListBoxItem>
-                        <ListBoxItem>
-                            <Button Content="{Binding ThreeOfKindTabName}" Command="{Binding ThreeOfKindTabCommand}" IsEnabled="{Binding IsThreeEnable}" />
-                        </ListBoxItem>
-                        <ListBoxItem>
-                            <Button Content="{Binding PairTabName}" Command="{Binding PairTabCommand}" IsEnabled="{Binding IsPairEnable}"  />
-                        </ListBoxItem>
-                    </ListBox>                   
-                </StackPanel>                
-            </Grid>                         
-            <Grid Grid.Row="2" Grid.Column="1" Visibility="{Binding IsGeneralTabVisible, Mode=TwoWay, Converter={StaticResource boolToVisConv}}" 
+                    <Grid Grid.Row="2" Grid.Column="1"
+                  Visibility="{Binding IsSettingsVisible, Converter={StaticResource boolToVisConv}}">
+                        <local:SettingsView
+                    DataContext="{Binding SettingsViewModel}" />
+                    </Grid>
+
+                    <Grid Grid.Row="1" Grid.RowSpan="2" Grid.Column="1" 
+                  Visibility="{Binding IsAreasVisible, Converter={StaticResource boolToVisConv}}">
+                        <local:AreasView 
+                DataContext="{Binding AreasViewModel}" />
+                    </Grid>
+                    <Grid Grid.Row="1" Grid.Column="0" Grid.RowSpan="3" 
+                  Visibility="{Binding IsMainVisible, Converter={StaticResource boolToVisConv}}">
+                        <StackPanel >
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="1*" />
+                                    <RowDefinition Height="1*" />
+                                </Grid.RowDefinitions>
+                                <Grid Grid.Row="1">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="1*" />
+                                        <ColumnDefinition Width="1*" />
+                                    </Grid.ColumnDefinitions>
+                                    <Button Content="Analyze Hand" Grid.Column="0" Width="80"  Height="30" Command="{Binding AnalyzeHandCommand}" />
+                                    <Button Content="Analyze Desk" Grid.Column="1" Width="80" Height="30" Command="{Binding AnalyzeDeskCommand}" />
+                                </Grid>
+                                <Button Content="Analyze All" Width="160" Grid.Row="0" Height="30" Command="{Binding AnalyzeCommand}" />
+                            </Grid>
+
+                            <ListBox VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Grid.Column="0">
+                                <ListBox.ItemContainerStyle>
+                                    <Style TargetType="ListBoxItem">
+                                        <Setter Property="HorizontalContentAlignment" Value="Stretch"></Setter>
+                                    </Style>
+                                </ListBox.ItemContainerStyle>
+                                <ListBoxItem x:Name="TEst" >
+                                    <Button Content="General" Command="{Binding GeneralTabCommand}"/>
+                                </ListBoxItem>
+                                <ListBoxItem>
+                                    <Button Content="{Binding RoyalFlushTabName}" Command="{Binding RoyalTabCommand}" IsEnabled="{Binding IsRoyalFlushEnable}" Background="{Binding RoyalFlushBckrd}" />
+                                </ListBoxItem>
+                                <ListBoxItem>
+                                    <Button Content="{Binding StraightFlushTabName}" Command="{Binding StraightFlushTabCommand}" IsEnabled="{Binding IsStraightFlushEnable}" />
+                                </ListBoxItem>
+                                <ListBoxItem>
+                                    <Button Content="{Binding FourOfKindTabName}" Command="{Binding FourOfKindTabCommand}" IsEnabled="{Binding IsFourEnable}" />
+                                </ListBoxItem>
+                                <ListBoxItem>
+                                    <Button Content="{Binding FullTabName}" Command="{Binding FullTabCommand}" IsEnabled="{Binding IsFullEnable}" />
+                                </ListBoxItem>
+                                <ListBoxItem>
+                                    <Button Content="{Binding FlushTabName}" Command="{Binding FlushTabCommand}" IsEnabled="{Binding IsFlushEnable}" />
+                                </ListBoxItem>
+                                <ListBoxItem>
+                                    <Button Content="{Binding StraightTabName}" Command="{Binding StraightTabCommand}" IsEnabled="{Binding IsStraightEnable}" />
+                                </ListBoxItem>
+                                <ListBoxItem>
+                                    <Button Content="{Binding ThreeOfKindTabName}" Command="{Binding ThreeOfKindTabCommand}" IsEnabled="{Binding IsThreeEnable}" />
+                                </ListBoxItem>
+                                <ListBoxItem>
+                                    <Button Content="{Binding PairTabName}" Command="{Binding PairTabCommand}" IsEnabled="{Binding IsPairEnable}"  />
+                                </ListBoxItem>
+                            </ListBox>
+                        </StackPanel>
+                    </Grid>
+                    <Grid Grid.Row="2" Grid.Column="1" Visibility="{Binding IsGeneralTabVisible, Mode=TwoWay, Converter={StaticResource boolToVisConv}}" 
                           VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="1*" />
-                    <ColumnDefinition Width="1*" />
-                </Grid.ColumnDefinitions>
-                <GroupBox Header="Probabilities" Grid.Column="0">
-                    <ListBox Grid.Column="0" 
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="1*" />
+                            <ColumnDefinition Width="1*" />
+                        </Grid.ColumnDefinitions>
+                        <GroupBox Header="Probabilities" Grid.Column="0">
+                            <ListBox Grid.Column="0" 
                          x:Name="HandsList"
                          ItemsSource="{Binding Hands, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                          HorizontalAlignment="Stretch" 
                          VerticalAlignment="Stretch" 
                          Margin="10"
                          PreviewMouseDoubleClick="HandsList_PreviewMouseDoubleClick">
-                    </ListBox>
-                </GroupBox>
-                <Grid Grid.Column="1">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="5*" />
-                        <RowDefinition Height="3*" />
-                    </Grid.RowDefinitions>
-                    <GroupBox Header="Desk" Grid.Row="0">
-                        <ListBox HorizontalAlignment="Stretch" ItemsSource="{Binding DeskCards, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Grid.Column="2">
+                            </ListBox>
+                        </GroupBox>
+                        <Grid Grid.Column="1">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="5*" />
+                                <RowDefinition Height="3*" />
+                            </Grid.RowDefinitions>
+                            <GroupBox Header="Desk" Grid.Row="0">
+                                <ListBox HorizontalAlignment="Stretch" ItemsSource="{Binding DeskCards, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Grid.Column="2">
+                                    <ListBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <StackPanel Orientation="Horizontal">
+                                                <TextBlock Text="{Binding Figure}" />
+                                                <TextBlock Text="{Binding Color}" />
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </ListBox.ItemTemplate>
+                                </ListBox>
+                            </GroupBox>
+                            <GroupBox Header="Hand" Grid.Row="1">
+                                <ListBox HorizontalAlignment="Stretch" ItemsSource="{Binding HandCards, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Grid.Column="2">
+                                    <ListBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <StackPanel Orientation="Horizontal">
+                                                <TextBlock Text="{Binding Figure}" />
+                                                <TextBlock Text="{Binding Color}" />
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </ListBox.ItemTemplate>
+                                </ListBox>
+                            </GroupBox>
+                        </Grid>
+                    </Grid>
+                    <Grid Grid.Row="2" Grid.Column="1" Visibility="{Binding IsStraightFlushTabVisible, Mode=TwoWay, Converter={StaticResource boolToVisConv}}" 
+                          VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="1*"/>
+                            <RowDefinition Height="1*"/>
+                            <RowDefinition Height="3*"/>
+                            <RowDefinition Height="1*"/>
+                            <RowDefinition Height="6*"/>
+                        </Grid.RowDefinitions>
+                        <Label Content="Straight Flush" HorizontalAlignment="Center" Grid.Row="0" />
+                        <Label Content="Hand" HorizontalAlignment="Left" Grid.Row="1" />
+                        <ListBox ItemsSource="{Binding CardsOnHand, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                         Grid.Row="2"
+                         HorizontalAlignment="Stretch" 
+                         VerticalAlignment="Stretch" 
+                         Margin="10">
+                        </ListBox>
+                        <Label Content="Outs" HorizontalAlignment="Left" Grid.Row="3" />
+                        <ListBox ItemsSource="{Binding NeededCardsList, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                         Grid.Row="4"
+                         HorizontalAlignment="Stretch" 
+                         VerticalAlignment="Stretch" 
+                         Margin="10">
                             <ListBox.ItemTemplate>
                                 <DataTemplate>
                                     <StackPanel Orientation="Horizontal">
@@ -129,9 +187,30 @@
                                 </DataTemplate>
                             </ListBox.ItemTemplate>
                         </ListBox>
-                    </GroupBox>
-                    <GroupBox Header="Hand" Grid.Row="1">
-                        <ListBox HorizontalAlignment="Stretch" ItemsSource="{Binding HandCards, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Grid.Column="2">
+                    </Grid>
+                    <Grid Grid.Row="2" Grid.Column="1" Visibility="{Binding IsRoyalTabVisible, Mode=TwoWay, Converter={StaticResource boolToVisConv}}" 
+                          VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="1*"/>
+                            <RowDefinition Height="1*"/>
+                            <RowDefinition Height="3*"/>
+                            <RowDefinition Height="1*"/>
+                            <RowDefinition Height="6*"/>
+                        </Grid.RowDefinitions>
+                        <Label Content="Royal Straight" HorizontalAlignment="Center" Grid.Row="0" />
+                        <Label Content="Hand" HorizontalAlignment="Left" Grid.Row="1" />
+                        <ListBox ItemsSource="{Binding CardsOnHand, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                         Grid.Row="2"
+                         HorizontalAlignment="Stretch" 
+                         VerticalAlignment="Stretch" 
+                         Margin="10">
+                        </ListBox>
+                        <Label Content="Outs" HorizontalAlignment="Left" Grid.Row="3" />
+                        <ListBox ItemsSource="{Binding NeededCardsList, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                         Grid.Row="4"
+                         HorizontalAlignment="Stretch" 
+                         VerticalAlignment="Stretch" 
+                         Margin="10">
                             <ListBox.ItemTemplate>
                                 <DataTemplate>
                                     <StackPanel Orientation="Horizontal">
@@ -141,283 +220,216 @@
                                 </DataTemplate>
                             </ListBox.ItemTemplate>
                         </ListBox>
+                    </Grid>
+                    <Grid Grid.Row="2" Grid.Column="1" Visibility="{Binding IsFourOfKindTabVisible, Mode=TwoWay, Converter={StaticResource boolToVisConv}}" 
+                          VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="1*"/>
+                            <RowDefinition Height="1*"/>
+                            <RowDefinition Height="3*"/>
+                            <RowDefinition Height="1*"/>
+                            <RowDefinition Height="6*"/>
+                        </Grid.RowDefinitions>
+                        <Label Content="Four of kind" HorizontalAlignment="Center" Grid.Row="0" />
+                        <Label Content="Hand" HorizontalAlignment="Left" Grid.Row="1" />
+                        <ListBox ItemsSource="{Binding CardsOnHand, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                         Grid.Row="2"
+                         HorizontalAlignment="Stretch" 
+                         VerticalAlignment="Stretch" 
+                         Margin="10">
+                        </ListBox>
+                        <Label Content="Outs" HorizontalAlignment="Left" Grid.Row="3" />
+                        <ListBox ItemsSource="{Binding NeededCardsList, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                         Grid.Row="4"
+                         HorizontalAlignment="Stretch" 
+                         VerticalAlignment="Stretch" 
+                         Margin="10">
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="{Binding Figure}" />
+                                        <TextBlock Text="{Binding Color}" />
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
+                    </Grid>
+                    <Grid Grid.Row="2" Grid.Column="1" Visibility="{Binding IsFullTabVisible, Mode=TwoWay, Converter={StaticResource boolToVisConv}}" 
+                          VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="1*"/>
+                            <RowDefinition Height="1*"/>
+                            <RowDefinition Height="3*"/>
+                            <RowDefinition Height="1*"/>
+                            <RowDefinition Height="6*"/>
+                        </Grid.RowDefinitions>
+                        <Label Content="Full" HorizontalAlignment="Center" Grid.Row="0" Margin="10" />
+                        <Label Content="Full" HorizontalAlignment="Left" Grid.Row="1" Margin="10" />
+                        <ListBox ItemsSource="{Binding CardsOnHand, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                         Grid.Row="2"
+                         HorizontalAlignment="Stretch" 
+                         VerticalAlignment="Stretch" 
+                         Margin="10">
+                        </ListBox>
+                        <Label Content="Outs" HorizontalAlignment="Left" Grid.Row="3" />
+                        <ListBox ItemsSource="{Binding NeededCardsList, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                         Grid.Row="4"
+                         HorizontalAlignment="Stretch" 
+                         VerticalAlignment="Stretch" 
+                         Margin="10">
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="{Binding Figure}" />
+                                        <TextBlock Text="{Binding Color}" />
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
+                    </Grid>
+                    <Grid Grid.Row="2" Grid.Column="1" Visibility="{Binding IsFlushTabVisible, Mode=TwoWay, Converter={StaticResource boolToVisConv}}" 
+                          VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="1*"/>
+                            <RowDefinition Height="1*"/>
+                            <RowDefinition Height="3*"/>
+                            <RowDefinition Height="1*"/>
+                            <RowDefinition Height="6*"/>
+                        </Grid.RowDefinitions>
+                        <Label Content="Flush" HorizontalAlignment="Center" Grid.Row="0" />
+                        <Label Content="Hand" HorizontalAlignment="Left" Grid.Row="1" />
+                        <ListBox ItemsSource="{Binding CardsOnHand, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                         Grid.Row="2"
+                         HorizontalAlignment="Stretch" 
+                         VerticalAlignment="Stretch" 
+                         Margin="10">
+                        </ListBox>
+                        <Label Content="Outs" HorizontalAlignment="Left" Grid.Row="3" />
+                        <ListBox ItemsSource="{Binding NeededCardsList, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                         Grid.Row="4"
+                         HorizontalAlignment="Stretch" 
+                         VerticalAlignment="Stretch" 
+                         Margin="10">
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="{Binding Figure}" />
+                                        <TextBlock Text="{Binding Color}" />
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
+                    </Grid>
+                    <Grid Grid.Row="2" Grid.Column="1" Visibility="{Binding IsStraightTabVisible, Mode=TwoWay, Converter={StaticResource boolToVisConv}}" 
+                          VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="1*"/>
+                            <RowDefinition Height="1*"/>
+                            <RowDefinition Height="3*"/>
+                            <RowDefinition Height="1*"/>
+                            <RowDefinition Height="6*"/>
+                        </Grid.RowDefinitions>
+                        <Label Content="Straight" HorizontalAlignment="Center" Grid.Row="0" />
+                        <Label Content="Hand" HorizontalAlignment="Left" Grid.Row="1" />
+                        <ListBox ItemsSource="{Binding CardsOnHand, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                         Grid.Row="2"
+                         HorizontalAlignment="Stretch" 
+                         VerticalAlignment="Stretch" 
+                         Margin="10">
+                        </ListBox>
+                        <Label Content="Outs" HorizontalAlignment="Left" Grid.Row="3" />
+                        <ListBox ItemsSource="{Binding NeededCardsList, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                         Grid.Row="4"
+                         HorizontalAlignment="Stretch" 
+                         VerticalAlignment="Stretch" 
+                         Margin="10">
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="{Binding Figure}" />
+                                        <TextBlock Text="{Binding Color}" />
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
+                    </Grid>
+                    <Grid Grid.Row="2" Grid.Column="1" Visibility="{Binding IsThreeOfKindTabVisible, Mode=TwoWay, Converter={StaticResource boolToVisConv}}" 
+                          VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="1*"/>
+                            <RowDefinition Height="1*"/>
+                            <RowDefinition Height="3*"/>
+                            <RowDefinition Height="1*"/>
+                            <RowDefinition Height="6*"/>
+                        </Grid.RowDefinitions>
+                        <Label Content="Three Of Kind" HorizontalAlignment="Center" Grid.Row="0" />
+                        <Label Content="Hand" HorizontalAlignment="Left" Grid.Row="1" />
+                        <ListBox ItemsSource="{Binding CardsOnHand, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                         Grid.Row="2"
+                         HorizontalAlignment="Stretch" 
+                         VerticalAlignment="Stretch" 
+                         Margin="10">
+                        </ListBox>
+                        <Label Content="Outs" HorizontalAlignment="Left" Grid.Row="3" />
+                        <ListBox ItemsSource="{Binding NeededCardsList, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                         Grid.Row="4"
+                         HorizontalAlignment="Stretch" 
+                         VerticalAlignment="Stretch" 
+                         Margin="10">
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="{Binding Figure}" />
+                                        <TextBlock Text="{Binding Color}" />
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
+                    </Grid>
+                    <Grid Grid.Row="2" Grid.Column="1" Visibility="{Binding IsPairTabVisible, Mode=TwoWay, Converter={StaticResource boolToVisConv}}" 
+                          VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="1*"/>
+                            <RowDefinition Height="1*"/>
+                            <RowDefinition Height="3*"/>
+                            <RowDefinition Height="1*"/>
+                            <RowDefinition Height="6*"/>
+                        </Grid.RowDefinitions>
+                        <Label Content="Pair" HorizontalAlignment="Center" Grid.Row="0" />
+                        <Label Content="Hand" HorizontalAlignment="Left" Grid.Row="1" />
+                        <ListBox ItemsSource="{Binding CardsOnHand, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                         Grid.Row="2"
+                         HorizontalAlignment="Stretch" 
+                         VerticalAlignment="Stretch" 
+                         Margin="10">
+                        </ListBox>
+                        <Label Content="Outs" HorizontalAlignment="Left" Grid.Row="3" />
+                        <ListBox ItemsSource="{Binding NeededCardsList, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                         Grid.Row="4"
+                         HorizontalAlignment="Stretch" 
+                         VerticalAlignment="Stretch" 
+                         Margin="10">
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="{Binding Figure}" />
+                                        <TextBlock Text="{Binding Color}" />
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
+                    </Grid>
+                    <GroupBox Header="Checklist" Grid.Row="1" Grid.RowSpan="2"  Grid.Column="3">
+                        <ListBox ItemsSource="{Binding CheckList}" />
                     </GroupBox>
+                    <ListBox Grid.Row="4" Grid.ColumnSpan="4" ItemsSource="{Binding MessageBoard}"/>
+                </Grid>
+                <Grid Margin="20" Visibility="{Binding ProgressBarVisibility}" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <StackPanel>
+                        <ProgressBar Minimum="0" Maximum="100" Width="100" Height="20" Value="{Binding ProgressBarValue}" Visibility="{Binding ProgressBarVisibility}"/>
+                        <Label Content="{Binding ProgressInfo}" />
+                    </StackPanel>
                 </Grid>
             </Grid>
-            <Grid Grid.Row="2" Grid.Column="1" Visibility="{Binding IsStraightFlushTabVisible, Mode=TwoWay, Converter={StaticResource boolToVisConv}}" 
-                          VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="1*"/>
-                    <RowDefinition Height="1*"/>
-                    <RowDefinition Height="3*"/>
-                    <RowDefinition Height="1*"/>
-                    <RowDefinition Height="6*"/>
-                </Grid.RowDefinitions>
-                <Label Content="Straight Flush" HorizontalAlignment="Center" Grid.Row="0" />
-                <Label Content="Hand" HorizontalAlignment="Left" Grid.Row="1" />
-                <ListBox ItemsSource="{Binding CardsOnHand, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                         Grid.Row="2"
-                         HorizontalAlignment="Stretch" 
-                         VerticalAlignment="Stretch" 
-                         Margin="10">
-                </ListBox>
-                <Label Content="Outs" HorizontalAlignment="Left" Grid.Row="3" />
-                <ListBox ItemsSource="{Binding NeededCardsList, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                         Grid.Row="4"
-                         HorizontalAlignment="Stretch" 
-                         VerticalAlignment="Stretch" 
-                         Margin="10">
-                    <ListBox.ItemTemplate>
-                        <DataTemplate>
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="{Binding Figure}" />
-                                <TextBlock Text="{Binding Color}" />
-                            </StackPanel>
-                        </DataTemplate>
-                    </ListBox.ItemTemplate>
-                </ListBox>
-            </Grid>
-            <Grid Grid.Row="2" Grid.Column="1" Visibility="{Binding IsRoyalTabVisible, Mode=TwoWay, Converter={StaticResource boolToVisConv}}" 
-                          VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="1*"/>
-                    <RowDefinition Height="1*"/>
-                    <RowDefinition Height="3*"/>
-                    <RowDefinition Height="1*"/>
-                    <RowDefinition Height="6*"/>
-                </Grid.RowDefinitions>
-                <Label Content="Royal Straight" HorizontalAlignment="Center" Grid.Row="0" />
-                <Label Content="Hand" HorizontalAlignment="Left" Grid.Row="1" />
-                <ListBox ItemsSource="{Binding CardsOnHand, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                         Grid.Row="2"
-                         HorizontalAlignment="Stretch" 
-                         VerticalAlignment="Stretch" 
-                         Margin="10">
-                </ListBox>
-                <Label Content="Outs" HorizontalAlignment="Left" Grid.Row="3" />
-                <ListBox ItemsSource="{Binding NeededCardsList, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                         Grid.Row="4"
-                         HorizontalAlignment="Stretch" 
-                         VerticalAlignment="Stretch" 
-                         Margin="10">
-                    <ListBox.ItemTemplate>
-                        <DataTemplate>
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="{Binding Figure}" />
-                                <TextBlock Text="{Binding Color}" />
-                            </StackPanel>
-                        </DataTemplate>
-                    </ListBox.ItemTemplate>
-                </ListBox>
-            </Grid>
-            <Grid Grid.Row="2" Grid.Column="1" Visibility="{Binding IsFourOfKindTabVisible, Mode=TwoWay, Converter={StaticResource boolToVisConv}}" 
-                          VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="1*"/>
-                    <RowDefinition Height="1*"/>
-                    <RowDefinition Height="3*"/>
-                    <RowDefinition Height="1*"/>
-                    <RowDefinition Height="6*"/>
-                </Grid.RowDefinitions>
-                <Label Content="Four of kind" HorizontalAlignment="Center" Grid.Row="0" />
-                <Label Content="Hand" HorizontalAlignment="Left" Grid.Row="1" />
-                <ListBox ItemsSource="{Binding CardsOnHand, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                         Grid.Row="2"
-                         HorizontalAlignment="Stretch" 
-                         VerticalAlignment="Stretch" 
-                         Margin="10">
-                </ListBox>
-                <Label Content="Outs" HorizontalAlignment="Left" Grid.Row="3" />
-                <ListBox ItemsSource="{Binding NeededCardsList, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                         Grid.Row="4"
-                         HorizontalAlignment="Stretch" 
-                         VerticalAlignment="Stretch" 
-                         Margin="10">
-                    <ListBox.ItemTemplate>
-                        <DataTemplate>
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="{Binding Figure}" />
-                                <TextBlock Text="{Binding Color}" />
-                            </StackPanel>
-                        </DataTemplate>
-                    </ListBox.ItemTemplate>
-                </ListBox>
-            </Grid>
-            <Grid Grid.Row="2" Grid.Column="1" Visibility="{Binding IsFullTabVisible, Mode=TwoWay, Converter={StaticResource boolToVisConv}}" 
-                          VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="1*"/>
-                    <RowDefinition Height="1*"/>
-                    <RowDefinition Height="3*"/>
-                    <RowDefinition Height="1*"/>
-                    <RowDefinition Height="6*"/>
-                </Grid.RowDefinitions>
-                <Label Content="Full" HorizontalAlignment="Center" Grid.Row="0" Margin="10" />
-                <Label Content="Full" HorizontalAlignment="Left" Grid.Row="1" Margin="10" />
-                <ListBox ItemsSource="{Binding CardsOnHand, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                         Grid.Row="2"
-                         HorizontalAlignment="Stretch" 
-                         VerticalAlignment="Stretch" 
-                         Margin="10">
-                </ListBox>
-                <Label Content="Outs" HorizontalAlignment="Left" Grid.Row="3" />
-                <ListBox ItemsSource="{Binding NeededCardsList, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                         Grid.Row="4"
-                         HorizontalAlignment="Stretch" 
-                         VerticalAlignment="Stretch" 
-                         Margin="10">
-                    <ListBox.ItemTemplate>
-                        <DataTemplate>
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="{Binding Figure}" />
-                                <TextBlock Text="{Binding Color}" />
-                            </StackPanel>
-                        </DataTemplate>
-                    </ListBox.ItemTemplate>
-                </ListBox>
-            </Grid>
-            <Grid Grid.Row="2" Grid.Column="1" Visibility="{Binding IsFlushTabVisible, Mode=TwoWay, Converter={StaticResource boolToVisConv}}" 
-                          VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="1*"/>
-                    <RowDefinition Height="1*"/>
-                    <RowDefinition Height="3*"/>
-                    <RowDefinition Height="1*"/>
-                    <RowDefinition Height="6*"/>
-                </Grid.RowDefinitions>
-                <Label Content="Flush" HorizontalAlignment="Center" Grid.Row="0" />
-                <Label Content="Hand" HorizontalAlignment="Left" Grid.Row="1" />
-                <ListBox ItemsSource="{Binding CardsOnHand, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                         Grid.Row="2"
-                         HorizontalAlignment="Stretch" 
-                         VerticalAlignment="Stretch" 
-                         Margin="10">
-                </ListBox>
-                <Label Content="Outs" HorizontalAlignment="Left" Grid.Row="3" />
-                <ListBox ItemsSource="{Binding NeededCardsList, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                         Grid.Row="4"
-                         HorizontalAlignment="Stretch" 
-                         VerticalAlignment="Stretch" 
-                         Margin="10">
-                    <ListBox.ItemTemplate>
-                        <DataTemplate>
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="{Binding Figure}" />
-                                <TextBlock Text="{Binding Color}" />
-                            </StackPanel>
-                        </DataTemplate>
-                    </ListBox.ItemTemplate>
-                </ListBox>
-            </Grid>
-            <Grid Grid.Row="2" Grid.Column="1" Visibility="{Binding IsStraightTabVisible, Mode=TwoWay, Converter={StaticResource boolToVisConv}}" 
-                          VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="1*"/>
-                    <RowDefinition Height="1*"/>
-                    <RowDefinition Height="3*"/>
-                    <RowDefinition Height="1*"/>
-                    <RowDefinition Height="6*"/>
-                </Grid.RowDefinitions>
-                <Label Content="Straight" HorizontalAlignment="Center" Grid.Row="0" />
-                <Label Content="Hand" HorizontalAlignment="Left" Grid.Row="1" />
-                <ListBox ItemsSource="{Binding CardsOnHand, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                         Grid.Row="2"
-                         HorizontalAlignment="Stretch" 
-                         VerticalAlignment="Stretch" 
-                         Margin="10">
-                </ListBox>
-                <Label Content="Outs" HorizontalAlignment="Left" Grid.Row="3" />
-                <ListBox ItemsSource="{Binding NeededCardsList, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                         Grid.Row="4"
-                         HorizontalAlignment="Stretch" 
-                         VerticalAlignment="Stretch" 
-                         Margin="10">
-                    <ListBox.ItemTemplate>
-                        <DataTemplate>
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="{Binding Figure}" />
-                                <TextBlock Text="{Binding Color}" />
-                            </StackPanel>
-                        </DataTemplate>
-                    </ListBox.ItemTemplate>
-                </ListBox>
-            </Grid>
-            <Grid Grid.Row="2" Grid.Column="1" Visibility="{Binding IsThreeOfKindTabVisible, Mode=TwoWay, Converter={StaticResource boolToVisConv}}" 
-                          VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="1*"/>
-                    <RowDefinition Height="1*"/>
-                    <RowDefinition Height="3*"/>
-                    <RowDefinition Height="1*"/>
-                    <RowDefinition Height="6*"/>
-                </Grid.RowDefinitions>
-                <Label Content="Three Of Kind" HorizontalAlignment="Center" Grid.Row="0" />
-                <Label Content="Hand" HorizontalAlignment="Left" Grid.Row="1" />
-                <ListBox ItemsSource="{Binding CardsOnHand, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                         Grid.Row="2"
-                         HorizontalAlignment="Stretch" 
-                         VerticalAlignment="Stretch" 
-                         Margin="10">
-                </ListBox>
-                <Label Content="Outs" HorizontalAlignment="Left" Grid.Row="3" />
-                <ListBox ItemsSource="{Binding NeededCardsList, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                         Grid.Row="4"
-                         HorizontalAlignment="Stretch" 
-                         VerticalAlignment="Stretch" 
-                         Margin="10">
-                    <ListBox.ItemTemplate>
-                        <DataTemplate>
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="{Binding Figure}" />
-                                <TextBlock Text="{Binding Color}" />
-                            </StackPanel>
-                        </DataTemplate>
-                    </ListBox.ItemTemplate>
-                </ListBox>
-            </Grid>
-            <Grid Grid.Row="2" Grid.Column="1" Visibility="{Binding IsPairTabVisible, Mode=TwoWay, Converter={StaticResource boolToVisConv}}" 
-                          VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="1*"/>
-                    <RowDefinition Height="1*"/>
-                    <RowDefinition Height="3*"/>
-                    <RowDefinition Height="1*"/>
-                    <RowDefinition Height="6*"/>
-                </Grid.RowDefinitions>
-                <Label Content="Pair" HorizontalAlignment="Center" Grid.Row="0" />
-                <Label Content="Hand" HorizontalAlignment="Left" Grid.Row="1" />
-                <ListBox ItemsSource="{Binding CardsOnHand, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                         Grid.Row="2"
-                         HorizontalAlignment="Stretch" 
-                         VerticalAlignment="Stretch" 
-                         Margin="10">
-                </ListBox>
-                <Label Content="Outs" HorizontalAlignment="Left" Grid.Row="3" />
-                <ListBox ItemsSource="{Binding NeededCardsList, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                         Grid.Row="4"
-                         HorizontalAlignment="Stretch" 
-                         VerticalAlignment="Stretch" 
-                         Margin="10">
-                    <ListBox.ItemTemplate>
-                        <DataTemplate>
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="{Binding Figure}" />
-                                <TextBlock Text="{Binding Color}" />
-                            </StackPanel>
-                        </DataTemplate>
-                    </ListBox.ItemTemplate>
-                </ListBox>
-            </Grid>
-                <GroupBox Header="Checklist" Grid.Row="1" Grid.RowSpan="2"  Grid.Column="3">
-                    <ListBox ItemsSource="{Binding CheckList}" />
-                </GroupBox>
-        </Grid>
-            <Grid Margin="20" Visibility="{Binding ProgressBarVisibility}" HorizontalAlignment="Center" VerticalAlignment="Center">
-                <StackPanel>
-                <ProgressBar Minimum="0" Maximum="100" Width="100" Height="20" Value="{Binding ProgressBarValue}" Visibility="{Binding ProgressBarVisibility}"/>
-                    <Label Content="{Binding ProgressInfo}" />
-                </StackPanel>
-            </Grid>
-        </Grid>
     </Border>
 </Window>
