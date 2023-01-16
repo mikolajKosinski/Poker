@@ -6,6 +6,6 @@ namespace CoreBusinessLogic
 {
     public interface ICardManager
     {
-        Card GetCardByImage(string path);
+        //Card GetCardByImage(string path);
     }
 }

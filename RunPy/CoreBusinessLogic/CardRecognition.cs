@@ -11,6 +11,8 @@ using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Runtime.Serialization;
 using System.Threading.Tasks;
+using System.Net.Http;
+using static CoreBusinessLogic.Enums;
 
 namespace CoreBusinessLogic
 {
@@ -66,185 +68,185 @@ namespace CoreBusinessLogic
             return new Card(new CardFigure(), new CardColor());
         }
 
-        public CardFigure RecognizeFigure(string imagePath, int number)
-        {
-            var result =  RecognizeImage(recoType.figure, imagePath, number);
-            return FigureDict[result];
-        }
+        //public CardFigure RecognizeFigure(string imagePath, int number)
+        //{
+        //    var result =  RecognizeImage(recoType.figure, imagePath, number);
+        //    return FigureDict[result];
+        //}
 
-        public CardColor RecognizeColor(string imagePath, int number)
-        {
-            var result =  RecognizeImage(recoType.color, imagePath, number);
-            return ColorDict[result];
-        }
+        //public CardColor RecognizeColor(string imagePath, int number)
+        //{
+        //    var result =  RecognizeImage(recoType.color, imagePath, number);
+        //    return ColorDict[result];
+        //}
 
-        public Tuple<int, int, int, int> GetPosition(string path)
-        {
-            return GetShapePosition(path);
-        }
+        //public Tuple<int, int, int, int> GetPosition(string path)
+        //{
+        //    return GetShapePosition(path);
+        //}
 
-        public List<Tuple<decimal, decimal, decimal, decimal>> GetDesk()
-        {
-            Process process = new Process();
-            string argument = @"C:\Users\Mikolaj\PycharmProjects\pythonProject\GetDeskPoints.py";
-            process.StartInfo = new System.Diagnostics.ProcessStartInfo()
-            {
-                UseShellExecute = false,
-                CreateNoWindow = true,
-                WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden,
-                FileName = @"C:\Users\Mikolaj\PycharmProjects\pythonProject\venv\Scripts\python.exe",
-                Arguments = argument,
-                RedirectStandardError = true,
-                RedirectStandardOutput = true
-            };
+        //public List<Tuple<decimal, decimal, decimal, decimal>> GetDesk()
+        //{
+        //    Process process = new Process();
+        //    string argument = @"C:\Users\Mikolaj\PycharmProjects\pythonProject\GetDeskPoints.py";
+        //    process.StartInfo = new System.Diagnostics.ProcessStartInfo()
+        //    {
+        //        UseShellExecute = false,
+        //        CreateNoWindow = true,
+        //        WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden,
+        //        FileName = @"C:\Users\Mikolaj\PycharmProjects\pythonProject\venv\Scripts\python.exe",
+        //        Arguments = argument,
+        //        RedirectStandardError = true,
+        //        RedirectStandardOutput = true
+        //    };
 
-            process.EnableRaisingEvents = true;
-            process.Start();
-            var error = process
-                .StandardError
-                .ReadToEnd();
-            var result = process.StandardOutput.ReadToEnd();
-            var cards = result.Split('#');
-            var points = new List<Tuple<decimal, decimal, decimal, decimal>>();
-            foreach (var item in cards)
-            {
-                try
-                {
-                    var card = item.Split('-');
-                    var middleX = card[0].Replace("\r\n", "").Replace(".", ",");
-                    var middleY = card[1].Replace("\r\n", "").Replace(".", ",");
-                    var width = card[2].Replace("\r\n", "").Replace(".", ",");
-                    var height = card[3].Replace("\r\n", "").Replace(".", ",");
-                    points.Add(new Tuple<decimal, decimal, decimal, decimal>(Convert.ToDecimal(middleX), Convert.ToDecimal(middleY), Convert.ToDecimal(width), Convert.ToDecimal(height)));
-                }
-                catch (Exception x)
-                {
+        //    process.EnableRaisingEvents = true;
+        //    process.Start();
+        //    var error = process
+        //        .StandardError
+        //        .ReadToEnd();
+        //    var result = process.StandardOutput.ReadToEnd();
+        //    var cards = result.Split('#');
+        //    var points = new List<Tuple<decimal, decimal, decimal, decimal>>();
+        //    foreach (var item in cards)
+        //    {
+        //        try
+        //        {
+        //            var card = item.Split('-');
+        //            var middleX = card[0].Replace("\r\n", "").Replace(".", ",");
+        //            var middleY = card[1].Replace("\r\n", "").Replace(".", ",");
+        //            var width = card[2].Replace("\r\n", "").Replace(".", ",");
+        //            var height = card[3].Replace("\r\n", "").Replace(".", ",");
+        //            points.Add(new Tuple<decimal, decimal, decimal, decimal>(Convert.ToDecimal(middleX), Convert.ToDecimal(middleY), Convert.ToDecimal(width), Convert.ToDecimal(height)));
+        //        }
+        //        catch (Exception x)
+        //        {
 
-                }
-            }
-            return points;
-        }
+        //        }
+        //    }
+        //    return points;
+        //}
 
-        public Tuple<int, int, int, int> GetSingleCardArea()
-        {
-            Process process = new Process();
-            string argument = @"C:\Users\Mikolaj\PycharmProjects\pythonProject\externals.py";
-            process.StartInfo = new System.Diagnostics.ProcessStartInfo()
-            {
-                UseShellExecute = false,
-                CreateNoWindow = true,
-                WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden,
-                FileName = @"C:\Users\Mikolaj\PycharmProjects\pythonProject\venv\Scripts\python.exe",
-                Arguments = argument,
-                RedirectStandardError = true,
-                RedirectStandardOutput = true
-            };
+        //public Tuple<int, int, int, int> GetSingleCardArea()
+        //{
+        //    Process process = new Process();
+        //    string argument = @"C:\Users\Mikolaj\PycharmProjects\pythonProject\externals.py";
+        //    process.StartInfo = new System.Diagnostics.ProcessStartInfo()
+        //    {
+        //        UseShellExecute = false,
+        //        CreateNoWindow = true,
+        //        WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden,
+        //        FileName = @"C:\Users\Mikolaj\PycharmProjects\pythonProject\venv\Scripts\python.exe",
+        //        Arguments = argument,
+        //        RedirectStandardError = true,
+        //        RedirectStandardOutput = true
+        //    };
 
-            process.EnableRaisingEvents = true;
-            process.Start();
-            var error = process
-              .StandardError
-              .ReadToEnd();
-            var result = process
-                .StandardOutput
-                .ReadToEnd()
-                .Replace("\t", "")
-                .Replace("\r", "")
-                .Replace("\n", "");
-            var points = result.Split(',');
-            return new Tuple<int, int, int, int>(
-                Convert.ToInt32(points[0]),
-                Convert.ToInt32(points[1]),
-                Convert.ToInt32(points[2]),
-                Convert.ToInt32(points[3]));
-        }
+        //    process.EnableRaisingEvents = true;
+        //    process.Start();
+        //    var error = process
+        //      .StandardError
+        //      .ReadToEnd();
+        //    var result = process
+        //        .StandardOutput
+        //        .ReadToEnd()
+        //        .Replace("\t", "")
+        //        .Replace("\r", "")
+        //        .Replace("\n", "");
+        //    var points = result.Split(',');
+        //    return new Tuple<int, int, int, int>(
+        //        Convert.ToInt32(points[0]),
+        //        Convert.ToInt32(points[1]),
+        //        Convert.ToInt32(points[2]),
+        //        Convert.ToInt32(points[3]));
+        //}
 
-        public Tuple<int, int, int, int> GetArea()
-        {
-            Process process = new Process();
-            string argument = @"C:\Users\mkosi\PycharmProjects\pythonProject\GetArea.py";
-            process.StartInfo = new System.Diagnostics.ProcessStartInfo()
-            {
-                UseShellExecute = false,
-                CreateNoWindow = true,
-                WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden,
-                FileName = @"C:\Users\Mikolaj\PycharmProjects\pythonProject\venv\Scripts\python.exe",
-                Arguments = argument,
-                RedirectStandardError = true,
-                RedirectStandardOutput = true
-            };
+        //public Tuple<int, int, int, int> GetArea()
+        //{
+        //    Process process = new Process();
+        //    string argument = @"C:\Users\mkosi\PycharmProjects\pythonProject\GetArea.py";
+        //    process.StartInfo = new System.Diagnostics.ProcessStartInfo()
+        //    {
+        //        UseShellExecute = false,
+        //        CreateNoWindow = true,
+        //        WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden,
+        //        FileName = @"C:\Users\Mikolaj\PycharmProjects\pythonProject\venv\Scripts\python.exe",
+        //        Arguments = argument,
+        //        RedirectStandardError = true,
+        //        RedirectStandardOutput = true
+        //    };
 
-            process.EnableRaisingEvents = true;
-            process.Start();
-            var error = process
-               .StandardError
-               .ReadToEnd();
-            var result = process
-                .StandardOutput
-                .ReadToEnd()
-                .Replace("\t", "")
-                .Replace("\r", "")
-                .Replace("\n", "");
-            var points = result.Split(',');
-            return new Tuple<int, int, int, int>(
-                Convert.ToInt32(points[0]),
-                Convert.ToInt32(points[1]),
-                Convert.ToInt32(points[2]),
-                Convert.ToInt32(points[3]));
+        //    process.EnableRaisingEvents = true;
+        //    process.Start();
+        //    var error = process
+        //       .StandardError
+        //       .ReadToEnd();
+        //    var result = process
+        //        .StandardOutput
+        //        .ReadToEnd()
+        //        .Replace("\t", "")
+        //        .Replace("\r", "")
+        //        .Replace("\n", "");
+        //    var points = result.Split(',');
+        //    return new Tuple<int, int, int, int>(
+        //        Convert.ToInt32(points[0]),
+        //        Convert.ToInt32(points[1]),
+        //        Convert.ToInt32(points[2]),
+        //        Convert.ToInt32(points[3]));
 
-        }
+        //}
 
-        public string GetAllCards(string fileName)
-        {
-            Process process = new Process();
-            string script = @"C:\Users\mkosi\PycharmProjects\pythonProject\cardScreen.py";
-            process.StartInfo = new System.Diagnostics.ProcessStartInfo()
-            {
-                UseShellExecute = false,
-                CreateNoWindow = true,
-                WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden,
-                FileName = @"C:\Users\mkosi\PycharmProjects\pythonProject\venv\Scripts\python.exe",
-                Arguments = $"{script} {fileName}",
-                RedirectStandardError = true,
-                RedirectStandardOutput = true
-            };
+        //public string GetAllCards(string fileName)
+        //{
+        //    Process process = new Process();
+        //    string script = @"C:\Users\mkosi\PycharmProjects\pythonProject\cardScreen.py";
+        //    process.StartInfo = new System.Diagnostics.ProcessStartInfo()
+        //    {
+        //        UseShellExecute = false,
+        //        CreateNoWindow = true,
+        //        WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden,
+        //        FileName = @"C:\Users\mkosi\PycharmProjects\pythonProject\venv\Scripts\python.exe",
+        //        Arguments = $"{script} {fileName}",
+        //        RedirectStandardError = true,
+        //        RedirectStandardOutput = true
+        //    };
 
-            process.EnableRaisingEvents = true;
-            process.Start();
-            var error = process
-               .StandardError
-               .ReadToEnd();
-            var result = process
-                .StandardOutput
-                .ReadToEnd();
-            return result;
-        }
+        //    process.EnableRaisingEvents = true;
+        //    process.Start();
+        //    var error = process
+        //       .StandardError
+        //       .ReadToEnd();
+        //    var result = process
+        //        .StandardOutput
+        //        .ReadToEnd();
+        //    return result;
+        //}
 
-        public string GetColorFigure(int cardsCount, string cardName)
-        {
-            Process process = new Process();
-            string argument = @$"C:\Users\mkosi\PycharmProjects\pythonProject\FC.py";
-            process.StartInfo = new System.Diagnostics.ProcessStartInfo()
-            {
-                UseShellExecute = false,
-                CreateNoWindow = true,
-                WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden,
-                FileName = @"C:\Users\mkosi\PycharmProjects\pythonProject\venv\Scripts\python.exe",
-                Arguments = string.Format("{0} {1} {2}", argument, cardsCount, cardName),
-                RedirectStandardError = true,
-                RedirectStandardOutput = true
-            };
+        //public string GetColorFigure(int cardsCount, string cardName)
+        //{
+        //    Process process = new Process();
+        //    string argument = @$"C:\Users\mkosi\PycharmProjects\pythonProject\FC.py";
+        //    process.StartInfo = new System.Diagnostics.ProcessStartInfo()
+        //    {
+        //        UseShellExecute = false,
+        //        CreateNoWindow = true,
+        //        WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden,
+        //        FileName = @"C:\Users\mkosi\PycharmProjects\pythonProject\venv\Scripts\python.exe",
+        //        Arguments = string.Format("{0} {1} {2}", argument, cardsCount, cardName),
+        //        RedirectStandardError = true,
+        //        RedirectStandardOutput = true
+        //    };
 
-            process.EnableRaisingEvents = true;
-            process.Start();
-            var error = process
-               .StandardError
-               .ReadToEnd();
-            var result = process
-                .StandardOutput
-                .ReadToEnd();
-            return result;
-        }
+        //    process.EnableRaisingEvents = true;
+        //    process.Start();
+        //    var error = process
+        //       .StandardError
+        //       .ReadToEnd();
+        //    var result = process
+        //        .StandardOutput
+        //        .ReadToEnd();
+        //    return result;
+        //}
 
         public string GetCardsCountOnDesk()
         {
@@ -272,165 +274,225 @@ namespace CoreBusinessLogic
             return result.Replace("\r\n", "");
         }
 
-        public Task<string> GetHandAsync()
+        //public Task<string> GetHandAsync()
+        //{
+        //    var t = new TaskCompletionSource<string>(); //Using bool, because TaskCompletionSource needs at least one generic param
+        //    string result = "";
+        //    Process process = new Process();
+        //    string argument = @$"C:\Users\mkosi\PycharmProjects\pythonProject\predictFigures.py";
+        //    process.StartInfo = new System.Diagnostics.ProcessStartInfo()
+        //    {
+        //        UseShellExecute = false,
+        //        CreateNoWindow = true,
+        //        WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden,
+        //        FileName = @"C:\Users\mkosi\PycharmProjects\pythonProject\venv\Scripts\python.exe",
+        //        Arguments = string.Format("{0}", argument),
+        //        RedirectStandardError = true,
+        //        RedirectStandardOutput = true
+        //    };
+
+        //    process.EnableRaisingEvents = true;
+        //    process.Exited += (object sender, EventArgs e) =>
+        //    {
+        //        ////TODO: Exceptions will go first, followed by `return;`
+        //        //t.SetException();
+
+        //        //TODO: Finally, if there are no problems, return successfully
+
+        //        t.SetResult(process.StandardOutput.ReadToEnd().Replace("\r\n", ""));
+        //        result = process.StandardOutput.ReadToEnd().Replace("\r\n", "");
+        //    };
+        //    process.Start();
+        //    var error = process
+        //       .StandardError
+        //       .ReadToEnd();
+        //    //var result = process
+        //    //    .StandardOutput
+        //    //    .ReadToEnd();
+        //    return t.Task;
+        //}
+
+        //private Tuple<int, int, int, int> GetShapePosition(string path)
+        //{
+        //    Process process = new Process();
+        //    string argument = $@"C:\Users\Mikolaj\PycharmProjects\pythonProject1\Segmentation.py {path}";
+        //    process.StartInfo = new System.Diagnostics.ProcessStartInfo()
+        //    {
+        //        UseShellExecute = false,
+        //        CreateNoWindow = true,
+        //        WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden,
+        //        FileName = @"C:\Users\Mikolaj\AppData\Local\Programs\Python\Python39\python.exe",
+        //        Arguments = argument,
+        //        RedirectStandardError = true,
+        //        RedirectStandardOutput = true
+        //    };
+
+        //    process.Start();
+        //    var result = process.StandardOutput.ReadToEnd().Split('-');
+        //    if (result.Length == 1) return new Tuple<int, int, int, int>(0, 0, 0, 0);
+        //    return new Tuple<int, int, int, int>(
+        //        Convert.ToInt32(result[0]),
+        //        Convert.ToInt32(result[1]),
+        //        Convert.ToInt32(result[2]),
+        //        Convert.ToInt32(result[3]));
+        //}
+
+        //public string CenterFigure(string path)
+        //{
+        //    Process process = new Process();
+        //    string argument = $@"C:\Users\Mikolaj\PycharmProjects\pythonProject1\CenterFigure.py {path}";
+        //    process.StartInfo = new System.Diagnostics.ProcessStartInfo()
+        //    {
+        //        UseShellExecute = false,
+        //        CreateNoWindow = true,
+        //        WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden,
+        //        FileName = @"C:\Users\Mikolaj\AppData\Local\Programs\Python\Python39\python.exe",
+        //        Arguments = argument,
+        //        RedirectStandardError = true,
+        //        RedirectStandardOutput = true
+        //    };
+
+        //    process.Start();
+        //    var result = process.StandardOutput.ReadToEnd();
+        //    return result.Replace("\t", "").Replace("\r", "").Replace("\n", "");
+        //}
+
+
+        //public Stream ToStream(Image image)
+        //{
+        //    var stream = new MemoryStream();
+
+        //    image.Save(stream, image.RawFormat);
+        //    stream.Position = 0;
+
+        //    return stream;
+        //}
+
+        //private string RecognizeImage(recoType rc, string imagePath, int number)
+        //{
+        //    try
+        //    {
+        //        var t = new TaskCompletionSource<string>(); //Using bool, because TaskCompletionSource needs at least one generic param
+        //        string result = "";
+        //        string img = string.Empty;
+        //        using (var image = Bitmap.FromFile(imagePath))
+        //        {
+        //            using (MemoryStream ms = new MemoryStream())
+        //            {
+        //                image.Save(ms, image.RawFormat);
+        //                byte[] array = ms.ToArray();
+        //                img = Convert.ToBase64String(array);
+        //            }
+        //        }
+
+        //        Process process = new Process();
+        //        string argument = rc == recoType.figure ?
+        //            $@"C:\Users\mkosi\PycharmProjects\pythonProject\predictFigure.py {img} {number}" ://{imagePath.Replace(" ", "")}" :
+        //            $@"C:\Users\mkosi\PycharmProjects\pythonProject\predictColor.py {img} {number}";
+        //        process.StartInfo = new System.Diagnostics.ProcessStartInfo()
+        //        {
+        //            UseShellExecute = false,
+        //            CreateNoWindow = true,
+        //            WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden,
+        //            FileName = @"C:\Users\mkosi\PycharmProjects\pythonProject\venv\Scripts\python.exe",
+        //            Arguments = string.Format("{0}", argument),
+        //            RedirectStandardError = true,
+        //            RedirectStandardOutput = true
+        //        };
+
+        //        process.EnableRaisingEvents = true;
+        //        process.Exited += (object sender, EventArgs e) =>
+        //        {
+        //            ////TODO: Exceptions will go first, followed by `return;`
+        //            //t.SetException();
+
+        //            //TODO: Finally, if there are no problems, return successfully
+
+        //            t.SetResult(process.StandardOutput.ReadToEnd().Replace("\r\n", ""));
+        //            result = process.StandardOutput.ReadToEnd().Replace("\r\n", "");
+        //        };
+        //        process.Start();
+        //        Debug.WriteLine($"process {process.Id} started");
+        //        //var error = process
+        //        //   .StandardError
+        //        //   .ReadToEnd();
+        //        //var result = process.StandardOutput.ReadToEnd().Split("\n");
+        //        ////var list = result.Split("\n");
+        //        //var ress = rc == recoType.figure ? result[3].Replace("\r", "") : result[0].Replace("\r", "");
+        //        return "";
+        //    }
+        //    catch(Exception x)
+        //    {
+        //        return "";
+        //    }
+        //}
+        int reqCount = 0;
+        async Task<string> GetFigure(string image, string mode, string info)
         {
-            var t = new TaskCompletionSource<string>(); //Using bool, because TaskCompletionSource needs at least one generic param
-            string result = "";
-            Process process = new Process();
-            string argument = @$"C:\Users\mkosi\PycharmProjects\pythonProject\predictFigures.py";
-            process.StartInfo = new System.Diagnostics.ProcessStartInfo()
+            using (var client = new HttpClient())
             {
-                UseShellExecute = false,
-                CreateNoWindow = true,
-                WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden,
-                FileName = @"C:\Users\mkosi\PycharmProjects\pythonProject\venv\Scripts\python.exe",
-                Arguments = string.Format("{0}", argument),
-                RedirectStandardError = true,
-                RedirectStandardOutput = true
-            };
-
-            process.EnableRaisingEvents = true;
-            process.Exited += (object sender, EventArgs e) =>
-            {
-                ////TODO: Exceptions will go first, followed by `return;`
-                //t.SetException();
-
-                //TODO: Finally, if there are no problems, return successfully
-
-                t.SetResult(process.StandardOutput.ReadToEnd().Replace("\r\n", ""));
-                result = process.StandardOutput.ReadToEnd().Replace("\r\n", "");
-            };
-            process.Start();
-            var error = process
-               .StandardError
-               .ReadToEnd();
-            //var result = process
-            //    .StandardOutput
-            //    .ReadToEnd();
-            return t.Task;
-        }
-
-        private Tuple<int, int, int, int> GetShapePosition(string path)
-        {
-            Process process = new Process();
-            string argument = $@"C:\Users\Mikolaj\PycharmProjects\pythonProject1\Segmentation.py {path}";
-            process.StartInfo = new System.Diagnostics.ProcessStartInfo()
-            {
-                UseShellExecute = false,
-                CreateNoWindow = true,
-                WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden,
-                FileName = @"C:\Users\Mikolaj\AppData\Local\Programs\Python\Python39\python.exe",
-                Arguments = argument,
-                RedirectStandardError = true,
-                RedirectStandardOutput = true
-            };
-
-            process.Start();
-            var result = process.StandardOutput.ReadToEnd().Split('-');
-            if (result.Length == 1) return new Tuple<int, int, int, int>(0, 0, 0, 0);
-            return new Tuple<int, int, int, int>(
-                Convert.ToInt32(result[0]),
-                Convert.ToInt32(result[1]),
-                Convert.ToInt32(result[2]),
-                Convert.ToInt32(result[3]));
-        }
-
-        public string CenterFigure(string path)
-        {
-            Process process = new Process();
-            string argument = $@"C:\Users\Mikolaj\PycharmProjects\pythonProject1\CenterFigure.py {path}";
-            process.StartInfo = new System.Diagnostics.ProcessStartInfo()
-            {
-                UseShellExecute = false,
-                CreateNoWindow = true,
-                WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden,
-                FileName = @"C:\Users\Mikolaj\AppData\Local\Programs\Python\Python39\python.exe",
-                Arguments = argument,
-                RedirectStandardError = true,
-                RedirectStandardOutput = true
-            };
-
-            process.Start();
-            var result = process.StandardOutput.ReadToEnd();
-            return result.Replace("\t", "").Replace("\r", "").Replace("\n", "");
-        }
-
-       
-        public Stream ToStream(Image image)
-        {
-            var stream = new MemoryStream();
-
-            image.Save(stream, image.RawFormat);
-            stream.Position = 0;
-
-            return stream;
-        }
-
-        private string RecognizeImage(recoType rc, string imagePath, int number)
-        {
-            try
-            {
-                var t = new TaskCompletionSource<string>(); //Using bool, because TaskCompletionSource needs at least one generic param
-                string result = "";
-                string img = string.Empty;
-                using (var image = Bitmap.FromFile(imagePath))
+                try
                 {
-                    using (MemoryStream ms = new MemoryStream())
-                    {
-                        image.Save(ms, image.RawFormat);
-                        byte[] array = ms.ToArray();
-                        img = Convert.ToBase64String(array);
-                    }
+                    await Task.Delay(500);
+                    var path = $"https://predapp.azurewebsites.net/api/TestAlive?code=y5MaFGr54uaiah8ACRNNp_u26SV3oBfzbQxzb0XcW6MXAzFuFmAkiQ==&path={image}&mode={mode}&info={info}";
+                    var response = await client.GetAsync(path);
+                   
+                    string responseBody = response.Content.ReadAsStringAsync().Result;
+                    //reqCount++;
+                    Enum.TryParse<AnalyzeArea>(info.Split("|")[3], out AnalyzeArea area);
+                    Debug.WriteLine(responseBody);                    
+                    OnCardRecognised(responseBody, area);
+                    
+                    //response.ContinueWith((async t) =>
+                    //{
+                    //    reqCount++;
+                    //    Debug.WriteLine(reqCount.ToString());
+                    //});
+
+                    //if (response.IsSuccessStatusCode)
+                    //{
+                    //    var responseContent = response.Content;
+                    //    var result = await responseContent.ReadAsStringAsync();
+                    //    Debug.WriteLine($"RESULT    {result}");
+                    //    OnCardRecognised(result);
+                    //}
+                }
+                catch (AggregateException z)
+                {
+
+                }
+                catch(Exception ex)
+                {
+
                 }
 
-                Process process = new Process();
-                string argument = rc == recoType.figure ?
-                    $@"C:\Users\mkosi\PycharmProjects\pythonProject\predictFigure.py {img} {number}" ://{imagePath.Replace(" ", "")}" :
-                    $@"C:\Users\mkosi\PycharmProjects\pythonProject\predictColor.py {img} {number}";
-                process.StartInfo = new System.Diagnostics.ProcessStartInfo()
-                {
-                    UseShellExecute = false,
-                    CreateNoWindow = true,
-                    WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden,
-                    FileName = @"C:\Users\mkosi\PycharmProjects\pythonProject\venv\Scripts\python.exe",
-                    Arguments = string.Format("{0}", argument),
-                    RedirectStandardError = true,
-                    RedirectStandardOutput = true
-                };
 
-                process.EnableRaisingEvents = true;
-                process.Exited += (object sender, EventArgs e) =>
-                {
-                    ////TODO: Exceptions will go first, followed by `return;`
-                    //t.SetException();
-
-                    //TODO: Finally, if there are no problems, return successfully
-
-                    t.SetResult(process.StandardOutput.ReadToEnd().Replace("\r\n", ""));
-                    result = process.StandardOutput.ReadToEnd().Replace("\r\n", "");
-                };
-                process.Start();
-                Debug.WriteLine($"process {process.Id} started");
-                //var error = process
-                //   .StandardError
-                //   .ReadToEnd();
-                //var result = process.StandardOutput.ReadToEnd().Split("\n");
-                ////var list = result.Split("\n");
-                //var ress = rc == recoType.figure ? result[3].Replace("\r", "") : result[0].Replace("\r", "");
-                return "";
-            }
-            catch(Exception x)
-            {
                 return "";
             }
         }
+
+        //void OnReturnFigure(Task<HttpResponseMessage> task)
+        //{
+        //    var ttt = task.GetAwaiter().GetResult();
+        //    reqCount++;
+        //    Debug.WriteLine(reqCount.ToString());
+        //}
+
+        //private void recognised(Task<string> t)
+        //{
+        //    //var info = t.Result.Split('|')[0];
+        //    //var result = t.Result;
+        //    //Debug.WriteLine($"RESULT    {t}");
+        //    //OnCardRecognised(result);
+        //}
 
         private async void RecoImage(recoType rc, string imagePath, int number, string area)
         {
+            //GetFigure().ContinueWith(OnReturnFigure);
             try
-            {
-                var t = new TaskCompletionSource<string>(); //Using bool, because TaskCompletionSource needs at least one generic param
-                string result = "";
+            {                                
+                //var t = new TaskCompletionSource<string>(); //Using bool, because TaskCompletionSource needs at least one generic param
+                //string result = "";
                 string img = string.Empty;
                 using (var image = Bitmap.FromFile(imagePath))
                 {
@@ -442,38 +504,46 @@ namespace CoreBusinessLogic
                     }
                 }
 
-                Process process = new Process();
+                //Process process = new Process();
                 string argument = rc == recoType.figure ?
                     $@"C:\Users\mkosi\PycharmProjects\pythonProject\predictFigure.py {img} {number} {area}" ://{imagePath.Replace(" ", "")}" :
                     $@"C:\Users\mkosi\PycharmProjects\pythonProject\predictColor.py {img} {number} {area}";
-                process.StartInfo = new System.Diagnostics.ProcessStartInfo()
-                {
-                    UseShellExecute = false,
-                    CreateNoWindow = true,
-                    WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden,
-                    FileName = @"C:\Users\mkosi\PycharmProjects\pythonProject\venv\Scripts\python.exe",
-                    Arguments = string.Format("{0}", argument),
-                    RedirectStandardError = true,
-                    RedirectStandardOutput = true
-                };
 
-                process.EnableRaisingEvents = true;
-                process.Exited += (object sender, EventArgs e) =>
-                {
-                    t.SetResult(process.StandardOutput.ReadToEnd().Replace("\r\n", ""));
-                    //result = process.StandardOutput.ReadToEnd().Replace("\r\n", "");
-                    var FC = t.Task.Result.Split('|')[0];
-                    var result = $"{FC}|{rc}|{number}|{area}";
-                    var ff = process.StandardError.ReadToEnd();
-                    //Debug.WriteLine($"{rc}|{number}|{ress}");
-                    OnCardRecognised(result);
-                };
+                if (rc == recoType.color)
+                    GetFigure(img, "color", $"notNeeded|{rc}|{number}|{area}");
+                else
+                    GetFigure(img, "figure", $"notNeeded|{rc}|{number}|{area}");
 
-                if(number%3 > 0)
-                    await Task.Delay(1000);
+                //process.StartInfo = new System.Diagnostics.ProcessStartInfo()
+                //{
+                //    UseShellExecute = false,
+                //    CreateNoWindow = true,
+                //    WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden,
+                //    FileName = @"C:\Users\mkosi\PycharmProjects\pythonProject\venv\Scripts\python.exe",
+                //    Arguments = string.Format("{0}", argument),
+                //    RedirectStandardError = true,
+                //    RedirectStandardOutput = true
+                //};
 
-                process.Start();
-                Debug.WriteLine($"process CARD {process.Id} started");
+                //process.EnableRaisingEvents = true;
+                //process.Exited += (object sender, EventArgs e) =>
+                //{
+                //    t.SetResult(process.StandardOutput.ReadToEnd().Replace("\r\n", ""));
+                //    //result = process.StandardOutput.ReadToEnd().Replace("\r\n", "");
+                //    var FC = t.Task.Result.Split('|')[0];
+                //    var result = $"{FC}|{rc}|{number}|{area}";
+                //    var ff = process.StandardError.ReadToEnd();
+                //    //Debug.WriteLine($"{rc}|{number}|{ress}");
+                //    //OnCardRecognised(result);
+                //};
+
+                ////if(number%3 > 0)
+                ////    await Task.Delay(1000);
+
+                //process.Start();
+                
+                //Debug.WriteLine($"process CARD {process.Id} started");
+                
                 //var error = process
                 //   .StandardError
                 //   .ReadToEnd();
@@ -486,28 +556,28 @@ namespace CoreBusinessLogic
             }
         }
 
-        public delegate void CardHandler(string cardReco);
+        public delegate void CardHandler(string cardReco, AnalyzeArea area);
         public event CardHandler CardRecognised;
-        private void OnCardRecognised(string cardReco)
+        private void OnCardRecognised(string cardReco, AnalyzeArea area)
         {
             if (CardRecognised != null)
-                CardRecognised(cardReco);
+                CardRecognised(cardReco, area);
         }
 
         private string rr;
 
-        public MemoryStream SerializeToStream(object o)
-        {
-            MemoryStream stream = new MemoryStream();
-            IFormatter formatter = new BinaryFormatter();
-            formatter.Serialize(stream, o);
-            return stream;
-        }
+        //public MemoryStream SerializeToStream(object o)
+        //{
+        //    MemoryStream stream = new MemoryStream();
+        //    IFormatter formatter = new BinaryFormatter();
+        //    formatter.Serialize(stream, o);
+        //    return stream;
+        //}
 
-        public string RecogniseByPath(string path)
-        {
-            return "";
-        }
+        //public string RecogniseByPath(string path)
+        //{
+        //    return "";
+        //}
 
         private enum recoType
         {

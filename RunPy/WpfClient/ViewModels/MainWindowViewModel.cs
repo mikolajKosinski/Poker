@@ -36,6 +36,7 @@ namespace WpfClient.ViewModels
         IFigureMatcher _matcher;
         private ILoggerWrapper logger;
         int currentTotal;
+        int alreadyCounted;
         #region properties
 
         private string _progressInfo;
@@ -430,6 +431,34 @@ namespace WpfClient.ViewModels
             }
         }
 
+        private bool _isHandCheckEnable;
+        public bool IsHandCheckEnable
+        {
+            get
+            {
+                return _isHandCheckEnable;
+            }
+            set
+            {
+                _isHandCheckEnable = value;
+                NotifyPropertyChanged(nameof(IsHandCheckEnable));
+            }
+        }
+
+        private bool _isDeskCheckEnable;
+        public bool IsDeskCheckEnable
+        {
+            get
+            {
+                return _isDeskCheckEnable;
+            }
+            set
+            {
+                _isDeskCheckEnable = value;
+                NotifyPropertyChanged(nameof(IsDeskCheckEnable));
+            }
+        }
+
         private bool _areasVisible;
         public bool IsAreasVisible
         {
@@ -717,6 +746,8 @@ namespace WpfClient.ViewModels
             this.SettingsViewModel = settingsViewModel;
             _matcher = figureMatcher;
             _matcher.SetPokerHandsDict();
+            IsHandCheckEnable = true;
+            IsDeskCheckEnable = false;
             CardsOnHand = new ObservableCollection<string>();
             NeededCardsList = new ObservableCollection<ICard>();
             AreasViewModel = new AreasWindowViewModel(this, figureMatcher);
@@ -796,50 +827,58 @@ namespace WpfClient.ViewModels
         List<ICard> cardDeskList = new List<ICard>();
         List<ICard> cardHandList = new List<ICard>();
 
-        private void _cardRecognition_CardRecognised(string cardReco)
+        private void _cardRecognition_CardRecognised(string cardReco, AnalyzeArea area)
         {
-            var split = cardReco.Split('|');
-            var fcType = split[1];
-            var number = Convert.ToInt32(split[2]);
-            var area = split[3];
-            CardColor color;
-            CardFigure figure;
-
-            if(area == "desk")
+            try
             {
-                if(fcType == "color")
+                var split = cardReco.Split('|');
+                var fcType = split[2];
+                var number = Convert.ToInt32(split[3]);
+                CardColor color;
+                CardFigure figure;
+
+                if (area.ToString() == AnalyzeArea.Desk.ToString())
                 {
-                    color = _cardRecognition.ColorDict[split[0]];
-                    cardDeskList[number].Color = color;
+                    if (fcType == "color")
+                    {
+                        color = _cardRecognition.ColorDict[split[0]];
+                        cardDeskList[number].Color = color;
+                    }
+                    else
+                    {
+                        figure = _cardRecognition.FigureDict[split[0]];
+                        cardDeskList[number].Figure = figure;
+                    }
                 }
                 else
                 {
-                    figure = _cardRecognition.FigureDict[split[0]];
-                    cardDeskList[number].Figure = figure;
+                    if (fcType == "color")
+                    {
+                        color = _cardRecognition.ColorDict[split[0]];
+                        cardHandList[number].Color = color;
+                    }
+                    else
+                    {
+                        figure = _cardRecognition.FigureDict[split[0]];
+                        cardHandList[number].Figure = figure;
+                    }
                 }
             }
-            else
+            catch (Exception x)
             {
-                if (fcType == "color")
-                {
-                    color = _cardRecognition.ColorDict[split[0]];
-                    cardHandList[number].Color = color;
-                }
-                else
-                {
-                    figure = _cardRecognition.FigureDict[split[0]];
-                    cardHandList[number].Figure = figure;
-                }
+                
             }
 
-            currentTotal--;
+            alreadyCounted++;
+            Debug.WriteLine($"{alreadyCounted} / {currentTotal}");
 
-            if(currentTotal ==0)
+            if ((area == AnalyzeArea.Hand && alreadyCounted == 4) || (area == AnalyzeArea.Desk && alreadyCounted == currentTotal))
             {
-                foreach(var card in cardDeskList)
+                Debug.WriteLine("########## counting");
+                foreach (var card in cardDeskList)
                 {
                     _matcher.PokerHandsDict[PokerHands.Full].UpdateDesk(card);
-                
+
                     Application.Current.Dispatcher.BeginInvoke(new Action(() => DeskCards.Add(card)));
                 }
 
@@ -851,6 +890,7 @@ namespace WpfClient.ViewModels
                 }
 
                 Calculate();
+                IsDeskCheckEnable = true;
             }
         }
 
@@ -949,7 +989,8 @@ namespace WpfClient.ViewModels
         private void AnalyzeHandButtonCommand(object sender)
         {            
             Task.Run(async () => await Analyze(AnalyzeArea.Hand));
-            
+            IsHandCheckEnable = false;
+            IsDeskCheckEnable = true;
             //Analyze();
         }
 
@@ -962,13 +1003,15 @@ namespace WpfClient.ViewModels
             }
          
             Task.Run(async () => await Analyze(AnalyzeArea.Desk));
-           
+            IsDeskCheckEnable = false;
             //Analyze();
         }
 
         private void CleanButtonCommand(object sender)
         {
             Clean();
+            IsHandCheckEnable = true;
+            IsDeskCheckEnable = false;
         }
 
         void Clean()
@@ -1176,6 +1219,8 @@ namespace WpfClient.ViewModels
 
         public async Task Analyze(AnalyzeArea at)
         {
+            alreadyCounted = 0;
+            currentTotal = 2;
             cardDeskList = new List<ICard>();
             cardHandList = new List<ICard>();
             if (HandArea == null || DeskArea == null)
@@ -1185,7 +1230,7 @@ namespace WpfClient.ViewModels
             }
 
             logger.Info("Analyze started");
-            Application.Current.Dispatcher.BeginInvoke(new Action(() => { ProgressBarVisibility = Visibility.Visible; }));
+            //Application.Current.Dispatcher.BeginInvoke(new Action(() => { ProgressBarVisibility = Visibility.Visible; }));
             int flopCount;
 
             if (at == AnalyzeArea.Desk || at == AnalyzeArea.All)
@@ -1193,45 +1238,47 @@ namespace WpfClient.ViewModels
                 GetCards(DeskArea, "allCards");
                 ProgressBarValue += 10;
                 flopCount = Convert.ToInt32(_cardRecognition.GetCardsCountOnDesk());
-                currentTotal += flopCount;
-                Application.Current.Dispatcher.BeginInvoke(new Action(() => {
-                    MessageBoard.Add("Scanning Flop cards");
-                }));
+                currentTotal = flopCount * 2;
+                //Application.Current.Dispatcher.BeginInvoke(new Action(() =>
+                //{
+                //    MessageBoard.Add("Scanning Flop cards");
+                //}));
                 var tasks = new List<Task<ICard>>();
-                for(int i=0; i< flopCount; i++) 
+                for (int i = 0; i < flopCount; i++)
                 {
+                    if (i == 3)
+                        await Task.Delay(1000);
+
                     var colorPath = @$"C:\Users\mkosi\Documents\GitHub\Poker\RunPy\WpfClient\obj\Debug\\net5.0-windows\C{i}.PNG";
                     var figurePath = @$"C:\Users\mkosi\Documents\GitHub\Poker\RunPy\WpfClient\obj\Debug\\net5.0-windows\F{i}.PNG";
-                    _cardRecognition.GetCard(figurePath, colorPath, i, "desk");
+                    _cardRecognition.GetCard(figurePath, colorPath, i, AnalyzeArea.Desk.ToString());
                     cardDeskList.Add(new Card(new CardFigure(), new CardColor()));
-                    Application.Current.Dispatcher.BeginInvoke(new Action(() => { ProgressBarValue += 10; }));
-                    Application.Current.Dispatcher.BeginInvoke(new Action(() => {MessageBoard.Add($"Working {i} of {flopCount} flop cards ");}));
+                    //Application.Current.Dispatcher.BeginInvoke(new Action(() => { ProgressBarValue += 10; }));
+                    Application.Current.Dispatcher.BeginInvoke(new Action(() => { MessageBoard.Add($"Working {i} of {flopCount} flop cards "); }));
                     File.Delete(colorPath);
                     File.Delete(figurePath);
                 }
+            }
 
-                if (at == AnalyzeArea.Hand || at == AnalyzeArea.All)
+            if (at == AnalyzeArea.Hand || at == AnalyzeArea.All)
+            {
+                GetCards(HandArea, "allCards");
+                ProgressInfo = "Scanning Hand area";
+                flopCount = Convert.ToInt32(_cardRecognition.GetCardsCountOnDesk());
+                currentTotal = 4;
+
+                for (int i = 0; i < flopCount; i++)
                 {
-                    GetCards(HandArea, "allCards");
-                    ProgressInfo = "Scanning Hand area";
-                    flopCount = Convert.ToInt32(_cardRecognition.GetCardsCountOnDesk());
-                    currentTotal += flopCount;
-
-
-                    for (int i = 0; i < flopCount; i++)
-                    {
-                        var colorPath = @$"C:\Users\mkosi\Documents\GitHub\Poker\RunPy\WpfClient\obj\Debug\\net5.0-windows\C{i}.PNG";
-                        var figurePath = @$"C:\Users\mkosi\Documents\GitHub\Poker\RunPy\WpfClient\obj\Debug\\net5.0-windows\F{i}.PNG";
-                        _cardRecognition.GetCard(figurePath, colorPath, i, "hand");
-                        cardHandList.Add(new Card(new CardFigure(), new CardColor()));
-                        Application.Current.Dispatcher.BeginInvoke(new Action(() => { ProgressBarValue += 10; }));
-                        Application.Current.Dispatcher.BeginInvoke(new Action(() => { MessageBoard.Add($"Working {i} of {flopCount} hand cards "); }));
-                        File.Delete(colorPath);
-                        File.Delete(figurePath);
-                    }
+                    var colorPath = @$"C:\Users\mkosi\Documents\GitHub\Poker\RunPy\WpfClient\obj\Debug\\net5.0-windows\C{i}.PNG";
+                    var figurePath = @$"C:\Users\mkosi\Documents\GitHub\Poker\RunPy\WpfClient\obj\Debug\\net5.0-windows\F{i}.PNG";
+                    _cardRecognition.GetCard(figurePath, colorPath, i, AnalyzeArea.Hand.ToString());
+                    cardHandList.Add(new Card(new CardFigure(), new CardColor()));
+                    //Application.Current.Dispatcher.BeginInvoke(new Action(() => { ProgressBarValue += 10; }));
+                    Application.Current.Dispatcher.BeginInvoke(new Action(() => { MessageBoard.Add($"Working {i} of {flopCount} hand cards "); }));
+                    File.Delete(colorPath);
+                    File.Delete(figurePath);
                 }
-                currentTotal *= 2;
-            }           
+            }
         }
 
         private void Calculate()

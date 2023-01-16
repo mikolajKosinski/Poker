@@ -150,3 +150,32 @@
 2022-12-16 17:01:29.699 +01:00 [INF] Show Main window
 2022-12-16 17:01:56.207 +01:00 [INF] Show Main window
 2022-12-16 17:02:53.931 +01:00 [INF] Show Main window
+2022-12-16 17:07:14.547 +01:00 [INF] Show Areas
+2022-12-16 17:07:24.563 +01:00 [INF] Show Main window
+2022-12-16 17:07:26.315 +01:00 [INF] Analyze started
+2022-12-16 17:07:30.986 +01:00 [INF] Getting cards area : WpfClient.CardArea
+2022-12-16 17:07:33.619 +01:00 [INF] Getting cards area : WpfClient.CardArea
+2022-12-16 17:07:41.834 +01:00 [INF] ShowGeneralTab
+2022-12-16 17:07:45.901 +01:00 [INF] ShowStraightTab
+2022-12-16 17:07:45.902 +01:00 [INF] Outs list cleared
+2022-12-16 17:07:45.903 +01:00 [INF] Outs list filled
+2022-12-16 17:07:45.903 +01:00 [INF] Card added to hand
+2022-12-16 17:07:45.904 +01:00 [INF] Card added to hand
+2022-12-16 17:07:45.904 +01:00 [INF] Card added to hand
+2022-12-16 17:07:45.904 +01:00 [INF] Card added to hand
+2022-12-16 17:07:45.904 +01:00 [INF] Card added to hand
+2022-12-16 17:07:51.599 +01:00 [INF] ShowPairTab
+2022-12-16 17:07:51.602 +01:00 [INF] Outs list cleared
+2022-12-16 17:07:51.603 +01:00 [INF] Outs list filled
+2022-12-16 17:14:00.233 +01:00 [INF] Show Areas
+2022-12-16 17:14:08.366 +01:00 [INF] Show Main window
+2022-12-16 17:14:09.918 +01:00 [INF] Analyze started
+2022-12-16 17:14:09.924 +01:00 [INF] Getting cards area : WpfClient.CardArea
+2022-12-16 17:14:12.062 +01:00 [INF] Getting cards area : WpfClient.CardArea
+2022-12-16 17:14:20.399 +01:00 [INF] ShowGeneralTab
+2022-12-16 17:17:25.301 +01:00 [INF] Show Areas
+2022-12-16 17:17:36.180 +01:00 [INF] Show Main window
+2022-12-16 17:17:37.311 +01:00 [INF] Analyze started
+2022-12-16 17:17:37.317 +01:00 [INF] Getting cards area : WpfClient.CardArea
+2022-12-16 17:17:39.507 +01:00 [INF] Getting cards area : WpfClient.CardArea
+2022-12-16 17:17:47.386 +01:00 [INF] ShowGeneralTab

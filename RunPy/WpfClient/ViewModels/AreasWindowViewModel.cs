@@ -82,15 +82,15 @@ namespace WpfClient.ViewModels
             _mainWindowVM.Analyze(AnalyzeArea.All);            
         }
 
-        private void CallAnalyzeHandCommand(object sender)
-        {
-            _mainWindowVM.Analyze(AnalyzeArea.All);
-        }
+        //private void CallAnalyzeHandCommand(object sender)
+        //{
+        //    _mainWindowVM.Analyze(AnalyzeArea.All);
+        //}
 
-        private void CallAnalyzeDeskCommand(object sender)
-        {
-            _mainWindowVM.Analyze(AnalyzeArea.Desk);
-        }
+        //private void CallAnalyzeDeskCommand(object sender)
+        //{
+        //    _mainWindowVM.Analyze(AnalyzeArea.Desk);
+        //}
 
         public bool CanSelect(object parameter)
         {

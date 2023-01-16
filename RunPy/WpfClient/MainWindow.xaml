@@ -66,10 +66,10 @@
                                         <ColumnDefinition Width="1*" />
                                         <ColumnDefinition Width="1*" />
                                     </Grid.ColumnDefinitions>
-                                    <Button Content="Analyze Hand" Grid.Column="0" Width="80"  Height="30" Command="{Binding AnalyzeHandCommand}" />
-                                    <Button Content="Analyze Desk" Grid.Column="1" Width="80" Height="30" Command="{Binding AnalyzeDeskCommand}" />
+                                <Button Content="Analyze Hand" Grid.Column="0" Width="80"  Height="30" Command="{Binding AnalyzeHandCommand}" IsEnabled="{Binding IsHandCheckEnable}" />
+                                <Button Content="Analyze Desk" Grid.Column="1" Width="80" Height="30" Command="{Binding AnalyzeDeskCommand}"  IsEnabled="{Binding IsDeskCheckEnable}" />
                                 </Grid>
-                                <Button Content="Analyze All" Width="160" Grid.Row="0" Height="30" Command="{Binding AnalyzeCommand}" />
+                                <!--<Button Content="Analyze All" Width="160" Grid.Row="0" Height="30" Command="{Binding AnalyzeCommand}" />-->
                             </Grid>
 
                             <ListBox VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Grid.Column="0">
