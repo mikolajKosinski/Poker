@@ -87,3 +87,4 @@ C:\Users\mkosi\Documents\GitHub\Poker\RunPy\WpfClient\bin\Debug\netcoreapp3.0\Ne
 C:\Users\mkosi\Documents\GitHub\Poker\RunPy\WpfClient\bin\Debug\netcoreapp3.0\Microsoft.Extensions.Logging.Abstractions.dll
 C:\Users\mkosi\Documents\GitHub\Poker\RunPy\WpfClient\bin\Debug\netcoreapp3.0\Serilog.dll
 C:\Users\mkosi\Documents\GitHub\Poker\RunPy\WpfClient\bin\Debug\netcoreapp3.0\Serilog.Sinks.File.dll
+C:\Users\mkosi\Documents\GitHub\Poker\RunPy\WpfClient\obj\Debug\netcoreapp3.0\Styles.baml
