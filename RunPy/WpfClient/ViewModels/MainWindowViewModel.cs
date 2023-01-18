@@ -1293,7 +1293,6 @@ namespace WpfClient.ViewModels
             FlushTabName = $"Flush [{ordered[Enums.PokerHands.Flush].Probability}%]";
             FourOfKindTabName = $"Four of kind [{ordered[Enums.PokerHands.FourOfKind].Probability}%]";
             FullTabName = $"Full [{ordered[Enums.PokerHands.Full].Probability}%]";
-            PairTabName = $"Pair [{ordered[Enums.PokerHands.Pair].Probability}%]";
             StraightTabName = $"Straight [{ordered[Enums.PokerHands.Straight].Probability}%]";
             ThreeOfKindTabName = $"Three of kind [{ordered[Enums.PokerHands.ThreeOfKind].Probability}%]";
             PairTabName = $"Pair [{ordered[Enums.PokerHands.Pair].Probability}%]";
@@ -1306,7 +1305,19 @@ namespace WpfClient.ViewModels
             IsStraightEnable = ordered[Enums.PokerHands.Straight].Probability > Convert.ToInt32(SettingsViewModel.ThresholdValue);
             IsStraightFlushEnable = ordered[Enums.PokerHands.StraightFlush].Probability > Convert.ToInt32(SettingsViewModel.ThresholdValue);
             IsThreeEnable = ordered[Enums.PokerHands.ThreeOfKind].Probability > Convert.ToInt32(SettingsViewModel.ThresholdValue);
-            ProgressBarVisibility = Visibility.Collapsed;
+            ProgressBarVisibility = Visibility.Collapsed;            
+            Application.Current.Dispatcher.BeginInvoke(new Action(() =>
+            {
+                Hands.Clear();
+                Hands.Add($"Royal flush [{ordered[Enums.PokerHands.RoyalFlush].Probability}%]");
+                Hands.Add($"Straight flush [{ordered[Enums.PokerHands.StraightFlush].Probability}%]");
+                Hands.Add($"Flush [{ordered[Enums.PokerHands.Flush].Probability}%]");
+                Hands.Add($"Four of kind [{ordered[Enums.PokerHands.FourOfKind].Probability}%]");
+                Hands.Add($"Full [{ordered[Enums.PokerHands.Full].Probability}%]");
+                Hands.Add($"Straight [{ordered[Enums.PokerHands.Straight].Probability}%]");
+                Hands.Add($"Three of kind [{ordered[Enums.PokerHands.ThreeOfKind].Probability}%]");
+                Hands.Add($"Pair [{ordered[Enums.PokerHands.Pair].Probability}%]");
+            }));
             ShowGeneralTab(null);
         }
                

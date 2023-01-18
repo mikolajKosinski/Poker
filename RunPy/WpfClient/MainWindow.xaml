@@ -29,13 +29,13 @@
                         </VisualStateGroup>
                     </VisualStateManager.VisualStateGroups>
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="1*" />
+                        <RowDefinition Height="1*" MaxHeight="50"/>
                         <RowDefinition Height="2*" />
                         <RowDefinition Height="8*" />
                         <RowDefinition Height="2*" />
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="2*" />
+                        <ColumnDefinition Width="2*" MaxWidth="120"/>
                         <ColumnDefinition Width="5*" />
                         <ColumnDefinition Width="1*" />
                         <ColumnDefinition Width="1*" />
@@ -106,7 +106,7 @@
                         </Grid>
                     </Viewbox>
                     </Grid>
-                    <Grid Grid.Row="2" Grid.Column="1" Visibility="{Binding IsGeneralTabVisible, Mode=TwoWay, Converter={StaticResource boolToVisConv}}" 
+                    <Grid Grid.Row="1" Grid.RowSpan="2" Grid.Column="1" Visibility="{Binding IsGeneralTabVisible, Mode=TwoWay, Converter={StaticResource boolToVisConv}}" 
                           VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="1*" />
@@ -117,8 +117,7 @@
                          x:Name="HandsList"
                          ItemsSource="{Binding Hands, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                          HorizontalAlignment="Stretch" 
-                         VerticalAlignment="Stretch" 
-                         Margin="10"
+                         Margin="2"
                          PreviewMouseDoubleClick="HandsList_PreviewMouseDoubleClick">
                             </ListBox>
                         </GroupBox>
@@ -153,7 +152,7 @@
                             </GroupBox>
                         </Grid>
                     </Grid>
-                    <Grid Grid.Row="2" Grid.Column="1" Visibility="{Binding IsStraightFlushTabVisible, Mode=TwoWay, Converter={StaticResource boolToVisConv}}" 
+                    <Grid Grid.Row="1" Grid.RowSpan="2" Grid.Column="1" Visibility="{Binding IsStraightFlushTabVisible, Mode=TwoWay, Converter={StaticResource boolToVisConv}}" 
                           VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="1*"/>
@@ -318,13 +317,13 @@
                             </ListBox.ItemTemplate>
                         </ListBox>
                     </Grid>
-                    <Grid Grid.Row="2" Grid.Column="1" Visibility="{Binding IsStraightTabVisible, Mode=TwoWay, Converter={StaticResource boolToVisConv}}" 
+                    <Grid Grid.Row="1" Grid.RowSpan="2" Grid.Column="1" Visibility="{Binding IsStraightTabVisible, Mode=TwoWay, Converter={StaticResource boolToVisConv}}" 
                           VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="1*"/>
-                            <RowDefinition Height="1*"/>
+                            <RowDefinition Height="1*" MaxHeight="25"/>
+                            <RowDefinition Height="1*" MaxHeight="25"/>
                             <RowDefinition Height="3*"/>
-                            <RowDefinition Height="1*"/>
+                            <RowDefinition Height="1*" MaxHeight="25"/>
                             <RowDefinition Height="6*"/>
                         </Grid.RowDefinitions>
                         <Label Content="Straight" HorizontalAlignment="Center" Grid.Row="0" />
