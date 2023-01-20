@@ -643,8 +643,8 @@ namespace WpfClient.ViewModels
         }
 
         ICardRecognition _cardRecognition;
-        public CardArea HandArea { get; set; }
-        public CardArea DeskArea { get; set; }
+        //public CardArea HandArea { get; set; }
+        //public CardArea DeskArea { get; set; }
         public CardArea SingleCardArea { get; set; }
 
         #region commands
@@ -929,8 +929,8 @@ namespace WpfClient.ViewModels
             ((App)Application.Current).ShowWindow();
             CardArea area = SingleCardArea;
 
-            if (at == AnalyzeType.Desk) area = DeskArea;
-            if (at == AnalyzeType.Hand) area = HandArea;    
+            if (at == AnalyzeType.Desk) area = SettingsViewModel.DeskArea;
+            if (at == AnalyzeType.Hand) area = SettingsViewModel.HandArea;    
         }
 
         private Dispatcher _getDispatcher()
@@ -1223,7 +1223,7 @@ namespace WpfClient.ViewModels
             currentTotal = 2;
             cardDeskList = new List<ICard>();
             cardHandList = new List<ICard>();
-            if (HandArea == null || DeskArea == null)
+            if (SettingsViewModel.HandArea == null || SettingsViewModel.DeskArea == null)
             {
                 MessageBox.Show("Please to select Card and Desk areas to analyze.");
                 return;
@@ -1235,7 +1235,7 @@ namespace WpfClient.ViewModels
 
             if (at == AnalyzeArea.Desk || at == AnalyzeArea.All)
             {
-                GetCards(DeskArea, "allCards");
+                GetCards(SettingsViewModel.DeskArea, "allCards");
                 ProgressBarValue += 10;
                 flopCount = Convert.ToInt32(_cardRecognition.GetCardsCountOnDesk());
                 currentTotal = flopCount * 2;
@@ -1262,7 +1262,7 @@ namespace WpfClient.ViewModels
 
             if (at == AnalyzeArea.Hand || at == AnalyzeArea.All)
             {
-                GetCards(HandArea, "allCards");
+                GetCards(SettingsViewModel.HandArea, "allCards");
                 ProgressInfo = "Scanning Hand area";
                 flopCount = Convert.ToInt32(_cardRecognition.GetCardsCountOnDesk());
                 currentTotal = 4;

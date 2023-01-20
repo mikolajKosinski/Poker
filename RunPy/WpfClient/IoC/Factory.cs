@@ -30,6 +30,7 @@ namespace WpfClient.IoC
             _builder.RegisterType<CardRecognition>().As<ICardRecognition>();
             _builder.RegisterType<Settings>().As<ISettings>().SingleInstance();
             _builder.RegisterType<SettingsViewModel>().As<ISettingsViewModel>().SingleInstance();
+            _builder.RegisterType<AreasWindowViewModel>().As<IAreasWindowViewModel>().SingleInstance();
         }
     }
 }

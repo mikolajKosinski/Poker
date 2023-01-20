@@ -341,3 +341,112 @@
 2023-01-18 07:23:10.779 +01:00 [INF] Card added to hand
 2023-01-18 07:23:10.780 +01:00 [INF] Card added to hand
 2023-01-18 07:23:10.780 +01:00 [INF] Card added to hand
+2023-01-18 15:42:07.129 +01:00 [INF] Show Main window
+2023-01-18 15:42:21.560 +01:00 [INF] Show Areas
+2023-01-18 15:42:28.605 +01:00 [INF] Show Main window
+2023-01-18 15:42:29.387 +01:00 [INF] Analyze started
+2023-01-18 15:42:29.399 +01:00 [INF] Getting cards area : WpfClient.CardArea
+2023-01-18 15:42:57.911 +01:00 [INF] ShowGeneralTab
+2023-01-18 15:43:19.085 +01:00 [INF] ShowStraightTab
+2023-01-18 15:43:19.086 +01:00 [INF] Outs list cleared
+2023-01-18 15:43:19.087 +01:00 [INF] Outs list filled
+2023-01-18 15:43:19.088 +01:00 [INF] Card added to hand
+2023-01-18 15:43:19.088 +01:00 [INF] Card added to hand
+2023-01-18 15:43:20.027 +01:00 [INF] ShowFlushTab
+2023-01-18 15:43:20.030 +01:00 [INF] Outs list cleared
+2023-01-18 15:43:20.030 +01:00 [INF] Outs list filled
+2023-01-18 15:43:20.030 +01:00 [INF] Card added to hand
+2023-01-18 15:43:21.183 +01:00 [INF] ShowPairTab
+2023-01-18 15:43:21.196 +01:00 [INF] Outs list cleared
+2023-01-18 15:43:21.197 +01:00 [INF] Outs list filled
+2023-01-18 15:43:22.903 +01:00 [INF] ShowStraightTab
+2023-01-18 15:43:22.905 +01:00 [INF] Outs list cleared
+2023-01-18 15:43:22.905 +01:00 [INF] Outs list filled
+2023-01-18 15:43:22.905 +01:00 [INF] Card added to hand
+2023-01-18 15:43:22.905 +01:00 [INF] Card added to hand
+2023-01-18 15:43:23.557 +01:00 [INF] ShowFlushTab
+2023-01-18 15:43:23.560 +01:00 [INF] Outs list cleared
+2023-01-18 15:43:23.561 +01:00 [INF] Outs list filled
+2023-01-18 15:43:23.562 +01:00 [INF] Card added to hand
+2023-01-18 15:43:25.265 +01:00 [INF] ShowStraightFlushTab
+2023-01-18 15:43:25.267 +01:00 [INF] Outs list cleared
+2023-01-18 15:43:25.268 +01:00 [INF] Outs list filled
+2023-01-18 15:43:26.255 +01:00 [INF] ShowGeneralTab
+2023-01-18 15:43:29.447 +01:00 [INF] ShowStraightFlushTab
+2023-01-18 15:43:29.450 +01:00 [INF] Outs list cleared
+2023-01-18 15:43:29.450 +01:00 [INF] Outs list filled
+2023-01-18 15:43:31.557 +01:00 [INF] ShowGeneralTab
+2023-01-18 15:43:33.313 +01:00 [INF] ShowStraightFlushTab
+2023-01-18 15:43:33.316 +01:00 [INF] Outs list cleared
+2023-01-18 15:43:33.316 +01:00 [INF] Outs list filled
+2023-01-18 15:43:34.627 +01:00 [INF] ShowFlushTab
+2023-01-18 15:43:34.630 +01:00 [INF] Outs list cleared
+2023-01-18 15:43:34.631 +01:00 [INF] Outs list filled
+2023-01-18 15:43:34.631 +01:00 [INF] Card added to hand
+2023-01-18 15:43:36.315 +01:00 [INF] ShowStraightFlushTab
+2023-01-18 15:43:36.318 +01:00 [INF] Outs list cleared
+2023-01-18 15:43:36.318 +01:00 [INF] Outs list filled
+2023-01-18 15:43:40.653 +01:00 [INF] ShowStraightTab
+2023-01-18 15:43:40.657 +01:00 [INF] Outs list cleared
+2023-01-18 15:43:40.657 +01:00 [INF] Outs list filled
+2023-01-18 15:43:40.657 +01:00 [INF] Card added to hand
+2023-01-18 15:43:40.657 +01:00 [INF] Card added to hand
+2023-01-18 15:43:51.099 +01:00 [INF] ShowPairTab
+2023-01-18 15:43:51.103 +01:00 [INF] Outs list cleared
+2023-01-18 15:43:51.103 +01:00 [INF] Outs list filled
+2023-01-18 15:43:52.333 +01:00 [INF] ShowFlushTab
+2023-01-18 15:43:52.335 +01:00 [INF] Outs list cleared
+2023-01-18 15:43:52.335 +01:00 [INF] Outs list filled
+2023-01-18 15:43:52.335 +01:00 [INF] Card added to hand
+2023-01-18 15:43:53.073 +01:00 [INF] ShowStraightTab
+2023-01-18 15:43:53.076 +01:00 [INF] Outs list cleared
+2023-01-18 15:43:53.076 +01:00 [INF] Outs list filled
+2023-01-18 15:43:53.077 +01:00 [INF] Card added to hand
+2023-01-18 15:43:53.077 +01:00 [INF] Card added to hand
+2023-01-18 15:43:54.149 +01:00 [INF] ShowStraightFlushTab
+2023-01-18 15:43:54.153 +01:00 [INF] Outs list cleared
+2023-01-18 15:43:54.153 +01:00 [INF] Outs list filled
+2023-01-18 15:43:55.929 +01:00 [INF] ShowStraightTab
+2023-01-18 15:43:55.932 +01:00 [INF] Outs list cleared
+2023-01-18 15:43:55.932 +01:00 [INF] Outs list filled
+2023-01-18 15:43:55.933 +01:00 [INF] Card added to hand
+2023-01-18 15:43:55.933 +01:00 [INF] Card added to hand
+2023-01-18 15:46:16.913 +01:00 [INF] Show Areas
+2023-01-18 15:46:23.978 +01:00 [INF] Show Main window
+2023-01-18 15:46:25.029 +01:00 [INF] Analyze started
+2023-01-18 15:46:25.035 +01:00 [INF] Getting cards area : WpfClient.CardArea
+2023-01-18 15:46:59.896 +01:00 [INF] ShowGeneralTab
+2023-01-18 15:47:02.628 +01:00 [INF] Analyze started
+2023-01-18 15:47:02.628 +01:00 [INF] Getting cards area : WpfClient.CardArea
+2023-01-18 15:47:36.613 +01:00 [INF] ShowGeneralTab
+2023-01-18 15:49:43.146 +01:00 [INF] ShowStraightTab
+2023-01-18 15:49:43.146 +01:00 [INF] Outs list cleared
+2023-01-18 15:49:43.147 +01:00 [INF] Outs list filled
+2023-01-18 15:49:43.148 +01:00 [INF] Card added to hand
+2023-01-18 15:49:43.148 +01:00 [INF] Card added to hand
+2023-01-18 15:49:43.148 +01:00 [INF] Card added to hand
+2023-01-18 15:49:43.148 +01:00 [INF] Card added to hand
+2023-01-18 15:49:43.148 +01:00 [INF] Card added to hand
+2023-01-18 15:49:45.904 +01:00 [INF] ShowPairTab
+2023-01-18 15:49:45.906 +01:00 [INF] Outs list cleared
+2023-01-18 15:49:45.907 +01:00 [INF] Outs list filled
+2023-01-18 15:49:46.911 +01:00 [INF] ShowStraightTab
+2023-01-18 15:49:46.915 +01:00 [INF] Outs list cleared
+2023-01-18 15:49:46.916 +01:00 [INF] Outs list filled
+2023-01-18 15:49:46.916 +01:00 [INF] Card added to hand
+2023-01-18 15:49:46.916 +01:00 [INF] Card added to hand
+2023-01-18 15:49:46.916 +01:00 [INF] Card added to hand
+2023-01-18 15:49:46.916 +01:00 [INF] Card added to hand
+2023-01-18 15:49:46.916 +01:00 [INF] Card added to hand
+2023-01-18 15:49:47.861 +01:00 [INF] ShowPairTab
+2023-01-18 15:49:47.863 +01:00 [INF] Outs list cleared
+2023-01-18 15:49:47.864 +01:00 [INF] Outs list filled
+2023-01-18 15:49:49.067 +01:00 [INF] ShowStraightTab
+2023-01-18 15:49:49.069 +01:00 [INF] Outs list cleared
+2023-01-18 15:49:49.070 +01:00 [INF] Outs list filled
+2023-01-18 15:49:49.070 +01:00 [INF] Card added to hand
+2023-01-18 15:49:49.070 +01:00 [INF] Card added to hand
+2023-01-18 15:49:49.070 +01:00 [INF] Card added to hand
+2023-01-18 15:49:49.070 +01:00 [INF] Card added to hand
+2023-01-18 15:49:49.070 +01:00 [INF] Card added to hand
+2023-01-18 15:49:53.869 +01:00 [INF] ShowGeneralTab

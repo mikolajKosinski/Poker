@@ -41,10 +41,10 @@
                         <ColumnDefinition Width="1*" />
                     </Grid.ColumnDefinitions>
                     <StackPanel Orientation="Horizontal" Grid.Row="0" Grid.Column="1" HorizontalAlignment="Center">
-                        <Button Content="MainWindow" Command="{Binding MainWindowCommand}"/>
-                        <Button Content="Areas" Command="{Binding AreasWindowCommand}"/>
-                        <Button Content="Settings" Command="{Binding SettingsWindowCommand}"/>
-                        <Button Content="New game" Width="80" Height="30" Command="{Binding CleanCommand}" Grid.Column="0"/>
+                    <Button Content="MainWindow" Style="{StaticResource TopMenuButton}" Command="{Binding MainWindowCommand}"/>
+                    <!--<Button Content="Areas" Style="{StaticResource TopMenuButton}" Command="{Binding AreasWindowCommand}"/>-->
+                    <Button Content="Settings" Style="{StaticResource TopMenuButton}" Command="{Binding SettingsWindowCommand}"/>
+                    <Button Content="New game" Style="{StaticResource TopMenuButton}" Command="{Binding CleanCommand}" Grid.Column="0"/>
                     </StackPanel>
 
                     <Grid Grid.Row="2" Grid.Column="1"
@@ -154,14 +154,14 @@
                     </Grid>
                     <Grid Grid.Row="1" Grid.RowSpan="2" Grid.Column="1" Visibility="{Binding IsStraightFlushTabVisible, Mode=TwoWay, Converter={StaticResource boolToVisConv}}" 
                           VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="1*"/>
-                            <RowDefinition Height="1*"/>
-                            <RowDefinition Height="3*"/>
-                            <RowDefinition Height="1*"/>
-                            <RowDefinition Height="6*"/>
-                        </Grid.RowDefinitions>
-                        <Label Content="Straight Flush" HorizontalAlignment="Center" Grid.Row="0" />
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="1*" MaxHeight="25"/>
+                        <RowDefinition Height="1*" MaxHeight="25"/>
+                        <RowDefinition Height="3*"/>
+                        <RowDefinition Height="1*" MaxHeight="25"/>
+                        <RowDefinition Height="6*"/>
+                    </Grid.RowDefinitions>
+                    <Label Content="Straight Flush" HorizontalAlignment="Center" Grid.Row="0" />
                         <Label Content="Hand" HorizontalAlignment="Left" Grid.Row="1" />
                         <ListBox ItemsSource="{Binding CardsOnHand, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                          Grid.Row="2"
@@ -187,14 +187,14 @@
                     </Grid>
                     <Grid Grid.Row="2" Grid.Column="1" Visibility="{Binding IsRoyalTabVisible, Mode=TwoWay, Converter={StaticResource boolToVisConv}}" 
                           VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="1*"/>
-                            <RowDefinition Height="1*"/>
-                            <RowDefinition Height="3*"/>
-                            <RowDefinition Height="1*"/>
-                            <RowDefinition Height="6*"/>
-                        </Grid.RowDefinitions>
-                        <Label Content="Royal Straight" HorizontalAlignment="Center" Grid.Row="0" />
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="1*" MaxHeight="25"/>
+                        <RowDefinition Height="1*" MaxHeight="25"/>
+                        <RowDefinition Height="3*"/>
+                        <RowDefinition Height="1*" MaxHeight="25"/>
+                        <RowDefinition Height="6*"/>
+                    </Grid.RowDefinitions>
+                    <Label Content="Royal Straight" HorizontalAlignment="Center" Grid.Row="0" />
                         <Label Content="Hand" HorizontalAlignment="Left" Grid.Row="1" />
                         <ListBox ItemsSource="{Binding CardsOnHand, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                          Grid.Row="2"
@@ -220,14 +220,14 @@
                     </Grid>
                     <Grid Grid.Row="2" Grid.Column="1" Visibility="{Binding IsFourOfKindTabVisible, Mode=TwoWay, Converter={StaticResource boolToVisConv}}" 
                           VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="1*"/>
-                            <RowDefinition Height="1*"/>
-                            <RowDefinition Height="3*"/>
-                            <RowDefinition Height="1*"/>
-                            <RowDefinition Height="6*"/>
-                        </Grid.RowDefinitions>
-                        <Label Content="Four of kind" HorizontalAlignment="Center" Grid.Row="0" />
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="1*" MaxHeight="25"/>
+                        <RowDefinition Height="1*" MaxHeight="25"/>
+                        <RowDefinition Height="3*"/>
+                        <RowDefinition Height="1*" MaxHeight="25"/>
+                        <RowDefinition Height="6*"/>
+                    </Grid.RowDefinitions>
+                    <Label Content="Four of kind" HorizontalAlignment="Center" Grid.Row="0" />
                         <Label Content="Hand" HorizontalAlignment="Left" Grid.Row="1" />
                         <ListBox ItemsSource="{Binding CardsOnHand, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                          Grid.Row="2"
@@ -253,14 +253,14 @@
                     </Grid>
                     <Grid Grid.Row="2" Grid.Column="1" Visibility="{Binding IsFullTabVisible, Mode=TwoWay, Converter={StaticResource boolToVisConv}}" 
                           VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="1*"/>
-                            <RowDefinition Height="1*"/>
-                            <RowDefinition Height="3*"/>
-                            <RowDefinition Height="1*"/>
-                            <RowDefinition Height="6*"/>
-                        </Grid.RowDefinitions>
-                        <Label Content="Full" HorizontalAlignment="Center" Grid.Row="0" Margin="10" />
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="1*" MaxHeight="25"/>
+                        <RowDefinition Height="1*" MaxHeight="25"/>
+                        <RowDefinition Height="3*"/>
+                        <RowDefinition Height="1*" MaxHeight="25"/>
+                        <RowDefinition Height="6*"/>
+                    </Grid.RowDefinitions>
+                    <Label Content="Full" HorizontalAlignment="Center" Grid.Row="0" Margin="10" />
                         <Label Content="Full" HorizontalAlignment="Left" Grid.Row="1" Margin="10" />
                         <ListBox ItemsSource="{Binding CardsOnHand, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                          Grid.Row="2"
@@ -286,14 +286,14 @@
                     </Grid>
                     <Grid Grid.Row="2" Grid.Column="1" Visibility="{Binding IsFlushTabVisible, Mode=TwoWay, Converter={StaticResource boolToVisConv}}" 
                           VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="1*"/>
-                            <RowDefinition Height="1*"/>
-                            <RowDefinition Height="3*"/>
-                            <RowDefinition Height="1*"/>
-                            <RowDefinition Height="6*"/>
-                        </Grid.RowDefinitions>
-                        <Label Content="Flush" HorizontalAlignment="Center" Grid.Row="0" />
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="1*" MaxHeight="25"/>
+                        <RowDefinition Height="1*" MaxHeight="25"/>
+                        <RowDefinition Height="3*"/>
+                        <RowDefinition Height="1*" MaxHeight="25"/>
+                        <RowDefinition Height="6*"/>
+                    </Grid.RowDefinitions>
+                    <Label Content="Flush" HorizontalAlignment="Center" Grid.Row="0" />
                         <Label Content="Hand" HorizontalAlignment="Left" Grid.Row="1" />
                         <ListBox ItemsSource="{Binding CardsOnHand, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                          Grid.Row="2"
@@ -350,16 +350,16 @@
                             </ListBox.ItemTemplate>
                         </ListBox>
                     </Grid>
-                    <Grid Grid.Row="2" Grid.Column="1" Visibility="{Binding IsThreeOfKindTabVisible, Mode=TwoWay, Converter={StaticResource boolToVisConv}}" 
+                <Grid Grid.Row="1" Grid.RowSpan="2" Grid.Column="1" Visibility="{Binding IsThreeOfKindTabVisible, Mode=TwoWay, Converter={StaticResource boolToVisConv}}" 
                           VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="1*"/>
-                            <RowDefinition Height="1*"/>
-                            <RowDefinition Height="3*"/>
-                            <RowDefinition Height="1*"/>
-                            <RowDefinition Height="6*"/>
-                        </Grid.RowDefinitions>
-                        <Label Content="Three Of Kind" HorizontalAlignment="Center" Grid.Row="0" />
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="1*" MaxHeight="25"/>
+                        <RowDefinition Height="1*" MaxHeight="25"/>
+                        <RowDefinition Height="3*"/>
+                        <RowDefinition Height="1*" MaxHeight="25"/>
+                        <RowDefinition Height="6*"/>
+                    </Grid.RowDefinitions>
+                    <Label Content="Three Of Kind" HorizontalAlignment="Center" Grid.Row="0" />
                         <Label Content="Hand" HorizontalAlignment="Left" Grid.Row="1" />
                         <ListBox ItemsSource="{Binding CardsOnHand, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                          Grid.Row="2"
@@ -383,16 +383,16 @@
                             </ListBox.ItemTemplate>
                         </ListBox>
                     </Grid>
-                    <Grid Grid.Row="2" Grid.Column="1" Visibility="{Binding IsPairTabVisible, Mode=TwoWay, Converter={StaticResource boolToVisConv}}" 
+                <Grid Grid.Row="1" Grid.RowSpan="2" Grid.Column="1" Visibility="{Binding IsPairTabVisible, Mode=TwoWay, Converter={StaticResource boolToVisConv}}" 
                           VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="1*"/>
-                            <RowDefinition Height="1*"/>
-                            <RowDefinition Height="3*"/>
-                            <RowDefinition Height="1*"/>
-                            <RowDefinition Height="6*"/>
-                        </Grid.RowDefinitions>
-                        <Label Content="Pair" HorizontalAlignment="Center" Grid.Row="0" />
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="1*" MaxHeight="25"/>
+                        <RowDefinition Height="1*" MaxHeight="25"/>
+                        <RowDefinition Height="3*"/>
+                        <RowDefinition Height="1*" MaxHeight="25"/>
+                        <RowDefinition Height="6*"/>
+                    </Grid.RowDefinitions>
+                    <Label Content="Pair" HorizontalAlignment="Center" Grid.Row="0" />
                         <Label Content="Hand" HorizontalAlignment="Left" Grid.Row="1" />
                         <ListBox ItemsSource="{Binding CardsOnHand, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                          Grid.Row="2"

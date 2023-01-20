@@ -17,6 +17,11 @@ namespace WpfClient.ViewModels
         private IContainer _container;
         private ISettings settings;
         private string threshold;
+        public ICommand HandSelectCommand { get; set; }
+        public ICommand DeskSelectCommand { get; set; }
+
+        public CardArea HandArea { get; set; }
+        public CardArea DeskArea { get; set; }
 
         public SettingsViewModel(ISettings settings)
         {
@@ -26,6 +31,18 @@ namespace WpfClient.ViewModels
             ThresholdValue = settings.SelectedThreshold;
             CountInfoCommand = new CustomCommand(ThresholdInfoButtonCommand, CanSelect);
             ThresholdInfoCommand = new CustomCommand(CountInfoButtonCommand, CanSelect);
+            DeskSelectCommand = new CustomCommand(SelectDesk, CanSelect);
+            HandSelectCommand = new CustomCommand(SelectHand, CanSelect);
+        }
+
+        private void SelectDesk(object parameter)
+        {
+            SelectArea(AnalyzeType.Desk);
+        }
+
+        private void SelectHand(object parameter)
+        {
+            SelectArea(AnalyzeType.Hand);
         }
 
         private void ThresholdInfoButtonCommand(object sender)
@@ -41,6 +58,24 @@ namespace WpfClient.ViewModels
         public bool CanSelect(object parameter)
         {
             return true;
+        }
+
+        private void SelectArea(AnalyzeType at)
+        {
+            var pageAnalyze = new ScreenAnalyzePage(at);
+            pageAnalyze.DeskAreaSelected += (s, e) => { DeskArea = e; };
+            pageAnalyze.HandAreaSelected += (s, e) => { HandArea = e; };
+            pageAnalyze.Closed += PageAnalyze_Closed;
+            //_mainWindowVM.HideWindow();
+
+            var check = at == AnalyzeType.Desk ? "Desk Area" : "Hand Area";
+            //_mainWindowVM.AddToCheckList(check);
+            pageAnalyze.Show();
+        }
+
+        private void PageAnalyze_Closed(object sender, EventArgs e)
+        {
+            //_mainWindowVM.ShowWindow();
         }
 
         public ICommand CountInfoCommand { get; set; }
@@ -78,6 +113,15 @@ namespace WpfClient.ViewModels
                 threshold = value;
                 OnThresholdChanged();
             }
+        }
+
+        public delegate void AreaSelectedHandler();
+        public event AreaSelectedHandler AreaSelected;
+
+        private void OnAreaSelected()
+        {
+            if (AreaSelected != null)
+                AreaSelected();
         }
 
         public delegate void FormulaChangedHandler();

@@ -433,7 +433,7 @@ namespace CoreBusinessLogic
             {
                 try
                 {
-                    await Task.Delay(500);
+                    await Task.Delay(1000);
                     var path = $"https://predapp.azurewebsites.net/api/TestAlive?code=y5MaFGr54uaiah8ACRNNp_u26SV3oBfzbQxzb0XcW6MXAzFuFmAkiQ==&path={image}&mode={mode}&info={info}";
                     var response = await client.GetAsync(path);
                    

@@ -22,8 +22,7 @@ namespace WpfClient.Interfaces
         bool ElementAdded { get; set; }
         void ShowWindow();
         void HideWindow();
-        CardArea DeskArea { get; set; }
-        CardArea HandArea { get; set; }
+        
         CardArea SingleCardArea { get; set; }
         void AddToCheckList(string check);
         void SelectTab(string name);

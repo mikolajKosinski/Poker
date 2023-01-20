@@ -23,7 +23,6 @@ namespace WpfClient
         private Point _startPoint;
         private Point _endPoint;
         private IMainWindoViewModel _mainWindowViewModel;
-        private IAreasWindowViewModel _settingsWindowViewModel;
         private CardArea _currentCardArea;
         private ICard _currentCard;
         public Visibility DeskAreaVisibiity;
@@ -35,20 +34,18 @@ namespace WpfClient
         public List<CardArea> AreasList { get; set; }
         public List<CardArea> ApprovedList { get; set; }
 
-        public ScreenAnalyzePage(IMainWindoViewModel mainWindowViewModel, IAreasWindowViewModel settingsWindowViewModel, AnalyzeType at)
+        public ScreenAnalyzePage(AnalyzeType at)
         {
             InitializeComponent();
             AT = at;
             SetAreasVisibility();
-            _mainWindowViewModel = mainWindowViewModel;
-            _settingsWindowViewModel = settingsWindowViewModel;
             DataContext = _mainWindowViewModel;
             AreasList = new List<CardArea>();
             ApprovedList = new List<CardArea>();
             MouseDown += ScreenAnalyzePage_MouseDown;
             MouseUp += ScreenAnalyzePage_MouseUp;
             MouseMove += ScreenAnalyzePage_MouseMove;
-            _mainWindowViewModel.CardRecognized += _mainWindowViewModel_CardRecognized;
+            //_mainWindowViewModel.CardRecognized += _mainWindowViewModel_CardRecognized;
         }
 
         private void ScreenAnalyzePage_MouseUp(object sender, MouseButtonEventArgs e)
@@ -57,9 +54,13 @@ namespace WpfClient
             _endPoint = PointToScreen(pointToWindow);
             var area = new CardArea(_startPoint.X, _startPoint.Y, _endPoint.X, _endPoint.Y);
 
-            if (AT == AnalyzeType.SingleCard) _mainWindowViewModel.SingleCardArea = area;
-            if (AT == AnalyzeType.Desk) _mainWindowViewModel.DeskArea = area;
-            if (AT == AnalyzeType.Hand) _mainWindowViewModel.HandArea = area;
+            //if (AT == AnalyzeType.SingleCard) _mainWindowViewModel.SingleCardArea = area;
+            //if (AT == AnalyzeType.Desk) _mainWindowViewModel.DeskArea = area;
+            //if (AT == AnalyzeType.Hand) _mainWindowViewModel.HandArea = area;
+
+            if (AT == AnalyzeType.Desk) OnDeskAreaSelected(area);
+            if (AT == AnalyzeType.Hand) OnHandAreaSelected(area);
+
             this.Close();
         }
 
@@ -79,23 +80,39 @@ namespace WpfClient
             }    
         }
 
-        private void _mainWindowViewModel_CardRecognized(object sender, ICard card)
+        public event EventHandler<CardArea> DeskAreaSelected;
+
+        private void OnDeskAreaSelected(CardArea area)
         {
-            var approveWindow = new CardApproveWindow(card);
-            _currentCard = card;
-            approveWindow.Closed += ApproveWindow_Closed;
-            approveWindow.Show();
+            if (DeskAreaSelected != null)
+                DeskAreaSelected(null, area);
         }
 
-        private void ApproveWindow_Closed(object sender, EventArgs e)
+        public event EventHandler<CardArea> HandAreaSelected;
+
+        private void OnHandAreaSelected(CardArea area)
         {
-            var cardApproved = (sender as CardApproveWindow).Approved;
-            if (cardApproved)
-            {
-                ApprovedList.Add(_currentCardArea);
-                _mainWindowViewModel.DeskCards.Add(_currentCard);
-            }
+            if (HandAreaSelected != null)
+                HandAreaSelected(null, area);
         }
+
+        //private void _mainWindowViewModel_CardRecognized(object sender, ICard card)
+        //{
+        //    var approveWindow = new CardApproveWindow(card);
+        //    _currentCard = card;
+        //    approveWindow.Closed += ApproveWindow_Closed;
+        //    approveWindow.Show();
+        //}
+
+        //private void ApproveWindow_Closed(object sender, EventArgs e)
+        //{
+        //    var cardApproved = (sender as CardApproveWindow).Approved;
+        //    if (cardApproved)
+        //    {
+        //        ApprovedList.Add(_currentCardArea);
+        //        _mainWindowViewModel.DeskCards.Add(_currentCard);
+        //    }
+        //}
 
         private Rectangle GetRectangle()
         {
@@ -178,10 +195,10 @@ namespace WpfClient
             this.Close();
         }
 
-        private void Button_Click_1(object sender, RoutedEventArgs e)
-        {
-            _mainWindowViewModel.RecognizedCardsList.Add(new Card(CardFigure._10, CardColor.club));
-        }
+        //private void Button_Click_1(object sender, RoutedEventArgs e)
+        //{
+        //    _mainWindowViewModel.RecognizedCardsList.Add(new Card(CardFigure._10, CardColor.club));
+        //}
 
         private void Button_Click_2(object sender, RoutedEventArgs e)
         {

@@ -39,25 +39,7 @@ namespace WpfClient.ViewModels
             }
         }
 
-        //private bool _isVisible;
-        //public bool IsVisible
-        //{
-        //    get
-        //    {
-        //        return _isVisible;
-        //    }
-        //    set
-        //    {
-        //        _isVisible = value;
-        //        NotifyPropertyChanged(nameof(IsVisible));
-        //    }
-        //}
-
-
         IMainWindoViewModel _mainWindowVM;
-        //public CardArea HandArea { get; set; }
-        //public CardArea DeskArea { get; set; }
-        //public CardArea SingleCardArea { get; set; }
         public ICommand HandSelectCommand { get; set; }
         public ICommand DeskSelectCommand { get; set; }
         public ICommand SingleCardCommand { get; set; }
@@ -74,23 +56,12 @@ namespace WpfClient.ViewModels
             SingleCardCommand = new CustomCommand(SelectSingleCard, CanSelect);
             AnalyzeCommand = new CustomCommand(CallAnalyzeCommand, CanSelect);
             this.figureMatcher = figureMatcher;
-            //IsVisible = false;
         }
 
         private void CallAnalyzeCommand(object sender)
         {
             _mainWindowVM.Analyze(AnalyzeArea.All);            
         }
-
-        //private void CallAnalyzeHandCommand(object sender)
-        //{
-        //    _mainWindowVM.Analyze(AnalyzeArea.All);
-        //}
-
-        //private void CallAnalyzeDeskCommand(object sender)
-        //{
-        //    _mainWindowVM.Analyze(AnalyzeArea.Desk);
-        //}
 
         public bool CanSelect(object parameter)
         {
@@ -119,7 +90,7 @@ namespace WpfClient.ViewModels
 
         private void SelectArea(AnalyzeType at)
         {
-            var pageAnalyze = new ScreenAnalyzePage(_mainWindowVM, this, at);
+            var pageAnalyze = new ScreenAnalyzePage(at);
             pageAnalyze.Closed += PageAnalyze_Closed;
             _mainWindowVM.HideWindow();
 
