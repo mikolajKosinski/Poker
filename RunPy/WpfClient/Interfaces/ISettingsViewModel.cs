@@ -11,6 +11,7 @@ namespace WpfClient.Interfaces
         public string SelectedFormula { get; set; }
         public event FormulaChangedHandler FormulaChanged;
         public event ThresholdHandler ThresholdChanged;
+        public event MenuChangeHandler MainWindowSelected;
         CardArea DeskArea { get; set; }
         CardArea HandArea { get; set; }
     }

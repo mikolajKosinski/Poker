@@ -23,6 +23,9 @@ namespace WpfClient.ViewModels
         public CardArea HandArea { get; set; }
         public CardArea DeskArea { get; set; }
 
+        public ICommand MainWindowCommand { get; set; }
+        public ICommand SettingsWindowCommand { get; set; }
+
         public SettingsViewModel(ISettings settings)
         {
             this.settings = settings;
@@ -33,6 +36,12 @@ namespace WpfClient.ViewModels
             ThresholdInfoCommand = new CustomCommand(CountInfoButtonCommand, CanSelect);
             DeskSelectCommand = new CustomCommand(SelectDesk, CanSelect);
             HandSelectCommand = new CustomCommand(SelectHand, CanSelect);
+            MainWindowCommand = new CustomCommand(ShowMainWindow, CanSelect);
+        }
+
+        public void ShowMainWindow(object sender)
+        {
+            MainWindowSelected();
         }
 
         private void SelectDesk(object parameter)
@@ -138,6 +147,14 @@ namespace WpfClient.ViewModels
         {
             if (ThresholdChanged != null)
                 ThresholdChanged();
+        }
+
+        public delegate void MenuChangeHandler();
+        public event MenuChangeHandler MainWindowSelected;
+        private void OnWindowChanged()
+        {
+            if (MainWindowSelected != null)
+                MainWindowSelected();
         }
 
         public bool GeneralSuggestions { get; set; }

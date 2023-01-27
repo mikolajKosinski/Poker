@@ -15,7 +15,8 @@
             <local:BoolToVisConverter x:Key="boolToVisConv" />
         </ResourceDictionary>        
     </Window.Resources>
-    <Border BorderThickness="1" BorderBrush="Black">
+    <Grid>
+    <Border BorderThickness="1" BorderBrush="Black" Visibility="{Binding IsMainVisible, Converter={StaticResource boolToVisConv}}">
             <Grid Margin="5">
                 <Grid>
                     <VisualStateManager.VisualStateGroups>
@@ -42,12 +43,11 @@
                     </Grid.ColumnDefinitions>
                     <StackPanel Orientation="Horizontal" Grid.Row="0" Grid.Column="1" HorizontalAlignment="Center">
                     <Button Content="MainWindow" Style="{StaticResource TopMenuButton}" Command="{Binding MainWindowCommand}"/>
-                    <!--<Button Content="Areas" Style="{StaticResource TopMenuButton}" Command="{Binding AreasWindowCommand}"/>-->
                     <Button Content="Settings" Style="{StaticResource TopMenuButton}" Command="{Binding SettingsWindowCommand}"/>
                     <Button Content="New game" Style="{StaticResource TopMenuButton}" Command="{Binding CleanCommand}" Grid.Column="0"/>
                     </StackPanel>
 
-                    <Grid Grid.Row="2" Grid.Column="1"
+                    <Grid Grid.Row="0" Grid.ColumnSpan="4" Grid.Column="0" Grid.RowSpan="4"
                   Visibility="{Binding IsSettingsVisible, Converter={StaticResource boolToVisConv}}">
                         <local:SettingsView
                     DataContext="{Binding SettingsViewModel}" />
@@ -429,4 +429,46 @@
                 </Grid>
             </Grid>
     </Border>
+        <Border BorderThickness="1" BorderBrush="Black" Visibility="{Binding IsSettingsVisible, Converter={StaticResource boolToVisConv}}">
+            <Grid Margin="5" DataContext="{Binding SettingsViewModel}">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="1*" MaxHeight="50"/>
+                        <RowDefinition Height="2*" />
+                        <RowDefinition Height="8*" />
+                        <RowDefinition Height="2*" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="2*" MaxWidth="120"/>
+                        <ColumnDefinition Width="5*" />
+                        <ColumnDefinition Width="1*" />
+                        <ColumnDefinition Width="1*" />
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Orientation="Horizontal" Grid.Row="0" Grid.Column="1" HorizontalAlignment="Center">
+                        <Button Content="MainWindow" Style="{StaticResource TopMenuButton}" Command="{Binding MainWindowCommand}"/>
+                        <Button Content="Settings" Style="{StaticResource TopMenuButton}" Command="{Binding SettingsWindowCommand}"/>
+                        <Button Content="New game" Style="{StaticResource TopMenuButton}" Command="{Binding CleanCommand}" Grid.Column="0"/>
+                    </StackPanel>
+                    <Grid Grid.Row="2" Grid.RowSpan="4" Grid.Column="1" Grid.ColumnSpan="2">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="1*" />
+                            <RowDefinition Height="1*" />
+                            <RowDefinition Height="1*" />
+                            <RowDefinition Height="1*" />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="1*" />
+                            <ColumnDefinition Width="1*" />
+                            <ColumnDefinition Width="1*" />
+                            <ColumnDefinition Width="1*" />
+                        </Grid.ColumnDefinitions>
+                        <Label Grid.Row="0" Grid.Column="0">Select formula</Label>
+                        <Label Grid.Row="1" Grid.Column="0">Select threshold</Label>
+                        <ComboBox ItemsSource="{Binding CountingSystemsList}" SelectedItem="{Binding SelectedFormula}" VerticalAlignment="Top" Grid.Row="0" Grid.Column="1" Style="{StaticResource SettingsCombo}" />
+            <Button Content="Info" Command="{Binding ThresholdInfoCommand}" Grid.Row="0" Grid.Column="2" Style="{StaticResource LeftMenuButton}"/>
+                    </Grid>
+                </Grid>
+            </Grid>
+        </Border>
+    </Grid>
 </Window>

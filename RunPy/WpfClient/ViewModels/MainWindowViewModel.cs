@@ -33,6 +33,8 @@ namespace WpfClient.ViewModels
             Hand = 1
         }
 
+        public IList<string> CountingSystemsList { get; set; }
+
         IFigureMatcher _matcher;
         private ILoggerWrapper logger;
         int currentTotal;
@@ -741,6 +743,7 @@ namespace WpfClient.ViewModels
 
         public MainWindowViewModel(ICardRecognition cardRecognition, IFigureMatcher figureMatcher, ICardManager cardManager, ISettingsViewModel settingsViewModel, ILoggerWrapper logger)
         {
+            IsSettingsVisible = true;
             this.logger = logger;
             ProgressBarVisibility = Visibility.Collapsed;
             this.SettingsViewModel = settingsViewModel;
@@ -780,6 +783,8 @@ namespace WpfClient.ViewModels
             MainWindowCommand = new CustomCommand(ShowMainWindow, CanSelect);
             SettingsWindowCommand = new CustomCommand(ShowSettings, CanSelect);
             IsAreasVisible = false;
+
+            settingsViewModel.MainWindowSelected += SettingsViewModel_MainWindowSelected;    
 
             RoyalFlushTabName = $"Royal flush [0%]";
             StraightFlushTabName = $"Straight flush [0%]";
@@ -822,6 +827,14 @@ namespace WpfClient.ViewModels
                 { CardColor.diamond, "diamond" },
                 { CardColor.heart, "heart" },
                 { CardColor.spade, "spade" }};
+        }
+
+        private void SettingsViewModel_MainWindowSelected()
+        {
+            IsSettingsVisible = false;
+            IsAreasVisible = false;
+            IsMainVisible = true;
+            logger.Info("Show Main window");
         }
 
         List<ICard> cardDeskList = new List<ICard>();
