@@ -1,5 +1,4 @@
-﻿using Autofac;
-using CoreBusinessLogic;
+﻿using CoreBusinessLogic;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -9,6 +8,7 @@ using WpfClient.Interfaces;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Reflection.Metadata;
+using Autofac;
 
 namespace WpfClient.ViewModels
 {

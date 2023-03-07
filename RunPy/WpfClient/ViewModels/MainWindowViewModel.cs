@@ -1,6 +1,4 @@
-﻿using Autofac;
-using Autofac.Core;
-using CoreBusinessLogic;
+﻿using CoreBusinessLogic;
 using Serilog;
 using System;
 using System.Collections.Generic;
@@ -13,6 +11,7 @@ using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.Intrinsics.X86;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -1227,8 +1226,7 @@ namespace WpfClient.ViewModels
                 logger.Info("Card added to hand");
             }
         }
-
-        
+                
 
         public async Task Analyze(AnalyzeArea at)
         {
@@ -1251,6 +1249,7 @@ namespace WpfClient.ViewModels
                 GetCards(SettingsViewModel.DeskArea, "allCards");
                 ProgressBarValue += 10;
                 flopCount = Convert.ToInt32(_cardRecognition.GetCardsCountOnDesk());
+                _cardRecognition.DetectCard("C:\\Users\\mkosi\\Documents\\GitHub\\Poker\\RunPy\\WpfClient\\obj\\Debug\\net5.0-windows\\allCards.PNG");
                 currentTotal = flopCount * 2;
                 //Application.Current.Dispatcher.BeginInvoke(new Action(() =>
                 //{
@@ -1259,13 +1258,11 @@ namespace WpfClient.ViewModels
                 var tasks = new List<Task<ICard>>();
                 for (int i = 0; i < flopCount; i++)
                 {
-                    if (i == 3)
-                        await Task.Delay(1000);
-
                     var colorPath = @$"C:\Users\mkosi\Documents\GitHub\Poker\RunPy\WpfClient\obj\Debug\\net5.0-windows\C{i}.PNG";
                     var figurePath = @$"C:\Users\mkosi\Documents\GitHub\Poker\RunPy\WpfClient\obj\Debug\\net5.0-windows\F{i}.PNG";
-                    _cardRecognition.GetCard(figurePath, colorPath, i, AnalyzeArea.Desk.ToString());
                     cardDeskList.Add(new Card(new CardFigure(), new CardColor()));
+                    //_cardRecognition.PredictCard("sfds", )
+                    _cardRecognition.GetCard(figurePath, colorPath, i, AnalyzeArea.Desk);                    
                     //Application.Current.Dispatcher.BeginInvoke(new Action(() => { ProgressBarValue += 10; }));
                     Application.Current.Dispatcher.BeginInvoke(new Action(() => { MessageBoard.Add($"Working {i} of {flopCount} flop cards "); }));
                     File.Delete(colorPath);
@@ -1277,6 +1274,7 @@ namespace WpfClient.ViewModels
             {
                 GetCards(SettingsViewModel.HandArea, "allCards");
                 ProgressInfo = "Scanning Hand area";
+                _cardRecognition.DetectCard("C:\\Users\\mkosi\\Documents\\GitHub\\Poker\\RunPy\\WpfClient\\obj\\Debug\\net5.0-windows\\allCards.PNG");
                 flopCount = Convert.ToInt32(_cardRecognition.GetCardsCountOnDesk());
                 currentTotal = 4;
 
@@ -1284,8 +1282,8 @@ namespace WpfClient.ViewModels
                 {
                     var colorPath = @$"C:\Users\mkosi\Documents\GitHub\Poker\RunPy\WpfClient\obj\Debug\\net5.0-windows\C{i}.PNG";
                     var figurePath = @$"C:\Users\mkosi\Documents\GitHub\Poker\RunPy\WpfClient\obj\Debug\\net5.0-windows\F{i}.PNG";
-                    _cardRecognition.GetCard(figurePath, colorPath, i, AnalyzeArea.Hand.ToString());
                     cardHandList.Add(new Card(new CardFigure(), new CardColor()));
+                    _cardRecognition.GetCard(figurePath, colorPath, i, AnalyzeArea.Hand);                    
                     //Application.Current.Dispatcher.BeginInvoke(new Action(() => { ProgressBarValue += 10; }));
                     Application.Current.Dispatcher.BeginInvoke(new Action(() => { MessageBoard.Add($"Working {i} of {flopCount} hand cards "); }));
                     File.Delete(colorPath);
@@ -1343,6 +1341,19 @@ namespace WpfClient.ViewModels
             CheckList[CheckList.IndexOf(check)] = newValue;
         }
 
+        private ImageCodecInfo GetEncoder(ImageFormat format)
+        {
+            ImageCodecInfo[] codecs = ImageCodecInfo.GetImageEncoders();
+            foreach (ImageCodecInfo codec in codecs)
+            {
+                if (codec.FormatID == format.Guid)
+                {
+                    return codec;
+                }
+            }
+            return null;
+        }
+
         private void GetCards(CardArea item, string path)
         {            
             logger.Info($"Getting cards area : {item}");
@@ -1365,6 +1376,23 @@ namespace WpfClient.ViewModels
                         var cardsAreaName = @$"C:\Users\mkosi\Documents\GitHub\Poker\RunPy\WpfClient\obj\Debug\net5.0-windows\{path}.png";
                         g.CopyFromScreen((int)screenLeft, (int)screenTop, 0, 0, bmp.Size);
                         basicDesk = bmp.Clone(new Rectangle((int)item.xStart, (int)item.yStart, basicWidth, basicHeight), bmp.PixelFormat);
+
+                        float val1 = (float)5;
+                        float val2 = (float)10;
+
+                        ImageCodecInfo jpgEncoder = GetEncoder(ImageFormat.Gif);
+
+                        // Create an Encoder object based on the GUID  
+                        // for the Quality parameter category.  
+                        System.Drawing.Imaging.Encoder myEncoder =
+                            System.Drawing.Imaging.Encoder.Quality;
+
+                        EncoderParameters myEncoderParameters = new EncoderParameters(1);
+                        var myEncoderParameter = new EncoderParameter(myEncoder, 0L);
+                        myEncoderParameters.Param[0] = myEncoderParameter;
+
+                        basicDesk.SetResolution(val1, val2);
+                        basicDesk.Save(@$"C:\Users\mkosi\Documents\GitHub\Poker\RunPy\WpfClient\obj\Debug\net5.0-windows\{path}.gif", jpgEncoder, myEncoderParameters);
                         basicDesk.Save(cardsAreaName);
                     }
                     catch(Exception x)

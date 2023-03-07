@@ -1,5 +1,4 @@
-﻿using Autofac;
-using CoreBusinessLogic.Interfaces;
+﻿using CoreBusinessLogic.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;

@@ -1,4 +1,4 @@
-﻿using Autofac;
+﻿
 using CoreBusinessLogic.Interfaces;
 using System;
 using System.Collections.Generic;

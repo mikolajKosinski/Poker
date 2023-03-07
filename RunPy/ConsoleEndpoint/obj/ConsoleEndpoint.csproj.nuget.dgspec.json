@@ -123,11 +123,7 @@
           "dependencies": {
             "Autofac": {
               "target": "Package",
-              "version": "[6.1.0, )"
-            },
-            "Newtonsoft.Json.Bson": {
-              "target": "Package",
-              "version": "[1.0.2, )"
+              "version": "[6.5.0, )"
             },
             "System.Collections": {
               "target": "Package",

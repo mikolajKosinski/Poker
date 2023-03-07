@@ -1,6 +1,4 @@
 ﻿
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -13,6 +11,10 @@ using System.Runtime.Serialization;
 using System.Threading.Tasks;
 using System.Net.Http;
 using static CoreBusinessLogic.Enums;
+using System.Net.Http.Headers;
+using System.Text;
+using System.Linq;
+using static System.Net.WebRequestMethods;
 
 namespace CoreBusinessLogic
 {
@@ -58,14 +60,195 @@ namespace CoreBusinessLogic
             };
         }
 
-        public ICard GetCard(string figurePath, string colorPath, int number, string area)
+        public async Task<ICard> GetCard(string figurePath, string colorPath, int number, AnalyzeArea area)
         {
             //var figure = RecognizeFigure(figurePath, number);
             //var color = RecognizeColor(colorPath, number);
-            RecoImage(recoType.figure, figurePath, number, area);
-            RecoImage(recoType.color, colorPath, number, area);
-
+            //RecoImage(recoType.figure, figurePath, number, area);
+            //RecoImage(recoType.color, colorPath, number, area);
+            
+            PredictCard(RandomString(10), figurePath, area, recoType.figure, number.ToString());
+            PredictCard(RandomString(10), colorPath, area, recoType.color, number.ToString());
             return new Card(new CardFigure(), new CardColor());
+        }
+
+        private async Task UploadImageToBlob(string imagePath)
+        {
+            string connectionString = "DefaultEndpointsProtocol=https;AccountName=detectimages;AccountKey=SprSVOOvXy65WHaCgRU1tS5NHvYHkEp5srNTEmyuudUpLmf38MHo7SQzlOmgfdnwVf5J9O40hYB2+AStVljy8Q==;EndpointSuffix=core.windows.net";
+            
+            //using (var image = Bitmap.FromFile(imagePath))
+            //{
+            //    using (MemoryStream ms = new MemoryStream())
+            //    {
+            //        image.Save(ms, image.RawFormat);
+            //        byte[] array = ms.ToArray();
+            //        img = Convert.ToBase64String(array);
+            //    }
+            //}
+        }
+
+        private string RandomString(int length)
+        {
+            var random = new Random();
+            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+            return new string(Enumerable.Repeat(chars, length)
+                .Select(s => s[random.Next(s.Length)]).ToArray());
+        }
+
+        //private void handdesk()
+        //{
+        //    string hand = string.Empty;
+        //    using (var image = Bitmap.FromFile(@"C:\Users\mkosi\Documents\GitHub\Poker\RunPy\WpfClient\obj\Debug\net5.0-windows\hand.png"))
+        //    {
+        //        using (MemoryStream ms = new MemoryStream())
+        //        {
+        //            image.Save(ms, image.RawFormat);
+        //            byte[] array = ms.ToArray();
+        //            hand = Convert.ToBase64String(array);
+        //        }
+        //    }
+
+        //    string desk = string.Empty;
+        //    using (var image = Bitmap.FromFile(@"C:\Users\mkosi\Documents\GitHub\Poker\RunPy\WpfClient\obj\Debug\net5.0-windows\allCards.png"))
+        //    {
+        //        using (MemoryStream ms = new MemoryStream())
+        //        {
+        //            image.Save(ms, image.RawFormat);
+        //            byte[] array = ms.ToArray();
+        //            desk = Convert.ToBase64String(array);
+        //        }
+        //    }
+
+        //    Console.WriteLine();
+        //}
+
+        public async Task PredictCard(string fileName, string imagePath, AnalyzeArea area, recoType fc, string number)
+        {
+            string img = string.Empty;
+            using (var image = Bitmap.FromFile(imagePath))
+            {
+                using (MemoryStream ms = new MemoryStream())
+                {
+                    image.Save(ms, image.RawFormat);
+                    byte[] array = ms.ToArray();
+                    img = Convert.ToBase64String(array);
+                }
+            }
+
+            var runId = await RunPredictionJobForCard(fileName, img);
+            await IsPredictionFinished(runId);
+            var predicted = await ReadPredictionResult(fileName);
+            var response = $"{predicted}||{fc}|{number}";
+            OnCardRecognised(response, area);
+            DeletePrediction($"{fileName}.txt");
+            DeletePrediction($"{fileName}.PNG");
+        }
+
+        public async Task DetectCard(string imagePath)
+        {
+            var fileName = RandomString(10);
+            string img = string.Empty;
+            using (var image = Bitmap.FromFile(imagePath))
+            {
+                using (MemoryStream ms = new MemoryStream())
+                {
+                    image.Save(ms, image.RawFormat);
+                    byte[] array = ms.ToArray();
+                    img = Convert.ToBase64String(array);
+                }
+            }
+
+            var runId = await RunDetectionJobForCard(fileName, img);
+            await IsPredictionFinished(runId);
+            var predicted = await ReadPredictionResult(fileName);
+            //var response = $"{predicted}||{fc}|{number}";
+            //OnCardRecognised(response, area);
+            DeletePrediction($"{fileName}.txt");
+            DeletePrediction($"{fileName}.PNG");
+        }
+
+        public async Task<string> ReadPredictionResult(string fileName)
+        {
+            HttpClient client = new HttpClient();
+
+            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, "https://adb-4958543948294936.16.azuredatabricks.net/api/2.0/dbfs/read");
+            request.Headers.Add("Authorization", "Bearer dapie16ca829366e80ba514e77c6d7aeee6c-2");
+            request.Content = new StringContent("{ \"path\": \"/FileStore/tables/"+fileName+".txt\" }");
+            request.Content.Headers.ContentType = new MediaTypeHeaderValue("application/x-www-form-urlencoded");
+            HttpResponseMessage response = await client.SendAsync(request);
+            response.EnsureSuccessStatusCode();
+            var responseBody = await response.Content.ReadAsStringAsync();
+            string message3 = responseBody.Split(":")[2].Replace("\"", "").Replace("}", "");
+            var result = (string)message3;
+            byte[] data = Convert.FromBase64String(result);
+            string decodedString = Encoding.UTF8.GetString(data);
+            return decodedString;            
+        }
+
+        public async Task<bool> IsPredictionFinished(string runId)
+        {
+            var client = new HttpClient();
+            var request = new HttpRequestMessage(HttpMethod.Get, "https://adb-4958543948294936.16.azuredatabricks.net/api/2.0/jobs/runs/get-output?run_id="+runId);
+            request.Headers.Add("Authorization", "Bearer dapie16ca829366e80ba514e77c6d7aeee6c-2");
+            var response = await client.SendAsync(request);
+            response.EnsureSuccessStatusCode();
+            var responseBody = await response.Content.ReadAsStringAsync();
+            var result = (string)responseBody;
+            if (result.Contains("TERMINATED") && result.Contains("SUCCESS"))
+                Console.WriteLine("Success");
+
+            while (!result.Contains("SUCCESS"))
+            {
+                await Task.Delay(1000);
+                client = new HttpClient();
+                request = new HttpRequestMessage(HttpMethod.Get, "https://adb-4958543948294936.16.azuredatabricks.net/api/2.0/jobs/runs/get-output?run_id=" + runId);
+                request.Headers.Add("Authorization", "Bearer dapie16ca829366e80ba514e77c6d7aeee6c-2");
+                response = await client.SendAsync(request);
+                response.EnsureSuccessStatusCode();
+                responseBody = await response.Content.ReadAsStringAsync();
+                result = (string)responseBody;
+            }
+            return true;
+        }
+
+        public async Task<string> RunPredictionJobForCard(string fileName, string imageContent)
+        {
+            var client = new HttpClient();
+            var request = new HttpRequestMessage(HttpMethod.Post, "https://adb-4958543948294936.16.azuredatabricks.net/api/2.0/jobs/run-now");
+            request.Headers.Add("Authorization", "Bearer dapie16ca829366e80ba514e77c6d7aeee6c-2");
+            var img = $"{imageContent}";           
+            request.Content = new StringContent("{ \"job_id\": \"29718829608156\",\"notebook_params\":{\"name\":\"pred\",\"filename\":\""+fileName+"\",\"content\":\""+img+"\"} }");
+            request.Content.Headers.ContentType = new MediaTypeHeaderValue("application/x-www-form-urlencoded");
+            var response = await client.SendAsync(request);
+            response.EnsureSuccessStatusCode();
+            var responseBody = await response.Content.ReadAsStringAsync();
+            var runId = responseBody.ToString().Split(',')[0].Split(':')[1];
+            return runId;
+        }
+
+        public async Task<string> RunDetectionJobForCard(string fileName, string imageContent)
+        {
+            var client = new HttpClient();
+            var request = new HttpRequestMessage(HttpMethod.Post, "https://adb-4958543948294936.16.azuredatabricks.net/api/2.0/jobs/run-now");
+            request.Headers.Add("Authorization", "Bearer dapie16ca829366e80ba514e77c6d7aeee6c-2");
+            var img = $"{imageContent}";
+            request.Content = new StringContent("{ \"job_id\": \"726745793126357\",\"notebook_params\":{\"name\":\"pred\",\"filename\":\""+fileName+"\",\"content\":\"qeqeqweqweqwe\"} }");
+            request.Content.Headers.ContentType = new MediaTypeHeaderValue("application/x-www-form-urlencoded");
+            var response = await client.SendAsync(request);
+            response.EnsureSuccessStatusCode();
+            var responseBody = await response.Content.ReadAsStringAsync();
+            var runId = responseBody.ToString().Split(',')[0].Split(':')[1];
+            return runId;
+        }
+
+        public void DeletePrediction(string fileName)
+        {
+            var client = new HttpClient();
+            var request = new HttpRequestMessage(HttpMethod.Post, "https://adb-4958543948294936.16.azuredatabricks.net/api/2.0/jobs/run-now");
+            request.Headers.Add("Authorization", "Bearer dapie16ca829366e80ba514e77c6d7aeee6c-2");
+            request.Content = new StringContent("{ \"job_id\": \"854896764317231\",\"notebook_params\":{\"name\":\"" + fileName + "\"} }");
+            request.Content.Headers.ContentType = new MediaTypeHeaderValue("application/x-www-form-urlencoded");
+            client.SendAsync(request);
         }
 
         //public CardFigure RecognizeFigure(string imagePath, int number)
@@ -265,13 +448,54 @@ namespace CoreBusinessLogic
 
             //process.EnableRaisingEvents = true;
             process.Start();
-            //var error = process
-            //   .StandardError
-            //   .ReadToEnd();
+            var error = process
+               .StandardError
+               .ReadToEnd();
             var result = process
                 .StandardOutput
                 .ReadToEnd();
             return result.Replace("\r\n", "");
+        }
+
+        public string GetDetect(string path, string area, int number)
+        {
+            var t = new TaskCompletionSource<string>();
+            Process process = new Process();
+            string argument = @$"C:\Users\mkosi\PycharmProjects\pythonProject\Detect.py";
+            process.StartInfo = new System.Diagnostics.ProcessStartInfo()
+            {
+                UseShellExecute = false,
+                CreateNoWindow = true,
+                WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden,
+                FileName = @"C:\Users\mkosi\PycharmProjects\pythonProject\venv\Scripts\python.exe",
+                Arguments = string.Format("{0} {1} {2}", argument, path, number),
+                RedirectStandardError = true,
+                RedirectStandardOutput = true
+            };
+            process.EnableRaisingEvents = true;
+
+            
+
+            //process.Exited += (object sender, EventArgs e) =>
+            //{
+            //    t.SetResult(process.StandardOutput.ReadToEnd());
+            //    var ress = t.Task.Result;
+            //    Debug.WriteLine(ress);
+            //};
+
+            process.Start();
+            var result = process
+                .StandardOutput
+                .ReadToEnd();
+            Debug.WriteLine(result);
+            Enum.TryParse<AnalyzeArea>(area, out AnalyzeArea areaResult);
+
+            var rrrr = $"{result[0]}||color|{number}";
+            var mdoel = result.Substring(1, 2);
+            Debug.WriteLine(mdoel);
+
+            //OnCardRecognised(rrrr, areaResult);
+            return "";// result.Replace("\r\n", "");
         }
 
         //public Task<string> GetHandAsync()
@@ -509,8 +733,12 @@ namespace CoreBusinessLogic
                     $@"C:\Users\mkosi\PycharmProjects\pythonProject\predictFigure.py {img} {number} {area}" ://{imagePath.Replace(" ", "")}" :
                     $@"C:\Users\mkosi\PycharmProjects\pythonProject\predictColor.py {img} {number} {area}";
 
+                //GetDetect(imagePath);
+
                 if (rc == recoType.color)
-                    GetFigure(img, "color", $"notNeeded|{rc}|{number}|{area}");
+                {
+                    GetFigure(img, "color", $"notNeeded|{rc}|{number}|{area}");                    
+                }
                 else
                     GetFigure(img, "figure", $"notNeeded|{rc}|{number}|{area}");
 
@@ -579,7 +807,7 @@ namespace CoreBusinessLogic
         //    return "";
         //}
 
-        private enum recoType
+        public enum recoType
         {
             figure,
             color

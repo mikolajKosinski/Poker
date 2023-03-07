@@ -1,5 +1,4 @@
-﻿using Autofac;
-using CoreBusinessLogic.Hands;
+﻿using CoreBusinessLogic.Hands;
 using CoreBusinessLogic.Interfaces;
 using System;
 using System.Collections;

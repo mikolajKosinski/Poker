@@ -1,15 +1,13 @@
 {
   "version": 2,
-  "dgSpecHash": "qWzI8yg9vWNMePiIaMELqK/f9RPqresgmfanL80PNlCmCaBXAx9fiIai/8PAqtB5PXgqk/PAQbMhnWJtd+CA0g==",
+  "dgSpecHash": "vWdmP43dTk+MaP1z3wfOGrHAjjCJuFACi0fr/1GeYCaR70Fgofav0eavucwaq6dyF+9raUl6/tq3v1iuJ7MsYQ==",
   "success": true,
   "projectFilePath": "C:\\Users\\mkosi\\Documents\\GitHub\\Poker\\RunPy\\ConsoleEndpoint\\ConsoleEndpoint.csproj",
   "expectedPackageFiles": [
-    "C:\\Users\\mkosi\\.nuget\\packages\\autofac\\6.1.0\\autofac.6.1.0.nupkg.sha512",
+    "C:\\Users\\mkosi\\.nuget\\packages\\autofac\\6.5.0\\autofac.6.5.0.nupkg.sha512",
     "C:\\Users\\mkosi\\.nuget\\packages\\microsoft.netcore.platforms\\3.1.0\\microsoft.netcore.platforms.3.1.0.nupkg.sha512",
     "C:\\Users\\mkosi\\.nuget\\packages\\microsoft.netcore.targets\\1.1.0\\microsoft.netcore.targets.1.1.0.nupkg.sha512",
     "C:\\Users\\mkosi\\.nuget\\packages\\microsoft.win32.systemevents\\4.7.0\\microsoft.win32.systemevents.4.7.0.nupkg.sha512",
-    "C:\\Users\\mkosi\\.nuget\\packages\\newtonsoft.json\\12.0.1\\newtonsoft.json.12.0.1.nupkg.sha512",
-    "C:\\Users\\mkosi\\.nuget\\packages\\newtonsoft.json.bson\\1.0.2\\newtonsoft.json.bson.1.0.2.nupkg.sha512",
     "C:\\Users\\mkosi\\.nuget\\packages\\system.collections\\4.3.0\\system.collections.4.3.0.nupkg.sha512",
     "C:\\Users\\mkosi\\.nuget\\packages\\system.diagnostics.debug\\4.3.0\\system.diagnostics.debug.4.3.0.nupkg.sha512",
     "C:\\Users\\mkosi\\.nuget\\packages\\system.diagnostics.diagnosticsource\\4.7.1\\system.diagnostics.diagnosticsource.4.7.1.nupkg.sha512",

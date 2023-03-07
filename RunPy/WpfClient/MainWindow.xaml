@@ -465,7 +465,11 @@
                         <Label Grid.Row="0" Grid.Column="0">Select formula</Label>
                         <Label Grid.Row="1" Grid.Column="0">Select threshold</Label>
                         <ComboBox ItemsSource="{Binding CountingSystemsList}" SelectedItem="{Binding SelectedFormula}" VerticalAlignment="Top" Grid.Row="0" Grid.Column="1" Style="{StaticResource SettingsCombo}" />
-            <Button Content="Info" Command="{Binding ThresholdInfoCommand}" Grid.Row="0" Grid.Column="2" Style="{StaticResource LeftMenuButton}"/>
+                        <Button Content="Info" Command="{Binding ThresholdInfoCommand}" VerticalAlignment="Top" Grid.Row="0" Grid.Column="2" Style="{StaticResource SettingsMenuButton}"/>
+                        <Slider Minimum="10" Maximum="100" TickPlacement="BottomRight" TickFrequency="5" IsSnapToTickEnabled="True" Name="slValue" Grid.Row="1" Grid.Column="1" Value="{Binding SliderValue}"/>
+                        <TextBox Text="{Binding ElementName=slValue, Path=Value, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" TextAlignment="Right" IsEnabled="False" Grid.Row="1" Grid.Column="2" Style="{StaticResource SettingsText}" />
+                        <Button Content="GetDeskArea" Width="80" Height="30" Command="{Binding DeskSelectCommand}" Grid.Column="1" Grid.Row="2" Style="{StaticResource SettingsMenuButton}"/>
+                        <Button Content="GetHandArea" Width="80" Height="30" Command="{Binding HandSelectCommand}" Grid.Column="1" Grid.Row="3" Style="{StaticResource SettingsMenuButton}"/>
                     </Grid>
                 </Grid>
             </Grid>
