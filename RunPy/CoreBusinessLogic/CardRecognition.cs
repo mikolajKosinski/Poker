@@ -15,6 +15,9 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Linq;
 using static System.Net.WebRequestMethods;
+using Azure.Storage.Blobs;
+using static System.Net.Mime.MediaTypeNames;
+using static System.Collections.Specialized.BitVector32;
 
 namespace CoreBusinessLogic
 {
@@ -66,25 +69,39 @@ namespace CoreBusinessLogic
             //var color = RecognizeColor(colorPath, number);
             //RecoImage(recoType.figure, figurePath, number, area);
             //RecoImage(recoType.color, colorPath, number, area);
+            //var path = @"C:\Users\mkosi\Documents\GitHub\Poker\RunPy\WpfClient\obj\Debug\net5.0-windows\C1.PNG";
             
+            //await UploadImageToBlob(figurePath);
             PredictCard(RandomString(10), figurePath, area, recoType.figure, number.ToString());
             PredictCard(RandomString(10), colorPath, area, recoType.color, number.ToString());
             return new Card(new CardFigure(), new CardColor());
         }
 
-        private async Task UploadImageToBlob(string imagePath)
+        public async Task UploadImageToBlob(string imagePath, string filename)
         {
             string connectionString = "DefaultEndpointsProtocol=https;AccountName=detectimages;AccountKey=SprSVOOvXy65WHaCgRU1tS5NHvYHkEp5srNTEmyuudUpLmf38MHo7SQzlOmgfdnwVf5J9O40hYB2+AStVljy8Q==;EndpointSuffix=core.windows.net";
-            
-            //using (var image = Bitmap.FromFile(imagePath))
-            //{
-            //    using (MemoryStream ms = new MemoryStream())
-            //    {
-            //        image.Save(ms, image.RawFormat);
-            //        byte[] array = ms.ToArray();
-            //        img = Convert.ToBase64String(array);
-            //    }
-            //}
+            string containerName = "images";
+            string blobName = filename;
+            BlobContainerClient container = new BlobContainerClient(connectionString, containerName);
+            BlobClient blob = container.GetBlobClient(blobName);
+
+            try
+            {
+                using (var image = Bitmap.FromFile(imagePath))
+                {
+                    using (MemoryStream ms = new MemoryStream())
+                    {
+                        image.Save(ms, image.RawFormat);
+                        ms.Position= 0;
+                        blob.Upload(ms, true);
+                        var urib = blob.Uri;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+
+            }
         }
 
         private string RandomString(int length)
@@ -146,25 +163,83 @@ namespace CoreBusinessLogic
 
         public async Task DetectCard(string imagePath)
         {
-            var fileName = RandomString(10);
-            string img = string.Empty;
-            using (var image = Bitmap.FromFile(imagePath))
+            var nameForBlob = RandomString(10)+".PNG";
+            var nameForPrediction = RandomString(10);
+            
+            await UploadImageToBlob(imagePath, nameForBlob);            
+
+            var runId = await RunDetectionJobForCard(nameForPrediction, nameForBlob);
+            await IsPredictionFinished(runId);
+            var predicted = await ReadPredictionResult(nameForPrediction);
+            CutIntoParts(predicted, imagePath);
+
+            DeletePrediction($"{nameForBlob}.txt");
+            DeletePrediction($"{nameForBlob}.PNG");
+        }
+
+        private void CutIntoParts(string predicted, string imgPath)
+        {
+            var cords = GetParts(predicted);
+            var bm = new Bitmap(imgPath);
+            
+            for(int q=0; q < cords.Count; q++) 
             {
-                using (MemoryStream ms = new MemoryStream())
+                var left = Convert.ToInt32(bm.Width * cords[q].Item1);
+                var top = Convert.ToInt32(bm.Height * cords[q].Item2);
+                var width = Convert.ToInt32(bm.Width * cords[q].Item3);
+                var height = Convert.ToInt32(bm.Height * cords[q].Item4);
+                var bitmap = new Bitmap(width, height);
+                Rectangle section = new Rectangle(new Point(left, top), new Size(width, height));
+
+                using (var g = Graphics.FromImage(bitmap))
                 {
-                    image.Save(ms, image.RawFormat);
-                    byte[] array = ms.ToArray();
-                    img = Convert.ToBase64String(array);
+                    g.DrawImage(bm, 0, 0, section, GraphicsUnit.Pixel);
+                    bitmap.Save(@$"C:\Users\mkosi\Documents\GitHub\Poker\RunPy\WpfClient\obj\Debug\net5.0-windows\F{q}.PNG");
+                }
+
+                int heightC = Convert.ToInt32(height * 0.8);
+                section = new Rectangle(new Point(left, top + height), new Size(width, heightC));
+
+                using (var g = Graphics.FromImage(bitmap))
+                {
+                    g.DrawImage(bm, 0, 0, section, GraphicsUnit.Pixel);
+                    bitmap.Save($"C{q}.PNG");
                 }
             }
+        }
 
-            var runId = await RunDetectionJobForCard(fileName, img);
-            await IsPredictionFinished(runId);
-            var predicted = await ReadPredictionResult(fileName);
-            //var response = $"{predicted}||{fc}|{number}";
-            //OnCardRecognised(response, area);
-            DeletePrediction($"{fileName}.txt");
-            DeletePrediction($"{fileName}.PNG");
+        private List<Tuple<double, double, double, double>> GetParts(string predicted)
+        {
+            var split = predicted.Split("probability").Where(p => p.Length > 4).ToList();
+            var fcList = new List<Tuple<double, double, double, double>>();
+            try
+            {
+                foreach (var item in split)
+                {
+                    var leftIdx = item.IndexOf("left");
+                    var topIdx = item.IndexOf("top");
+                    var widthIdx = item.IndexOf("width");
+                    var heightIdx = item.IndexOf("height");
+
+                    var left = item.Substring(leftIdx + 7, 10).Replace('.', ',');
+                    var top = item.Substring(topIdx + 6, 10).Replace('.', ',');
+                    var width = item.Substring(widthIdx + 8, 10).Replace('.', ',');
+                    var height = item.Substring(heightIdx + 9, 10).Replace('.', ',');
+
+                    var leftD = Convert.ToDouble(left);
+                    var topD = Convert.ToDouble(top);
+                    var widthD = Convert.ToDouble(width);
+                    var heightD = Convert.ToDouble(height);
+
+                    fcList.Add(new Tuple<double, double, double, double>(leftD, topD, widthD, heightD));
+                }
+            }
+            catch(Exception x)
+            {
+                
+            }
+
+            return fcList;
         }
 
         public async Task<string> ReadPredictionResult(string fileName)
@@ -226,13 +301,13 @@ namespace CoreBusinessLogic
             return runId;
         }
 
-        public async Task<string> RunDetectionJobForCard(string fileName, string imageContent)
+        public async Task<string> RunDetectionJobForCard(string fileName, string imgToPred)
         {
             var client = new HttpClient();
             var request = new HttpRequestMessage(HttpMethod.Post, "https://adb-4958543948294936.16.azuredatabricks.net/api/2.0/jobs/run-now");
             request.Headers.Add("Authorization", "Bearer dapie16ca829366e80ba514e77c6d7aeee6c-2");
-            var img = $"{imageContent}";
-            request.Content = new StringContent("{ \"job_id\": \"726745793126357\",\"notebook_params\":{\"name\":\"pred\",\"filename\":\""+fileName+"\",\"content\":\"qeqeqweqweqwe\"} }");
+            
+            request.Content = new StringContent("{ \"job_id\": \"726745793126357\",\"notebook_params\":{\"name\":\"pred\",\"filename\":\""+fileName+"\",\"content\":\""+imgToPred+"\"} }");
             request.Content.Headers.ContentType = new MediaTypeHeaderValue("application/x-www-form-urlencoded");
             var response = await client.SendAsync(request);
             response.EnsureSuccessStatusCode();
@@ -433,28 +508,28 @@ namespace CoreBusinessLogic
 
         public string GetCardsCountOnDesk()
         {
-            Process process = new Process();
-            string argument = @$"C:\Users\mkosi\PycharmProjects\pythonProject\predictFigures.py";
-            process.StartInfo = new System.Diagnostics.ProcessStartInfo()
-            {
-                UseShellExecute = false,
-                CreateNoWindow = true,
-                WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden,
-                FileName = @"C:\Users\mkosi\PycharmProjects\pythonProject\venv\Scripts\python.exe",
-                Arguments = string.Format("{0}", argument),
-                RedirectStandardError = true,
-                RedirectStandardOutput = true
-            };
+            return "";
+            //Process process = new Process();
+            //string argument = @$"C:\Users\mkosi\PycharmProjects\pythonProject\predictFigures.py";
+            //process.StartInfo = new System.Diagnostics.ProcessStartInfo()
+            //{
+            //    UseShellExecute = false,
+            //    CreateNoWindow = true,
+            //    WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden,
+            //    FileName = @"C:\Users\mkosi\PycharmProjects\pythonProject\venv\Scripts\python.exe",
+            //    Arguments = string.Format("{0}", argument),
+            //    RedirectStandardError = true,
+            //    RedirectStandardOutput = true
+            //};
 
-            //process.EnableRaisingEvents = true;
-            process.Start();
-            var error = process
-               .StandardError
-               .ReadToEnd();
-            var result = process
-                .StandardOutput
-                .ReadToEnd();
-            return result.Replace("\r\n", "");
+            //process.Start();
+            //var error = process
+            //   .StandardError
+            //   .ReadToEnd();
+            //var result = process
+            //    .StandardOutput
+            //    .ReadToEnd();
+            //return result.Replace("\r\n", "");
         }
 
         public string GetDetect(string path, string area, int number)

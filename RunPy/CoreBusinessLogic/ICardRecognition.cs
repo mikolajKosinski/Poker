@@ -28,5 +28,7 @@ namespace CoreBusinessLogic
         string GetDetect(string path, string area, int number);
         Task PredictCard(string fileName, string imagePath, AnalyzeArea area, recoType fc, string number);
         Task DetectCard(string imagePath);
+
+        //Task UploadImageToBlob(string imagePath);
     }
 }

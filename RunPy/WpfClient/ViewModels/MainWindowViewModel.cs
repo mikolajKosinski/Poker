@@ -1258,8 +1258,8 @@ namespace WpfClient.ViewModels
                 var tasks = new List<Task<ICard>>();
                 for (int i = 0; i < flopCount; i++)
                 {
-                    var colorPath = @$"C:\Users\mkosi\Documents\GitHub\Poker\RunPy\WpfClient\obj\Debug\\net5.0-windows\C{i}.PNG";
-                    var figurePath = @$"C:\Users\mkosi\Documents\GitHub\Poker\RunPy\WpfClient\obj\Debug\\net5.0-windows\F{i}.PNG";
+                    var colorPath = @$"C:\Users\mkosi\Documents\GitHub\Poker\RunPy\WpfClient\obj\Debug\net5.0-windows\C{i}.PNG";
+                    var figurePath = @$"C:\Users\mkosi\Documents\GitHub\Poker\RunPy\WpfClient\obj\Debug\net5.0-windows\F{i}.PNG";
                     cardDeskList.Add(new Card(new CardFigure(), new CardColor()));
                     //_cardRecognition.PredictCard("sfds", )
                     _cardRecognition.GetCard(figurePath, colorPath, i, AnalyzeArea.Desk);                    

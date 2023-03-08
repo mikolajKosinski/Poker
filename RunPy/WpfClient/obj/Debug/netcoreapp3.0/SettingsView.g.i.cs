@@ -69,7 +69,7 @@ namespace WpfClient {
                 return;
             }
             _contentLoaded = true;
-            System.Uri resourceLocater = new System.Uri("/WpfClient;component/settingsview.xaml", System.UriKind.Relative);
+            System.Uri resourceLocater = new System.Uri("/WpfClient;V1.0.0.0;component/settingsview.xaml", System.UriKind.Relative);
             
             #line 1 "..\..\..\SettingsView.xaml"
             System.Windows.Application.LoadComponent(this, resourceLocater);

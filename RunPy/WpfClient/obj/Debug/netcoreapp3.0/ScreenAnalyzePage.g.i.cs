@@ -85,7 +85,7 @@ namespace WpfClient {
                 return;
             }
             _contentLoaded = true;
-            System.Uri resourceLocater = new System.Uri("/WpfClient;component/screenanalyzepage.xaml", System.UriKind.Relative);
+            System.Uri resourceLocater = new System.Uri("/WpfClient;V1.0.0.0;component/screenanalyzepage.xaml", System.UriKind.Relative);
             
             #line 1 "..\..\..\ScreenAnalyzePage.xaml"
             System.Windows.Application.LoadComponent(this, resourceLocater);
