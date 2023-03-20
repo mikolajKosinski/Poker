@@ -27,7 +27,7 @@ namespace CoreBusinessLogic
         Dictionary<string, CardColor> ColorDict { get; set; }
         string GetDetect(string path, string area, int number);
         Task PredictCard(string fileName, string imagePath, AnalyzeArea area, recoType fc, string number);
-        Task DetectCard(string imagePath);
+        Task<int> DetectCard(string imagePath, AnalyzeArea area);
 
         //Task UploadImageToBlob(string imagePath);
     }

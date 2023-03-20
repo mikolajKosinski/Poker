@@ -10,6 +10,7 @@ using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
+using System.Net.NetworkInformation;
 using System.Reflection;
 using System.Runtime.Intrinsics.X86;
 using System.Text;
@@ -1248,8 +1249,8 @@ namespace WpfClient.ViewModels
             {
                 GetCards(SettingsViewModel.DeskArea, "allCards");
                 ProgressBarValue += 10;
-                flopCount = Convert.ToInt32(_cardRecognition.GetCardsCountOnDesk());
-                _cardRecognition.DetectCard("C:\\Users\\mkosi\\Documents\\GitHub\\Poker\\RunPy\\WpfClient\\obj\\Debug\\net5.0-windows\\allCards.PNG");
+                //flopCount = Convert.ToInt32(_cardRecognition.GetCardsCountOnDesk());
+                flopCount = await _cardRecognition.DetectCard("C:\\Users\\mkosi\\Documents\\GitHub\\Poker\\RunPy\\WpfClient\\obj\\Debug\\net5.0-windows\\allCards.PNG", AnalyzeArea.Desk);
                 currentTotal = flopCount * 2;
                 //Application.Current.Dispatcher.BeginInvoke(new Action(() =>
                 //{
@@ -1274,8 +1275,8 @@ namespace WpfClient.ViewModels
             {
                 GetCards(SettingsViewModel.HandArea, "allCards");
                 ProgressInfo = "Scanning Hand area";
-                _cardRecognition.DetectCard("C:\\Users\\mkosi\\Documents\\GitHub\\Poker\\RunPy\\WpfClient\\obj\\Debug\\net5.0-windows\\allCards.PNG");
-                flopCount = Convert.ToInt32(_cardRecognition.GetCardsCountOnDesk());
+                flopCount = await _cardRecognition.DetectCard("C:\\Users\\mkosi\\Documents\\GitHub\\Poker\\RunPy\\WpfClient\\obj\\Debug\\net5.0-windows\\allCards.PNG", AnalyzeArea.Hand);
+                //flopCount = Convert.ToInt32(_cardRecognition.GetCardsCountOnDesk());
                 currentTotal = 4;
 
                 for (int i = 0; i < flopCount; i++)

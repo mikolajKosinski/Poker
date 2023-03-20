@@ -23,6 +23,8 @@ namespace CoreBusinessLogic
 {
     public class CardRecognition : ICardRecognition
     {
+        List<Tuple<double, double, double, double>> cardsPositions;
+
         public Dictionary<string, CardFigure> FigureDict { get; set; }
         public Dictionary<string, CardColor> ColorDict { get; set; }
 
@@ -30,6 +32,7 @@ namespace CoreBusinessLogic
         {
             FigureDict = GetFigureDict();
             ColorDict = GetColorDict();
+            cardsPositions = new List<Tuple<double, double, double, double>>();
         }
 
         private Dictionary<string, CardFigure> GetFigureDict()
@@ -161,8 +164,10 @@ namespace CoreBusinessLogic
             DeletePrediction($"{fileName}.PNG");
         }
 
-        public async Task DetectCard(string imagePath)
+        public async Task<int> DetectCard(string imagePath, AnalyzeArea area)
         {
+            if(area == AnalyzeArea.Desk && cardsPositions.Any()) return CutIntoParts("", imagePath);
+
             var nameForBlob = RandomString(10)+".PNG";
             var nameForPrediction = RandomString(10);
             
@@ -171,13 +176,14 @@ namespace CoreBusinessLogic
             var runId = await RunDetectionJobForCard(nameForPrediction, nameForBlob);
             await IsPredictionFinished(runId);
             var predicted = await ReadPredictionResult(nameForPrediction);
-            CutIntoParts(predicted, imagePath);
+            var count = CutIntoParts(predicted, imagePath);
 
             DeletePrediction($"{nameForBlob}.txt");
             DeletePrediction($"{nameForBlob}.PNG");
+            return count;
         }
 
-        private void CutIntoParts(string predicted, string imgPath)
+        private int CutIntoParts(string predicted, string imgPath)
         {
             var cords = GetParts(predicted);
             var bm = new Bitmap(imgPath);
@@ -189,42 +195,46 @@ namespace CoreBusinessLogic
                 var width = Convert.ToInt32(bm.Width * cords[q].Item3);
                 var height = Convert.ToInt32(bm.Height * cords[q].Item4);
                 var bitmap = new Bitmap(width, height);
-                Rectangle section = new Rectangle(new Point(left, top), new Size(width, height));
+                Rectangle section = new Rectangle(new Point(0, 0), new Size(500, 500));
 
-                using (var g = Graphics.FromImage(bitmap))
+                var fig = bm.Clone(new Rectangle(left, top, width, height), bm.PixelFormat);
+                fig.Save(@$"C:\Users\mkosi\Documents\GitHub\Poker\RunPy\WpfClient\obj\Debug\net5.0-windows\F{q}.PNG");
+
+                int heightC = Convert.ToInt32(height * 0.7);
+                var color = bm.Clone(new Rectangle(left, top + height, width, heightC), bm.PixelFormat);
+                color.Save(@$"C:\Users\mkosi\Documents\GitHub\Poker\RunPy\WpfClient\obj\Debug\net5.0-windows\C{q}.PNG");
+
+                if(cords.Count == 3 && cardsPositions.Count < 3)
                 {
-                    g.DrawImage(bm, 0, 0, section, GraphicsUnit.Pixel);
-                    bitmap.Save(@$"C:\Users\mkosi\Documents\GitHub\Poker\RunPy\WpfClient\obj\Debug\net5.0-windows\F{q}.PNG");
-                }
-
-                int heightC = Convert.ToInt32(height * 0.8);
-                section = new Rectangle(new Point(left, top + height), new Size(width, heightC));
-
-                using (var g = Graphics.FromImage(bitmap))
-                {
-                    g.DrawImage(bm, 0, 0, section, GraphicsUnit.Pixel);
-                    bitmap.Save($"C{q}.PNG");
+                    cardsPositions.Add(new Tuple<double, double, double, double>(cords[q].Item1, cords[q].Item2, cords[q].Item3, cords[q].Item4));
                 }
             }
+            return cords.Count;
         }
 
-        private List<Tuple<double, double, double, double>> GetParts(string predicted)
+        private List<Tuple<double, double, double, double>> GetParts(string predicted = "")
         {
+            if(cardsPositions.Any()) return cardsPositions;
+
             var split = predicted.Split("probability").Where(p => p.Length > 4).ToList();
             var fcList = new List<Tuple<double, double, double, double>>();
             try
             {
                 foreach (var item in split)
                 {
+                    var prob = Convert.ToDouble(item.Substring(2, 4).Replace(".",","));
+                    if (prob < 0.6)
+                        continue;
+
                     var leftIdx = item.IndexOf("left");
                     var topIdx = item.IndexOf("top");
                     var widthIdx = item.IndexOf("width");
                     var heightIdx = item.IndexOf("height");
 
-                    var left = item.Substring(leftIdx + 7, 10).Replace('.', ',');
-                    var top = item.Substring(topIdx + 6, 10).Replace('.', ',');
-                    var width = item.Substring(widthIdx + 8, 10).Replace('.', ',');
-                    var height = item.Substring(heightIdx + 9, 10).Replace('.', ',');
+                    var left = Clean(item.Substring(leftIdx + 7, 10).Replace('.', ','));
+                    var top = Clean(item.Substring(topIdx + 6, 10).Replace('.', ','));
+                    var width = Clean(item.Substring(widthIdx + 8, 10).Replace('.', ','));
+                    var height = Clean(item.Substring(heightIdx + 9, 10).Replace('.', ','));
 
                     var leftD = Convert.ToDouble(left);
                     var topD = Convert.ToDouble(top);
@@ -240,6 +250,18 @@ namespace CoreBusinessLogic
             }
 
             return fcList;
+        }
+
+        private string Clean(string val)
+        {
+            if(val.Count(f => f == ',') > 1)
+            {
+                var lastIndex = val.LastIndexOf(",");
+                var result = val.Substring(0, lastIndex);
+                return result;
+            }
+
+            return val;
         }
 
         public async Task<string> ReadPredictionResult(string fileName)
