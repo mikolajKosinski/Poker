@@ -24,6 +24,7 @@ namespace CoreBusinessLogic
     public class CardRecognition : ICardRecognition
     {
         List<Tuple<double, double, double, double>> cardsPositions;
+        Stage cardStage { get; set; }
 
         public Dictionary<string, CardFigure> FigureDict { get; set; }
         public Dictionary<string, CardColor> ColorDict { get; set; }
@@ -159,7 +160,7 @@ namespace CoreBusinessLogic
             await IsPredictionFinished(runId);
             var predicted = await ReadPredictionResult(fileName);
             var response = $"{predicted}||{fc}|{number}";
-            OnCardRecognised(response, area);
+            OnCardRecognised(response, area, cardStage);
             DeletePrediction($"{fileName}.txt");
             DeletePrediction($"{fileName}.PNG");
         }
@@ -207,6 +208,17 @@ namespace CoreBusinessLogic
                 if(cords.Count == 3 && cardsPositions.Count < 3)
                 {
                     cardsPositions.Add(new Tuple<double, double, double, double>(cords[q].Item1, cords[q].Item2, cords[q].Item3, cords[q].Item4));
+                    cardStage = Stage.Flop;
+                }
+                if (cords.Count == 4 && cardsPositions.Count < 4)
+                {
+                    cardsPositions.Add(new Tuple<double, double, double, double>(cords[q].Item1, cords[q].Item2, cords[q].Item3, cords[q].Item4));
+                    cardStage = Stage.Turn;
+                }
+                if (cords.Count == 5 && cardsPositions.Count < 5)
+                {
+                    cardsPositions.Add(new Tuple<double, double, double, double>(cords[q].Item1, cords[q].Item2, cords[q].Item3, cords[q].Item4));
+                    cardStage = Stage.River;
                 }
             }
             return cords.Count;
@@ -762,7 +774,7 @@ namespace CoreBusinessLogic
                     //reqCount++;
                     Enum.TryParse<AnalyzeArea>(info.Split("|")[3], out AnalyzeArea area);
                     Debug.WriteLine(responseBody);                    
-                    OnCardRecognised(responseBody, area);
+                    OnCardRecognised(responseBody, area, cardStage);
                     
                     //response.ContinueWith((async t) =>
                     //{
@@ -881,12 +893,12 @@ namespace CoreBusinessLogic
             }
         }
 
-        public delegate void CardHandler(string cardReco, AnalyzeArea area);
+        public delegate void CardHandler(string cardReco, AnalyzeArea area, Stage cardStage);
         public event CardHandler CardRecognised;
-        private void OnCardRecognised(string cardReco, AnalyzeArea area)
+        private void OnCardRecognised(string cardReco, AnalyzeArea area, Stage cardStage)
         {
             if (CardRecognised != null)
-                CardRecognised(cardReco, area);
+                CardRecognised(cardReco, area, cardStage);
         }
 
         private string rr;

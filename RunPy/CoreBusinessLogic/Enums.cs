@@ -41,5 +41,12 @@ namespace CoreBusinessLogic
             Desk,
             All
         }
+
+        public enum Stage
+        {
+            Flop,
+            Turn,
+            River
+        }
     }
 }

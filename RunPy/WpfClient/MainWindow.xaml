@@ -58,18 +58,24 @@
                         <local:AreasView 
                 DataContext="{Binding AreasViewModel}" />
                     </Grid>
-                    <Grid Grid.Row="1" Grid.Column="0" Grid.RowSpan="3" 
+                    <Grid Grid.Row="1" Grid.Column="0" Grid.RowSpan="3"
                   Visibility="{Binding IsMainVisible, Converter={StaticResource boolToVisConv}}">
                     <Viewbox VerticalAlignment="Top">
-                            <Grid>
+                            <Grid Background="Blue">
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="1*" />
                                     <RowDefinition Height="1*" />
                                     <RowDefinition Height="9*" />
                                 </Grid.RowDefinitions>
-                            <Button Content="Analyze Hand" Grid.Row="0" Grid.Column="0" Style="{StaticResource LeftMenuButton}" Command="{Binding AnalyzeHandCommand}" IsEnabled="{Binding IsHandCheckEnable}" />
-                            <Button Content="Analyze Desk" Grid.Row="1" Grid.Column="1" Style="{StaticResource LeftMenuButton}" Command="{Binding AnalyzeDeskCommand}"  IsEnabled="{Binding IsDeskCheckEnable}" />                                
-                            <ListBox VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Grid.Column="0" Grid.Row="2" Margin="0,10,0,0" BorderThickness="0">
+                                <StackPanel Grid.Row="0">
+                                    <Button Content="Analyze Hand" Grid.Row="0" Style="{StaticResource LeftMenuButton}" Command="{Binding AnalyzeHandCommand}" IsEnabled="{Binding IsHandCheckEnable}" />
+                                    <Button Content="Analyze Desk" Grid.Row="1" Style="{StaticResource LeftMenuButton}" Command="{Binding AnalyzeDeskCommand}"  IsEnabled="{Binding IsDeskCheckEnable}" />
+                                    <Button Content="Analyze Flop" Grid.Row="2"  Style="{StaticResource LeftMenuButton}" Command="{Binding AnalyzeDeskCommand}"  IsEnabled="{Binding IsDeskCheckEnable}" />
+                                    <Button Content="Analyze Turn" Grid.Row="3"  Style="{StaticResource LeftMenuButton}" Command="{Binding AnalyzeDeskCommand}"  IsEnabled="{Binding IsDeskCheckEnable}" />
+                                    <Button Content="Analyze River" Grid.Row="4" Style="{StaticResource LeftMenuButton}" Command="{Binding AnalyzeDeskCommand}"  IsEnabled="{Binding IsDeskCheckEnable}" />
+                                </StackPanel>
+
+                                <ListBox VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Grid.Column="0" Grid.Row="2" Margin="0,10,0,0" BorderThickness="0" Background="Green">
                                 <ListBox.ItemContainerStyle>
                                     <Style TargetType="ListBoxItem">
                                         <Setter Property="HorizontalContentAlignment" Value="Stretch"></Setter>

@@ -461,6 +461,48 @@ namespace WpfClient.ViewModels
             }
         }
 
+        private bool _isFlopCheckEnable;
+        public bool IsFlopCheckEnable
+        {
+            get
+            {
+                return _isFlopCheckEnable;
+            }
+            set
+            {
+                _isFlopCheckEnable = value;
+                NotifyPropertyChanged(nameof(IsFlopCheckEnable));
+            }
+        }
+
+        private bool _isTurnCheckEnable;
+        public bool IsTurnCheckEnable
+        {
+            get
+            {
+                return _isTurnCheckEnable;
+            }
+            set
+            {
+                _isTurnCheckEnable = value;
+                NotifyPropertyChanged(nameof(IsTurnCheckEnable));
+            }
+        }
+
+        private bool _isRiverCheckEnable;
+        public bool IsRiverCheckEnable
+        {
+            get
+            {
+                return _isRiverCheckEnable;
+            }
+            set
+            {
+                _isRiverCheckEnable = value;
+                NotifyPropertyChanged(nameof(IsRiverCheckEnable));
+            }
+        }
+
         private bool _areasVisible;
         public bool IsAreasVisible
         {
@@ -840,7 +882,7 @@ namespace WpfClient.ViewModels
         List<ICard> cardDeskList = new List<ICard>();
         List<ICard> cardHandList = new List<ICard>();
 
-        private void _cardRecognition_CardRecognised(string cardReco, AnalyzeArea area)
+        private void _cardRecognition_CardRecognised(string cardReco, AnalyzeArea area, Stage cardStage)
         {
             try
             {
@@ -876,6 +918,15 @@ namespace WpfClient.ViewModels
                         cardHandList[number].Figure = figure;
                     }
                 }
+
+                if(cardStage == Stage.Flop)
+                    IsFlopCheckEnable = true;
+
+                if(cardStage == Stage.Turn) 
+                    IsTurnCheckEnable = true;
+
+                if(cardStage == Stage.River) 
+                    IsRiverCheckEnable = true;
             }
             catch (Exception x)
             {
