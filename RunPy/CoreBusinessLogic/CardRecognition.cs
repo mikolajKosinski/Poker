@@ -235,7 +235,7 @@ namespace CoreBusinessLogic
                 foreach (var item in split)
                 {
                     var prob = Convert.ToDouble(item.Substring(2, 4).Replace(".",","));
-                    if (prob < 0.6)
+                    if (prob < 0.30000)
                         continue;
 
                     var leftIdx = item.IndexOf("left");
@@ -266,14 +266,21 @@ namespace CoreBusinessLogic
 
         private string Clean(string val)
         {
+            var result = val;
+
             if(val.Count(f => f == ',') > 1)
             {
                 var lastIndex = val.LastIndexOf(",");
-                var result = val.Substring(0, lastIndex);
-                return result;
+                result = val.Substring(0, lastIndex);
             }
 
-            return val;
+            if (result.Contains("}"))
+            {
+                var idx = result.IndexOf("}");
+                result = result.Substring(0, idx);
+            }
+
+            return result;
         }
 
         public async Task<string> ReadPredictionResult(string fileName)

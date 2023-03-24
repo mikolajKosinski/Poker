@@ -919,14 +919,17 @@ namespace WpfClient.ViewModels
                     }
                 }
 
-                if(cardStage == Stage.Flop)
-                    IsFlopCheckEnable = true;
+                if (area == AnalyzeArea.Desk)
+                {
+                    if (cardStage == Stage.Flop)
+                        IsFlopCheckEnable = true;
 
-                if(cardStage == Stage.Turn) 
-                    IsTurnCheckEnable = true;
+                    if (cardStage == Stage.Turn)
+                        IsTurnCheckEnable = true;
 
-                if(cardStage == Stage.River) 
-                    IsRiverCheckEnable = true;
+                    if (cardStage == Stage.River)
+                        IsRiverCheckEnable = true;
+                }
             }
             catch (Exception x)
             {
