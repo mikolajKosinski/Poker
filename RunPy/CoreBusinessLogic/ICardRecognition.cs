@@ -18,7 +18,7 @@ namespace CoreBusinessLogic
         //string GetColorFigure(int cardsCount, string cardName);
         string GetCardsCountOnDesk();
         //Task<string> GetHandAsync();
-        Task<ICard> GetCard(string figure, string color, int number, AnalyzeArea area);
+        Task<ICard> GetCard(string figure, string color, int number, AnalyzeArea area, Stage stage);
         //string CenterFigure(string path);
         //CardFigure RecognizeFigure(string imagePath, int number);
         //CardColor RecognizeColor(string imagePath, int number);
@@ -26,8 +26,8 @@ namespace CoreBusinessLogic
         Dictionary<string, CardFigure> FigureDict { get; set; }
         Dictionary<string, CardColor> ColorDict { get; set; }
         string GetDetect(string path, string area, int number);
-        Task PredictCard(string fileName, string imagePath, AnalyzeArea area, recoType fc, string number);
-        Task<int> DetectCard(string imagePath, AnalyzeArea area);
+        Task PredictCard(string fileName, string imagePath, AnalyzeArea area, recoType fc, string number, Stage stage);
+        Task<int> DetectCard(string imagePath, AnalyzeArea area, Stage stage);
 
         //Task UploadImageToBlob(string imagePath);
     }

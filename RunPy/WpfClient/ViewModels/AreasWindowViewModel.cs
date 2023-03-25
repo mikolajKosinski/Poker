@@ -43,9 +43,7 @@ namespace WpfClient.ViewModels
         public ICommand HandSelectCommand { get; set; }
         public ICommand DeskSelectCommand { get; set; }
         public ICommand SingleCardCommand { get; set; }
-        public ICommand AnalyzeCommand { get; set; }
-        public ICommand AnalyzeHandCommand { get; set; }
-        public ICommand AnalyzeDeskCommand { get; set; }
+        
         public ICommand NewGameCommand { get; set; }
 
         public AreasWindowViewModel(IMainWindoViewModel vm, IFigureMatcher figureMatcher)
@@ -54,14 +52,14 @@ namespace WpfClient.ViewModels
             DeskSelectCommand = new CustomCommand(SelectDesk, CanSelect);
             HandSelectCommand = new CustomCommand(SelectHand, CanSelect);
             SingleCardCommand = new CustomCommand(SelectSingleCard, CanSelect);
-            AnalyzeCommand = new CustomCommand(CallAnalyzeCommand, CanSelect);
+            //AnalyzeCommand = new CustomCommand(CallAnalyzeCommand, CanSelect);
             this.figureMatcher = figureMatcher;
         }
 
-        private void CallAnalyzeCommand(object sender)
-        {
-            _mainWindowVM.Analyze(AnalyzeArea.All);            
-        }
+        //private void CallAnalyzeCommand(object sender)
+        //{
+        //    _mainWindowVM.Analyze(AnalyzeArea.All);            
+        //}
 
         public bool CanSelect(object parameter)
         {

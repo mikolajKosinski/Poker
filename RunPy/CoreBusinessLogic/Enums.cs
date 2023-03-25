@@ -44,6 +44,8 @@ namespace CoreBusinessLogic
 
         public enum Stage
         {
+            None,
+            All,
             Flop,
             Turn,
             River

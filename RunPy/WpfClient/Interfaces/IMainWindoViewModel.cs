@@ -12,7 +12,7 @@ namespace WpfClient.Interfaces
 {
     public interface IMainWindoViewModel
     {
-        Task Analyze(AnalyzeArea aera);
+        Task Analyze(AnalyzeArea aera, Stage stage);
         //void TakeScreenShoot();
         List<ICard> RecognizedCardsList { get; set; }
         ObservableCollection<ICard> HandCards { get; set; }

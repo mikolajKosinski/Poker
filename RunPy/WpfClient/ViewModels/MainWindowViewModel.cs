@@ -696,6 +696,9 @@ namespace WpfClient.ViewModels
         public ICommand AnalyzeCommand { get; set; }
         public ICommand AnalyzeHandCommand { get; set; }
         public ICommand AnalyzeDeskCommand { get; set; }
+        public ICommand AnalyzeFlopCommand { get; set; }
+        public ICommand AnalyzeTurnCommand { get; set; }
+        public ICommand AnalyzeRiverCommand { get; set; }
         public ICommand GeneralTabCommand { get; set; }
         public ICommand RoyalTabCommand { get; set; }
         public ICommand StraightFlushTabCommand { get; set; }
@@ -811,6 +814,7 @@ namespace WpfClient.ViewModels
             AnalyzeCommand = new CustomCommand(AnalyzeButtonCommand, CanSelect);
             AnalyzeHandCommand = new CustomCommand(AnalyzeHandButtonCommand, CanSelect);
             AnalyzeDeskCommand = new CustomCommand(AnalyzeDeskButtonCommand, CanSelect);
+            AnalyzeTurnCommand = new CustomCommand(AnalyzeTurnButtonCommand, CanSelect);
             GeneralTabCommand = new CustomCommand(ShowGeneralTab, CanSelect);
             RoyalTabCommand = new CustomCommand(ShowRoyalTab, CanSelect);
             StraightFlushTabCommand = new CustomCommand(ShowStraightFlushTab, CanSelect);
@@ -1049,13 +1053,13 @@ namespace WpfClient.ViewModels
 
         private void AnalyzeButtonCommand(object sender)
         {
-            Task.Run(async () => await Analyze(AnalyzeArea.All));
+            Task.Run(async () => await Analyze(AnalyzeArea.All, Stage.All));
             //Analyze();
         }
 
         private void AnalyzeHandButtonCommand(object sender)
         {            
-            Task.Run(async () => await Analyze(AnalyzeArea.Hand));
+            Task.Run(async () => await Analyze(AnalyzeArea.Hand, Stage.None));
             IsHandCheckEnable = false;
             IsDeskCheckEnable = true;
             //Analyze();
@@ -1069,7 +1073,21 @@ namespace WpfClient.ViewModels
                 ProgressBarValue= 0;
             }
          
-            Task.Run(async () => await Analyze(AnalyzeArea.Desk));
+            Task.Run(async () => await Analyze(AnalyzeArea.Desk, Stage.All));
+            IsDeskCheckEnable = false;
+            //Analyze();
+        }
+
+        private void AnalyzeFlopButtonCommand(object sender)
+        {
+            Task.Run(async () => await Analyze(AnalyzeArea.Desk, Stage.Flop));
+            IsDeskCheckEnable = false;
+            //Analyze();
+        }
+
+        private void AnalyzeTurnButtonCommand(object sender)
+        {
+            Task.Run(async () => await Analyze(AnalyzeArea.Desk, Stage.Turn));
             IsDeskCheckEnable = false;
             //Analyze();
         }
@@ -1283,7 +1301,7 @@ namespace WpfClient.ViewModels
         }
                 
 
-        public async Task Analyze(AnalyzeArea at)
+        public async Task Analyze(AnalyzeArea at, Stage stage)
         {
             alreadyCounted = 0;
             currentTotal = 2;
@@ -1304,7 +1322,7 @@ namespace WpfClient.ViewModels
                 GetCards(SettingsViewModel.DeskArea, "allCards");
                 ProgressBarValue += 10;
                 //flopCount = Convert.ToInt32(_cardRecognition.GetCardsCountOnDesk());
-                flopCount = await _cardRecognition.DetectCard("C:\\Users\\mkosi\\Documents\\GitHub\\Poker\\RunPy\\WpfClient\\obj\\Debug\\net5.0-windows\\allCards.PNG", AnalyzeArea.Desk);
+                flopCount = await _cardRecognition.DetectCard("C:\\Users\\mkosi\\Documents\\GitHub\\Poker\\RunPy\\WpfClient\\obj\\Debug\\net5.0-windows\\allCards.PNG", AnalyzeArea.Desk, stage);
                 currentTotal = flopCount * 2;
                 //Application.Current.Dispatcher.BeginInvoke(new Action(() =>
                 //{
@@ -1317,7 +1335,7 @@ namespace WpfClient.ViewModels
                     var figurePath = @$"C:\Users\mkosi\Documents\GitHub\Poker\RunPy\WpfClient\obj\Debug\net5.0-windows\F{i}.PNG";
                     cardDeskList.Add(new Card(new CardFigure(), new CardColor()));
                     //_cardRecognition.PredictCard("sfds", )
-                    _cardRecognition.GetCard(figurePath, colorPath, i, AnalyzeArea.Desk);                    
+                    _cardRecognition.GetCard(figurePath, colorPath, i, AnalyzeArea.Desk, stage);                    
                     //Application.Current.Dispatcher.BeginInvoke(new Action(() => { ProgressBarValue += 10; }));
                     Application.Current.Dispatcher.BeginInvoke(new Action(() => { MessageBoard.Add($"Working {i} of {flopCount} flop cards "); }));
                     File.Delete(colorPath);
@@ -1329,7 +1347,7 @@ namespace WpfClient.ViewModels
             {
                 GetCards(SettingsViewModel.HandArea, "allCards");
                 ProgressInfo = "Scanning Hand area";
-                flopCount = await _cardRecognition.DetectCard("C:\\Users\\mkosi\\Documents\\GitHub\\Poker\\RunPy\\WpfClient\\obj\\Debug\\net5.0-windows\\allCards.PNG", AnalyzeArea.Hand);
+                flopCount = await _cardRecognition.DetectCard("C:\\Users\\mkosi\\Documents\\GitHub\\Poker\\RunPy\\WpfClient\\obj\\Debug\\net5.0-windows\\allCards.PNG", AnalyzeArea.Hand, stage);
                 //flopCount = Convert.ToInt32(_cardRecognition.GetCardsCountOnDesk());
                 currentTotal = 4;
 
@@ -1338,7 +1356,7 @@ namespace WpfClient.ViewModels
                     var colorPath = @$"C:\Users\mkosi\Documents\GitHub\Poker\RunPy\WpfClient\obj\Debug\\net5.0-windows\C{i}.PNG";
                     var figurePath = @$"C:\Users\mkosi\Documents\GitHub\Poker\RunPy\WpfClient\obj\Debug\\net5.0-windows\F{i}.PNG";
                     cardHandList.Add(new Card(new CardFigure(), new CardColor()));
-                    _cardRecognition.GetCard(figurePath, colorPath, i, AnalyzeArea.Hand);                    
+                    _cardRecognition.GetCard(figurePath, colorPath, i, AnalyzeArea.Hand, stage);                    
                     //Application.Current.Dispatcher.BeginInvoke(new Action(() => { ProgressBarValue += 10; }));
                     Application.Current.Dispatcher.BeginInvoke(new Action(() => { MessageBoard.Add($"Working {i} of {flopCount} hand cards "); }));
                     File.Delete(colorPath);

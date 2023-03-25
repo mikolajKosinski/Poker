@@ -18,6 +18,7 @@ using static System.Net.WebRequestMethods;
 using Azure.Storage.Blobs;
 using static System.Net.Mime.MediaTypeNames;
 using static System.Collections.Specialized.BitVector32;
+using System.ComponentModel.DataAnnotations;
 
 namespace CoreBusinessLogic
 {
@@ -67,7 +68,7 @@ namespace CoreBusinessLogic
             };
         }
 
-        public async Task<ICard> GetCard(string figurePath, string colorPath, int number, AnalyzeArea area)
+        public async Task<ICard> GetCard(string figurePath, string colorPath, int number, AnalyzeArea area, Stage stage)
         {
             //var figure = RecognizeFigure(figurePath, number);
             //var color = RecognizeColor(colorPath, number);
@@ -76,25 +77,31 @@ namespace CoreBusinessLogic
             //var path = @"C:\Users\mkosi\Documents\GitHub\Poker\RunPy\WpfClient\obj\Debug\net5.0-windows\C1.PNG";
             
             //await UploadImageToBlob(figurePath);
-            PredictCard(RandomString(10), figurePath, area, recoType.figure, number.ToString());
-            PredictCard(RandomString(10), colorPath, area, recoType.color, number.ToString());
+            PredictCard(RandomString(10), figurePath, area, recoType.figure, number.ToString(), stage);
+            PredictCard(RandomString(10), colorPath, area, recoType.color, number.ToString(), stage);
             return new Card(new CardFigure(), new CardColor());
         }
 
-        public async Task UploadImageToBlob(string imagePath, string filename)
+        public async Task UploadImageToBlob(string imagePath, string filename, Stage stage)
         {
             string connectionString = "DefaultEndpointsProtocol=https;AccountName=detectimages;AccountKey=SprSVOOvXy65WHaCgRU1tS5NHvYHkEp5srNTEmyuudUpLmf38MHo7SQzlOmgfdnwVf5J9O40hYB2+AStVljy8Q==;EndpointSuffix=core.windows.net";
             string containerName = "images";
             string blobName = filename;
             BlobContainerClient container = new BlobContainerClient(connectionString, containerName);
             BlobClient blob = container.GetBlobClient(blobName);
+            var leftEdge = GetStartingPointToCutOff(stage);
 
             try
             {
                 using (var image = Bitmap.FromFile(imagePath))
                 {
-                    using (MemoryStream ms = new MemoryStream())
+                    var startingPoint = leftEdge != 0 ? image.Width * leftEdge : 0;
+                    Rectangle section = Rectangle.Round(new RectangleF(startingPoint, 0,(float)image.Width, (float)image.Height));
+                    Bitmap CroppedImage = CropImage(new Bitmap(image), section);
+
+                    using (var ms = new MemoryStream())
                     {
+                        ((System.Drawing.Image)CroppedImage).Save("test.jpg");
                         image.Save(ms, image.RawFormat);
                         ms.Position= 0;
                         blob.Upload(ms, true);
@@ -106,6 +113,32 @@ namespace CoreBusinessLogic
             {
 
             }
+        }
+
+        public Bitmap CropImage(Bitmap source, Rectangle section)
+        {
+            var bitmap = new Bitmap(section.Width, section.Height);
+            using (var g = Graphics.FromImage(bitmap))
+            {
+                g.DrawImage(source, 0, 0, section, GraphicsUnit.Pixel);
+                return bitmap;
+            }
+        }
+
+        private float GetStartingPointToCutOff(Stage stage)
+        {
+            if (cardsPositions.Count == 2) return 0;
+
+            var bufforToCutOff = 5;
+            float leftPoint = 0;
+            var cardInOrder = cardsPositions.OrderBy(x => x.Item1).ToList();
+
+            if(stage ==Stage.Turn) 
+            {
+                leftPoint = (float)cardInOrder[3].Item1 - (float)(cardInOrder[3].Item1 * 0.05);
+            }
+
+            return leftPoint;
         }
 
         private string RandomString(int length)
@@ -143,7 +176,7 @@ namespace CoreBusinessLogic
         //    Console.WriteLine();
         //}
 
-        public async Task PredictCard(string fileName, string imagePath, AnalyzeArea area, recoType fc, string number)
+        public async Task PredictCard(string fileName, string imagePath, AnalyzeArea area, recoType fc, string number, Stage stage)
         {
             string img = string.Empty;
             using (var image = Bitmap.FromFile(imagePath))
@@ -165,14 +198,14 @@ namespace CoreBusinessLogic
             DeletePrediction($"{fileName}.PNG");
         }
 
-        public async Task<int> DetectCard(string imagePath, AnalyzeArea area)
+        public async Task<int> DetectCard(string imagePath, AnalyzeArea area, Stage stage)
         {
-            if(area == AnalyzeArea.Desk && cardsPositions.Any()) return CutIntoParts("", imagePath);
+            //if(area == AnalyzeArea.Desk && cardsPositions.Any()) return CutIntoParts("", imagePath);
 
             var nameForBlob = RandomString(10)+".PNG";
             var nameForPrediction = RandomString(10);
             
-            await UploadImageToBlob(imagePath, nameForBlob);            
+            await UploadImageToBlob(imagePath, nameForBlob, stage);            
 
             var runId = await RunDetectionJobForCard(nameForPrediction, nameForBlob);
             await IsPredictionFinished(runId);
@@ -186,7 +219,7 @@ namespace CoreBusinessLogic
 
         private int CutIntoParts(string predicted, string imgPath)
         {
-            var cords = GetParts(predicted);
+            var cords = GetParts(predicted).OrderBy(x => x.Item1).ToList();
             var bm = new Bitmap(imgPath);
             
             for(int q=0; q < cords.Count; q++) 
@@ -195,8 +228,6 @@ namespace CoreBusinessLogic
                 var top = Convert.ToInt32(bm.Height * cords[q].Item2);
                 var width = Convert.ToInt32(bm.Width * cords[q].Item3);
                 var height = Convert.ToInt32(bm.Height * cords[q].Item4);
-                var bitmap = new Bitmap(width, height);
-                Rectangle section = new Rectangle(new Point(0, 0), new Size(500, 500));
 
                 var fig = bm.Clone(new Rectangle(left, top, width, height), bm.PixelFormat);
                 fig.Save(@$"C:\Users\mkosi\Documents\GitHub\Poker\RunPy\WpfClient\obj\Debug\net5.0-windows\F{q}.PNG");
@@ -210,12 +241,12 @@ namespace CoreBusinessLogic
                     cardsPositions.Add(new Tuple<double, double, double, double>(cords[q].Item1, cords[q].Item2, cords[q].Item3, cords[q].Item4));
                     cardStage = Stage.Flop;
                 }
-                if (cords.Count == 4 && cardsPositions.Count < 4)
+                if (cords.Count == 4 && cardsPositions.Count < 4 && q == 3)
                 {
                     cardsPositions.Add(new Tuple<double, double, double, double>(cords[q].Item1, cords[q].Item2, cords[q].Item3, cords[q].Item4));
                     cardStage = Stage.Turn;
                 }
-                if (cords.Count == 5 && cardsPositions.Count < 5)
+                if (cords.Count == 5 && cardsPositions.Count < 5 && q == 4)
                 {
                     cardsPositions.Add(new Tuple<double, double, double, double>(cords[q].Item1, cords[q].Item2, cords[q].Item3, cords[q].Item4));
                     cardStage = Stage.River;
@@ -226,7 +257,7 @@ namespace CoreBusinessLogic
 
         private List<Tuple<double, double, double, double>> GetParts(string predicted = "")
         {
-            if(cardsPositions.Any()) return cardsPositions;
+            //if(cardsPositions.Any()) return cardsPositions;
 
             var split = predicted.Split("probability").Where(p => p.Length > 4).ToList();
             var fcList = new List<Tuple<double, double, double, double>>();

@@ -71,7 +71,7 @@
                                     <Button Content="Analyze Hand" Grid.Row="0" Style="{StaticResource LeftMenuButton}" Command="{Binding AnalyzeHandCommand}" IsEnabled="{Binding IsHandCheckEnable}" />
                                     <Button Content="Analyze Desk" Grid.Row="1" Style="{StaticResource LeftMenuButton}" Command="{Binding AnalyzeDeskCommand}"  IsEnabled="{Binding IsDeskCheckEnable}" />
                                     <Button Content="Analyze Flop" Grid.Row="2"  Style="{StaticResource LeftMenuButton}" Command="{Binding AnalyzeDeskCommand}"  IsEnabled="{Binding IsFlopCheckEnable}" />
-                                    <Button Content="Analyze Turn" Grid.Row="3"  Style="{StaticResource LeftMenuButton}" Command="{Binding AnalyzeDeskCommand}"  IsEnabled="{Binding IsTurnCheckEnable}" />
+                                    <Button Content="Analyze Turn" Grid.Row="3"  Style="{StaticResource LeftMenuButton}" Command="{Binding AnalyzeTurnCommand}"  IsEnabled="{Binding IsTurnCheckEnable}" />
                                     <Button Content="Analyze River" Grid.Row="4" Style="{StaticResource LeftMenuButton}" Command="{Binding AnalyzeDeskCommand}"  IsEnabled="{Binding IsRiverCheckEnable}" />
                                 </StackPanel>
 
