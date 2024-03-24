@@ -19,12 +19,14 @@ using Azure.Storage.Blobs;
 using static System.Net.Mime.MediaTypeNames;
 using static System.Collections.Specialized.BitVector32;
 using System.ComponentModel.DataAnnotations;
+using System.Xml.XPath;
+using System.Web;
 
 namespace CoreBusinessLogic
 {
     public class CardRecognition : ICardRecognition
     {
-        List<Tuple<double, double, double, double>> cardsPositions;
+        List<Tuple<double, double, double, double>> fPositions;
         Stage cardStage { get; set; }
 
         public Dictionary<string, CardFigure> FigureDict { get; set; }
@@ -34,7 +36,7 @@ namespace CoreBusinessLogic
         {
             FigureDict = GetFigureDict();
             ColorDict = GetColorDict();
-            cardsPositions = new List<Tuple<double, double, double, double>>();
+            fPositions = new List<Tuple<double, double, double, double>>();
         }
 
         private Dictionary<string, CardFigure> GetFigureDict()
@@ -68,51 +70,65 @@ namespace CoreBusinessLogic
             };
         }
 
-        public async Task<ICard> GetCard(string figurePath, string colorPath, int number, AnalyzeArea area, Stage stage)
-        {
-            //var figure = RecognizeFigure(figurePath, number);
-            //var color = RecognizeColor(colorPath, number);
-            //RecoImage(recoType.figure, figurePath, number, area);
-            //RecoImage(recoType.color, colorPath, number, area);
-            //var path = @"C:\Users\mkosi\Documents\GitHub\Poker\RunPy\WpfClient\obj\Debug\net5.0-windows\C1.PNG";
-            
-            //await UploadImageToBlob(figurePath);
-            PredictCard(RandomString(10), figurePath, area, recoType.figure, number.ToString(), stage);
-            PredictCard(RandomString(10), colorPath, area, recoType.color, number.ToString(), stage);
-            return new Card(new CardFigure(), new CardColor());
-        }
+        //public async Task<ICard> GetCard(string figurePath, string colorPath, int number, AnalyzeArea area, Stage stage)
+        //{
+        //    //var figure = RecognizeFigure(figurePath, number);
+        //    //var color = RecognizeColor(colorPath, number);
+        //    //RecoImage(recoType.figure, figurePath, number, area);
+        //    //RecoImage(recoType.color, colorPath, number, area);
+        //    //var path = @"C:\Users\mkosi\Documents\GitHub\Poker\RunPy\WpfClient\obj\Debug\net5.0-windows\C1.PNG";
 
-        public async Task UploadImageToBlob(string imagePath, string filename, Stage stage)
-        {
-            string connectionString = "DefaultEndpointsProtocol=https;AccountName=detectimages;AccountKey=SprSVOOvXy65WHaCgRU1tS5NHvYHkEp5srNTEmyuudUpLmf38MHo7SQzlOmgfdnwVf5J9O40hYB2+AStVljy8Q==;EndpointSuffix=core.windows.net";
-            string containerName = "images";
-            string blobName = filename;
-            BlobContainerClient container = new BlobContainerClient(connectionString, containerName);
-            BlobClient blob = container.GetBlobClient(blobName);
-            var leftEdge = GetStartingPointToCutOff(stage);
+        //    //await UploadImageToBlob(figurePath);
+        //    PredictCard(RandomString(10), figurePath, area, recoType.figure, number.ToString(), stage);
+        //    PredictCard(RandomString(10), colorPath, area, recoType.color, number.ToString(), stage);
+        //    return new Card(new CardFigure(), new CardColor());
+        //}
 
-            try
+        //public async Task UploadImageToBlob(string imagePath, string filename, Stage stage)
+        //{
+        //    string connectionString = "DefaultEndpointsProtocol=https;AccountName=detectimages;AccountKey=SprSVOOvXy65WHaCgRU1tS5NHvYHkEp5srNTEmyuudUpLmf38MHo7SQzlOmgfdnwVf5J9O40hYB2+AStVljy8Q==;EndpointSuffix=core.windows.net";
+        //    string containerName = "images";
+        //    string blobName = filename;
+        //    BlobContainerClient container = new BlobContainerClient(connectionString, containerName);
+        //    BlobClient blob = container.GetBlobClient(blobName);
+        //    //var leftEdge = GetStartingPointToCutOff(stage);
+
+        //    try
+        //    {
+        //        using (var image = Bitmap.FromFile(imagePath))
+        //        {
+        //            //var startingPoint = leftEdge != 0 ? image.Width * leftEdge : 0;
+        //            //Rectangle section = Rectangle.Round(new RectangleF(startingPoint, 0,(float)image.Width, (float)image.Height));
+        //            //Bitmap CroppedImage = CropImage(new Bitmap(image), section);
+
+        //            using (var ms = new MemoryStream())
+        //            {
+        //                //var jpgEncoder = GetEncoder(ImageFormat.Png);
+        //                //image.Save("test.jpg");
+        //                image.Save(ms, System.Drawing.Imaging.ImageFormat.Png);
+        //                ms.Position = 0;
+        //                blob.Upload(ms, true);
+        //                var urib = blob.Uri;
+        //            }
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+
+        //    }
+        //}
+
+        private ImageCodecInfo GetEncoder(ImageFormat format)
+        {
+            ImageCodecInfo[] codecs = ImageCodecInfo.GetImageEncoders();
+            foreach (ImageCodecInfo codec in codecs)
             {
-                using (var image = Bitmap.FromFile(imagePath))
+                if (codec.FormatID == format.Guid)
                 {
-                    var startingPoint = leftEdge != 0 ? image.Width * leftEdge : 0;
-                    Rectangle section = Rectangle.Round(new RectangleF(startingPoint, 0,(float)image.Width, (float)image.Height));
-                    Bitmap CroppedImage = CropImage(new Bitmap(image), section);
-
-                    using (var ms = new MemoryStream())
-                    {
-                        ((System.Drawing.Image)CroppedImage).Save("test.jpg");
-                        image.Save(ms, image.RawFormat);
-                        ms.Position= 0;
-                        blob.Upload(ms, true);
-                        var urib = blob.Uri;
-                    }
+                    return codec;
                 }
             }
-            catch (Exception ex)
-            {
-
-            }
+            return null;
         }
 
         public Bitmap CropImage(Bitmap source, Rectangle section)
@@ -127,15 +143,15 @@ namespace CoreBusinessLogic
 
         private float GetStartingPointToCutOff(Stage stage)
         {
-            if (cardsPositions.Count == 2) return 0;
+            if (fPositions.Count == 2) return 0;
 
             var bufforToCutOff = 5;
             float leftPoint = 0;
-            var cardInOrder = cardsPositions.OrderBy(x => x.Item1).ToList();
+            var cardInOrder = fPositions.OrderBy(x => x.Item1).ToList();
 
-            if(stage ==Stage.Turn) 
+            if (stage == Stage.Turn)
             {
-                leftPoint = (float)cardInOrder[3].Item1 - (float)(cardInOrder[3].Item1 * 0.05);
+                leftPoint = (float)cardInOrder[3].Item1 - (float)(cardInOrder[3].Item1 * 0.02);
             }
 
             return leftPoint;
@@ -176,83 +192,254 @@ namespace CoreBusinessLogic
         //    Console.WriteLine();
         //}
 
+        int count = 0;
+
         public async Task PredictCard(string fileName, string imagePath, AnalyzeArea area, recoType fc, string number, Stage stage)
         {
-            string img = string.Empty;
-            using (var image = Bitmap.FromFile(imagePath))
+            //string img = string.Empty;
+            //using (var image = Bitmap.FromFile(imagePath))
+            //{
+            //    using (MemoryStream ms = new MemoryStream())
+            //    {
+            //        image.Save(ms, image.RawFormat);
+            //        byte[] array = ms.ToArray();
+            //        img = Convert.ToBase64String(array);
+            //    }
+            //}
+
+            //var runId = await RunPredictionJobForCard(fileName, img);
+            //await IsPredictionFinished(runId);
+            //var predicted = await ReadPredictionResult(fileName);
+            ////var response = $"{predicted}||{fc}|{number}";
+            var response = "";
+
+            if (count == 0)
             {
-                using (MemoryStream ms = new MemoryStream())
-                {
-                    image.Save(ms, image.RawFormat);
-                    byte[] array = ms.ToArray();
-                    img = Convert.ToBase64String(array);
-                }
+                response = $"{FigureDict["c"]}|x|figure|0";
             }
 
-            var runId = await RunPredictionJobForCard(fileName, img);
-            await IsPredictionFinished(runId);
-            var predicted = await ReadPredictionResult(fileName);
-            var response = $"{predicted}||{fc}|{number}";
+            if (count == 1)
+            {
+                response = $"{FigureDict["d"]}|x|figure|1";
+            }
+
+
+
+
+
+
             OnCardRecognised(response, area, cardStage);
-            DeletePrediction($"{fileName}.txt");
-            DeletePrediction($"{fileName}.PNG");
+            count++;
+            //DeletePrediction($"{fileName}.txt");
+            //DeletePrediction($"{fileName}.PNG");
         }
 
-        public async Task<int> DetectCard(string imagePath, AnalyzeArea area, Stage stage)
+        public async Task<List<ICard>> DetectCard(string imagePath, AnalyzeArea area, Stage stage)
         {
-            //if(area == AnalyzeArea.Desk && cardsPositions.Any()) return CutIntoParts("", imagePath);
+            HttpClient client = new HttpClient();
 
-            var nameForBlob = RandomString(10)+".PNG";
-            var nameForPrediction = RandomString(10);
-            
-            await UploadImageToBlob(imagePath, nameForBlob, stage);            
+            var builder = new UriBuilder("http://localhost:7092/api/Function1");
+            var query = HttpUtility.ParseQueryString(builder.Query);
+            query["path"] = imagePath;
+            builder.Query = query.ToString();
+            string url = builder.ToString();
+            var predicted = "";
 
-            var runId = await RunDetectionJobForCard(nameForPrediction, nameForBlob);
-            await IsPredictionFinished(runId);
-            var predicted = await ReadPredictionResult(nameForPrediction);
-            var count = CutIntoParts(predicted, imagePath);
-
-            DeletePrediction($"{nameForBlob}.txt");
-            DeletePrediction($"{nameForBlob}.PNG");
-            return count;
-        }
-
-        private int CutIntoParts(string predicted, string imgPath)
-        {
-            var cords = GetParts(predicted).OrderBy(x => x.Item1).ToList();
-            var bm = new Bitmap(imgPath);
-            
-            for(int q=0; q < cords.Count; q++) 
+            HttpResponseMessage response = await client.GetAsync(url);// "http://localhost:7092/api/Function1");
+            if (response.IsSuccessStatusCode)
             {
-                var left = Convert.ToInt32(bm.Width * cords[q].Item1);
-                var top = Convert.ToInt32(bm.Height * cords[q].Item2);
-                var width = Convert.ToInt32(bm.Width * cords[q].Item3);
-                var height = Convert.ToInt32(bm.Height * cords[q].Item4);
-
-                var fig = bm.Clone(new Rectangle(left, top, width, height), bm.PixelFormat);
-                fig.Save(@$"C:\Users\mkosi\Documents\GitHub\Poker\RunPy\WpfClient\obj\Debug\net5.0-windows\F{q}.PNG");
-
-                int heightC = Convert.ToInt32(height * 0.7);
-                var color = bm.Clone(new Rectangle(left, top + height, width, heightC), bm.PixelFormat);
-                color.Save(@$"C:\Users\mkosi\Documents\GitHub\Poker\RunPy\WpfClient\obj\Debug\net5.0-windows\C{q}.PNG");
-
-                if(cords.Count == 3 && cardsPositions.Count < 3)
-                {
-                    cardsPositions.Add(new Tuple<double, double, double, double>(cords[q].Item1, cords[q].Item2, cords[q].Item3, cords[q].Item4));
-                    cardStage = Stage.Flop;
-                }
-                if (cords.Count == 4 && cardsPositions.Count < 4 && q == 3)
-                {
-                    cardsPositions.Add(new Tuple<double, double, double, double>(cords[q].Item1, cords[q].Item2, cords[q].Item3, cords[q].Item4));
-                    cardStage = Stage.Turn;
-                }
-                if (cords.Count == 5 && cardsPositions.Count < 5 && q == 4)
-                {
-                    cardsPositions.Add(new Tuple<double, double, double, double>(cords[q].Item1, cords[q].Item2, cords[q].Item3, cords[q].Item4));
-                    cardStage = Stage.River;
-                }
+                predicted = await response.Content.ReadAsStringAsync();
             }
-            return cords.Count;
+
+            var cards = await  CutIntoParts(predicted, imagePath, area, stage);
+            return cards;
+        }
+
+        public async Task<string> DetectColor(string imagePath)
+        {
+            HttpClient client = new HttpClient();
+
+            var builder = new UriBuilder("http://localhost:7092/api/PredColor");
+            var query = HttpUtility.ParseQueryString(builder.Query);
+            query["path"] = imagePath;
+            builder.Query = query.ToString();
+            string url = builder.ToString();
+            var predicted = "";
+
+            HttpResponseMessage response = await client.GetAsync(url);
+            if (response.IsSuccessStatusCode)
+            {
+                predicted = await response.Content.ReadAsStringAsync();
+            }
+
+            return predicted;
+        }
+
+        public async Task<string> DetectFigure(string imagePath)
+        {
+            HttpClient client = new HttpClient();
+
+            var builder = new UriBuilder("http://localhost:7092/api/PredFigure");
+            var query = HttpUtility.ParseQueryString(builder.Query);
+            query["path"] = imagePath;
+            builder.Query = query.ToString();
+            string url = builder.ToString();
+            var predicted = "";
+
+            HttpResponseMessage response = await client.GetAsync(url);
+            if (response.IsSuccessStatusCode)
+            {
+                predicted = await response.Content.ReadAsStringAsync();
+            }
+
+            return predicted;
+        }
+
+
+        private async Task<List<ICard>> CutIntoParts(string predicted, string imgPath, AnalyzeArea area, Stage stage)
+        {
+            var cards = predicted.Split('#').ToList();//  GetParts(predicted).OrderBy(x => x.Item1).ToList();
+            cards.RemoveAt(0);
+
+            var cardList = new List<ICard>();
+
+            //if(stage == Stage.Turn)
+            //{
+            //    cards = new List<Tuple<double, double, double, double>> { fPositions[3] };
+            //}
+
+            var bm = new Bitmap(imgPath);
+
+            for (int q = 0; q < cards.Count; q++)
+            {
+                var left = 0;
+                var top = 0;
+                var width = 0;
+                var height = 0;
+                try
+                {
+                    var sides = cards[q].Split('-');
+                    var ll = sides[0].Replace("\r\n", "").Split('.')[0];
+
+                    left = Convert.ToInt32(sides[0].Replace("\r\n", "").Split('.')[0]);
+                    top = Convert.ToInt32(sides[1].Replace("\r\n", "").Split('.')[0]);
+                    width = Convert.ToInt32(sides[2].Replace("\r\n", "").Split('.')[0]);
+                    height = Convert.ToInt32(sides[3].Replace("\r\n", "").Split('.')[0]);
+
+                    //if (stage == Stage.Turn)
+                    //{
+                    //    left = Convert.ToInt32(cards[0].Item1);
+                    //    top = Convert.ToInt32(cards[0].Item2);
+                    //    width = Convert.ToInt32(cards[0].Item3);
+                    //    height = Convert.ToInt32(cards[0].Item4);
+                    //}
+                    //else
+                    //{
+                    //    left = Convert.ToInt32(bm.Width * cards[q].Item1);
+                    //    top = Convert.ToInt32(bm.Height * cards[q].Item2);
+                    //    width = Convert.ToInt32(bm.Width * cards[q].Item3);
+                    //    height = Convert.ToInt32(bm.Height * cards[q].Item4);
+                    //}
+
+                    var fig = bm.Clone(new Rectangle(left, top, width-left, height - top), bm.PixelFormat);
+                    fig.Save(@$"C:\Users\mkosi\Documents\GitHub\Poker\RunPy\WpfClient\obj\Debug\net5.0-windows\F{q}.PNG");
+
+                    var heighttt = height - top;
+                    //height = (int)(Convert.ToDouble(heighttt)*0.75);
+                    //top = height;
+                    //height = Convert.ToInt32(height * 0.30);
+                    //if (area == AnalyzeArea.Hand)
+                    //{
+                    //    top = height;
+                    //    height = Convert.ToInt32(height * 0.30);
+                    //}
+                    //else
+                    //{
+                    //    top = height;
+                    //    height = Convert.ToInt32(height * 0.30) + top;
+                    //}
+
+
+
+                    //int heightC = Convert.ToInt32(height * 0.7);
+
+                    var colorHeight = height - top;
+
+                    var color = bm.Clone(new Rectangle(left, height, width - left, colorHeight), bm.PixelFormat);
+                    color.Save(@$"C:\Users\mkosi\Documents\GitHub\Poker\RunPy\WpfClient\obj\Debug\net5.0-windows\C{q}.PNG");
+
+                    var colorDetected = await DetectColor(@$"C:\Users\mkosi\Documents\GitHub\Poker\RunPy\WpfClient\obj\Debug\net5.0-windows\C{q}.PNG");
+
+                    var figureDetected = await DetectFigure(@$"C:\Users\mkosi\Documents\GitHub\Poker\RunPy\WpfClient\obj\Debug\net5.0-windows\F{q}.PNG");
+
+                    cardList.Add(new Card(GetFigure(figureDetected), GetColor(colorDetected)));
+
+
+                    Console.WriteLine();
+                }
+                catch (Exception x)
+                {
+
+                }
+
+                Console.WriteLine();
+            }
+            return cardList;
+        }
+
+        private CardColor GetColor(string value)
+        {
+            if (value.Contains("club"))
+                return CardColor.club;
+
+            if (value.Contains("spade"))
+                return CardColor.spade;
+
+            if (value.Contains("heart"))
+                return CardColor.heart;
+
+            return CardColor.diamond;
+        }
+
+        private CardFigure GetFigure(string value)
+        {
+            if (value.Contains("2"))
+                return CardFigure._2;
+
+            if (value.Contains("3"))
+                return CardFigure._3;
+
+            if (value.Contains("4"))
+                return CardFigure._4;
+
+            if (value.Contains("5"))
+                return CardFigure._5;
+
+            if (value.Contains("6"))
+                return CardFigure._6;
+
+            if (value.Contains("7"))
+                return CardFigure._7;
+
+            if (value.Contains("8"))
+                return CardFigure._8;
+
+            if (value.Contains("9"))
+                return CardFigure._9;
+
+            if (value.Contains("10"))
+                return CardFigure._10;
+
+            if (value.Contains("jack"))
+                return CardFigure._Jack;
+
+            if (value.Contains("queen"))
+                return CardFigure._Queen;
+
+            if (value.Contains("king"))
+                return CardFigure._King;
+
+            return CardFigure._As;
         }
 
         private List<Tuple<double, double, double, double>> GetParts(string predicted = "")
@@ -265,7 +452,7 @@ namespace CoreBusinessLogic
             {
                 foreach (var item in split)
                 {
-                    var prob = Convert.ToDouble(item.Substring(2, 4).Replace(".",","));
+                    var prob = Convert.ToDouble(item.Substring(2, 4).Replace(".", ","));
                     if (prob < 0.30000)
                         continue;
 
@@ -287,9 +474,9 @@ namespace CoreBusinessLogic
                     fcList.Add(new Tuple<double, double, double, double>(leftD, topD, widthD, heightD));
                 }
             }
-            catch(Exception x)
+            catch (Exception x)
             {
-                
+
             }
 
             return fcList;
@@ -299,7 +486,7 @@ namespace CoreBusinessLogic
         {
             var result = val;
 
-            if(val.Count(f => f == ',') > 1)
+            if (val.Count(f => f == ',') > 1)
             {
                 var lastIndex = val.LastIndexOf(",");
                 result = val.Substring(0, lastIndex);
@@ -320,7 +507,7 @@ namespace CoreBusinessLogic
 
             HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, "https://adb-4958543948294936.16.azuredatabricks.net/api/2.0/dbfs/read");
             request.Headers.Add("Authorization", "Bearer dapie16ca829366e80ba514e77c6d7aeee6c-2");
-            request.Content = new StringContent("{ \"path\": \"/FileStore/tables/"+fileName+".txt\" }");
+            request.Content = new StringContent("{ \"path\": \"/FileStore/tables/" + fileName + ".txt\" }");
             request.Content.Headers.ContentType = new MediaTypeHeaderValue("application/x-www-form-urlencoded");
             HttpResponseMessage response = await client.SendAsync(request);
             response.EnsureSuccessStatusCode();
@@ -329,13 +516,13 @@ namespace CoreBusinessLogic
             var result = (string)message3;
             byte[] data = Convert.FromBase64String(result);
             string decodedString = Encoding.UTF8.GetString(data);
-            return decodedString;            
+            return decodedString;
         }
 
         public async Task<bool> IsPredictionFinished(string runId)
         {
             var client = new HttpClient();
-            var request = new HttpRequestMessage(HttpMethod.Get, "https://adb-4958543948294936.16.azuredatabricks.net/api/2.0/jobs/runs/get-output?run_id="+runId);
+            var request = new HttpRequestMessage(HttpMethod.Get, "https://adb-4958543948294936.16.azuredatabricks.net/api/2.0/jobs/runs/get-output?run_id=" + runId);
             request.Headers.Add("Authorization", "Bearer dapie16ca829366e80ba514e77c6d7aeee6c-2");
             var response = await client.SendAsync(request);
             response.EnsureSuccessStatusCode();
@@ -363,8 +550,8 @@ namespace CoreBusinessLogic
             var client = new HttpClient();
             var request = new HttpRequestMessage(HttpMethod.Post, "https://adb-4958543948294936.16.azuredatabricks.net/api/2.0/jobs/run-now");
             request.Headers.Add("Authorization", "Bearer dapie16ca829366e80ba514e77c6d7aeee6c-2");
-            var img = $"{imageContent}";           
-            request.Content = new StringContent("{ \"job_id\": \"29718829608156\",\"notebook_params\":{\"name\":\"pred\",\"filename\":\""+fileName+"\",\"content\":\""+img+"\"} }");
+            var img = $"{imageContent}";
+            request.Content = new StringContent("{ \"job_id\": \"29718829608156\",\"notebook_params\":{\"name\":\"pred\",\"filename\":\"" + fileName + "\",\"content\":\"" + img + "\"} }");
             request.Content.Headers.ContentType = new MediaTypeHeaderValue("application/x-www-form-urlencoded");
             var response = await client.SendAsync(request);
             response.EnsureSuccessStatusCode();
@@ -378,8 +565,8 @@ namespace CoreBusinessLogic
             var client = new HttpClient();
             var request = new HttpRequestMessage(HttpMethod.Post, "https://adb-4958543948294936.16.azuredatabricks.net/api/2.0/jobs/run-now");
             request.Headers.Add("Authorization", "Bearer dapie16ca829366e80ba514e77c6d7aeee6c-2");
-            
-            request.Content = new StringContent("{ \"job_id\": \"726745793126357\",\"notebook_params\":{\"name\":\"pred\",\"filename\":\""+fileName+"\",\"content\":\""+imgToPred+"\"} }");
+
+            request.Content = new StringContent("{ \"job_id\": \"726745793126357\",\"notebook_params\":{\"name\":\"pred\",\"filename\":\"" + fileName + "\",\"content\":\"" + imgToPred + "\"} }");
             request.Content.Headers.ContentType = new MediaTypeHeaderValue("application/x-www-form-urlencoded");
             var response = await client.SendAsync(request);
             response.EnsureSuccessStatusCode();
@@ -621,7 +808,7 @@ namespace CoreBusinessLogic
             };
             process.EnableRaisingEvents = true;
 
-            
+
 
             //process.Exited += (object sender, EventArgs e) =>
             //{
@@ -807,13 +994,13 @@ namespace CoreBusinessLogic
                     await Task.Delay(1000);
                     var path = $"https://predapp.azurewebsites.net/api/TestAlive?code=y5MaFGr54uaiah8ACRNNp_u26SV3oBfzbQxzb0XcW6MXAzFuFmAkiQ==&path={image}&mode={mode}&info={info}";
                     var response = await client.GetAsync(path);
-                   
+
                     string responseBody = response.Content.ReadAsStringAsync().Result;
                     //reqCount++;
                     Enum.TryParse<AnalyzeArea>(info.Split("|")[3], out AnalyzeArea area);
-                    Debug.WriteLine(responseBody);                    
+                    Debug.WriteLine(responseBody);
                     OnCardRecognised(responseBody, area, cardStage);
-                    
+
                     //response.ContinueWith((async t) =>
                     //{
                     //    reqCount++;
@@ -832,7 +1019,7 @@ namespace CoreBusinessLogic
                 {
 
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
 
                 }
@@ -861,7 +1048,7 @@ namespace CoreBusinessLogic
         {
             //GetFigure().ContinueWith(OnReturnFigure);
             try
-            {                                
+            {
                 //var t = new TaskCompletionSource<string>(); //Using bool, because TaskCompletionSource needs at least one generic param
                 //string result = "";
                 string img = string.Empty;
@@ -884,7 +1071,7 @@ namespace CoreBusinessLogic
 
                 if (rc == recoType.color)
                 {
-                    GetFigure(img, "color", $"notNeeded|{rc}|{number}|{area}");                    
+                    GetFigure(img, "color", $"notNeeded|{rc}|{number}|{area}");
                 }
                 else
                     GetFigure(img, "figure", $"notNeeded|{rc}|{number}|{area}");
@@ -916,9 +1103,9 @@ namespace CoreBusinessLogic
                 ////    await Task.Delay(1000);
 
                 //process.Start();
-                
+
                 //Debug.WriteLine($"process CARD {process.Id} started");
-                
+
                 //var error = process
                 //   .StandardError
                 //   .ReadToEnd();
@@ -959,5 +1146,5 @@ namespace CoreBusinessLogic
             figure,
             color
         }
-    }    
+    }
 }

@@ -18,6 +18,8 @@ namespace WpfClient.Interfaces
         ObservableCollection<ICard> HandCards { get; set; }
         ObservableCollection<ICard> DeskCards { get; set; }
 
+        int SelectedIndex { get; set; }
+
         event EventHandler<ICard> CardRecognized;
         bool ElementAdded { get; set; }
         void ShowWindow();

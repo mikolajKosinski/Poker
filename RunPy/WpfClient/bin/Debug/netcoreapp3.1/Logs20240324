@@ -1,0 +1,91 @@
+2024-03-24 08:02:20.814 +01:00 [INF] Show Main window
+2024-03-24 08:02:22.171 +01:00 [INF] Show Settings
+2024-03-24 08:20:08.975 +01:00 [INF] Show Main window
+2024-03-24 08:20:09.839 +01:00 [INF] Show Settings
+2024-03-24 08:20:33.285 +01:00 [INF] Show Main window
+2024-03-24 08:20:35.512 +01:00 [INF] Analyze started
+2024-03-24 08:20:35.523 +01:00 [INF] Getting cards area : WpfClient.CardArea
+2024-03-24 08:21:54.250 +01:00 [INF] Show Main window
+2024-03-24 08:21:56.012 +01:00 [INF] Analyze started
+2024-03-24 08:21:56.021 +01:00 [INF] Getting cards area : WpfClient.CardArea
+2024-03-24 08:23:18.271 +01:00 [INF] ShowGeneralTab
+2024-03-24 08:25:13.727 +01:00 [INF] Show Main window
+2024-03-24 08:25:51.225 +01:00 [INF] Show Main window
+2024-03-24 08:27:28.548 +01:00 [INF] Show Main window
+2024-03-24 08:29:28.516 +01:00 [INF] Show Main window
+2024-03-24 08:38:05.186 +01:00 [INF] Show Main window
+2024-03-24 08:49:45.974 +01:00 [INF] Show Main window
+2024-03-24 08:56:08.684 +01:00 [INF] Show Main window
+2024-03-24 08:56:36.376 +01:00 [INF] Show Main window
+2024-03-24 09:08:17.927 +01:00 [INF] Show Main window
+2024-03-24 09:10:31.960 +01:00 [INF] Show Main window
+2024-03-24 09:11:11.332 +01:00 [INF] Show Main window
+2024-03-24 09:12:52.712 +01:00 [INF] Show Main window
+2024-03-24 09:15:55.479 +01:00 [INF] Show Main window
+2024-03-24 09:17:53.713 +01:00 [INF] Show Main window
+2024-03-24 11:16:53.652 +01:00 [INF] Show Main window
+2024-03-24 11:17:40.184 +01:00 [INF] Show Main window
+2024-03-24 11:19:40.076 +01:00 [INF] Show Main window
+2024-03-24 11:20:00.972 +01:00 [INF] Show Main window
+2024-03-24 11:20:43.680 +01:00 [INF] Show Main window
+2024-03-24 11:22:14.980 +01:00 [INF] Show Main window
+2024-03-24 11:22:41.218 +01:00 [INF] Show Main window
+2024-03-24 11:23:44.544 +01:00 [INF] Show Main window
+2024-03-24 11:26:31.138 +01:00 [INF] Show Main window
+2024-03-24 11:26:43.876 +01:00 [INF] Show Main window
+2024-03-24 11:31:34.011 +01:00 [INF] Show Main window
+2024-03-24 11:33:30.586 +01:00 [INF] Show Main window
+2024-03-24 11:33:59.999 +01:00 [INF] Show Main window
+2024-03-24 11:34:12.481 +01:00 [INF] Show Main window
+2024-03-24 11:37:20.370 +01:00 [INF] Show Main window
+2024-03-24 11:38:56.672 +01:00 [INF] Show Main window
+2024-03-24 11:39:52.872 +01:00 [INF] Show Main window
+2024-03-24 11:41:41.680 +01:00 [INF] Show Main window
+2024-03-24 11:43:26.431 +01:00 [INF] Show Main window
+2024-03-24 11:44:01.128 +01:00 [INF] Show Main window
+2024-03-24 12:34:55.694 +01:00 [INF] Show Main window
+2024-03-24 12:35:33.117 +01:00 [INF] Show Main window
+2024-03-24 12:35:51.353 +01:00 [INF] Show Main window
+2024-03-24 12:38:19.447 +01:00 [INF] Show Main window
+2024-03-24 12:38:57.667 +01:00 [INF] Show Main window
+2024-03-24 12:39:29.827 +01:00 [INF] Show Settings
+2024-03-24 12:39:41.225 +01:00 [INF] Show Main window
+2024-03-24 12:39:42.325 +01:00 [INF] Analyze started
+2024-03-24 12:39:42.337 +01:00 [INF] Getting cards area : WpfClient.CardArea
+2024-03-24 12:41:04.641 +01:00 [INF] ShowGeneralTab
+2024-03-24 12:41:52.007 +01:00 [INF] All info Cleaned
+2024-03-24 12:41:54.387 +01:00 [INF] Show Settings
+2024-03-24 12:43:13.448 +01:00 [INF] Show Main window
+2024-03-24 12:43:15.532 +01:00 [INF] Analyze started
+2024-03-24 12:43:15.539 +01:00 [INF] Getting cards area : WpfClient.CardArea
+2024-03-24 12:44:31.932 +01:00 [INF] ShowGeneralTab
+2024-03-24 12:44:36.628 +01:00 [INF] Analyze started
+2024-03-24 12:44:36.628 +01:00 [INF] Getting cards area : WpfClient.CardArea
+2024-03-24 12:44:36.753 +01:00 [ERR] A generic error occurred in GDI+.
+2024-03-24 12:45:51.447 +01:00 [INF] ShowGeneralTab
+2024-03-24 12:46:10.562 +01:00 [INF] All info Cleaned
+2024-03-24 12:46:14.002 +01:00 [INF] Analyze started
+2024-03-24 12:46:14.002 +01:00 [INF] Getting cards area : WpfClient.CardArea
+2024-03-24 12:46:14.115 +01:00 [ERR] A generic error occurred in GDI+.
+2024-03-24 12:47:38.451 +01:00 [INF] Show Main window
+2024-03-24 12:47:41.050 +01:00 [INF] Analyze started
+2024-03-24 12:47:41.055 +01:00 [INF] Getting cards area : WpfClient.CardArea
+2024-03-24 12:48:22.901 +01:00 [INF] ShowGeneralTab
+2024-03-24 12:54:14.747 +01:00 [INF] Show Main window
+2024-03-24 12:54:17.507 +01:00 [INF] Analyze started
+2024-03-24 12:54:17.514 +01:00 [INF] Getting cards area : WpfClient.CardArea
+2024-03-24 12:55:01.260 +01:00 [INF] ShowGeneralTab
+2024-03-24 12:55:07.532 +01:00 [INF] Analyze started
+2024-03-24 12:55:07.532 +01:00 [INF] Getting cards area : WpfClient.CardArea
+2024-03-24 12:55:07.652 +01:00 [ERR] A generic error occurred in GDI+.
+2024-03-24 12:55:50.762 +01:00 [INF] ShowGeneralTab
+2024-03-24 12:56:10.631 +01:00 [INF] All info Cleaned
+2024-03-24 12:56:14.086 +01:00 [INF] Show Settings
+2024-03-24 12:56:47.308 +01:00 [INF] Show Main window
+2024-03-24 12:57:03.589 +01:00 [INF] Analyze started
+2024-03-24 12:57:03.597 +01:00 [INF] Getting cards area : WpfClient.CardArea
+2024-03-24 12:58:49.935 +01:00 [INF] ShowGeneralTab
+2024-03-24 13:02:49.464 +01:00 [INF] Show Main window
+2024-03-24 13:02:51.576 +01:00 [INF] Analyze started
+2024-03-24 13:02:51.582 +01:00 [INF] Getting cards area : WpfClient.CardArea
+2024-03-24 13:04:35.671 +01:00 [INF] ShowGeneralTab

@@ -19,8 +19,7 @@ namespace WpfClient
             this.mainWindowViewModel = mainWindowViewModel;
             DataContext = mainWindowViewModel;
             InitializeComponent();
-            MouseDown += MainWindow_MouseDown;
-        }
+            MouseDown += MainWindow_MouseDown;                    }
         
         private void MainWindow_MouseDown(object sender, MouseButtonEventArgs e)
         {
